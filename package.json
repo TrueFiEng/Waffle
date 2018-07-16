@@ -1,0 +1,33 @@
+{
+    "name": "Waffle",
+    "description": "Sweeter and simpler than truffle.",
+    "version": "0.0.1",
+    "author": "Marek Kirejczyk, Ethworks",
+    "repository": "git@github.com:EthWorks/Waffle.git",
+    "private": true,
+    "license": "MIT",
+    "scripts": {
+      "test": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings"
+    },
+    "engines": {
+      "node": ">=9.0",
+      "yarn": ">=1.3.2 <2.0.0"
+    },
+    "dependencies": {
+      "web3": "^1.0.0-beta.34"
+    },
+    "devDependencies": {
+      "babel-cli": "^6.26.0",
+      "babel-core": "^6.26.3",
+      "babel-eslint": "^8.2.3",
+      "babel-plugin-transform-builtin-extend": "^1.1.2",
+      "babel-plugin-transform-runtime": "^6.23.0",
+      "babel-polyfill": "^6.26.0",
+      "babel-preset-env": "^1.6.1",
+      "babel-preset-stage-0": "^6.24.1",
+      "chai": "^4.1.2",
+      "chai-as-promised": "^7.1.1",
+      "ganache-core": "^2.1.0",
+      "mocha": "^5.1.1"
+    }
+  }

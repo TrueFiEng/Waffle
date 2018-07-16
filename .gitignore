@@ -1,0 +1,9 @@
+node_modules
+dist
+.idea
+data
+/build/
+yarn-error.log
+nodePrivateKey.json
+registryContractAddress.json
+/config/dev.json
