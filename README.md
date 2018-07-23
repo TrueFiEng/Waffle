@@ -1,18 +1,16 @@
 # Ethereum Waffle
-Sweeter and simpler than truffle. Taste best with web3js, chai and ES6.
+Sweeter and simpler than truffle.js. Taste best with web3js, chai and ES6.
+
+## Our philosophy
+* Simpler: Set of helpers rather than framework
+* Sweeter: Easy to customize and extend
 
 ## Features:
-* Build and test contracts
-* Deploy and link contracts
-* Easy matchers
+* Build, deploy link and test solidity based smart contracts
 * No need to run mock rpc server
+* Use contracts from other npms
+* Parallel testing
 
-## Philosophy
-* Clear, simple syntax, utilize ES6 constructions
-* Simplicity over complexity
-* Lib (toolbox) rather than framework 
-* Explicite over implicte (no magic!)
-* Easy to customize and extend
 
 ## Install:
 To start using with npm, type:

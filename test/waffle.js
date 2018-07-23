@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createWeb3} from '../lib/waffle'
+import {compile, createWeb3} from '../lib/Waffle'
 
 chai.use(chaiAsPromised);
 
@@ -11,6 +11,10 @@ describe('Waffle', () => {
 
   beforeEach(async () => {
     ({web3} = await createWeb3());
+  });
+
+  it('compile', async () => {
+    compile();
   });
 
   it('createWeb3', async () => {

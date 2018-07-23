@@ -224,7 +224,7 @@ async-eventemitter@^0.2.2:
   dependencies:
     async "^2.4.0"
 
-"async-eventemitter@github:ahultgren/async-eventemitter#fa06e39e56786ba541c180061dbf2c0a5bbf951c":
+async-eventemitter@ahultgren/async-eventemitter#fa06e39e56786ba541c180061dbf2c0a5bbf951c:
   version "0.2.3"
   resolved "https://codeload.github.com/ahultgren/async-eventemitter/tar.gz/fa06e39e56786ba541c180061dbf2c0a5bbf951c"
   dependencies:
@@ -1241,6 +1241,10 @@ chai-as-promised@^7.1.1:
   resolved "https://registry.yarnpkg.com/chai-as-promised/-/chai-as-promised-7.1.1.tgz#08645d825deb8696ee61725dbf590c012eb00ca0"
   dependencies:
     check-error "^1.0.2"
+
+chai-string@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/chai-string/-/chai-string-1.4.0.tgz#359140c051d36a4e4b1a5fc6b910152f438a8d49"
 
 chai@^3.5.0:
   version "3.5.0"
@@ -3379,6 +3383,10 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   dependencies:
     wrappy "1"
 
+openzeppelin-solidity@^1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-1.11.0.tgz#f57a5e340aa45efd4a052f4bb514a7a619b0bbd0"
+
 os-homedir@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
@@ -4066,6 +4074,16 @@ simple-get@^2.7.0:
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
+
+solc-js@^0.4.20-browser.1:
+  version "0.4.20-browser.1"
+  resolved "https://registry.yarnpkg.com/solc-js/-/solc-js-0.4.20-browser.1.tgz#8cddedcbb90f5ed1289f3a984a71fcbb50fa1ebf"
+  dependencies:
+    fs-extra "^0.30.0"
+    memorystream "^0.3.1"
+    require-from-string "^1.1.0"
+    semver "^5.3.0"
+    yargs "^4.7.1"
 
 solc@0.4.24, solc@^0.4.2:
   version "0.4.24"
