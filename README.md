@@ -1,5 +1,5 @@
 # Ethereum Waffle
-Sweeter and simpler than truffle. Taste best with web3js, chai and ES6.
+Sweeter and simpler than truffle. Tastes best with web3js, chai and ES6.
 
 ## Features:
 * Build and test contracts
