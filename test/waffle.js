@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {compile, createWeb3} from '../lib/Waffle'
+import {createWeb3} from '../lib/waffle';
 
 chai.use(chaiAsPromised);
 
@@ -13,12 +13,7 @@ describe('Waffle', () => {
     ({web3} = await createWeb3());
   });
 
-  it('compile', async () => {
-    compile();
-  });
-
   it('createWeb3', async () => {
     expect(web3.utils.randomHex(0)).to.eq('0x');
   });
-
 });

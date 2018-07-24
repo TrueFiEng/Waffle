@@ -7,7 +7,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "test": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings"
+    "test": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
+    "lint": "eslint lib test"
   },
   "engines": {
     "node": ">=10.7"
@@ -28,6 +29,9 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-string": "^1.4.0",
+    "eslint": "^5.2.0",
+    "eslint-plugin-header": "^1.2.0",
+    "eslint-plugin-import": "^2.13.0",
     "ganache-core": "^2.1.0",
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^1.11.0"
