@@ -1,5 +1,5 @@
 # Ethereum Waffle
-Sweeter and simpler than truffle.js. Taste best with web3js, chai and ES6.
+Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [web3js](https://web3js.readthedocs.io/en/1.0/). Taste best with chai and ES6.
 
 ## Our philosophy
 * Simpler: Set of helpers rather than framework
@@ -8,8 +8,8 @@ Sweeter and simpler than truffle.js. Taste best with web3js, chai and ES6.
 ## Features:
 * Build, deploy link and test solidity based smart contracts
 * No need to run mock rpc server
-* Use contracts from other npms
-* Parallel testing
+* Easily import contracts from other npms
+* Coming soon: Parallel testing
 
 
 ## Install:
@@ -23,7 +23,10 @@ or with Yarn:
 yarn add ethereum-waffle
 ```
 
+## Step by step guide
+
 ### First test
+
 ```js
 import createWeb3 from 'ethereum-waffle';
 import StandardToken from '../build/StandardToken.json';
