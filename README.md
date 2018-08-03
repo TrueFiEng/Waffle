@@ -30,7 +30,7 @@ yarn add ethereum-waffle
 
 ```js
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
+import {createMockProvider, deployContract, getWallets} from 'ethereum-waffle';
 import ethers from 'ethers';
 import BasicToken from './contracts/BasicToken';
 
