@@ -11,11 +11,10 @@
     "lint": "eslint lib test"
   },
   "engines": {
-    "node": ">=10.7"
+    "node": ">=9.3"
   },
   "dependencies": {
-    "solc-js": "^0.4.20-browser.1",
-    "web3": "^1.0.0-beta.34"
+    "solc-js": "^0.4.20-browser.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -28,8 +27,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "chai-string": "^1.4.0",
-    "eslint": "^5.2.0",
+    "chai-string": "~1.4.0",
+    "eslint": "^4.19.1",
     "eslint-plugin-header": "^1.2.0",
     "eslint-plugin-import": "^2.13.0",
     "ganache-core": "^2.1.0",
