@@ -7,4 +7,4 @@ install:
   - yarn install
 script:
   - yarn test
-  - yarn dev:lint
+  - yarn lint

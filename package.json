@@ -2,7 +2,7 @@
   "name": "Waffle",
   "description": "Sweeter and simpler than truffle.",
   "version": "0.0.1",
-  "author": "Marek Kirejczyk, Ethworks",
+  "author": "Marek Kirejczyk <marek@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": true,
   "license": "MIT",

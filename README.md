@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/EthWorks/Waffle.svg?token=xjj4U84eSFwEsYLTc5Qe&branch=master)](https://travis-ci.com/EthWorks/Waffle)
+
 # Ethereum Waffle
 Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [web3js](https://web3js.readthedocs.io/en/1.0/). Taste best with chai and ES6.
 
