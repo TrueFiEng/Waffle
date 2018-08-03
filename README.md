@@ -29,40 +29,29 @@ yarn add ethereum-waffle
 ### First test
 
 ```js
-import createWeb3 from 'ethereum-waffle';
-import StandardToken from '../build/StandardToken.json';
+import chai from 'chai';
+import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
+import ethers from 'ethers';
+import BasicToken from './contracts/BasicToken';
 
-describe('StandardToken', () => {
-  const amount = 100;
-  let web3;
-  let accounts;
+const {expect} = chai;
+
+describe('Example', () => {
+  let provider;
   let token;
-  let to;
-  let from;
+  let wallet;
 
   beforeEach(async () => {
-    {web3, [from]} = createWeb3();
-    token = await deployContract(StandardTokenMock.new(account[0], amount));
+    provider = createMockProvider();
+    [wallet] = await getWallets(provider);
+    token = await deployContract(wallet, BasicToken);  
   });
   
-  it("Should transfer", async () => {
-    const [from] = accounts;
-    await token.methods.transfer(to, amount).send({from});
-
-    expect(await token.balanceOf(from)).to.eq('0');
-    expect(await token.balanceOf(to)).to.eq('0');
-     const recipientBalance = await this.token.balanceOf(to);
-     assert.equal(recipientBalance, amount);
-
-    expect(await aContract.methods.transfer().send({from})).to.emitEvent('Transfered').withParams(...);
-  });
-  
-  it("Transfer should emit event", async () => {
-    expect(token.methods.transfer(to, amount).send({from})).to
-      .to.emitEvent('Transfered')
-      .withParams(from, to, amount);
-  });
-}
+  it('Should be able to test', async () => {
+    const actualBalance = await token.balanceOf(wallet.address);
+    expect(actualBalance.eq(0)).to.be.true;
+  });  
+});
 ```
 
 Run tests:

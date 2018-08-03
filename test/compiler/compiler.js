@@ -1,6 +1,6 @@
 import chai from 'chai';
 import Compiler from '../../lib/compiler';
-import {fileContent} from '../../lib/utils';
+import readFileContent from '../../lib/readFileContent';
 import fs from 'fs';
 import fsx from 'fs-extra';
 
@@ -32,18 +32,18 @@ describe('Compiler', () => {
     const actualInputs = await compiler.findInputs({sourcesPath, targetPath});
     expect(Object.keys(actualInputs)).to.deep.eq(expectedInputs);
     const basicTokenContractActual = actualInputs['test/compiler/contracts/BasicToken.sol'];
-    const basicTokenContractExpected = await fileContent('test/compiler/contracts/BasicToken.sol');
+    const basicTokenContractExpected = await readFileContent('test/compiler/contracts/BasicToken.sol');
     expect(basicTokenContractActual).to.deep.eq(basicTokenContractExpected);
   });
 
   it('findImports in source path', async () => {
-    const expected = await fileContent('test/compiler/contracts/BasicToken.sol');
+    const expected = await readFileContent('test/compiler/contracts/BasicToken.sol');
     const actual = compiler.findImports('test/compiler/contracts/BasicToken.sol');    
     expect(expected).to.eq(actual.contents);
   });
 
   it('findImports in imports path', async () => {                
-    const expected = await fileContent('node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol');    
+    const expected = await readFileContent('node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol');    
     const actual = compiler.findImports('openzeppelin-solidity/contracts/math/SafeMath.sol');
     expect(expected).to.eq(actual.contents);
   });
