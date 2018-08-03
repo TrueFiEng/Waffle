@@ -1,20 +1,23 @@
 {
-  "name": "Waffle",
+  "name": "ethereum-waffle",
   "description": "Sweeter and simpler than truffle.",
   "version": "0.0.1",
-  "author": "Marek Kirejczyk <marek@ethworks.io> (http://ethworks.io)",
+  "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
-  "private": true,
+  "private": false,
   "license": "MIT",
+  "main": "lib/waffle.js",
   "scripts": {
     "test": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
-    "lint": "eslint lib test"
+    "lint": "eslint lib test && solium -d test/compiler/contracts"
   },
   "engines": {
     "node": ">=9.3"
   },
   "dependencies": {
-    "solc-js": "^0.4.20-browser.1"
+    "ethers": "^3.0.26",
+    "solc-js": "^0.4.20-browser.1",
+    "solium": "^1.1.8"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -31,6 +34,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-header": "^1.2.0",
     "eslint-plugin-import": "^2.13.0",
+    "fs-extra": "^7.0.0",
     "ganache-core": "^2.1.0",
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^1.11.0"

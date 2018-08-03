@@ -1,0 +1,31 @@
+{
+    "extends": "solium:all",
+    "plugins": [
+      "security"
+    ],
+    "rules": {
+      "max-len": [
+        "error",
+        160
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "indentation": [
+        "error",
+        2
+      ],
+      "operator-whitespace": [
+        "error"
+      ],
+      "arg-overflow": 0,
+      "security/no-block-members": [
+        "error",
+        ["blockhash"]
+      ],
+      "operator-whitespace": [
+              "error"			
+      ]
+    }
+  }

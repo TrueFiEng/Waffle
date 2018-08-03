@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.com/EthWorks/Waffle.svg?token=xjj4U84eSFwEsYLTc5Qe&branch=master)](https://travis-ci.com/EthWorks/Waffle)
 
 # Ethereum Waffle
-Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [web3js](https://web3js.readthedocs.io/en/1.0/). Taste best with chai and ES6.
+Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with chai and ES6.
 
-## Our philosophy
+## Philosophy
 * Simpler: Set of helpers rather than framework
 * Sweeter: Easy to customize and extend
 
@@ -12,7 +12,6 @@ Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Wor
 * No need to run mock rpc server
 * Easily import contracts from other npms
 * Coming soon: Parallel testing
-
 
 ## Install:
 To start using with npm, type:

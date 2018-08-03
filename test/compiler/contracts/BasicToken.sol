@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 import "./ERC20Basic.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 
+
 /**
  * @title Basic token
  * @dev Basic version of StandardToken, with no allowances.
@@ -27,8 +28,8 @@ contract BasicToken is ERC20Basic {
   * @param _value The amount to be transferred.
   */
   function transfer(address _to, uint256 _value) public returns (bool) {
-    require(_to != address(0));
-    require(_value <= balances[msg.sender]);
+    require(_to != address(0), "Invalid address 0x");
+    require(_value <= balances[msg.sender], "Not enough balance on sender account");
 
     balances[msg.sender] = balances[msg.sender].sub(_value);
     balances[_to] = balances[_to].add(_value);
