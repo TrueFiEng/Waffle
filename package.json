@@ -1,12 +1,15 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter and simpler than truffle.",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "main": "dist/waffle.js",
+  "bin": {
+    "waffle": "./bin/waffle"
+  },
   "scripts": {
     "test": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
     "lint": "eslint lib test && solium -d test/compiler/contracts",

@@ -26,7 +26,28 @@ yarn add ethereum-waffle
 
 ## Step by step guide
 
-### First test
+### Compiling contracts
+
+To compile you contracts simply type:
+```sh
+npx waffle
+```
+
+Waffle expects your contracts are in `contracts` directory.  The output will be saved in the `build` directory.
+
+### Adding a task
+For convince, you can add a task to your `package.json`. In the sections `scripts`, add following line:
+```json
+  "build": "waffle"        
+```
+
+Now you can build you contracts with:
+```sh
+yarn build
+```
+
+### Example test
+Waffle is test suite agnostic. Here is example test written using mocha:
 
 ```js
 import chai from 'chai';
@@ -54,7 +75,7 @@ describe('Example', () => {
 });
 ```
 
-Run tests:
+To run test type in the console:
 ```sh
-yarn waffle:test
+mocha
 ```
