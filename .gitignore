@@ -1,4 +1,6 @@
 node_modules
 dist
 yarn-error.log
-/test/compileryarn/build/
+/test/compiler/build/
+/test/matchers/build/
+/test/example/build/
