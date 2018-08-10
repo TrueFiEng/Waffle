@@ -24,13 +24,25 @@ describe('Matchers: reverted', () => {
     matchers = await deployContract(wallet, Matchers);  
   });
 
-  it('Revert: success', async () => {
+  it('Throw: success', async () => {
     await expect(matchers.doThrow()).to.be.reverted;
   });
 
   it('Not to revert: success', async () => {
     await expect(matchers.doNothing()).not.to.be.reverted;
   }); 
+
+  it('Revert with modification: success', async () => {
+    await expect(matchers.doRevertAndModify()).to.be.reverted;
+  });
+
+  it('ThrowAndModify: success', async () => {
+    await expect(matchers.doThrowAndModify()).to.be.reverted;
+  });
+
+  it('Revert: success', async () => {
+    await expect(matchers.doRevert()).to.be.reverted;
+  });
 
   it('Revert: fail no exception', async () => {
     await expect(
