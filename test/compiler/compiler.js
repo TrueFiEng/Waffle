@@ -1,6 +1,6 @@
 import chai from 'chai';
 import Compiler from '../../lib/compiler';
-import readFileContent from '../../lib/readFileContent';
+import {readFileContent} from '../../lib/utils';
 import fs from 'fs';
 import fsx from 'fs-extra';
 

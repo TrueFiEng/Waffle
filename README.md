@@ -71,18 +71,22 @@ describe('Example', () => {
     token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);  
   });
   
-  it('assigns initial balance', async () => {
+  it('Assigns initial balance', async () => {
     const actualBalance = await token.balanceOf(wallet.address);
     expect(actualBalance.eq(1000)).to.be.true;
   });  
 
-  it('transfer', async () => {
+  it('Transfer adds amount to destination account', async () => {
     await token.transfer(walletTo.address, 7);
     const toBalance = await token.balanceOf(walletTo.address);
     expect(toBalance.eq(7)).to.be.true;
   });
 
-  it('can not transfer above the amount', async () => {
+  it('Transfer emits event', async () => {
+    expect(token.transfer(walletTo.address, 7)).to.emit(token, 'Transfer');
+  });
+
+  it('Can not transfer above the amount', async () => {
     await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
   });
 });
