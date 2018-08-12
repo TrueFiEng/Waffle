@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.com/EthWorks/Waffle.svg?token=xjj4U84eSFwEsYLTc5Qe&branch=master)](https://travis-ci.com/EthWorks/Waffle)
 
 # Ethereum Waffle
-Tool for writing and testing smart contracts. Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with chai and ES6.
+Tool for writing and testing smart contracts. Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with ES6.
 
 ## Philosophy
-* Simpler: Set of helpers and tasks rather than framework
-* Sweeter: Nice syntax, fast, easy to  extend
+* Simpler: Minimalistic: couple of helpers, matchers and tasks rather than framework, just two dependencies (ethers.js and solc).
+* Sweeter: Nice syntax, fast, easy to extend.
 
 ## Features:
 * Build, deploy link and test solidity based smart contracts
@@ -47,7 +47,7 @@ yarn build
 ```
 
 ### Example test
-Waffle is test suite agnostic. Here is example test written using mocha:
+Here is example test written with Waffle:
 
 ```js
 import chai from 'chai';

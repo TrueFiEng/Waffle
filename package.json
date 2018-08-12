@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter and simpler than truffle.",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -44,6 +44,8 @@
     "fs-extra": "^7.0.0",
     "ganache-core": "^2.1.0",
     "mocha": "^5.1.1",
-    "openzeppelin-solidity": "^1.11.0"
+    "openzeppelin-solidity": "^1.11.0",
+    "sinon": "^6.1.5",
+    "sinon-chai": "^3.2.0"
   }
 }

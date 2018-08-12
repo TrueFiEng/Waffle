@@ -1,4 +1,7 @@
 import chai from 'chai';
+import sinon from 'sinon';
+import sinonChai from 'sinon-chai';
+
 import Compiler from '../../lib/compiler';
 import {readFileContent} from '../../lib/utils';
 import fs from 'fs';
@@ -15,6 +18,7 @@ const expectedInputs = [
 ];
 
 chai.use(require('chai-string'));
+chai.use(sinonChai);
 
 describe('Compiler', () => {  
   let compiler;
@@ -72,6 +76,24 @@ describe('Compiler', () => {
       expect(fs.lstatSync('test/compiler/build/BasicToken.json').isFile()).to.be.true;
       fsx.removeSync('test/compiler/build'); 
       expect(fs.existsSync('test/compiler/build')).to.be.false;
+    });
+  });
+
+  describe('compile: invalid input', () => {
+    const sourcesPath = './test/compiler/invalidContracts';
+    const targetPath = './test/compiler/build';
+    const config = {sourcesPath, targetPath}; 
+    const expectedOutput = 'test/compiler/invalidContracts/invalid.sol:5:16: DeclarationError: Identifier not found or not unique.\n    function f(wrongType arg) public {\n               ^-------^\n';
+
+    it('shows error message', async () => {
+      const consoleStub = {error: sinon.spy()};
+      const processStub = {exit: sinon.spy()};
+      compiler = new Compiler(config);
+      compiler.console = consoleStub;  
+      compiler.process = processStub;
+      await compiler.compile();      
+      expect(consoleStub.error).to.be.calledWith(expectedOutput);
+      expect(processStub.exit).to.be.calledWith(1);
     });
   });
 });
