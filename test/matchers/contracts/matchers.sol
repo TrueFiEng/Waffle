@@ -23,23 +23,23 @@ contract Matchers {
         throw;
     }
     
-    function doRevert() public {
+    function doRevert() pure public {
         revert("Revert cause");
     }    
 
-    function doAssertFail() public {
+    function doAssertFail() pure public {
         assert(false);
     }    
 
-    function doAssertSuccess() public {
+    function doAssertSuccess() pure public {
         assert(true);
     }    
 
-    function doRequireFail() public {
+    function doRequireFail() pure public {
         require(false, "Require cause");
     }    
 
-    function doRequireSuccess() public {
+    function doRequireSuccess() pure public {
         require(true, "Never to be seen");
     }    
     

@@ -21,7 +21,7 @@ describe('Matchers: reverted', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet] = await getWallets(provider);
-    matchers = await deployContract(wallet, Matchers);  
+    matchers = await deployContract(wallet, Matchers);
   });
 
   it('Throw: success', async () => {
@@ -30,7 +30,7 @@ describe('Matchers: reverted', () => {
 
   it('Not to revert: success', async () => {
     await expect(matchers.doNothing()).not.to.be.reverted;
-  }); 
+  });
 
   it('Revert with modification: success', async () => {
     await expect(matchers.doRevertAndModify()).to.be.reverted;
@@ -54,7 +54,7 @@ describe('Matchers: reverted', () => {
     await expect(
       expect(matchers.doThrow()).not.to.be.reverted
     ).to.be.eventually.rejected;
-  }); 
+  });
 
   it('Revert: fail, random exception', async () => {
     await expect(alwaysReject).not.to.be.reverted;

@@ -19,7 +19,7 @@ contract Events {
         emit Two(2, "Two");        
     }    
 
-    function doNotEmit() public {
+    function doNotEmit() pure public {
 
     }
 }

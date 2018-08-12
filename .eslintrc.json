@@ -98,6 +98,7 @@
       ],
       "semi-spacing": 2,
       "no-unexpected-multiline": 2,
+      "no-trailing-spaces": 2,
       "quotes": [
         "error",
         "single",

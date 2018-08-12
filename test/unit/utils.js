@@ -1,5 +1,5 @@
 import chai from 'chai';
-import {arrayIntersection, eventParseResultToArray} from '../../lib/utils';
+import {arrayIntersection, eventParseResultToArray, isWarningMessage} from '../../lib/utils';
 
 const {expect} = chai;
 
@@ -20,7 +20,7 @@ describe('Utils', () => {
 
   describe('eventParseResultToArray', () => {
     it('Empty to empty', async () => {
-      const parseResults = {};      
+      const parseResults = {};
       expect(eventParseResultToArray(parseResults)).to.deep.eq([]);
     });
 
@@ -29,8 +29,21 @@ describe('Utils', () => {
         1: 'One',
         value: 0,
         msg: 'One',
-        length: 2};      
+        length: 2};
       expect(eventParseResultToArray(parseResults)).to.deep.eq([0, 'One']);
+    });
+  });
+
+  describe('isWarningMessage', () => {
+    const warningMessage = 'test/matchers/contracts/matchers.sol:10:9: Warning: "throw" is deprecated in favour of "revert()", "require()" and "assert()".\n        throw;\n        ^---^\n';
+    const errorMessage = 'test/matchers/contracts/matchers.sol:10:9: Error: "throw" is deprecated in favour of "revert()", "require()" and "assert()".\n        throw;\n        ^---^\n';
+
+    it('warning message', async () => {
+      expect(isWarningMessage(warningMessage)).to.be.true;
+    });
+
+    it('error message', async () => {
+      expect(isWarningMessage(errorMessage)).to.be.false;
     });
   });
 });

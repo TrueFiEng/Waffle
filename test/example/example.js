@@ -16,12 +16,12 @@ describe('Example', () => {
   beforeEach(async () => {
     provider = createMockProvider();
     [wallet, walletTo] = await getWallets(provider);
-    token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);  
+    token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
   });
-  
+
   it('Assigns initial balance', async () => {
     expect(await token.balanceOf(wallet.address)).to.eq(1000);
-  });  
+  });
 
   it('Transfer adds amount to destination account', async () => {
     await token.transfer(walletTo.address, 7);
