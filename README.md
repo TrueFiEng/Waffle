@@ -1,17 +1,15 @@
 [![Build Status](https://travis-ci.com/EthWorks/Waffle.svg?token=xjj4U84eSFwEsYLTc5Qe&branch=master)](https://travis-ci.com/EthWorks/Waffle)
 
 # Ethereum Waffle
-Tool for writing and testing smart contracts. Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with ES6.
+Library for writing and testing smart contracts.
+
+Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle).
+
+Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with ES6.
 
 ## Philosophy
-* Simpler: Minimalistic: a couple of helpers, matchers and tasks rather than a framework, just two dependencies (ethers.js and solc).
-* Sweeter: Nice syntax, fast, easy to extend.
-s
-## Features:
-* Build, deploy link and test solidity based smart contracts
-* No need to run mock rpc server
-* Easily import contracts from other npms
-* Coming soon: Parallel testing
+* __Simpler__: minimalistic, a couple of helpers, matchers and tasks rather than a framework, few dependencies.
+* __Sweeter__: Nice syntax, fast, easy to extend.
 
 ## Install:
 To start using with npm, type:
@@ -26,28 +24,9 @@ yarn add ethereum-waffle
 
 ## Step by step guide
 
-### Compiling contracts
+### Example contract
+Below is example contract written in Solidity. Place it in `contracts` directory of your project:
 
-To compile you contracts simply type:
-```sh
-npx waffle
-```
-
-Waffle expects your contracts are in `contracts` directory.  The output will be saved in the `build` directory.
-
-### Adding a task
-For convince, you can add a task to your `package.json`. In the sections `scripts`, add following line:
-```json
-  "build": "waffle"
-```
-
-Now you can build you contracts with:
-```sh
-yarn build
-```
-
-### Example contract and test
-Here is example contract written in Solidity (to be placed in `contracts` directory of the project):
 ```solidity
 pragma solidity ^0.4.24;
 
@@ -63,7 +42,8 @@ contract BasicTokenMock is BasicToken {
 }
 ```
 
-Here is example test written with Waffle (to be placed in `test` directory of the project):
+### Example test
+Belows is example test written for the contract above written with Waffle. Place it in `test` directory of your project:
 
 ```js
 import chai from 'chai';
@@ -109,11 +89,28 @@ describe('Example', () => {
 });
 ```
 
+### Compile
+To compile contracts simply type:
+```sh
+npx waffle
+```
+
+### Run tests
 To run test type in the console:
 ```sh
 mocha
 ```
 
+### Adding a task
+For convince, you can add a task to your `package.json`. In the sections `scripts`, add following line:
+```json
+  "test": "waffle && test"
+```
+
+Now you can build and test your contracts with one command:
+```sh
+npm test
+```
 
 ## Features walkthrough
 
