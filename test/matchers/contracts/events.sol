@@ -4,7 +4,7 @@ pragma solidity 0.4.24;
 contract Events {
 
     event One(uint value, string msg);
-    event Two(uint value, string msg);
+    event Two(uint indexed value, string msg);
     
     function emitOne() public {
         emit One(1, "One");

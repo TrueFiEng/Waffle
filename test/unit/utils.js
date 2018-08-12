@@ -1,5 +1,5 @@
 import chai from 'chai';
-import {arrayIntersection} from '../../lib/utils';
+import {arrayIntersection, eventParseResultToArray} from '../../lib/utils';
 
 const {expect} = chai;
 
@@ -15,6 +15,22 @@ describe('Utils', () => {
 
     it('Intersection if intersect', async () => {
       expect(arrayIntersection([1, 2], [2, 3])).to.deep.eq([2]);
+    });
+  });
+
+  describe('eventParseResultToArray', () => {
+    it('Empty to empty', async () => {
+      const parseResults = {};      
+      expect(eventParseResultToArray(parseResults)).to.deep.eq([]);
+    });
+
+    it('Common case', async () => {
+      const parseResults = {0: 0,
+        1: 'One',
+        value: 0,
+        msg: 'One',
+        length: 2};      
+      expect(eventParseResultToArray(parseResults)).to.deep.eq([0, 'One']);
     });
   });
 });

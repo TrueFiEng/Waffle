@@ -20,18 +20,18 @@ describe('Example', () => {
   });
   
   it('Assigns initial balance', async () => {
-    const actualBalance = await token.balanceOf(wallet.address);
-    expect(actualBalance.eq(1000)).to.be.true;
+    expect(await token.balanceOf(wallet.address)).to.eq(1000);
   });  
 
   it('Transfer adds amount to destination account', async () => {
     await token.transfer(walletTo.address, 7);
-    const toBalance = await token.balanceOf(walletTo.address);
-    expect(toBalance.eq(7)).to.be.true;
+    expect(await token.balanceOf(walletTo.address)).to.eq(7);
   });
 
   it('Transfer emits event', async () => {
-    expect(token.transfer(walletTo.address, 7)).to.emit(token, 'Transfer');
+    await expect(token.transfer(walletTo.address, 7))
+      .to.emit(token, 'Transfer')
+      .withArgs(wallet.address, walletTo.address, 7);
   });
 
   it('Can not transfer above the amount', async () => {

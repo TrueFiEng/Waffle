@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.com/EthWorks/Waffle.svg?token=xjj4U84eSFwEsYLTc5Qe&branch=master)](https://travis-ci.com/EthWorks/Waffle)
 
 # Ethereum Waffle
-Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with chai and ES6.
+Tool for writing and testing smart contracts. Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle). Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Taste best with chai and ES6.
 
 ## Philosophy
-* Simpler: Set of helpers rather than framework
-* Sweeter: Easy to customize and extend
+* Simpler: Set of helpers and tasks rather than framework
+* Sweeter: Nice syntax, fast, easy to  extend
 
 ## Features:
 * Build, deploy link and test solidity based smart contracts
@@ -72,18 +72,19 @@ describe('Example', () => {
   });
   
   it('Assigns initial balance', async () => {
-    const actualBalance = await token.balanceOf(wallet.address);
-    expect(actualBalance.eq(1000)).to.be.true;
+    expect(await token.balanceOf(wallet.address)).to.eq(1000);
   });  
 
   it('Transfer adds amount to destination account', async () => {
-    await token.transfer(walletTo.address, 7);
-    const toBalance = await token.balanceOf(walletTo.address);
-    expect(toBalance.eq(7)).to.be.true;
+    await token.transfer(walletTo.address, 7);    
+    expect(await token.balanceOf(wallet.address)).to.eq(993);
+    expect(await token.balanceOf(walletTo.address)).to.eq(7);
   });
 
   it('Transfer emits event', async () => {
-    expect(token.transfer(walletTo.address, 7)).to.emit(token, 'Transfer');
+    await expect(token.transfer(walletTo.address, 7))
+      .to.emit(token, 'Transfer')
+      .withArgs(wallet.address, walletTo.address, 7);
   });
 
   it('Can not transfer above the amount', async () => {
