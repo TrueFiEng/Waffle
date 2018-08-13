@@ -47,9 +47,8 @@ Belows is example test written for the contract above written with Waffle. Place
 
 ```js
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
+import {createMockProvider, deployContract, getWallets, solidity} from '../../lib/waffle';
 import BasicTokenMock from './build/BasicTokenMock';
-import solidity from '../../lib/matchers';
 
 chai.use(solidity);
 
