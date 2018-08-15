@@ -41,35 +41,41 @@ describe('Events', () => {
   });
 
   it('Emit both: success', async () => {
-    await expect(events.emitBoth()).to.emit(events, 'One');
+    await expect(events.emitBoth()).to.emit(events, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001');
     await expect(events.emitBoth()).to.emit(events, 'Two');
   });
 
   it('Event with proper args', async () => {
-    await (expect(events.emitOne()).to.emit(events, 'One')).withArgs(1, 'One');
+    await (expect(events.emitOne()).to.emit(events, 'One')).withArgs(1, 'One', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123');
   });
 
   it('Event with not enough args', async () => {
     await expect(
       expect(events.emitOne()).to.emit(events, 'One').withArgs(1)
-    ).to.be.eventually.rejectedWith(AssertionError, 'Expected "One" event to have 1 argument(s), but has 2');
+    ).to.be.eventually.rejectedWith(AssertionError, 'Expected "One" event to have 1 argument(s), but has 3');
   });
 
   it('Event with too many args', async () => {
     await expect(
-      expect(events.emitOne()).to.emit(events, 'One').withArgs(1, 2, 3)
-    ).to.be.eventually.rejectedWith(AssertionError, 'Expected "One" event to have 3 argument(s), but has 2');
+      expect(events.emitOne()).to.emit(events, 'One').withArgs(1, 2, 3, 4)
+    ).to.be.eventually.rejectedWith(AssertionError, 'Expected "One" event to have 4 argument(s), but has 3');
   });
 
   it('Event with one different arg (integer)', async () => {
     await expect(
-      expect(events.emitOne()).to.emit(events, 'One').withArgs(2, 'One')
+      expect(events.emitOne()).to.emit(events, 'One').withArgs(2, 'One', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123')
     ).to.be.eventually.rejectedWith(AssertionError, 'Expected "2" to be equal 1');
   });
 
   it('Event with one different arg (string)', async () => {
     await expect(
-      expect(events.emitOne()).to.emit(events, 'One').withArgs(1, 'Two')
+      expect(events.emitOne()).to.emit(events, 'One').withArgs(1, 'Two', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123')
     ).to.be.eventually.rejectedWith(AssertionError, 'expected \'Two\' to equal \'One\'');
+  });
+
+  it('Event with one different arg (string)', async () => {
+    await expect(
+      expect(events.emitOne()).to.emit(events, 'One').withArgs(1, 'One', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124')
+    ).to.be.eventually.rejectedWith(AssertionError, 'expected \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124\' to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\'');
   });
 });
