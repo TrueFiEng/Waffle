@@ -1,5 +1,5 @@
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
+import {createMockProvider, deployContract, getWallets, contractWithWallet} from '../../lib/waffle';
 import BasicTokenMock from './build/BasicTokenMock';
 import solidity from '../../lib/matchers';
 
@@ -36,5 +36,10 @@ describe('Example', () => {
 
   it('Can not transfer above the amount', async () => {
     await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
+  });
+
+  it('Can not transfer from empty account', async () => {
+    const tokenFromOtherWallet = contractWithWallet(token, walletTo);
+    await expect(tokenFromOtherWallet.transfer(wallet.address, 1)).to.be.reverted;
   });
 });
