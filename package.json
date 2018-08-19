@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter and simpler than truffle.",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,

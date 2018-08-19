@@ -158,4 +158,20 @@ await expect(token.transfer(walletTo.address, 7))
 await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
 ```
 
+* Testing if string is a proper address:
+```js
+expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').to.be.properAddress;
+```
+
+* Testing if string is a proper secret:
+```js
+expect('0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c5').to.be.properPrivateKey;
+```
+
+* Testing if string is a proper hex value of given length:
+```js
+expect('0x70').to.be.properHex(2);
+```
+
+
 ## Configuring
