@@ -3,7 +3,6 @@ import chai, {AssertionError} from 'chai';
 const {expect} = chai;
 
 describe('Miscellaneous', () => {
-
   describe('Proper address', () => {
     it('Expect to be proper address', async () => {
       expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').to.be.properAddress;
