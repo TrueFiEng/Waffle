@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter and simpler than truffle.",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -25,10 +25,10 @@
   },
   "dependencies": {
     "ethers": "^3.0.26",
-    "solc-js": "^0.4.20-browser.1",
-    "solium": "^1.1.8"
+    "solc-js": "^0.4.20-browser.1"
   },
   "devDependencies": {
+    "solium": "^1.1.8",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",

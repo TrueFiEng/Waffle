@@ -4847,9 +4847,9 @@ sol-explore@1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/sol-explore/-/sol-explore-1.6.1.tgz#b59f073c69fe332560d5a10c32ba8ca7f2986cfb"
 
-solc-js@^0.4.20-browser.1:
-  version "0.4.20-browser.1"
-  resolved "https://registry.yarnpkg.com/solc-js/-/solc-js-0.4.20-browser.1.tgz#8cddedcbb90f5ed1289f3a984a71fcbb50fa1ebf"
+solc-js@^0.4.24:
+  version "0.4.20"
+  resolved "https://registry.yarnpkg.com/solc-js/-/solc-js-0.4.20.tgz#b63095b0f71ab64c7a7e2f82ed852d0b35314e58"
   dependencies:
     fs-extra "^0.30.0"
     memorystream "^0.3.1"
