@@ -174,4 +174,18 @@ expect('0x70').to.be.properHex(2);
 ```
 
 
-## Configuring
+## ENS Mocking
+To create provider with ENS mock:
+```js
+const provider = await withMockENS(createMockProvider());
+```
+
+Now you can now add domain to ENS mock:
+```js
+await provider.ens.setAddr('coolDomain.eth', '0x2cd2ff232df61Cb6CE14DC3643dbc642b758E7f3');
+```
+
+and provider will behave like it is a real ENS domain:
+```js
+const address = await provider.resolveName('cooldomain.eth');
+```
