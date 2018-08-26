@@ -2,6 +2,7 @@ dist: trusty
 language: node_js
 cache: yarn
 node_js:
+  - '9'
   - '10'
 install:
   - yarn install
