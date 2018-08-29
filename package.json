@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "ethers": "^3.0.26",
-    "solc-js": "^0.4.20-browser.1"
+    "solc": "^0.4.24"
   },
   "devDependencies": {
     "solium": "^1.1.8",
