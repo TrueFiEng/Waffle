@@ -24,7 +24,7 @@
     "node": ">=9.3"
   },
   "dependencies": {
-    "ethers": "^3.0.26",
+    "ethers": "^3.0.27",
     "solc": "^0.4.24"
   },
   "devDependencies": {

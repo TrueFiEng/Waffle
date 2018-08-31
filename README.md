@@ -158,6 +158,12 @@ await expect(token.transfer(walletTo.address, 7))
 await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
 ```
 
+* Testing if transaction was reverted with certain message:
+```js
+await expect(token.transfer(walletTo.address, 1007)).to.be.revertedWith('Insufficient funds');
+```
+
+
 * Testing if string is a proper address:
 ```js
 expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').to.be.properAddress;

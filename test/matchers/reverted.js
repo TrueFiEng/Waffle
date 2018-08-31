@@ -66,3 +66,82 @@ describe('Matchers: reverted', () => {
     ).to.be.eventually.rejected;
   });
 });
+
+describe('Matchers: revertedWith', () => {
+  let provider;
+  let matchers;
+  let wallet;
+
+  beforeEach(async () => {
+    provider = createMockProvider();
+    [wallet] = await getWallets(provider);
+    matchers = await deployContract(wallet, Matchers);
+  });
+
+  it('Throw: success', async () => {
+    await expect(matchers.doThrow()).to.be.revertedWith('');
+  });
+
+  it('Not to revert: success', async () => {
+    await expect(matchers.doNothing()).not.to.be.revertedWith('');
+  });
+
+  it('Revert with modification: success', async () => {
+    await expect(matchers.doRevertAndModify()).to.be.revertedWith('Revert cause');
+  });
+
+  it('ThrowAndModify: success', async () => {
+    await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
+  });
+
+  it('Revert: success', async () => {
+    await expect(matchers.doRevert()).to.be.revertedWith('Revert cause');
+  });
+
+  it('Revert: fail when different message was thrown', async () => {
+    await expect(expect(matchers.doRevert()).to.be.revertedWith('Different message')).to.be.eventually.rejected;
+  });
+
+  it('Revert: fail no exception', async () => {
+    await expect(
+      expect(matchers.doNothing()).to.be.revertedWith('')
+    ).to.be.eventually.rejected;
+  });
+
+  it('Require: success', async () => {
+    await expect(matchers.doRequireFail()).to.be.revertedWith('Require cause');
+  });
+
+  it('Require: fail when no exception was thrown', async () => {
+    await expect(expect(matchers.doRequireSuccess()).to.be.revertedWith('Never to be seen')).to.be.eventually.rejected;
+  });
+
+  it('Require: fail when different message', async () => {
+    await expect(expect(matchers.doRequireFail()).to.be.revertedWith('Different message')).to.be.eventually.rejected;
+  });
+
+  it('Not to revert: fail', async () => {
+    await expect(
+      expect(matchers.doThrow()).not.to.be.revertedWith('')
+    ).to.be.eventually.rejected;
+  });
+
+  it('Not to revert: fail when same message was thrown', async () => {
+    expect(matchers.doRevert()).not.to.be.revertedWith('Revert cause');
+  });
+
+  it('Not to revert: success when different message was thrown', async () => {
+    expect(matchers.doRevert()).not.to.be.revertedWith('Different message');
+  });
+
+  it('Revert: fail, random exception', async () => {
+    await expect(alwaysReject).not.to.be.revertedWith('Random reason');
+  });
+
+  it('Not to revert: fail, random exception', async () => {
+    await expect(
+      expect(alwaysReject).to.be.revertedWith('Random reason')
+    ).to.be.eventually.rejected;
+  });
+});
+
