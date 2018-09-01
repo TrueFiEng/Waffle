@@ -82,8 +82,10 @@ describe('Example', () => {
       .withArgs(wallet.address, walletTo.address, 7);
   });
 
-  it('Can not transfer above the amount', async () => {
-    await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
+  it('Can not transfer from empty account', async () => {
+    const tokenFromOtherWallet = contractWithWallet(token, walletTo);
+    await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
+      .to.be.revertedWith('Not enough balance on sender account');
   });
 });
 ```
@@ -195,3 +197,11 @@ and provider will behave like it is a real ENS domain:
 ```js
 const address = await provider.resolveName('cooldomain.eth');
 ```
+
+## Roadmap
+
+* New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
+* Faster testing with parallelization
+* Faster compilation with incremental compilation
+* Documentation
+* Debugging

@@ -40,6 +40,7 @@ describe('Example', () => {
 
   it('Can not transfer from empty account', async () => {
     const tokenFromOtherWallet = contractWithWallet(token, walletTo);
-    await expect(tokenFromOtherWallet.transfer(wallet.address, 1)).to.be.reverted;
+    await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
+      .to.be.revertedWith('Not enough balance on sender account');
   });
 });
