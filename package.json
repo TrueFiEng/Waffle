@@ -15,9 +15,8 @@
     "test:nobuild": "export NODE_ENV=test  && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "eslint lib test && solium -d test/compiler/contracts",
-    "build:contracts": "babel-node script/buildMockContracts",
     "build:js": "babel lib --out-dir dist",
-    "build": "yarn build:contracts && yarn build:js",
+    "build": "yarn build:js",
     "clean": "rm -fr ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
   "engines": {
