@@ -1,4 +1,4 @@
-import chai from 'chai';
+import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
@@ -7,7 +7,6 @@ import {readFileContent} from '../../lib/utils';
 import fs from 'fs';
 import fsx from 'fs-extra';
 
-const {expect} = chai;
 const sourcesPath = './test/compiler/contracts';
 const targetPath = './test/compiler/build';
 const config = {sourcesPath, targetPath};
