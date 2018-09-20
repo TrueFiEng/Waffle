@@ -2,4 +2,4 @@
 
 'use strict';
 const Waffle = require('ethereum-waffle');
-Waffle.compile(process.argv[3]);
+Waffle.compile(process.argv[2]);
