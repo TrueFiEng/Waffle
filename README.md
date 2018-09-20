@@ -96,6 +96,20 @@ To compile contracts simply type:
 npx waffle
 ```
 
+To compile using custom configuration file:
+```sh
+npx waffle config.json
+```
+
+Example configuration file looks like this:
+```json
+{
+  "sourcesPath": "./custom_contracts",
+  "targetPath": "./custom_build",
+  "npmPath": "./custom_node_modules"
+}
+```
+
 ### Run tests
 To run test type in the console:
 ```sh
