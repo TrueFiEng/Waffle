@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/EthWorks/Waffle.svg?token=xjj4U84eSFwEsYLTc5Qe&branch=master)](https://travis-ci.com/EthWorks/Waffle)
 
-# Ethereum Waffle
+![Ethereum Waffle](https://raw.githubusercontent.com/EthWorks/Waffle/master/docs/images/logo.png)
+
 Library for writing and testing smart contracts.
 
 Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle).
