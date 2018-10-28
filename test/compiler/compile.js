@@ -1,7 +1,7 @@
 import fs from 'fs';
 import fsx from 'fs-extra';
 import {expect} from 'chai';
-import {compile} from '../../lib/waffle';
+import {compile} from '../../lib/compiler';
 
 describe('Compile', () => {
   it('with custom config', async () => {
