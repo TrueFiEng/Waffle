@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter and simpler than truffle.",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "ethers": "^4.0.0",
+    "ganache-core": "2.2.1",
     "solc": "^0.4.24"
   },
   "devDependencies": {
@@ -44,7 +45,6 @@
     "eslint-plugin-header": "^1.2.0",
     "eslint-plugin-import": "^2.13.0",
     "fs-extra": "^7.0.0",
-    "ganache-core": "^2.1.0",
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^1.11.0",
     "sinon": "^6.1.5",

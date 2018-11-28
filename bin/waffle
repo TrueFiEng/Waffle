@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
 'use strict';
-const Waffle = require('ethereum-waffle');
+const Waffle = require('../dist/compiler.js');
 Waffle.compile(process.argv[2]);
