@@ -1,10 +1,11 @@
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets, contractWithWallet} from '../../lib/waffle';
+import {createMockProvider, deployContract, getWallets, contractWithWallet, link} from '../../lib/waffle';
 import BasicTokenMock from './build/BasicTokenMock';
+import MyLibrary from './build/MyLibrary';
+import LibraryConsumer from './build/LibraryConsumer';
 import solidity from '../../lib/matchers';
 
 chai.use(solidity);
-
 const {expect} = chai;
 
 describe('Example', () => {
@@ -42,5 +43,12 @@ describe('Example', () => {
     const tokenFromOtherWallet = contractWithWallet(token, walletTo);
     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
       .to.be.revertedWith('Not enough balance on sender account');
+  });
+
+  it('should use library to add 7', async() => {
+    const myLibrary = await deployContract(wallet, MyLibrary, []);
+    link(LibraryConsumer, 'MyLibrary', myLibrary.address);
+    const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
+    expect(await libraryConsumer.useLibrary(3)).to.eq(10);
   });
 });

@@ -13,7 +13,7 @@
   "scripts": {
     "prepublishOnly": "yarn build",
     "test:buildonly": "babel-node script/buildTestContracts",
-    "test:nobuild": "export NODE_ENV=test  && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
+    "test:nobuild": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "eslint lib test && solium -d test/compiler/contracts",
     "build:js": "babel lib --out-dir dist",
