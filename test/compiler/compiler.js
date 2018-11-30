@@ -13,6 +13,8 @@ const config = {sourcesPath, targetPath};
 const expectedInputs = [
   'test/compiler/contracts/BasicToken.sol',
   'test/compiler/contracts/ERC20Basic.sol',
+  'test/compiler/contracts/LibraryConsumer.sol',
+  'test/compiler/contracts/MyLibrary.sol',
   'test/compiler/contracts/mock/BasicTokenMock.sol'
 ];
 

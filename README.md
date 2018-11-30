@@ -158,6 +158,13 @@ Deploy a contract:
 token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
 ```
 
+Link a library:
+```js
+myLibrary = await deployContract(wallet, MyLibrary, []);
+link(LibraryConsumer, 'MyLibrary', myLibrary.address);
+libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
+```
+
 ### Chai matchers
 A set of sweet chai matchers, makes your test easy to write and read. Below couple of examples.
 
