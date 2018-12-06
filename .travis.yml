@@ -1,9 +1,13 @@
-dist: trusty
+dist: xenial
 language: node_js
 cache: yarn
+before_install:
+  - sudo add-apt-repository ppa:ethereum/ethereum -y
+  - sudo apt-get update
+  - apt-cache showpkg solc
+  - sudo apt-get install solc
 node_js:
-  - '9'
-  - '10'
+  - '10.9.0'
 install:
   - yarn install
 script:

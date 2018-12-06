@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
-  "description": "Sweeter and simpler than truffle.",
-  "version": "1.2.0",
+  "description": "Sweeter, faster and simpler than truffle.",
+  "version": "2.0.0-beta.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -16,8 +16,7 @@
     "test:nobuild": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "eslint lib test && solium -d test/compiler/contracts",
-    "build:js": "babel lib --out-dir dist",
-    "build": "yarn build:js",
+    "build": "babel lib --out-dir dist",
     "clean": "rm -fr ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
   "engines": {
@@ -26,7 +25,7 @@
   "dependencies": {
     "ethers": "^4.0.0",
     "ganache-core": "2.2.1",
-    "solc": "^0.4.24"
+    "solc": "^0.5.1"
   },
   "devDependencies": {
     "solium": "^1.1.8",
