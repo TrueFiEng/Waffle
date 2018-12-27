@@ -1,0 +1,6 @@
+{
+  "sourcesPath": "./test/compiler/custom/custom_contracts",
+  "targetPath": "./test/compiler/custom/custom_build",
+  "npmPath": "./test/compiler/custom/custom_node_modules",
+  "compiler": "solc"
+}

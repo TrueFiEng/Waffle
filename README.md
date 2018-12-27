@@ -33,7 +33,7 @@ yarn add ethereum-waffle
 Below is example contract written in Solidity. Place it in `contracts` directory of your project:
 
 ```solidity
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.1;
 
 import "../BasicToken.sol";
 
@@ -161,7 +161,7 @@ token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
 Link a library:
 ```js
 myLibrary = await deployContract(wallet, MyLibrary, []);
-link(LibraryConsumer, 'MyLibrary', myLibrary.address);
+link(LibraryConsumer, 'path/to/file:MyLibrary.sol:MyLibrary', myLibrary.address);
 libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
 ```
 
@@ -220,6 +220,19 @@ _changeBalance_ calls should not be chained. If you need to chain it, you probab
 ```js
 await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeBalances([senderWallet, receiverWallet], [-2, 2]);
 ```
+
+## Fast complication
+By default, Waffle uses solcjs. Solcjs is solidity complier cross-complied to javascript. It is slow, but easy to install.
+As an alternative, you can use the original Solidity compiler, which is faster, but requires more complex installation procedure, which is different for each operating system.
+
+You can find installation instructions [here](https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages).
+
+Once installed you can use the following command for faster complication:
+```sh
+npx waffle --fast-compile
+```
+
+That should speed up complication time by a factor of x10.
 
 ## Roadmap
 

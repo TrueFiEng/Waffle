@@ -1,9 +1,8 @@
 import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-
 import Compiler from '../../lib/compiler';
-import {readFileContent} from '../../lib/utils';
+import {isFile, readFileContent} from '../../lib/utils';
 import fs from 'fs';
 import fsx from 'fs-extra';
 
@@ -15,6 +14,7 @@ const expectedInputs = [
   'test/compiler/contracts/ERC20Basic.sol',
   'test/compiler/contracts/LibraryConsumer.sol',
   'test/compiler/contracts/MyLibrary.sol',
+  'test/compiler/contracts/SafeMath.sol',
   'test/compiler/contracts/mock/BasicTokenMock.sol'
 ];
 
@@ -29,16 +29,8 @@ describe('Compiler', () => {
   });
 
   it('findInputsFiles', async () => {
-    const actualInputs = await compiler.findInputFiles({sourcesPath, targetPath});
+    const actualInputs = await compiler.findInputFiles(sourcesPath);
     expect(actualInputs).to.deep.eq(expectedInputs);
-  });
-
-  it('findInputs', async () => {
-    const actualInputs = await compiler.findInputs({sourcesPath, targetPath});
-    expect(Object.keys(actualInputs)).to.deep.eq(expectedInputs);
-    const basicTokenContractActual = actualInputs['test/compiler/contracts/BasicToken.sol'];
-    const basicTokenContractExpected = await readFileContent('test/compiler/contracts/BasicToken.sol');
-    expect(basicTokenContractActual).to.deep.eq(basicTokenContractExpected);
   });
 
   it('findImports in source path', async () => {
@@ -59,22 +51,22 @@ describe('Compiler', () => {
     expect(expected).to.deep.eq(actual);
   });
 
-  describe('compile', () => {
+  describe('doCompile', () => {
     let output;
-    before(async () => {
+    beforeEach(async () => {
       output = await compiler.doCompile();
     });
 
     it('just compile', async () => {
-      const basicTokenOutput = output.contracts['test/compiler/contracts/BasicToken.sol:BasicToken'];
+      const basicTokenOutput = output.contracts['test/compiler/contracts/BasicToken.sol'].BasicToken;
       expect(output.errors).to.be.undefined;
-      expect(basicTokenOutput.bytecode).to.startsWith('6080604052');
-      expect(basicTokenOutput.interface).to.startsWith('[{"constant":true,');
+      expect(basicTokenOutput.evm.bytecode.object).to.startsWith('6080604052');
+      expect(JSON.stringify(basicTokenOutput.abi)).to.startsWith('[{"constant":true,');
     });
 
     it('save output', async () => {
       compiler.saveOutput(output);
-      expect(fs.lstatSync('test/compiler/build/BasicToken.json').isFile()).to.be.true;
+      expect(isFile('test/compiler/build/BasicToken.json')).to.be.true;
       fsx.removeSync('test/compiler/build');
       expect(fs.existsSync('test/compiler/build')).to.be.false;
     });
