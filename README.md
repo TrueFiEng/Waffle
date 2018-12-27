@@ -15,6 +15,7 @@ Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Tastes best wit
 ## Versions and ethers compatibility
 * Use version 0.2.3+ with ethers 3.*
 * Use version 1.0.0+ with ethers 4.*
+* Use version 2.0.0-beta with ethers 4.* to use experimental native solc support (only solidity 5.0+)
 
 ## Install:
 To start using with npm, type:
