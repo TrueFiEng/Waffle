@@ -211,8 +211,8 @@ expect('0x70').to.be.properHex(2);
 ```js
 await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeBalance(receiverWallet, 2);
 ```
-_Note:_ transaction call should be passed to the _expect_ as a callback (we need to check the balance before the call). 
-The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be cpecified as a wallet.
+_Note:_ transaction call should be passed to the _expect_ as a callback (we need to check the balance before the call).
+The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet.
 
 _changeBalance_ calls should not be chained. If you need to chain it, you probably want to use _changeBalances_ matcher.
 
@@ -220,8 +220,6 @@ _changeBalance_ calls should not be chained. If you need to chain it, you probab
 ```js
 await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeBalances([senderWallet, receiverWallet], [-2, 2]);
 ```
-_Note:_ transaction call should be passed to the expect as a callback (we need to check the balance before the call)
-
 
 ## Roadmap
 
