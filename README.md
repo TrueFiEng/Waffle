@@ -207,6 +207,20 @@ expect('0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c5').to.
 expect('0x70').to.be.properHex(2);
 ```
 
+* Testing whether the transaction changes balance
+```js
+await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeBalance(receiverWallet, 2);
+```
+_Note:_ transaction call should be passed to the _expect_ as a callback (we need to check the balance before the call).
+The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet.
+
+_changeBalance_ calls should not be chained. If you need to chain it, you probably want to use _changeBalances_ matcher.
+
+* Testing whether the transaction changes balance for multiple accounts
+```js
+await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeBalances([senderWallet, receiverWallet], [-2, 2]);
+```
+
 ## Roadmap
 
 * New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))

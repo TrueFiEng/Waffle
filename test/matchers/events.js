@@ -40,9 +40,14 @@ describe('Events', () => {
     ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "One" to emitted, but wasn\'t');
   });
 
-  it('Emit both: success', async () => {
+  it('Emit both: success (two expects)', async () => {
     await expect(events.emitBoth()).to.emit(events, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001');
     await expect(events.emitBoth()).to.emit(events, 'Two');
+  });
+
+  it('Emit both: success (one expect with two to)' , async () => {
+    await expect(events.emitBoth()).to.emit(events, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001')
+      .and.to.emit(events, 'Two');
   });
 
   it('Event with proper args', async () => {
