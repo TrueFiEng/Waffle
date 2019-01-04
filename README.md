@@ -224,16 +224,46 @@ await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeB
 
 ## Fast complication
 By default, Waffle uses solcjs. Solcjs is solidity complier cross-complied to javascript. It is slow, but easy to install.
-As an alternative, you can use the original Solidity compiler, which is faster, but requires more complex installation procedure, which is different for each operating system.
+As an alternative, you can use the original Solidity compiler, which is faster. There are two options:
+1) Dockerized solc
+2) Native solc
 
-You can find installation instructions [here](https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages).
 
-Once installed you can use the following command for faster complication:
+### Dockerized solc
+This options is pretty easy to install especially if you have docker installed. This is recommended option. If you don't have docker [follow instructions](https://www.docker.com/get-started).
+
+Pull solc docker container tagged with version you are interested in, e.g.
 ```sh
-npx waffle --fast-compile
+docker pull ethereum/solc:0.4.24
 ```
 
-That should speed up complication time by a factor of x10.
+Setup compiler in your waffle configuration file:
+```js
+{
+  ...
+  "compiler": "dockerized-solc",
+  "docker-tag": "0.4.24"
+}
+
+Default docker tag is `latest`.
+
+Done.
+
+### Native solc
+This option requires a bit more complex installation procedure, which is different for each operating system.
+Unfortunately due to a strange release strategy of solc, on packages with the latest versions are available, which makes it pretty hard to work on one version over a more extended period. You can mitigate that problem by building from sources.
+
+You can find detailed installation instructions for native solc [here](https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages).
+
+Setup compiler in your waffle configuration file:
+```js
+{
+  ...
+  "compiler": "solc"
+}
+```
+
+Done.
 
 ## Roadmap
 
