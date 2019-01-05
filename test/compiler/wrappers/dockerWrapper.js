@@ -53,14 +53,14 @@ describe('DockerWrapper', () => {
     it('no version', () => {
       const command = dockerWrapper.buildCommand();
       expect(command).to.startWith('docker run -v');
-      expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:stable solc --standard-json --allow-paths /home/project');
+      expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:stable solc --standard-json --allow-paths "/home/project"');
     });
 
     it('specific version', () => {
       const dockerWrapper = new DockerWrapper({...config, 'docker-tag': '0.4.24'});
       const command = dockerWrapper.buildCommand();
       expect(command).to.startWith('docker run -v');
-      expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths /home/project');
+      expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths "/home/project"');
     });
   });
 
