@@ -79,14 +79,12 @@ describe('(UNIT) Compiler', () => {
     const expectedOutput = 'test/compiler/invalidContracts/invalid.sol:5:16: DeclarationError: Identifier not found or not unique.\n    function f(wrongType arg) public {\n               ^-------^\n';
 
     it('shows error message', async () => {
-      const consoleStub = {error: sinon.spy()};
-      const processStub = {exit: sinon.spy()};
-      compiler = new Compiler(config);
-      compiler.console = consoleStub;
-      compiler.process = processStub;
+      const overrideConsole = {error: sinon.spy()};
+      const overrideProcess = {exit: sinon.spy()};
+      compiler = new Compiler(config, {overrideConsole, overrideProcess});
       await compiler.compile();
-      expect(consoleStub.error).to.be.calledWith(expectedOutput);
-      expect(processStub.exit).to.be.calledWith(1);
+      expect(overrideConsole.error).to.be.calledWith(expectedOutput);
+      expect(overrideProcess.exit).to.be.calledWith(1);
     });
   });
 });
