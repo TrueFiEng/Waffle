@@ -10,7 +10,8 @@ const configurations = [
   './test/compiler/custom/config.json',
   './test/compiler/custom/config_native.json',
   './test/compiler/custom/config_docker.json',
-  './test/compiler/custom_solidity_4/config_solcjs.json'
+  './test/compiler/custom_solidity_4/config_solcjs.json',
+  './test/compiler/custom_solidity_4/config_docker.json'
 ];
 
 const artefacts = [
@@ -61,7 +62,7 @@ describe('(INTEGRATION) Compiler integration', () => {
         }
       });
 
-      it('link library', async () => {
+      it('links library', async () => {
         const provider = createMockProvider();
         const [wallet] = await getWallets(provider);
         const libraryPath = resolve(join(configuration.targetPath, 'MyLibrary.json'));

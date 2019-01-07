@@ -13,7 +13,7 @@ const alwaysReject = new Promise((resolve, reject) => {
   reject('Random reason');
 });
 
-describe('Matchers: reverted', () => {
+describe('(INTEGRATION) Matchers: reverted', () => {
   let provider;
   let matchers;
   let wallet;
@@ -67,7 +67,7 @@ describe('Matchers: reverted', () => {
   });
 });
 
-describe('Matchers: revertedWith', () => {
+describe('(INTEGRATION) Matchers: revertedWith', () => {
   let provider;
   let matchers;
   let wallet;

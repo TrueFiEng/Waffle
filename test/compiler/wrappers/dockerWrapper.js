@@ -13,7 +13,7 @@ const sourcesPath = './test/compiler/custom/custom_contracts';
 const npmPath = './test/compiler/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
-describe('DockerWrapper', () => {
+describe('(UNIT) DockerWrapper', () => {
   let dockerWrapper;
 
   before(() => {
@@ -37,9 +37,9 @@ describe('DockerWrapper', () => {
       expect(dockerWrapper.buildInputJson(inputs)).to.deep.eq({
         language: 'Solidity',
         sources: {
-          'Custom.sol': {urls: [`${prefix}${inputs[0]}`]},
-          'One.sol': {urls: [`${prefix}${inputs[1]}`]},
-          'Two.sol': {urls: [`${prefix}${inputs[2]}`]}
+          'test/compiler/custom/custom_contracts/Custom.sol': {urls: [`${prefix}${inputs[0]}`]},
+          'test/compiler/custom/custom_contracts/sub/One.sol': {urls: [`${prefix}${inputs[1]}`]},
+          'test/compiler/custom/custom_contracts/sub/Two.sol': {urls: [`${prefix}${inputs[2]}`]}
         },
         settings: {
           remappings: ['openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity'],

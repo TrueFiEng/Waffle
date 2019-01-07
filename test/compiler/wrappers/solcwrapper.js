@@ -8,7 +8,7 @@ const sourcesPath = './test/compiler/custom/custom_contracts';
 const npmPath = './test/compiler/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
-describe('SolcWrapper', () => {
+describe('(UNIT) SolcWrapper', () => {
   let wrapper;
 
   before(() => {
