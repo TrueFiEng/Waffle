@@ -16,6 +16,13 @@ describe('ImportsMappingBuilder', () => {
     expectedMapping = {'openzeppelin-solidity': expectedPath};
   });
 
+  it('within containter', () => {
+    const builder = new ImportsMappingBuilder('./test/compiler/custom/custom_contracts', './test/compiler/custom/custom_node_modules', '/home/project');
+    const mapping = builder.getMapping('openzeppelin-solidity/CustomSafeMath.sol', customContactPath);
+    const expectedPath = '/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity';
+    expect(mapping['openzeppelin-solidity']).to.deep.eq(expectedPath);
+  });
+
   describe('convertPath', () => {
     it('no mapping for local file', async () => {
       expect(builder.getMapping('Custom.sol', customContactPath)).to.deep.eq({});
@@ -31,29 +38,31 @@ describe('ImportsMappingBuilder', () => {
       expect(mapping).to.deep.eq(expectedMapping);
     });
 
-    it('generates mapping for import directive type A (no transformation)', async () => {
-      const input = 'import "Custom.sol";';
-      expect(builder.getMappingForImport(input, IMPORT_TYPE_A, customContactPath)).to.deep.eq({});
-    });
+    describe('generates mapping for import directive', () => {
+      it('type A (no transformation)', async () => {
+        const input = 'import "Custom.sol";';
+        expect(builder.getMappingForImport(input, IMPORT_TYPE_A, customContactPath)).to.deep.eq({});
+      });
 
-    it('generates mapping for import directive type A', async () => {
-      const input = 'import "openzeppelin-solidity/CustomSafeMath.sol";';
-      expect(builder.getMappingForImport(input, IMPORT_TYPE_A, customContactPath)).to.deep.eq(expectedMapping);
-    });
+      it('type A', async () => {
+        const input = 'import "openzeppelin-solidity/CustomSafeMath.sol";';
+        expect(builder.getMappingForImport(input, IMPORT_TYPE_A, customContactPath)).to.deep.eq(expectedMapping);
+      });
 
-    it('generates mapping for import directive type A with as', async () => {
-      const input = 'import "openzeppelin-solidity/CustomSafeMath.sol" as SomeName;';
-      expect(builder.getMappingForImport(input, IMPORT_TYPE_A, customContactPath)).to.deep.eq(expectedMapping);
-    });
+      it('type A with as', async () => {
+        const input = 'import "openzeppelin-solidity/CustomSafeMath.sol" as SomeName;';
+        expect(builder.getMappingForImport(input, IMPORT_TYPE_A, customContactPath)).to.deep.eq(expectedMapping);
+      });
 
-    it('generates mapping for import directive type B', async () => {
-      const input = 'import * as SomeName from "openzeppelin-solidity/CustomSafeMath.sol";';
-      expect(builder.getMappingForImport(input, IMPORT_TYPE_B, customContactPath)).to.deep.eq(expectedMapping);
-    });
+      it('type B', async () => {
+        const input = 'import * as SomeName from "openzeppelin-solidity/CustomSafeMath.sol";';
+        expect(builder.getMappingForImport(input, IMPORT_TYPE_B, customContactPath)).to.deep.eq(expectedMapping);
+      });
 
-    it('generates mapping for import directive type C', async () => {
-      const input = 'import {symbol1 as alias, symbol2} from "openzeppelin-solidity/CustomSafeMath.sol";';
-      expect(builder.getMappingForImport(input, IMPORT_TYPE_C, customContactPath)).to.deep.eq(expectedMapping);
+      it('type C', async () => {
+        const input = 'import {symbol1 as alias, symbol2} from "openzeppelin-solidity/CustomSafeMath.sol";';
+        expect(builder.getMappingForImport(input, IMPORT_TYPE_C, customContactPath)).to.deep.eq(expectedMapping);
+      });
     });
 
     it('generates mapping for a compilation unit', async () => {
