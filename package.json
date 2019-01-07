@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.0.0-beta.4",
+  "version": "2.0.0-beta.5",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -28,7 +28,6 @@
     "solc": "^0.5.1"
   },
   "devDependencies": {
-    "solium": "^1.1.8",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -47,6 +46,7 @@
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^1.11.0",
     "sinon": "^6.1.5",
-    "sinon-chai": "^3.2.0"
+    "sinon-chai": "^3.2.0",
+    "solium": "^1.1.8"
   }
 }
