@@ -1,9 +1,10 @@
 import fs from 'fs';
 import fsx from 'fs-extra';
-import {join} from 'path';
+import {join, resolve} from 'path';
 import {expect} from 'chai';
 import {compile} from '../../lib/compiler';
-import {readFileContent, isFile} from '../../lib/utils';
+import {readFileContent, isFile, deepCopy} from '../../lib/utils';
+import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
 
 const configurations = [
   './test/compiler/custom/config.json',
@@ -17,10 +18,11 @@ const artefacts = [
   'CustomSafeMath.json',
   'ERC20.json',
   'One.json',
-  'Two.json'
+  'Two.json',
+  'MyLibrary.json'
 ];
 
-describe('Compiler integration', () => {
+describe('(INTEGRATION) Compiler integration', () => {
   for (const configurationPath of configurations)  {
     const configuration = JSON.parse(readFileContent(configurationPath));
     const {name, targetPath} = configuration;
@@ -45,7 +47,7 @@ describe('Compiler integration', () => {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok;
-          expect(content.evm.bytecode.object).to.startWith('60806040');
+          expect(content.evm.bytecode.object).to.startWith('60');
         }
       });
 
@@ -57,6 +59,19 @@ describe('Compiler integration', () => {
           expect(content.abi, `"${filePath}" abi expected to be array, but was "${typeof content.abi}"`).to.be.an('array');
           expect(content.abi[0], `"${filePath}" abi expected to contain objects, but was "${typeof content.abi[0]}"`).to.be.an('object');
         }
+      });
+
+      it('link library', async () => {
+        const provider = createMockProvider();
+        const [wallet] = await getWallets(provider);
+        const libraryPath = resolve(join(configuration.targetPath, 'MyLibrary.json'));
+        const MyLibrary = require(libraryPath);
+        const LibraryConsumer = deepCopy(require(resolve(join(configuration.targetPath, 'Two.json'))));
+        const myLibrary = await deployContract(wallet, MyLibrary, []);
+        const libraryName = `${configuration.sourcesPath.slice(2)}/MyLibrary.sol:MyLibrary`;
+        link(LibraryConsumer, libraryName, myLibrary.address);
+        const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
+        expect(await libraryConsumer.useLibrary(3)).to.eq(10);
       });
     });
   }
