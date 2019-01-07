@@ -13,9 +13,9 @@ Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Tastes best wit
 * __Sweeter__: Nice syntax, fast, easy to extend.
 
 ## Versions and ethers compatibility
-* Use version 0.2.3+ with ethers 3.*
-* Use version 1.0.0+ with ethers 4.*
-* Use version 2.0.0-beta with ethers 4.* to use experimental native solc support (only solidity 5.0+)
+* Use version 0.2.3+ with ethers 3.* and solidity 4.*
+* Use version 1.0.0+ with ethers 4.* and solidity 4.*
+* Use version 2.0.5-beta with ethers 4.*; solidity 4, 5 and to use experimental native solc and dockerized solc.
 
 ## Install:
 To start using with npm, type:
@@ -222,7 +222,7 @@ _changeBalance_ calls should not be chained. If you need to chain it, you probab
 await expect(() => myContract.transferWei(receiverWallet.address, 2)).to.changeBalances([senderWallet, receiverWallet], [-2, 2]);
 ```
 
-## Fast complication
+## Fast compilation
 By default, Waffle uses solcjs. Solcjs is solidity complier cross-complied to javascript. It is slow, but easy to install.
 As an alternative, you can use the original Solidity compiler, which is faster. There are two options:
 1) Dockerized solc
@@ -232,12 +232,12 @@ As an alternative, you can use the original Solidity compiler, which is faster. 
 ### Dockerized solc
 This options is pretty easy to install especially if you have docker installed. This is recommended option. If you don't have docker [follow instructions](https://www.docker.com/get-started).
 
-Pull solc docker container tagged with version you are interested in, e.g.
+Pull solc docker container tagged with version you are interested in, for example for version 0.4.24 it will be:
 ```sh
 docker pull ethereum/solc:0.4.24
 ```
 
-Setup compiler in your waffle configuration file:
+Than setup compiler in your waffle configuration file:
 ```js
 {
   ...
@@ -247,7 +247,7 @@ Setup compiler in your waffle configuration file:
 
 Default docker tag is `latest`.
 
-Done.
+You can now run tests in docker.
 
 ### Native solc
 This option requires a bit more complex installation procedure, which is different for each operating system.
@@ -263,7 +263,18 @@ Setup compiler in your waffle configuration file:
 }
 ```
 
-Done.
+You can now run tests with native solc.
+
+## Solcjs and version management
+You can setup version which solidity compiler version you would like to use with `solcjs` in waffle configuration file, e.g.:
+```js
+{
+  ...
+  "solcVersion": "v0.4.24+commit.e67f0147"
+}
+```
+
+Version naming is somewhat unintuitive. You can deduce version name from [list available here] (https://ethereum.github.io/solc-bin/bin/list.json).
 
 ## Roadmap
 

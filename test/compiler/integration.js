@@ -8,7 +8,8 @@ import {readFileContent, isFile} from '../../lib/utils';
 const configurations = [
   './test/compiler/custom/config.json',
   './test/compiler/custom/config_native.json',
-  './test/compiler/custom/config_docker.json'
+  './test/compiler/custom/config_docker.json',
+  './test/compiler/custom_solidity_4/config_solcjs.json'
 ];
 
 const artefacts = [
