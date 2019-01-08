@@ -8,7 +8,7 @@ chai.use(chaiAsPromised);
 
 const {expect} = chai;
 
-describe('Bignumber matchers', () => {
+describe('UNIT: Bignumber matchers', () => {
   it('equal', async () => {
     expect(utils.bigNumberify(10)).to.be.equal(10);
     expect(utils.bigNumberify(10)).to.be.equal('10');

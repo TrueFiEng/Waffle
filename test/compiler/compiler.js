@@ -2,9 +2,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import Compiler from '../../lib/compiler';
-import {isFile, readFileContent} from '../../lib/utils';
-import fs from 'fs';
-import fsx from 'fs-extra';
+import {readFileContent} from '../../lib/utils';
 
 const sourcesPath = './test/compiler/contracts';
 const targetPath = './test/compiler/build';
@@ -21,7 +19,7 @@ const expectedInputs = [
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
-describe('Compiler', () => {
+describe('INTEGRATION: Compiler', () => {
   let compiler;
 
   beforeEach(async () => {
@@ -63,13 +61,6 @@ describe('Compiler', () => {
       expect(basicTokenOutput.evm.bytecode.object).to.startsWith('6080604052');
       expect(JSON.stringify(basicTokenOutput.abi)).to.startsWith('[{"constant":true,');
     });
-
-    it('save output', async () => {
-      compiler.saveOutput(output);
-      expect(isFile('test/compiler/build/BasicToken.json')).to.be.true;
-      fsx.removeSync('test/compiler/build');
-      expect(fs.existsSync('test/compiler/build')).to.be.false;
-    });
   });
 
   describe('compile: invalid input', () => {
@@ -79,14 +70,12 @@ describe('Compiler', () => {
     const expectedOutput = 'test/compiler/invalidContracts/invalid.sol:5:16: DeclarationError: Identifier not found or not unique.\n    function f(wrongType arg) public {\n               ^-------^\n';
 
     it('shows error message', async () => {
-      const consoleStub = {error: sinon.spy()};
-      const processStub = {exit: sinon.spy()};
-      compiler = new Compiler(config);
-      compiler.console = consoleStub;
-      compiler.process = processStub;
+      const overrideConsole = {error: sinon.spy()};
+      const overrideProcess = {exit: sinon.spy()};
+      compiler = new Compiler(config, {overrideConsole, overrideProcess});
       await compiler.compile();
-      expect(consoleStub.error).to.be.calledWith(expectedOutput);
-      expect(processStub.exit).to.be.calledWith(1);
+      expect(overrideConsole.error).to.be.calledWith(expectedOutput);
+      expect(overrideProcess.exit).to.be.calledWith(1);
     });
   });
 });

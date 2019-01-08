@@ -13,7 +13,7 @@ const alwaysReject = new Promise((resolve, reject) => {
   reject('Random reason');
 });
 
-describe('Matchers: reverted', () => {
+describe('INTEGRATION: Matchers: reverted', () => {
   let provider;
   let matchers;
   let wallet;
@@ -67,7 +67,7 @@ describe('Matchers: reverted', () => {
   });
 });
 
-describe('Matchers: revertedWith', () => {
+describe('INTEGRATION: Matchers: revertedWith', () => {
   let provider;
   let matchers;
   let wallet;
@@ -126,12 +126,12 @@ describe('Matchers: revertedWith', () => {
     ).to.be.eventually.rejected;
   });
 
-  it('Not to revert: fail when same message was thrown', async () => {
-    expect(matchers.doRevert()).not.to.be.revertedWith('Revert cause');
+  it('Revert: fail when same message was thrown', async () => {
+    await expect(matchers.doRevert()).to.be.revertedWith('Revert cause');
   });
 
   it('Not to revert: success when different message was thrown', async () => {
-    expect(matchers.doRevert()).not.to.be.revertedWith('Different message');
+    await expect(matchers.doRevert()).not.to.be.revertedWith('Different message');
   });
 
   it('Revert: fail, random exception', async () => {

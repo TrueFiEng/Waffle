@@ -1,7 +1,5 @@
 import chai, {expect} from 'chai';
 import DockerWrapper from '../../../lib/wrappers/dockerWrapper';
-import {readFileContent} from '../../../lib/utils';
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
@@ -13,7 +11,7 @@ const sourcesPath = './test/compiler/custom/custom_contracts';
 const npmPath = './test/compiler/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
-describe('DockerWrapper', () => {
+describe('UNIT: DockerWrapper', () => {
   let dockerWrapper;
 
   before(() => {
@@ -37,9 +35,9 @@ describe('DockerWrapper', () => {
       expect(dockerWrapper.buildInputJson(inputs)).to.deep.eq({
         language: 'Solidity',
         sources: {
-          'Custom.sol': {urls: [`${prefix}${inputs[0]}`]},
-          'One.sol': {urls: [`${prefix}${inputs[1]}`]},
-          'Two.sol': {urls: [`${prefix}${inputs[2]}`]}
+          'test/compiler/custom/custom_contracts/Custom.sol': {urls: [`${prefix}${inputs[0]}`]},
+          'test/compiler/custom/custom_contracts/sub/One.sol': {urls: [`${prefix}${inputs[1]}`]},
+          'test/compiler/custom/custom_contracts/sub/Two.sol': {urls: [`${prefix}${inputs[2]}`]}
         },
         settings: {
           remappings: ['openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity'],
@@ -62,17 +60,5 @@ describe('DockerWrapper', () => {
       expect(command).to.startWith('docker run -v');
       expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths "/home/project"');
     });
-  });
-
-  it('saveOutput', () => {
-    const fs = {
-      writeFileSync: sinon.spy(),
-      existsSync: sinon.spy(),
-      mkdirSync: sinon.spy()
-    };
-    const output = JSON.parse(readFileContent('./test/compiler/wrappers/compilerOutput.json'));
-    dockerWrapper.saveOutput(output, './buildtmp', fs);
-    const expectedContent = JSON.stringify(output.contracts['One.sol'].One);
-    expect(fs.writeFileSync).to.be.calledWith('buildtmp/One.json', expectedContent);
   });
 });

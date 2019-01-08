@@ -276,6 +276,14 @@ You can setup version which solidity compiler version you would like to use with
 
 Version naming is somewhat unintuitive. You can deduce version name from [list available here] (https://ethereum.github.io/solc-bin/bin/list.json).
 
+# Testing
+Note: To make end to end test pass, you need to have docker installed, up and running.
+
+To run test type:
+```sh
+yarn test
+```
+
 ## Roadmap
 
 * New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))

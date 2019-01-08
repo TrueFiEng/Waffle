@@ -5,7 +5,7 @@ import {utils} from 'ethers';
 chai.use(solidity);
 const {expect} = chai;
 
-describe('Balance observers', () => {
+describe('INTEGRATION: Balance observers', () => {
   let provider;
   let sender;
   let receiver;

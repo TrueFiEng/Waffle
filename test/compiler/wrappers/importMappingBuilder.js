@@ -5,7 +5,7 @@ chai.use(require('chai-string'));
 
 const customContactPath = './test/compiler/custom/custom_contracts/Custom.sol';
 
-describe('ImportsMappingBuilder', () => {
+describe('INTEGRATION: ImportsMappingBuilder', () => {
   let builder;
   let expectedPath;
   let expectedMapping;
