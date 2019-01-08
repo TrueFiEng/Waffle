@@ -2,9 +2,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import Compiler from '../../lib/compiler';
-import {isFile, readFileContent} from '../../lib/utils';
-import fs from 'fs';
-import fsx from 'fs-extra';
+import {readFileContent} from '../../lib/utils';
 
 const sourcesPath = './test/compiler/contracts';
 const targetPath = './test/compiler/build';
@@ -62,13 +60,6 @@ describe('INTEGRATION: Compiler', () => {
       expect(output.errors).to.be.undefined;
       expect(basicTokenOutput.evm.bytecode.object).to.startsWith('6080604052');
       expect(JSON.stringify(basicTokenOutput.abi)).to.startsWith('[{"constant":true,');
-    });
-
-    it('save output', async () => {
-      compiler.saveOutput(output);
-      expect(isFile('test/compiler/build/BasicToken.json')).to.be.true;
-      fsx.removeSync('test/compiler/build');
-      expect(fs.existsSync('test/compiler/build')).to.be.false;
     });
   });
 

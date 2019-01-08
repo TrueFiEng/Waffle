@@ -1,7 +1,5 @@
 import chai, {expect} from 'chai';
 import DockerWrapper from '../../../lib/wrappers/dockerWrapper';
-import {readFileContent} from '../../../lib/utils';
-import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
@@ -62,17 +60,5 @@ describe('UNIT: DockerWrapper', () => {
       expect(command).to.startWith('docker run -v');
       expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths "/home/project"');
     });
-  });
-
-  it('saveOutput', () => {
-    const fs = {
-      writeFileSync: sinon.spy(),
-      existsSync: sinon.spy(),
-      mkdirSync: sinon.spy()
-    };
-    const output = JSON.parse(readFileContent('./test/compiler/wrappers/compilerOutput.json'));
-    dockerWrapper.saveOutput(output, './buildtmp', fs);
-    const expectedContent = JSON.stringify(output.contracts['One.sol'].One);
-    expect(fs.writeFileSync).to.be.calledWith('buildtmp/One.json', expectedContent);
   });
 });
