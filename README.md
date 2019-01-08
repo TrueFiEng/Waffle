@@ -277,7 +277,7 @@ You can setup version which solidity compiler version you would like to use with
 Version naming is somewhat unintuitive. You can deduce version name from [list available here] (https://ethereum.github.io/solc-bin/bin/list.json).
 
 # Testing
-Note: To make sure end to end test with docker are running, you will require you to have docker installed and running.
+Note: To make end to end test pass, you need to have docker installed, up and running.
 
 To run test type:
 ```sh
