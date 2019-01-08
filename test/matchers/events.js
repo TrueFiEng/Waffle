@@ -9,7 +9,7 @@ chai.use(chaiAsPromised);
 
 const {expect} = chai;
 
-describe('(INTEGRATION) Events', () => {
+describe('INTEGRATION: Events', () => {
   let provider;
   let events;
   let wallet;

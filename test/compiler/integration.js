@@ -20,10 +20,11 @@ const artefacts = [
   'ERC20.json',
   'One.json',
   'Two.json',
-  'MyLibrary.json'
+  'MyLibrary.json',
+  'OneAndAHalf.json'
 ];
 
-describe('(INTEGRATION) Compiler integration', () => {
+describe('E2E: Compiler integration', () => {
   for (const configurationPath of configurations)  {
     const configuration = JSON.parse(readFileContent(configurationPath));
     const {name, targetPath} = configuration;

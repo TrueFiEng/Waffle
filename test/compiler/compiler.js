@@ -21,7 +21,7 @@ const expectedInputs = [
 chai.use(require('chai-string'));
 chai.use(sinonChai);
 
-describe('(UNIT) Compiler', () => {
+describe('INTEGRATION: Compiler', () => {
   let compiler;
 
   beforeEach(async () => {

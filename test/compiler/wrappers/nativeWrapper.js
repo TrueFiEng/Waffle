@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import SolcWrapper from '../../../lib/wrappers/solcWrapper';
+import NativeWrapper from '../../../lib/wrappers/nativeWrapper';
 import {isDirectory} from '../../../lib/utils';
 
 chai.use(require('chai-string'));
@@ -8,11 +8,11 @@ const sourcesPath = './test/compiler/custom/custom_contracts';
 const npmPath = './test/compiler/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
-describe('(UNIT) SolcWrapper', () => {
+describe('UNIT: NativeWrapper', () => {
   let wrapper;
 
   before(() => {
-    wrapper = new SolcWrapper(config);
+    wrapper = new NativeWrapper(config);
   });
 
   it('buildCommand', async () => {

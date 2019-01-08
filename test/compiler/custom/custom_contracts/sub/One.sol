@@ -8,3 +8,10 @@ contract One {
 
   }
 }
+
+
+contract OneAndAHalf {
+  function someOtherDummy() public pure {
+
+  }
+}

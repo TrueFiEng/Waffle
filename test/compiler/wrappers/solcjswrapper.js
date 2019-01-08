@@ -10,7 +10,7 @@ const expectedInputs = [
   'test/compiler/contracts/mock/BasicTokenMock.sol'
 ];
 
-describe('(UNIT) SolcJsWrapper', () => {
+describe('UNIT: SolcJsWrapper', () => {
   let wrapper;
 
   before(() => {

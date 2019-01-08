@@ -8,7 +8,7 @@ import solidity from '../../lib/matchers';
 chai.use(solidity);
 const {expect} = chai;
 
-describe('(INTEGRATION) Example', () => {
+describe('INTEGRATION: Example', () => {
   let provider;
   let token;
   let wallet;

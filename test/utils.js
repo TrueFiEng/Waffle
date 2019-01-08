@@ -2,7 +2,7 @@ import chai from 'chai';
 import {falttenObjectArray} from '../lib/utils';
 const {expect} = chai;
 
-describe('(UNIT) Utils', () => {
+describe('UNIT: Utils', () => {
   describe('falttenObjectArray', () => {
     it('empty array', async () => {
       expect(falttenObjectArray([])).to.deep.eq({});
