@@ -1,6 +1,7 @@
 import chai, {expect} from 'chai';
 import DockerWrapper from '../../../lib/wrappers/dockerWrapper';
 import sinonChai from 'sinon-chai';
+import {join} from 'path';
 
 chai.use(sinonChai);
 
@@ -20,9 +21,10 @@ describe('UNIT: DockerWrapper', () => {
 
   describe('getVolumes', () => {
     it('simple config', () => {
-      const suffix = '/home/project';
-      const prefix = process.cwd();
-      expect(dockerWrapper.getVolumes()).to.eq(`${prefix}:${suffix}`);
+      const hostProjectPath = process.cwd();
+      const hostNpmPath = join(hostProjectPath, npmPath);
+      const expectedVolumes = `-v ${hostProjectPath}:/home/project -v ${hostNpmPath}:/home/npm`;
+      expect(dockerWrapper.getVolumes()).to.eq(expectedVolumes);
     });
   });
 
@@ -58,15 +60,15 @@ describe('UNIT: DockerWrapper', () => {
   describe('buildCommand', () => {
     it('no version', () => {
       const command = dockerWrapper.buildCommand();
-      expect(command).to.startWith('docker run -v');
-      expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:stable solc --standard-json --allow-paths "/home/project"');
+      expect(command).to.startWith('docker run -v ');
+      expect(command).to.endWith(':/home/npm -i -a stdin -a stdout ethereum/solc:stable solc --standard-json --allow-paths "/home/project,/home/npm"');
     });
 
     it('specific version', () => {
       const dockerWrapper = new DockerWrapper({...config, 'docker-tag': '0.4.24'});
       const command = dockerWrapper.buildCommand();
-      expect(command).to.startWith('docker run -v');
-      expect(command).to.endWith(':/home/project -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths "/home/project"');
+      expect(command).to.startWith('docker run -v ');
+      expect(command).to.endWith(':/home/npm -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths "/home/project,/home/npm"');
     });
   });
 });

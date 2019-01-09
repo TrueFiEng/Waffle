@@ -25,6 +25,25 @@ const artefacts = [
 ];
 
 describe('E2E: Compiler integration', () => {
+  describe('docker: inside out directory structure', () => {
+    before(async () => {
+      fsx.removeSync('test/projects/insideOut/build');
+      process.chdir('test/projects/insideOut/main');
+    });
+
+    it('compile and produce artefacts', async () => {
+      await compile('config_docker.json');
+      for (const artefact of artefacts) {
+        const filePath = join('../build', artefact);
+        expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.be.true;
+      }
+    });
+
+    after(async () => {
+      process.chdir('../../../..');
+    });
+  });
+
   for (const configurationPath of configurations)  {
     const configuration = JSON.parse(readFileContent(configurationPath));
     const {name, targetPath} = configuration;
