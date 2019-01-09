@@ -3,5 +3,5 @@
   "sourcesPath": "./test/compiler/invalidContracts",
   "targetPath": "./test/compiler/invalidContracts/custom_build",
   "npmPath": "./test/compiler/invalidContracts/custom_node_modules",
-  "compiler": "solc"
+  "compiler": "native"
 }
