@@ -2,7 +2,7 @@ import Compiler from '../lib/compiler';
 
 const buildExampleContracts = async () => {
   console.log('Building example contracts...');
-  const sourcesPath = './test/compiler/contracts';
+  const sourcesPath = './test/projects/example';
   const targetPath = './test/example/build';
   const config = {sourcesPath, targetPath};
   const compiler = new Compiler(config);

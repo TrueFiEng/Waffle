@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.0.0-beta.5",
+  "version": "2.0.0-beta.6",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -15,7 +15,7 @@
     "test:buildonly": "babel-node script/buildTestContracts",
     "test:nobuild": "export NODE_ENV=test && mocha --require babel-register --timeout 10000 --recursive --no-warnings",
     "test": "yarn test:buildonly && yarn test:nobuild",
-    "lint": "eslint lib test && solium -d test/compiler/contracts",
+    "lint": "eslint lib test && solium -d test/projects",
     "build": "babel lib --out-dir dist",
     "clean": "rm -fr ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },

@@ -1,0 +1,7 @@
+{
+  "name": "solidity 5, dokerized solc, npm outside main directory",
+  "sourcesPath": "./test/projects/custom/custom_contracts",
+  "targetPath": "./test/projects/custom/custom_build",
+  "npmPath": "../custom_node_modules",
+  "compiler": "dockerized-solc"
+}

@@ -1,6 +1,6 @@
 {
   "contracts": {
-    "/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol": {
+    "/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol": {
       "CustomSafeMath": {
         "evm": {
           "bytecode": {
@@ -10,10 +10,10 @@
             "sourceMap": "25:28:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;25:28:0;;;;;;;"
           }
         },
-        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol\":\"CustomSafeMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol\":{\"keccak256\":\"0x1ffeae8b7ed24ed7d42cebe35e2af5c20b5f06f6bdd23b4cee3936a0d7ece300\",\"urls\":[\"bzzr://ef74f01d4587edf833618dfd48c6e782aa11bfedce1a2290a3024cf7d4151a71\"]}},\"version\":1}"
+        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol\":\"CustomSafeMath\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol\":{\"keccak256\":\"0x1ffeae8b7ed24ed7d42cebe35e2af5c20b5f06f6bdd23b4cee3936a0d7ece300\",\"urls\":[\"bzzr://ef74f01d4587edf833618dfd48c6e782aa11bfedce1a2290a3024cf7d4151a71\"]}},\"version\":1}"
       }
     },
-    "/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol": {
+    "/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol": {
       "ERC20": {
         "evm": {
           "bytecode": {
@@ -23,7 +23,7 @@
             "sourceMap": "26:19:1:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:19:1;;;;;;;"
           }
         },
-        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":\"ERC20\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":{\"keccak256\":\"0x661e7e9bf1f99d9c980a03b4ccd50d3f026489468d88965335d258893fa94765\",\"urls\":[\"bzzr://be769dd25be42d1b357f042113be2f193ea76fae88e7cb71e8667d97775e60e8\"]}},\"version\":1}"
+        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":\"ERC20\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":{\"keccak256\":\"0x661e7e9bf1f99d9c980a03b4ccd50d3f026489468d88965335d258893fa94765\",\"urls\":[\"bzzr://be769dd25be42d1b357f042113be2f193ea76fae88e7cb71e8667d97775e60e8\"]}},\"version\":1}"
       }
     },
     "Custom.sol": {
@@ -36,7 +36,7 @@
             "sourceMap": "77:20:2:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;77:20:2;;;;;;;"
           }
         },
-        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"Custom.sol\":\"Custom\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol\":{\"keccak256\":\"0x1ffeae8b7ed24ed7d42cebe35e2af5c20b5f06f6bdd23b4cee3936a0d7ece300\",\"urls\":[\"bzzr://ef74f01d4587edf833618dfd48c6e782aa11bfedce1a2290a3024cf7d4151a71\"]},\"Custom.sol\":{\"keccak256\":\"0x162c7667ed755ba10945eaa9121cc3e67326fe8374f494143148dcfe88897612\",\"urls\":[\"bzzr://28b576ccf291b303bb6a586d45e46d20d7e0452bd311d0fcc41ccfe513cd8d77\"]}},\"version\":1}"
+        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"Custom.sol\":\"Custom\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol\":{\"keccak256\":\"0x1ffeae8b7ed24ed7d42cebe35e2af5c20b5f06f6bdd23b4cee3936a0d7ece300\",\"urls\":[\"bzzr://ef74f01d4587edf833618dfd48c6e782aa11bfedce1a2290a3024cf7d4151a71\"]},\"Custom.sol\":{\"keccak256\":\"0x162c7667ed755ba10945eaa9121cc3e67326fe8374f494143148dcfe88897612\",\"urls\":[\"bzzr://28b576ccf291b303bb6a586d45e46d20d7e0452bd311d0fcc41ccfe513cd8d77\"]}},\"version\":1}"
       }
     },
     "One.sol": {
@@ -49,7 +49,7 @@
             "sourceMap": "72:17:3:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;72:17:3;;;;;;;"
           }
         },
-        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"One.sol\":\"One\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":{\"keccak256\":\"0x661e7e9bf1f99d9c980a03b4ccd50d3f026489468d88965335d258893fa94765\",\"urls\":[\"bzzr://be769dd25be42d1b357f042113be2f193ea76fae88e7cb71e8667d97775e60e8\"]},\"One.sol\":{\"keccak256\":\"0xf1121ca4098b2b93f6a04cbc0855b573f5cc5f57e4be6b10aa8edc786a4f7acf\",\"urls\":[\"bzzr://ff2a9ae7571a3773916fb642470d4f52e72f698f0674229a6a3729001a3a0017\"]}},\"version\":1}"
+        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"One.sol\":\"One\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":{\"keccak256\":\"0x661e7e9bf1f99d9c980a03b4ccd50d3f026489468d88965335d258893fa94765\",\"urls\":[\"bzzr://be769dd25be42d1b357f042113be2f193ea76fae88e7cb71e8667d97775e60e8\"]},\"One.sol\":{\"keccak256\":\"0xf1121ca4098b2b93f6a04cbc0855b573f5cc5f57e4be6b10aa8edc786a4f7acf\",\"urls\":[\"bzzr://ff2a9ae7571a3773916fb642470d4f52e72f698f0674229a6a3729001a3a0017\"]}},\"version\":1}"
       }
     },
     "Two.sol": {
@@ -62,15 +62,15 @@
             "sourceMap": "46:17:4:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;46:17:4;;;;;;;"
           }
         },
-        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"Two.sol\":\"Two\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":{\"keccak256\":\"0x661e7e9bf1f99d9c980a03b4ccd50d3f026489468d88965335d258893fa94765\",\"urls\":[\"bzzr://be769dd25be42d1b357f042113be2f193ea76fae88e7cb71e8667d97775e60e8\"]},\"One.sol\":{\"keccak256\":\"0xf1121ca4098b2b93f6a04cbc0855b573f5cc5f57e4be6b10aa8edc786a4f7acf\",\"urls\":[\"bzzr://ff2a9ae7571a3773916fb642470d4f52e72f698f0674229a6a3729001a3a0017\"]},\"Two.sol\":{\"keccak256\":\"0xc4c2ff51a6960c6307e421fecd7e601346c101a8fd7519f734415217b4858e92\",\"urls\":[\"bzzr://88deeae982f3ac0aa820a9403e1d037985114f2ddbf4b17bc40b706b2d9ffbe9\"]}},\"version\":1}"
+        "metadata": "{\"compiler\":{\"version\":\"0.5.2+commit.1df8f40c\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"Two.sol\":\"Two\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[\":openzeppelin-solidity=/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity\"]},\"sources\":{\"/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol\":{\"keccak256\":\"0x661e7e9bf1f99d9c980a03b4ccd50d3f026489468d88965335d258893fa94765\",\"urls\":[\"bzzr://be769dd25be42d1b357f042113be2f193ea76fae88e7cb71e8667d97775e60e8\"]},\"One.sol\":{\"keccak256\":\"0xf1121ca4098b2b93f6a04cbc0855b573f5cc5f57e4be6b10aa8edc786a4f7acf\",\"urls\":[\"bzzr://ff2a9ae7571a3773916fb642470d4f52e72f698f0674229a6a3729001a3a0017\"]},\"Two.sol\":{\"keccak256\":\"0xc4c2ff51a6960c6307e421fecd7e601346c101a8fd7519f734415217b4858e92\",\"urls\":[\"bzzr://88deeae982f3ac0aa820a9403e1d037985114f2ddbf4b17bc40b706b2d9ffbe9\"]}},\"version\":1}"
       }
     }
   },
   "sources": {
-    "/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol": {
+    "/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/CustomSafeMath.sol": {
       "id": 0
     },
-    "/home/project/test/compiler/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol": {
+    "/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity/sub/ERC20.sol": {
       "id": 1
     },
     "Custom.sol": {

@@ -6,15 +6,15 @@ import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
 
-const sourcesPath = './test/compiler/custom/custom_contracts';
-const npmPath = './test/compiler/custom/custom_node_modules';
+const sourcesPath = './test/projects/custom/custom_contracts';
+const npmPath = './test/projects/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
 describe('UNIT: BaseWrapper', () => {
-  let dockerWrapper;
+  let wrapper;
 
   before(() => {
-    dockerWrapper = new BaseWrapper(config);
+    wrapper = new BaseWrapper(config);
   });
 
   it('saveOutput', () => {
@@ -24,7 +24,7 @@ describe('UNIT: BaseWrapper', () => {
       mkdirSync: sinon.spy()
     };
     const output = JSON.parse(readFileContent('./test/compiler/wrappers/compilerOutput.json'));
-    dockerWrapper.saveOutput(output, './buildtmp', fs);
+    wrapper.saveOutput(output, './buildtmp', fs);
     const expectedContent = JSON.stringify(output.contracts['One.sol'].One, null, 2);
     expect(fs.writeFileSync).to.be.calledWith('buildtmp/One.json', expectedContent);
   });

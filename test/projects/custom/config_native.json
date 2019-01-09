@@ -1,0 +1,7 @@
+{
+  "name": "solidity 5, native solc",
+  "sourcesPath": "./test/projects/custom/custom_contracts",
+  "targetPath": "./test/projects/custom/custom_build",
+  "npmPath": "./test/projects/custom/custom_node_modules",
+  "compiler": "native"
+}

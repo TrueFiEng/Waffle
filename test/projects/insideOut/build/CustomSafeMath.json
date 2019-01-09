@@ -1,0 +1,69 @@
+{
+  "evm": {
+    "bytecode": {
+      "linkReferences": {},
+      "object": "6080604052348015600f57600080fd5b5060808061001e6000396000f3fe6080604052348015600f57600080fd5b50600436106045576000357c01000000000000000000000000000000000000000000000000000000009004806332e43a1114604a575b600080fd5b60506052565b005b56fea165627a7a72305820be3031bd7f7200065725b5cc0378f0d659a379cf95a169beae8b0cfc23cf89970029",
+      "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x80 DUP1 PUSH2 0x1E PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x4 CALLDATASIZE LT PUSH1 0x45 JUMPI PUSH1 0x0 CALLDATALOAD PUSH29 0x100000000000000000000000000000000000000000000000000000000 SWAP1 DIV DUP1 PUSH4 0x32E43A11 EQ PUSH1 0x4A JUMPI JUMPDEST PUSH1 0x0 DUP1 REVERT JUMPDEST PUSH1 0x50 PUSH1 0x52 JUMP JUMPDEST STOP JUMPDEST JUMP INVALID LOG1 PUSH6 0x627A7A723058 KECCAK256 0xbe ADDRESS BALANCE 0xbd PUSH32 0x7200065725B5CC0378F0D659A379CF95A169BEAE8B0CFC23CF89970029000000 ",
+      "sourceMap": "26:65:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;26:65:0;;;;;;;"
+    }
+  },
+  "metadata": {
+    "compiler": {
+      "version": "0.5.2+commit.1df8f40c"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "dummy",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "pure",
+          "type": "function"
+        }
+      ],
+      "devdoc": {
+        "methods": {}
+      },
+      "userdoc": {
+        "methods": {}
+      }
+    },
+    "settings": {
+      "compilationTarget": {
+        "/home/npm/openzeppelin-solidity/CustomSafeMath.sol": "CustomSafeMath"
+      },
+      "evmVersion": "byzantium",
+      "libraries": {},
+      "optimizer": {
+        "enabled": false,
+        "runs": 200
+      },
+      "remappings": [
+        ":openzeppelin-solidity=/home/npm/openzeppelin-solidity"
+      ]
+    },
+    "sources": {
+      "/home/npm/openzeppelin-solidity/CustomSafeMath.sol": {
+        "keccak256": "0x4ab49078c41549eb4d3c96a350c61fb32e62cbe83419d07a90a141b31b5c5d85",
+        "urls": [
+          "bzzr://b9d31bfb5b768e4158302f24d12666ffe266f36310ffbe06fc4264a1fba41590"
+        ]
+      }
+    },
+    "version": 1
+  },
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "dummy",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    }
+  ]
+}

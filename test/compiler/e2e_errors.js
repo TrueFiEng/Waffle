@@ -7,8 +7,9 @@ import sinonChai from 'sinon-chai';
 chai.use(sinonChai);
 
 const configurations = [
-  './test/compiler/invalidContracts/config.json',
-  './test/compiler/invalidContracts/config_docker.json'
+  './test/projects/invalidContracts/config_solcjs.json',
+  './test/projects/invalidContracts/config_docker.json',
+  './test/projects/invalidContracts/config_native.json'
 ];
 
 describe('E2E: Compiler integration - error messages', () => {

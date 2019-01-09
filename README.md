@@ -229,7 +229,7 @@ As an alternative, you can use the original Solidity compiler, which is faster. 
 2) Native solc
 
 
-### Dockerized solc
+### Dockerized solc (experimental)
 This options is pretty easy to install especially if you have docker installed. This is recommended option. If you don't have docker [follow instructions](https://www.docker.com/get-started).
 
 Pull solc docker container tagged with version you are interested in, for example for version 0.4.24 it will be:
@@ -244,26 +244,55 @@ Than setup compiler in your waffle configuration file:
   "compiler": "dockerized-solc",
   "docker-tag": "0.4.24"
 }
+```
 
 Default docker tag is `latest`.
 
 You can now run tests in docker.
 
 ### Native solc
-This option requires a bit more complex installation procedure, which is different for each operating system.
-Unfortunately due to a strange release strategy of solc, on packages with the latest versions are available, which makes it pretty hard to work on one version over a more extended period. You can mitigate that problem by building from sources.
+This option is by far the fastest but requires you to install native solidity. If you need a legacy version that might be somewhat complicated and require you to build `solidity` from sources.
 
-You can find detailed installation instructions for native solc [here](https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages).
+You can find detailed installation instructions for native `solc` in (documentation)[https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages].
 
+
+You need to install version compatible with your sources. If you need latest version that is pretty straight forward. See Installation instructions below.
+
+#### Installation instructions for latest version of solidity
+##### MacOS
+To install lastest versions on MacOS:
+```sh
+brew install solidity
+```
+
+To install other versions, it seems that currently it easiest to build from source:
+1. Download sources from (release list on github)[https://github.com/ethereum/solidity/releases]
+2. Follow installation instructions in the (documentation)[https://solidity.readthedocs.io/en/develop/installing-solidity.html#building-from-source]
+
+##### Ubuntu
+To install lastest versions on Ubuntu:
+```sh
+sudo add-apt-repository ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install solc
+```
+
+##### Project setup
 Setup compiler in your waffle configuration file:
 ```js
 {
   ...
-  "compiler": "solc"
+  "compiler": "native"
 }
 ```
 
-You can now run tests with native solc.
+To do some detective work and figure out command for particular version go here:
+
+You can now run tests with native solc, eg:
+```sh
+npx waffle
+```
+
 
 ## Solcjs and version management
 You can setup version which solidity compiler version you would like to use with `solcjs` in waffle configuration file, e.g.:
@@ -285,9 +314,8 @@ yarn test
 ```
 
 ## Roadmap
-
 * New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
-* Faster testing with parallelization
-* Faster compilation with incremental compilation
+* Faster testing with native geth (aside from ganache)
+* Faster compilation with native and dockerized solc (aside from solcjs)
 * Documentation
-* Debugging
+* Debugging and profiling

@@ -47,7 +47,7 @@ describe('INTEGRATION: Example', () => {
 
   it('should use library to add 7', async() => {
     const myLibrary = await deployContract(wallet, MyLibrary, []);
-    link(LibraryConsumer, 'test/compiler/contracts/MyLibrary.sol:MyLibrary', myLibrary.address);
+    link(LibraryConsumer, 'test/projects/example/MyLibrary.sol:MyLibrary', myLibrary.address);
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
     expect(await libraryConsumer.useLibrary(3)).to.eq(10);
   });
