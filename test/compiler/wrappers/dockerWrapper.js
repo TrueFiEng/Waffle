@@ -50,7 +50,7 @@ describe('UNIT: DockerWrapper', () => {
           'test/projects/custom/custom_contracts/sub/Two.sol': {urls: [`${prefix}${inputs[2]}`]}
         },
         settings: {
-          remappings: ['openzeppelin-solidity=/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity'],
+          remappings: ['openzeppelin-solidity=/home/npm/openzeppelin-solidity'],
           outputSelection: {'*': {'*': ['metadata', 'evm.bytecode']}}
         }
       });
