@@ -4,16 +4,16 @@ import sinonChai from 'sinon-chai';
 import Compiler from '../../lib/compiler';
 import {readFileContent} from '../../lib/utils';
 
-const sourcesPath = './test/compiler/contracts';
+const sourcesPath = './test/projects/example';
 const targetPath = './test/compiler/build';
 const config = {sourcesPath, targetPath};
 const expectedInputs = [
-  'test/compiler/contracts/BasicToken.sol',
-  'test/compiler/contracts/ERC20Basic.sol',
-  'test/compiler/contracts/LibraryConsumer.sol',
-  'test/compiler/contracts/MyLibrary.sol',
-  'test/compiler/contracts/SafeMath.sol',
-  'test/compiler/contracts/mock/BasicTokenMock.sol'
+  'test/projects/example/BasicToken.sol',
+  'test/projects/example/ERC20Basic.sol',
+  'test/projects/example/LibraryConsumer.sol',
+  'test/projects/example/MyLibrary.sol',
+  'test/projects/example/SafeMath.sol',
+  'test/projects/example/mock/BasicTokenMock.sol'
 ];
 
 chai.use(require('chai-string'));
@@ -32,8 +32,8 @@ describe('INTEGRATION: Compiler', () => {
   });
 
   it('findImports in source path', async () => {
-    const expected = await readFileContent('test/compiler/contracts/BasicToken.sol');
-    const actual = compiler.findImports('test/compiler/contracts/BasicToken.sol');
+    const expected = await readFileContent('test/projects/example/BasicToken.sol');
+    const actual = compiler.findImports('test/projects/example/BasicToken.sol');
     expect(expected).to.eq(actual.contents);
   });
 
@@ -56,7 +56,7 @@ describe('INTEGRATION: Compiler', () => {
     });
 
     it('just compile', async () => {
-      const basicTokenOutput = output.contracts['test/compiler/contracts/BasicToken.sol'].BasicToken;
+      const basicTokenOutput = output.contracts['test/projects/example/BasicToken.sol'].BasicToken;
       expect(output.errors).to.be.undefined;
       expect(basicTokenOutput.evm.bytecode.object).to.startsWith('6080604052');
       expect(JSON.stringify(basicTokenOutput.abi)).to.startsWith('[{"constant":true,');
@@ -67,7 +67,7 @@ describe('INTEGRATION: Compiler', () => {
     const sourcesPath = './test/projects/invalidContracts';
     const targetPath = './test/projects/build';
     const config = {sourcesPath, targetPath};
-    const expectedOutput = 'test/projects/invalidContracts/invalid.sol:5:16: DeclarationError: Identifier not found or not unique.\n    function f(wrongType arg) public {\n               ^-------^\n';
+    const expectedOutput = 'test/projects/invalidContracts/invalid.sol:6:14: DeclarationError: Identifier not found or not unique.\n  function f(wrongType arg) public {\n             ^-------^\n';
 
     it('shows error message', async () => {
       const overrideConsole = {error: sinon.spy()};
