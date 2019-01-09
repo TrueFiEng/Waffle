@@ -254,11 +254,11 @@ You can now run tests in docker.
 This option is by far the fastest but requires you to install native solidity. If you need a legacy version that might be somewhat complicated and require you to build `solidity` from sources.
 
 You can find detailed installation instructions for native `solc` in (documentation)[https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages].
-With little luck "installation TL;DR;" below might be helpful.
 
-Note: You need to install version compatible with your sources. w
 
-#### Installlation TL;DR;
+You need to install version compatible with your sources. If you need latest version that is pretty straight forward. See Installation instructions below.
+
+#### Installation instructions for latest version of solidity
 ##### MacOS
 To install lastest versions on MacOS:
 ```sh
@@ -275,13 +275,6 @@ To install lastest versions on Ubuntu:
 sudo add-apt-repository ppa:ethereum/ethereum
 sudo apt-get update
 sudo apt-get install solc
-```
-
-To install version 0.4.26 on Ubuntu:
-```sh
-sudo add-apt-repository ppa:ethereum/ethereum
-sudo apt-get update
-
 ```
 
 ##### Project setup

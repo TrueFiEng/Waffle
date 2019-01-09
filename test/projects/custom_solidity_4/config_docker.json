@@ -1,0 +1,8 @@
+{
+  "name": "solidity 4, dokerized solc",
+  "sourcesPath": "./test/projects/custom_solidity_4/custom_contracts",
+  "targetPath": "./test/projects/custom_solidity_4/custom_build",
+  "npmPath": "./test/projects/custom_solidity_4/custom_node_modules",
+  "compiler": "dockerized-solc",
+  "docker-tag": "0.4.24"
+}

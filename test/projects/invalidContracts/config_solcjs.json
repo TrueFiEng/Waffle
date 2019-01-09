@@ -1,0 +1,6 @@
+{
+  "name": "solidity 5, solcjs, invalid contract",
+  "sourcesPath": "./test/projects/invalidContracts",
+  "targetPath": "./test/projects/invalidContracts/custom_build",
+  "npmPath": "./test/projects/invalidContracts/custom_node_modules"
+}

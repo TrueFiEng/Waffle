@@ -64,10 +64,10 @@ describe('INTEGRATION: Compiler', () => {
   });
 
   describe('compile: invalid input', () => {
-    const sourcesPath = './test/compiler/invalidContracts';
-    const targetPath = './test/compiler/build';
+    const sourcesPath = './test/projects/invalidContracts';
+    const targetPath = './test/projects/build';
     const config = {sourcesPath, targetPath};
-    const expectedOutput = 'test/compiler/invalidContracts/invalid.sol:5:16: DeclarationError: Identifier not found or not unique.\n    function f(wrongType arg) public {\n               ^-------^\n';
+    const expectedOutput = 'test/projects/invalidContracts/invalid.sol:5:16: DeclarationError: Identifier not found or not unique.\n    function f(wrongType arg) public {\n               ^-------^\n';
 
     it('shows error message', async () => {
       const overrideConsole = {error: sinon.spy()};

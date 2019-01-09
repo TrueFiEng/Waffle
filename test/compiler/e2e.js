@@ -7,11 +7,11 @@ import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
 
 const configurations = [
-  './test/compiler/custom/config.json',
-  './test/compiler/custom/config_native.json',
-  './test/compiler/custom/config_docker.json',
-  './test/compiler/custom_solidity_4/config_solcjs.json',
-  './test/compiler/custom_solidity_4/config_docker.json'
+  './test/projects/custom/config.json',
+  './test/projects/custom/config_native.json',
+  './test/projects/custom/config_docker.json',
+  './test/projects/custom_solidity_4/config_solcjs.json',
+  './test/projects/custom_solidity_4/config_docker.json'
 ];
 
 const artefacts = [
