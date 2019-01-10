@@ -12,16 +12,9 @@ describe('UNIT: ImportsMappingBuilder', () => {
 
 
   it('within container', () => {
-    const builder = new ImportsMappingBuilder('./test/projects/custom/custom_contracts', './test/projects/custom/custom_node_modules', '/home/project');
+    const builder = new ImportsMappingBuilder('./test/projects/custom/custom_contracts', './test/projects/custom/custom_node_modules', '/home/project', '/home/npm');
     const mapping = builder.getMapping('openzeppelin-solidity/CustomSafeMath.sol', customContractPath);
-    const expectedPath = '/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity';
-    expect(mapping['openzeppelin-solidity']).to.deep.eq(expectedPath);
-  });
-
-  xit('within container, npm outside main directory', () => {
-    const builder = new ImportsMappingBuilder('./test/projects/custom/custom_contracts', '../custom_node_modules', '/home/project');
-    const mapping = builder.getMapping('openzeppelin-solidity/CustomSafeMath.sol', customContractPath);
-    const expectedPath = '/home/project/test/projects/custom/custom_node_modules/openzeppelin-solidity';
+    const expectedPath = '/home/npm/openzeppelin-solidity';
     expect(mapping['openzeppelin-solidity']).to.deep.eq(expectedPath);
   });
 

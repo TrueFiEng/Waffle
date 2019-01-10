@@ -3,6 +3,7 @@ dist
 yarn-error.log
 /test/compiler/build/
 /test/projects/custom/custom_build
+/test/projects/insideOut/build
 /test/projects/custom_solidity_4/custom_build
 /test/matchers/build/
 /test/example/build/
