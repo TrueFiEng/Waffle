@@ -35,7 +35,7 @@ describe('UNIT: DockerWrapper', () => {
         sources: {},
         settings: {
           remappings: [],
-          outputSelection: {'*': {'*': ['metadata', 'evm.bytecode']}}
+          outputSelection: {'*': {'*': ['abi', 'evm.bytecode']}}
         }
       });
     });
@@ -51,7 +51,7 @@ describe('UNIT: DockerWrapper', () => {
         },
         settings: {
           remappings: ['openzeppelin-solidity=/home/npm/openzeppelin-solidity'],
-          outputSelection: {'*': {'*': ['metadata', 'evm.bytecode']}}
+          outputSelection: {'*': {'*': ['abi', 'evm.bytecode']}}
         }
       });
     });
