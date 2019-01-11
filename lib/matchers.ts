@@ -1,22 +1,23 @@
 import overwriteBigNumberFunction from './matchers/overwriteBigNumberFunction';
 import {bigNumberify} from 'ethers/utils';
 import {getBalanceChange, getBalanceChanges} from './utils';
+import {Contract, Wallet} from 'ethers';
 
-const solidity = (chai, utils) => {
+const solidity = (chai: any, utils: any) => {
   const {Assertion} = chai;
 
-  Assertion.overwriteMethod('equal', (_super) => overwriteBigNumberFunction('eq', 'equal', _super, utils));
-  Assertion.overwriteMethod('eq', (_super) => overwriteBigNumberFunction('eq', 'equal', _super, utils));
-  Assertion.overwriteMethod('above', (_super) => overwriteBigNumberFunction('gt', 'above', _super, utils));
-  Assertion.overwriteMethod('below', (_super) => overwriteBigNumberFunction('lt', 'below', _super, utils));
-  Assertion.overwriteMethod('least', (_super) => overwriteBigNumberFunction('gte', 'at least', _super, utils));
-  Assertion.overwriteMethod('most', (_super) => overwriteBigNumberFunction('lte', 'at most', _super, utils));
+  Assertion.overwriteMethod('equal', (_super: any) => overwriteBigNumberFunction('eq', 'equal', _super, utils));
+  Assertion.overwriteMethod('eq', (_super: any) => overwriteBigNumberFunction('eq', 'equal', _super, utils));
+  Assertion.overwriteMethod('above', (_super: any) => overwriteBigNumberFunction('gt', 'above', _super, utils));
+  Assertion.overwriteMethod('below', (_super: any) => overwriteBigNumberFunction('lt', 'below', _super, utils));
+  Assertion.overwriteMethod('least', (_super: any) => overwriteBigNumberFunction('gte', 'at least', _super, utils));
+  Assertion.overwriteMethod('most', (_super: any) => overwriteBigNumberFunction('lte', 'at most', _super, utils));
 
   Assertion.addProperty('reverted', function () {
     /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
     const derivedPromise = promise.then(
-      (value) => {
+      (value: any) => {
         this.assert(false,
           'Expected transaction to be reverted',
           'Expected transaction NOT to be reverted',
@@ -24,7 +25,7 @@ const solidity = (chai, utils) => {
           'reverted');
         return value;
       },
-      (reason) => {
+      (reason: any) => {
         const isReverted = reason.toString().search('revert') >= 0;
         const isThrown = reason.toString().search('invalid opcode') >= 0;
         this.assert(isReverted || isThrown,
@@ -40,11 +41,11 @@ const solidity = (chai, utils) => {
     return derivedPromise;
   });
 
-  Assertion.addMethod('revertedWith', function (revertReason) {
+  Assertion.addMethod('revertedWith', function (revertReason: any) {
     /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
     const derivedPromise = promise.then(
-      (value) => {
+      (value: any) => {
         this.assert(false,
           'Expected transaction to be reverted',
           'Expected transaction NOT to be reverted',
@@ -52,7 +53,7 @@ const solidity = (chai, utils) => {
           'reverted');
         return value;
       },
-      (reason) => {
+      (reason: any) => {
         const isReverted = reason.toString().search('revert') >= 0 && reason.toString().search(revertReason) >= 0;
         const isThrown = reason.toString().search('invalid opcode') >= 0 && revertReason === '';
         this.assert(isReverted || isThrown,
@@ -68,15 +69,15 @@ const solidity = (chai, utils) => {
     return derivedPromise;
   });
 
-  const filterLogsWithTopics = (logs, topic) =>
+  const filterLogsWithTopics = (logs: any[], topic: any) =>
     logs.filter((log) => log.topics.includes(topic));
 
-  Assertion.addMethod('emit', function (contract, eventName) {
+  Assertion.addMethod('emit', function (contract: Contract, eventName: string) {
     /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
-    const derivedPromise = promise.then((tx) =>
+    const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
-    ).then((receipt) => {
+    ).then((receipt: any) => {
       const {topic} = contract.interface.events[eventName];
       this.logs = filterLogsWithTopics(receipt.logs, topic);
       if (this.logs.length < 1) {
@@ -95,9 +96,10 @@ const solidity = (chai, utils) => {
     return this;
   });
 
-  const assertArgsArraysEqual = (context, expectedArgs, actualArgs) => {
+  const assertArgsArraysEqual = (context: any, expectedArgs: any[], actualArgs: any[]) => {
     context.assert(actualArgs.length === expectedArgs.length,
-      `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), but has ${actualArgs.length}`,
+      `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
+      `but has ${actualArgs.length}`,
       `Do not combine .not. with .withArgs()`,
       expectedArgs.length,
       actualArgs.length);
@@ -106,7 +108,7 @@ const solidity = (chai, utils) => {
     }
   };
 
-  Assertion.addMethod('withArgs', function (...expectedArgs) {
+  Assertion.addMethod('withArgs', function (...expectedArgs: any[]) {
     const derivedPromise = this.promise.then(() => {
       const actualArgs = this.contract.interface.parseLog(this.logs[0]);
       assertArgsArraysEqual(this, expectedArgs, actualArgs.values);
@@ -136,7 +138,7 @@ const solidity = (chai, utils) => {
       subject);
   });
 
-  Assertion.addMethod('properHex', function (length) {
+  Assertion.addMethod('properHex', function (length: number) {
     /* eslint-disable no-underscore-dangle */
     const subject = this._obj;
     const regexp = new RegExp(`^0x[0-9-a-fA-F]{${length}}$`);
@@ -147,7 +149,7 @@ const solidity = (chai, utils) => {
       subject);
   });
 
-  Assertion.addMethod('changeBalance', function (wallet, balanceChange) {
+  Assertion.addMethod('changeBalance', function (wallet: Wallet, balanceChange: any) {
     const subject = this._obj;
     if (typeof subject !== 'function') {
       throw new Error(`Expect subject should be a callback returning the Promise
@@ -156,7 +158,8 @@ const solidity = (chai, utils) => {
     const derivedPromise = getBalanceChange(subject, wallet)
       .then((actualChange) => {
         this.assert(actualChange.eq(bigNumberify(balanceChange)),
-          `Expected "${wallet.address}" to change balance by ${balanceChange} wei, but it has changed by ${actualChange} wei`,
+          `Expected "${wallet.address}" to change balance by ${balanceChange} wei, ` +
+          `but it has changed by ${actualChange} wei`,
           `Expected "${wallet.address}" to not change balance by ${balanceChange} wei,`,
           balanceChange,
           actualChange);
@@ -167,7 +170,7 @@ const solidity = (chai, utils) => {
     return this;
   });
 
-  Assertion.addMethod('changeBalances', function (wallets, balanceChanges) {
+  Assertion.addMethod('changeBalances', function (wallets: Wallet[], balanceChanges: any[]) {
     const subject = this._obj;
     if (typeof subject !== 'function') {
       throw new Error(`Expect subject should be a callback returning the Promise
@@ -177,7 +180,8 @@ const solidity = (chai, utils) => {
       .then((actualChanges) => {
         const walletsAddresses = wallets.map((wallet) => wallet.address);
         this.assert(actualChanges.every((change, ind) => change.eq(bigNumberify(balanceChanges[ind]))),
-          `Expected ${walletsAddresses} to change balance by ${balanceChanges} wei, but it has changed by ${actualChanges} wei`,
+          `Expected ${walletsAddresses} to change balance by ${balanceChanges} wei, ` +
+          `but it has changed by ${actualChanges} wei`,
           `Expected ${walletsAddresses} to not change balance by ${balanceChanges} wei,`,
           balanceChanges.map((balanceChange) => balanceChange.toString()),
           actualChanges.map((actualChange) => actualChange.toString()));

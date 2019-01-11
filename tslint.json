@@ -13,6 +13,21 @@
     "no-console": false,
     "object-literal-sort-keys": false,
     "member-ordering": false,
-    "array-type": [true, "array"]
+    "array-type": [true, "array"],
+    "space-before-function-paren": [
+      true, 
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "variable-name": [
+      true, 
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore",
+      "allow-pascal-case"
+    ]
   }
 }
