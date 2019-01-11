@@ -20,7 +20,7 @@
     "clean": "rm -fr ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
   "engines": {
-    "node": ">=9.3"
+    "node": ">=10.0"
   },
   "dependencies": {
     "ethers": "^4.0.0",
