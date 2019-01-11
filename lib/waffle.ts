@@ -3,7 +3,7 @@ import {ContractFactory, providers, Contract, Wallet} from 'ethers';
 import matchers from './matchers';
 import defaultAccounts from './config/defaultAccounts';
 import defaultDeployOptions from './config/defaultDeployOptions';
-import {linkSolidity4, linkSolidity5} from './link';
+import {linkSolidity4, linkSolidity5, LinkableContract} from './link';
 
 const defaultGanacheOptions = {accounts: defaultAccounts};
 
@@ -43,7 +43,7 @@ export async function deployContract(
 export const contractWithWallet = (contract: Contract, wallet: Wallet) =>
   new Contract(contract.address, contract.interface.abi, wallet);
 
-export const link = (contract: Contract, libraryName: string, libraryAddress: string) => {
+export const link = (contract: LinkableContract, libraryName: string, libraryAddress: string) => {
   const {object} = contract.evm.bytecode;
   if (object.indexOf('$') >= 0) {
     linkSolidity5(contract, libraryName, libraryAddress);
