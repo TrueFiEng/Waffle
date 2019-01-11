@@ -1,26 +1,33 @@
 import {execSync} from 'child_process';
 import fs from 'fs';
 import {join, dirname} from 'path';
+import {Config} from '../config/config';
+import ImportMappingBuilder from './importMappingBuilder';
 
-export default class BaseWrapper {
-  constructor(config) {
+export default abstract class BaseWrapper {
+  protected config: Config;
+  protected mappingBuilder: ImportMappingBuilder;
+
+  constructor(config: Config) {
     this.config = config;
   }
 
-  getContent(contractJson) {
+  protected getContent(contractJson: object) {
     return JSON.stringify(contractJson, null, 2);
   }
 
-  buildSources(inputs) {
-    const sources = {};
+  protected abstract getAbsolutePath(input: string): string;
+
+  protected buildSources(inputs: string[]) {
+    const sources: Record<string, { urls: string[] }> = {};
     for (const input of inputs) {
       sources[input] = {urls: [this.getAbsolutePath(input)]};
     }
     return sources;
   }
 
-  async saveOutput(output, targetPath, filesystem = fs) {
-    for (const [,file] of Object.entries(output.contracts)) {
+  public async saveOutput(output: any, targetPath: string, filesystem = fs) {
+    for (const [, file] of Object.entries(output.contracts)) {
       for (const [contractName, contractJson] of Object.entries(file)) {
         const filePath = join(targetPath, `${contractName}.json`);
         const dirPath = dirname(filePath);
@@ -32,7 +39,7 @@ export default class BaseWrapper {
     }
   }
 
-  buildInputJson(sources) {
+  protected buildInputJson(sources: string[]) {
     return {
       language: 'Solidity',
       sources: this.buildSources(sources),
@@ -43,14 +50,16 @@ export default class BaseWrapper {
     };
   }
 
-  getMappings(sources) {
+  protected getMappings(sources: string[]) {
     const mappings = this.mappingBuilder.getMappings(sources);
     return Object.entries(mappings).map(([key, value]) => `${key}=${value}`);
   }
 
-  compile(sources) {
+  protected abstract buildCommand(sources: string[]): string;
+
+  public compile(sources: string[], findImports?: any) {
     const command = this.buildCommand(sources);
     const input = JSON.stringify(this.buildInputJson(sources), null, 2);
-    return JSON.parse(execSync(command, {input}));
+    return JSON.parse(execSync(command, {input}).toString());
   }
 }

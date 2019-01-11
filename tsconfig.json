@@ -4,6 +4,10 @@
     "lib": [
       "esnext"
     ],
+    "typeRoots": [
+      "node_modules/@types",
+      "shims",
+    ],
     "outDir": "dist",
     "resolveJsonModule": true,
     "esModuleInterop": true,

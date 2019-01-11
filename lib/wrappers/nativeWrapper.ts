@@ -1,19 +1,20 @@
 import {join, resolve} from 'path';
 import ImportMappingBuilder from './importMappingBuilder';
 import BaseWrapper from './baseWrapper';
+import { Config } from '../config/config';
 
 export default class NativeWrapper extends BaseWrapper {
-  constructor(config) {
+  constructor(config: Config) {
     super(config);
     const {sourcesPath, npmPath} = this.config;
     this.mappingBuilder = new ImportMappingBuilder(sourcesPath, npmPath);
   }
 
-  getAbsolutePath(relativePath) {
+  public getAbsolutePath(relativePath: string) {
     return join(process.cwd(), relativePath);
   }
 
-  buildCommand() {
+  public buildCommand() {
     const command = 'solc';
     const params = '--standard-json';
     const allowedPaths = `${resolve(this.config.sourcesPath)},${resolve(this.config.npmPath)}`;
