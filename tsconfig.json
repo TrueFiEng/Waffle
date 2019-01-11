@@ -7,5 +7,6 @@
     "outDir": "dist",
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "noImplicitAny": true
   }
 }

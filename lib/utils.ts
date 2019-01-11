@@ -10,7 +10,7 @@ export const isPositiveIntegerString = (value: unknown) =>
 export const eventParseResultToArray = (eventResult: object) =>
   Object.keys(eventResult)
     .filter(isPositiveIntegerString)
-    .map((key) => eventResult[key]);
+    .map((key) => (eventResult as any)[key]);
 
 export const isWarningMessage = (error: any) =>
   error.severity === 'warning';

@@ -9,6 +9,10 @@
       "multiline": "never",
       "singleline": "never"
     }],
-    "interface-name": false
+    "interface-name": false,
+    "no-console": false,
+    "object-literal-sort-keys": false,
+    "member-ordering": false,
+    "array-type": [true, "array"]
   }
 }

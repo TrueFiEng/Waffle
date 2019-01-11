@@ -57,9 +57,14 @@ export {defaultAccounts};
 export const solidity = matchers;
 
 type Fixture<T> = (provider: providers.Provider, wallets: Wallet[]) => Promise<T>;
+interface Snapshot<T> {
+  fixture: Fixture<T>;
+  data: T;
+  id: number;
+}
 
 export function createFixtureLoader(provider = createMockProvider(), wallets?: Wallet[]) {
-  const snapshots = [];
+  const snapshots: Snapshot<any>[] = [];
 
   return async function load<T>(fixture: Fixture<T>): Promise<T> {
     const matchingSnapshot = snapshots.find((snapshot) => snapshot.fixture === fixture);
