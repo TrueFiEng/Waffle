@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "tslint:recommended"
+  ],
+  "rules": {
+    "quotemark": [true, "single"],
+    "ordered-imports": false,
+    "trailing-comma": [true, {
+      "multiline": "never",
+      "singleline": "never"
+    }],
+    "interface-name": false
+  }
+}
