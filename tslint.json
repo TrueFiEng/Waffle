@@ -28,6 +28,8 @@
       "check-format",
       "allow-leading-underscore",
       "allow-pascal-case"
-    ]
+    ],
+    "no-shadowed-variable": false,
+    "no-empty": [true, "allow-empty-functions"]
   }
 }
