@@ -12,9 +12,9 @@ Works with ethers-js. Tastes best with ES6.
 
 Philosophy:
 -----------
-Simpler: minimalistic, a couple of helpers, matchers and tasks rather than a framework, few dependencies.
-Sweeter: Nice syntax, fast, easy to extend.
-Faster: focus on the speed of tests execution, the goal is to have subsecond feedback loop when doing TDD with smart contracts
+- Simpler: minimalistic, a couple of helpers, matchers and tasks rather than a framework, few dependencies.
+- Sweeter: Nice syntax, fast, easy to extend.
+- Faster: focus on the speed of tests execution, the goal is to have subsecond feedback loop when doing TDD with smart contracts
 
 
 Versions and ethers compatibility
