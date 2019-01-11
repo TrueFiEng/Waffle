@@ -23,7 +23,7 @@ export default class Compiler {
     this.wrapper = options.wrapper || createWrapper(this.config);
   }
 
-  private async findInputFiles(sourcesPath: string) {
+  public async findInputFiles(sourcesPath: string) {
     const dirs = [sourcesPath];
     const inputFiles: string[] = [];
     while (dirs.length) {
@@ -41,7 +41,7 @@ export default class Compiler {
     return inputFiles;
   }
 
-  private findImports(file: string) {
+  public findImports(file: string) {
     const libPath = path.join(this.config.npmPath, file);
     if (fs.existsSync(file)) {
       const contents = readFileContent(file);
@@ -53,7 +53,7 @@ export default class Compiler {
     return {error: `File not found: ${file}`};
   }
 
-  private async doCompile() {
+  public async doCompile() {
     const sourcesFiles = await this.findInputFiles(this.config.sourcesPath);
     return this.wrapper.compile(sourcesFiles, this.findImports.bind(this));
   }

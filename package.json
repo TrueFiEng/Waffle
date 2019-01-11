@@ -31,6 +31,7 @@
     "@types/chai": "^4.1.7",
     "@types/chai-as-promised": "^7.1.0",
     "@types/chai-string": "^1.4.1",
+    "@types/fs-extra": "^5.0.4",
     "@types/ganache-core": "^2.1.2",
     "@types/mocha": "^5.2.5",
     "@types/sinon": "^7.0.3",
