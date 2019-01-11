@@ -9,3 +9,5 @@ yarn-error.log
 /test/example/build/
 /build
 /tmp
+/docs/build
+/docs/env
