@@ -11,12 +11,12 @@
     "waffle": "./bin/waffle"
   },
   "scripts": {
-    "prepublishOnly": "yarn build",
-    "test:buildonly": "babel-node script/buildTestContracts",
-    "test:nobuild": "export NODE_ENV=test && mocha --require babel-register --timeout 50000 --recursive --no-warnings",
+    "prepublishOnly": "yarn clean && yarn build",
+    "test:buildonly": "ts-node script/buildTestContracts",
+    "test:nobuild": "export NODE_ENV=test && mocha -r ts-node/register --timeout 50000 --no-warnings \"test/**/*.{js,ts}\"",
     "test": "yarn test:buildonly && yarn test:nobuild",
-    "lint": "eslint lib test && solium -d test/projects",
-    "build": "babel lib --out-dir dist",
+    "lint": "",
+    "build": "tsc -p tsconfig.build.json",
     "clean": "rm -fr ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
   "engines": {
@@ -28,25 +28,23 @@
     "solc": "^0.5.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
-    "babel-plugin-transform-builtin-extend": "^1.1.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-0": "^6.24.1",
+    "@types/chai": "^4.1.7",
+    "@types/chai-as-promised": "^7.1.0",
+    "@types/chai-string": "^1.4.1",
+    "@types/ganache-core": "^2.1.2",
+    "@types/mocha": "^5.2.5",
+    "@types/sinon": "^7.0.3",
+    "@types/sinon-chai": "^3.2.2",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-string": "~1.4.0",
-    "eslint": "^4.19.1",
-    "eslint-plugin-header": "^1.2.0",
-    "eslint-plugin-import": "^2.13.0",
     "fs-extra": "^7.0.0",
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^1.11.0",
     "sinon": "^6.1.5",
     "sinon-chai": "^3.2.0",
-    "solium": "^1.1.8"
+    "solium": "^1.1.8",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
   }
 }
