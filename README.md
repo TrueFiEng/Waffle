@@ -8,6 +8,8 @@ Sweeter and simpler than [truffle](https://github.com/trufflesuite/truffle).
 
 Works with [ethers-js](https://github.com/ethers-io/ethers.js/). Tastes best with ES6.
 
+Documentation available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
+
 ## Philosophy
 * __Simpler__: minimalistic, a couple of helpers, matchers and tasks rather than a framework, few dependencies.
 * __Sweeter__: Nice syntax, fast, easy to extend.
