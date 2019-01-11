@@ -4,7 +4,7 @@ import {join, dirname} from 'path';
 import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
 
-export default abstract class BaseWrapper {
+export default class BaseWrapper {
   protected config: Config;
   protected mappingBuilder: ImportMappingBuilder;
 
@@ -16,7 +16,9 @@ export default abstract class BaseWrapper {
     return JSON.stringify(contractJson, null, 2);
   }
 
-  protected abstract getAbsolutePath(input: string): string;
+  protected getAbsolutePath(input: string) {
+    return '';
+  }
 
   protected buildSources(inputs: string[]) {
     const sources: Record<string, { urls: string[] }> = {};
@@ -39,7 +41,7 @@ export default abstract class BaseWrapper {
     }
   }
 
-  protected buildInputJson(sources: string[]) {
+  public buildInputJson(sources: string[]) {
     return {
       language: 'Solidity',
       sources: this.buildSources(sources),
@@ -55,7 +57,9 @@ export default abstract class BaseWrapper {
     return Object.entries(mappings).map(([key, value]) => `${key}=${value}`);
   }
 
-  protected abstract buildCommand(sources: string[]): string;
+  protected buildCommand(sources: string[]) {
+    return '';
+  }
 
   public compile(sources: string[], findImports?: any) {
     const command = this.buildCommand(sources);

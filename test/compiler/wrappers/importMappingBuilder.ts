@@ -1,26 +1,41 @@
 import chai, {expect} from 'chai';
-import ImportsMappingBuilder, {IMPORT_TYPE_A, IMPORT_TYPE_B, IMPORT_TYPE_C} from '../../../lib/wrappers/importMappingBuilder';
+import chaiString from 'chai-string';
+import ImportsMappingBuilder, {
+  IMPORT_TYPE_A,
+  IMPORT_TYPE_B,
+  IMPORT_TYPE_C
+} from '../../../lib/wrappers/importMappingBuilder';
 
-chai.use(require('chai-string'));
+chai.use(chaiString);
 
 const customContractPath = './test/projects/custom/custom_contracts/Custom.sol';
 
 describe('UNIT: ImportsMappingBuilder', () => {
-  let builder;
-  let expectedPath;
-  let expectedMapping;
-
-
   it('within container', () => {
-    const builder = new ImportsMappingBuilder('./test/projects/custom/custom_contracts', './test/projects/custom/custom_node_modules', '/home/project', '/home/npm');
-    const mapping = builder.getMapping('openzeppelin-solidity/CustomSafeMath.sol', customContractPath);
+    const builder = new ImportsMappingBuilder(
+      './test/projects/custom/custom_contracts',
+      './test/projects/custom/custom_node_modules',
+      '/home/project',
+      '/home/npm'
+    );
+    const mapping: any = builder.getMapping(
+      'openzeppelin-solidity/CustomSafeMath.sol',
+      customContractPath
+    );
     const expectedPath = '/home/npm/openzeppelin-solidity';
     expect(mapping['openzeppelin-solidity']).to.deep.eq(expectedPath);
   });
 
   describe('convertPath', () => {
+    let builder: ImportsMappingBuilder;
+    let expectedPath;
+    let expectedMapping: any;
+
     before(() => {
-      builder = new ImportsMappingBuilder('./test/projects/custom/custom_contracts', './test/projects/custom/custom_node_modules');
+      builder = new ImportsMappingBuilder(
+        './test/projects/custom/custom_contracts',
+        './test/projects/custom/custom_node_modules'
+      );
       expectedPath = `${process.cwd()}/test/projects/custom/custom_node_modules/openzeppelin-solidity`;
       expectedMapping = {'openzeppelin-solidity': expectedPath};
     });

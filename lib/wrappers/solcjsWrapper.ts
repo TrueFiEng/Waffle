@@ -8,11 +8,9 @@ import BaseWrapper from './baseWrapper';
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
 class SolcjsWrapper extends BaseWrapper {
-  protected buildCommand = () => '';
-  protected getAbsolutePath = () => '';
   protected solc: SolcCompiler;
 
-  protected async findInputs(files: string[]) {
+  public async findInputs(files: string[]) {
     return Object.assign({}, ...files.map((file) => ({[file]: readFileContent(file)})));
   }
 

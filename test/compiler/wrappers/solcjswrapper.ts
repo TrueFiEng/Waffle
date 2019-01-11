@@ -1,8 +1,9 @@
 import chai, {expect} from 'chai';
+import chaiString from 'chai-string';
 import SolcJsWrapper from '../../../lib/wrappers/solcjsWrapper';
 import {readFileContent} from '../../../lib/utils';
 
-chai.use(require('chai-string'));
+chai.use(chaiString);
 
 const expectedInputs = [
   'test/projects/example/BasicToken.sol',
@@ -11,10 +12,10 @@ const expectedInputs = [
 ];
 
 describe('UNIT: SolcJsWrapper', () => {
-  let wrapper;
+  let wrapper: SolcJsWrapper;
 
   before(() => {
-    wrapper = new SolcJsWrapper();
+    wrapper = new SolcJsWrapper(null as any);
   });
 
   it('findInputs', async () => {

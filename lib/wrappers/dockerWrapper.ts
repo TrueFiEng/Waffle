@@ -18,7 +18,7 @@ export default class DockerWrapper extends BaseWrapper {
     return join(this.containerPath, relativePath);
   }
 
-  private getVolumes() {
+  public getVolumes() {
     const hostPath = process.cwd();
     const hostNpmPath = join(hostPath, this.config.npmPath);
     return `-v ${hostPath}:${this.containerPath} -v ${hostNpmPath}:${this.containerNpmPath}`;

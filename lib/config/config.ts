@@ -1,6 +1,6 @@
 export interface Config {
   sourcesPath: string;
-  targetPath: string;
+  targetPath?: string;
   npmPath: string;
   compiler?: 'native' | 'dockerized-solc' | 'solcjs';
   'docker-tag'?: string;
