@@ -1,12 +1,5 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "lib": [
-      "esnext"
-    ],
-    "outDir": "dist",
-    "target": "es5"
-  },
+  "extends": "./tsconfig.json",
   "include": [
     "lib",
   ]
