@@ -305,13 +305,33 @@ You can setup version which solidity compiler version you would like to use with
 
 Version naming is somewhat unintuitive. You can deduce version name from [list available here] (https://ethereum.github.io/solc-bin/bin/list.json).
 
-# Testing
-Note: To make end to end test pass, you need to have docker installed, up and running.
+## Contributing
 
-To run test type:
+Contributions are always welcome, no matter how large or small. Before contributing, please read the [code of conduct](https://github.com/EthWorks/Waffle/blob/master/CODE_OF_CONDUCT.md) and [contribution policy](https://github.com/EthWorks/Waffle/blob/master/CONTRIBUTION.md).
+
+Before you issue pull request:
+
+Make sure all tests and linters pass.
+Make sure you have test coverage for any new features.
+
+
+## Running tests
+Note: To make end to end test pass, you need to:
+* have docker installed, up and running
+* have native solidity 0.5.* installed
+
+To run tests type:
 ```sh
 yarn test
 ```
+
+To run linter type:
+```sh
+yarn lint
+```
+## License
+Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT).
+
 
 ## Roadmap
 * New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
