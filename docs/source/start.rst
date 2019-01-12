@@ -15,10 +15,10 @@ or with Yarn:
   yarn add ethereum-waffle
 
 
-Example contract
-----------------
+Adding a contract
+-----------------
 
-Below is example contract written in Solidity. Place it in `contracts` directory of your project:
+Below is example contract written in Solidity. Place it in ``contracts`` directory of your project:
 
 ::
 
@@ -36,9 +36,9 @@ Below is example contract written in Solidity. Place it in `contracts` directory
   }
 
 
-Example test
-------------
-Belows is example test written for the contract above written with Waffle. Place it in `test` directory of your project:
+Writing first tests
+-------------------
+Belows is example test written for the contract above written with Waffle. Place it in ``test`` directory of your project:
 
 ::
 
@@ -110,8 +110,8 @@ Example configuration file looks like this:
   }
 
 
-Run tests
----------
+Running tests
+-------------
 
 To run test type in the console:
 ::
@@ -120,9 +120,9 @@ To run test type in the console:
 
 
 Adding a task
-^^^^^^^^^^^^^
+-------------
 
-For convince, you can add a task to your `package.json`. In the sections `scripts`, add following line:
+For convince, you can add a task to your ``package.json``. In the sections ``scripts``, add following line:
 ::
 
   "test": "waffle && test"
