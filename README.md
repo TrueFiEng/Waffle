@@ -186,4 +186,4 @@ Universal Login SDK is released under the [MIT License](https://opensource.org/l
 - [ ] New matcher: changeBalance for ERC20 tokens
 
 ## Waffle 2.2
-* Debugging and profiling
+- [ ] Debugging and profiling
