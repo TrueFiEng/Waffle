@@ -39,10 +39,11 @@ Link a library:
 ::
 
   myLibrary = await deployContract(wallet, MyLibrary, []);
-  link(LibraryConsumer, 'path/to/file:MyLibrary.sol/MyLibrary', myLibrary.address);
+  link(LibraryConsumer, 'path/to/file/MyLibrary.sol/MyLibrary', myLibrary.address);
   libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
 
-Note: As a second parameter of link, you need to use fully qualified name (full path to file, followed by a colon and the contract name).
+Note: Note: As the second parameter of the link function, you need to use a fully qualified name (full path to file, followed by a colon and the contract name).
+
 
 Import contracts from npm library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,7 +62,7 @@ Import solidity files from project imported to npm modules:
 
 Chai matchers
 -------------
-A set of sweet chai matchers, makes your test easy to write and read. Below couple of examples.
+A set of sweet chai matchers, makes your test easy to write and read. Below is the list of available matchers:
 
 Bignumbers
 ^^^^^^^^^^
@@ -76,7 +77,7 @@ Available matchers for BigNumbers are: `equal`, `eq`, `above`, `below`, `least`,
 Emitting events
 ^^^^^^^^^^^^^^^
 
-Testing what events where emitted with what arguments:
+Testing what events were emitted with what arguments:
 ::
 
   await expect(token.transfer(walletTo.address, 7))
@@ -155,9 +156,9 @@ Testing if string is a proper hex value of given length:
 Fixtures
 --------
 
-When testing code dependent on smart contracts it is often useful to have a specific scenario play out before every test. For example when testing an ERC20 token one might want to check that specific addresses can or cannot perform transfers. Before each of those tests however you have to deploy the ERC20 contract and maybe transfer some funds.
+When testing code dependent on smart contracts it is often useful to have a specific scenario play out before every test. For example, when testing an ERC20 token one might want to check that specific addresses can or cannot perform transfers. Before each of those tests however, you have to deploy the ERC20 contract and maybe transfer some funds.
 
-The repeated deployment of contracts might slow down the test significantly. This is why Waffle allows you to create fixtures - testing scenarios that are executed once and then remembered by making snaphots of the blockchain. This significantly speeds up the tests.
+The repeated deployment of contracts might slow down the test significantly. This is why Waffle allows you to create fixtures - testing scenarios that are executed once and then remembered by making snapshots of the blockchain. This significantly speeds up the tests.
 
 Example:
 ::
@@ -187,7 +188,7 @@ Example:
   });
 
 
-Fixtures receive a provider and an array of wallets as an argument. By default the provider is obtained by calling `createMockProvider` and the wallets by `getWallets`. You can however override those by using a custom fixture loader.
+Fixtures receive a provider and an array of wallets as an argument. By default, the provider is obtained by calling `createMockProvider` and the wallets by `getWallets`. You can, however, override those by using a custom fixture loader.
 
 ::
 

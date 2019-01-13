@@ -3,25 +3,32 @@ Waffle Documentation
 
 .. image:: logo.png
 
-Waffle is library for writing and testing smart contracts.
+Waffle is a library for writing and testing smart contracts.
 
 Sweeter, simpler and faster than Truffle.
 
-Works with ethers-js. Tastes best with ES6.
-(Support for TypeScript is coming).
+Works with ethers-js.
 
 Philosophy:
 -----------
-- **Simpler**: minimalistic, a couple of helpers, matchers and tasks rather than a framework, few dependencies.
-- **Sweeter**: Nice syntax, fast, easy to extend.
-- **Faster**: focus on the speed of tests execution, the goal is to have subsecond feedback loop when doing TDD with smart contracts
+- **Simpler**: Minimalistic, few dependencies.
+- **Sweeter**: Nice syntax, easy to extend.
+- **Faster**: Focus on the speed of tests execution.
 
+Features:
+---------
+- Sweet set of chai matchers
+- Easy contract importing from npm modules
+- Fast compilation with native and dockerized solc
+- Typescript compatible
+- Fixtures that help write fast and maintainable test suites
+- Well documented
 
 Versions and ethers compatibility
 ---------------------------------
-Use version 0.2.3+ with ethers 3.* and solidity 4.*
-Use version 1.0.0+ with ethers 4.* and solidity 4.*
-Use version 2.0.5-beta with ethers 4.*; solidity 4, 5 and to use experimental native solc and dockerized solc.
+- Use version 0.2.3+ with ethers 3.* and solidity 4.*
+- Use version 1.0.0+ with ethers 4.* and solidity 4.*
+- Use version 2.0.5-beta with ethers 4.*; solidity 4, 5 and to use experimental native solc and dockerized solc.
 
 
 .. toctree::
