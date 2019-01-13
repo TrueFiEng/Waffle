@@ -11,16 +11,16 @@ As an alternative, you can use the native Solidity compiler, which is faster. Th
 Native solc
 -----------
 
-This option is by far the fastest, but requires you to install native solidity.
+This option is by far the fastest but requires you to install native solidity.
 If you need an old version that might be somewhat complicated and require you to build `solidity` from sources.
-Therefore it is recommended option if you want to use latest solidity version.
+Therefore it is the recommended option if you want to use latest solidity version.
 
 You can find detailed installation instructions for native `solc` in
 `documentation <https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages>`_.
 
 **Note:** You need to install version compatible with your sources.
 
-If you need latest version that is pretty straight forward. See Installation instructions below.
+If you need the latest version that is pretty straight forward, see installation instructions below.
 
 Installation
 ^^^^^^^^^^^^
@@ -34,9 +34,9 @@ To install lastest versions on MacOS:
   brew install solidity
 
 
-To install other versions, it seems that currently it easiest to build from source:
+To install other versions, it seems that currently, you need to build it from source:
 
-#. Download sources from `release list on github <https://github.com/ethereum/solidity/releases>`_
+#. Download sources from `release list on GitHub <https://github.com/ethereum/solidity/releases>`_
 #. Follow installation instructions in the `documentation <https://solidity.readthedocs.io/en/develop/installing-solidity.html#building-from-source>`_
 
 Ubuntu
@@ -72,11 +72,11 @@ You can now run tests with native solc, eg:
 Dockerized solc
 ---------------
 
-This options is pretty easy to install especially if you have docker installed.
-This is recommended option if you need to use old solidity version.
+This option is pretty easy to install especially if you have Docker installed.
+This is the recommended option if you need to use old solidity version.
 If you don't have docker use `following instructions <https://www.docker.com/get-started>`_ to install it.
 
-Pull solc docker container tagged with version you are interested in, for example for version 0.4.24 it will be:
+Pull solc docker container tagged with the version you are interested in, for example for version 0.4.24:
 ::
 
 
@@ -100,7 +100,7 @@ You can now run tests in docker.
 
 Solcjs and version management
 -----------------------------
-Solcjs allows to switch used version of solidity compiler on the fly. To setup version solidity compiler version add following line in waffle configuration file:
+Solcjs allows switching used version of solidity compiler on the fly. To set up a chosen version of solidity compiler add the following line in the Waffle configuration file:
 ::
 
   {

@@ -4,21 +4,27 @@
 
 Library for writing and testing smart contracts.
 
-Sweeter, simpler, faster. Works with [ethers-js](https://github.com/ethers-io/ethers.js/).
+Sweeter, simpler, faster than Truffle.
+
+## Documentation
+
 Documentation available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
 
 ## Philosophy
-* __Simpler__: minimalistic, a couple of helpers, matchers and tasks rather than a framework, few dependencies.
-* __Sweeter__: Nice syntax, fast, easy to extend.
-* __Faster__: Focus on the speed of tests execution, the goal is to have subsecond feedback loop when doing TDD with smart contracts.
+* __Simpler__: Minimalistic, few dependencies.
+* __Sweeter__: Nice syntax, easy to extend.
+* __Faster__: Strong focus on the speed of tests execution.
+
+## Features:
+* Sweet set of chai matchers
+* Easy contract importing from npm modules
+* Fast compilation with native and dockerized solc
+* Typescript compatible
+* Fixtures that help write fast and maintainable test suites
+* Well [documented](https://ethereum-waffle.readthedocs.io/en/latest/)
 
 
-## Versions and ethers compatibility
-* Use version 0.2.3+ with ethers 3.* and solidity 4.*
-* Use version 1.0.0+ with ethers 4.* and solidity 4.*
-* Use version 2.0.5-beta with ethers 4.*; solidity 4, 5 and to use experimental native solc and dockerized solc.
-
-## Install:
+## Installation:
 To start using with npm, type:
 ```sh
 npm i ethereum-waffle
@@ -98,12 +104,12 @@ describe('Example', () => {
 ```
 
 ### Compile
-To compile contracts simply type:
+To compile contracts type:
 ```sh
 npx waffle
 ```
 
-To compile using custom configuration file:
+To compile using a custom configuration file:
 ```sh
 npx waffle config.json
 ```
@@ -124,7 +130,7 @@ mocha
 ```
 
 ### Adding a task
-For convince, you can add a task to your `package.json`. In the sections `scripts`, add following line:
+For convince, you can add a task to your `package.json`. In the sections `scripts`, add the following line:
 ```json
   "test": "waffle && test"
 ```
@@ -150,8 +156,8 @@ Make sure you have test coverage for any new features.
 
 
 ## Running tests
-Note: To make end to end test pass, you need to:
-* have docker installed, up and running
+Note: To make end-to-end test pass, you need to:
+* have Docker installed, up and running
 * have native solidity 0.5.* installed
 
 To run tests type:
@@ -168,8 +174,16 @@ Universal Login SDK is released under the [MIT License](https://opensource.org/l
 
 
 ## Roadmap
-* New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
-* Faster testing with native geth (aside from ganache)
-* Faster compilation with native and dockerized solc (aside from solcjs)
-* Documentation
+
+### Waffle 2.0 (currently in beta)
+- [x] New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
+- [x] Faster compilation with native and dockerized solc (aside from solcjs)
+- [x] Documentation
+- [x] TypeScript rewrite
+
+## Waffle 2.1
+- [ ] Faster testing with native geth (aside from ganache)
+- [ ] New matcher: changeBalance for ERC20 tokens
+
+## Waffle 2.2
 * Debugging and profiling
