@@ -18,8 +18,8 @@ export default class Compiler {
 
   constructor(config: Partial<Config> = {}, options: CompilerOptions = {}) {
     this.config = {...defaultConfig, ...config};
-    this.process = options.overrideProcess;
-    this.console = options.overrideConsole;
+    this.process = options.overrideProcess || process;
+    this.console = options.overrideConsole || console;
     this.wrapper = options.wrapper || createWrapper(this.config);
   }
 
