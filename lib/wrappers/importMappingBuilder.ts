@@ -9,21 +9,21 @@ const IMPORT_TYPE_B = new RegExp(`import\\s+(\\*|${TYPE})\\s+(as\\s+${AS})?\\s*f
 const IMPORT_TYPE_C = new RegExp(`import\\s+\\{(.*)\\}\\s*from\\s+${PATH};`);
 
 class ImportMappingBuilder {
-  constructor(contractBasePath, npmPath, containerPath, containerNpmPath) {
-    this.contractBasePath = contractBasePath;
-    this.npmPath = npmPath;
-    this.containerPath = containerPath;
-    this.containerNpmPath = containerNpmPath;
-  }
+  constructor(
+    private contractBasePath: string,
+    private npmPath: string,
+    private containerPath?: string,
+    private containerNpmPath?: string
+  ) {}
 
-  mapPath(prefix) {
+  public mapPath(prefix: string) {
     if (this.containerPath) {
       return join(this.containerNpmPath, prefix);
     }
     return resolve(join(this.npmPath, prefix));
   }
 
-  getMapping(importPath, filePath) {
+  public getMapping(importPath: string, filePath: string) {
     const interPath = dirname(relative(this.contractBasePath, filePath));
     const joinedPath = join(this.contractBasePath, interPath, importPath);
     if (isFile(joinedPath)) {
@@ -37,20 +37,24 @@ class ImportMappingBuilder {
     throw TypeError(`Invalid import, file does not exist: ${importPath}`);
   }
 
-  getMappingForImport(importDirective, importRegExp, filePath) {
+  public getMappingForImport(
+    importDirective: string,
+    importRegExp: RegExp,
+    filePath: string
+  ) {
     const {path} = importRegExp.exec(importDirective).groups;
     return this.getMapping(path, filePath);
   }
 
-  getMappingForUnitWithRegexp(unit, regexp, filePath) {
+  public getMappingForUnitWithRegexp(unit: string, regexp: RegExp, filePath: string) {
     const regexpWithGlobal = new RegExp(regexp, 'g');
-    const reducer = (accum, importDirective) =>
+    const reducer = (accum: object, importDirective: string) =>
       Object.assign(accum, this.getMappingForImport(importDirective, regexp, filePath));
     const mappings = unit.match(regexpWithGlobal) || [];
     return mappings.reduce(reducer, {});
   }
 
-  getMappingForUnit(unit, filePath) {
+  public getMappingForUnit(unit: string, filePath: string) {
     return falttenObjectArray([
       this.getMappingForUnitWithRegexp(unit, IMPORT_TYPE_A, filePath),
       this.getMappingForUnitWithRegexp(unit, IMPORT_TYPE_B, filePath),
@@ -58,7 +62,7 @@ class ImportMappingBuilder {
     ]);
   }
 
-  getMappings(sources) {
+  public getMappings(sources: string[]) {
     return falttenObjectArray(
       sources.map((path) =>
         this.getMappingForUnit(readFileContent(path), path)

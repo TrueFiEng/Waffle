@@ -35,7 +35,7 @@ describe('E2E: Compiler integration', () => {
       await compile('config_docker.json');
       for (const artefact of artefacts) {
         const filePath = join('../build', artefact);
-        expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.be.true;
+        expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
       }
     });
 
@@ -56,10 +56,10 @@ describe('E2E: Compiler integration', () => {
       });
 
       it('produce output files', async () => {
-        expect(fs.existsSync(targetPath), `Expected build path "${targetPath}" to exist.`).to.be.true;
+        expect(fs.existsSync(targetPath), `Expected build path "${targetPath}" to exist.`).to.equal(true);
         for (const artefact of artefacts) {
           const filePath = join(targetPath, artefact);
-          expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.be.true;
+          expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
         }
       });
 
@@ -67,7 +67,7 @@ describe('E2E: Compiler integration', () => {
         for (const artefact of artefacts) {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
-          expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok;
+          expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok; // tslint:disable-line
           expect(content.evm.bytecode.object).to.startWith('60');
         }
       });
@@ -76,9 +76,15 @@ describe('E2E: Compiler integration', () => {
         for (const artefact of artefacts) {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
-          expect(content.abi, `"${filePath}" expected to have abi`).to.be.ok;
-          expect(content.abi, `"${filePath}" abi expected to be array, but was "${typeof content.abi}"`).to.be.an('array');
-          expect(content.abi[0], `"${filePath}" abi expected to contain objects, but was "${typeof content.abi[0]}"`).to.be.an('object');
+          expect(content.abi, `"${filePath}" expected to have abi`).to.be.ok; // tslint:disable-line
+          expect(
+            content.abi,
+            `"${filePath}" abi expected to be array, but was "${typeof content.abi}"`
+          ).to.be.an('array');
+          expect(
+            content.abi[0],
+            `"${filePath}" abi expected to contain objects, but was "${typeof content.abi[0]}"`
+          ).to.be.an('object');
         }
       });
 

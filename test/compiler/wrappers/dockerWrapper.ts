@@ -13,7 +13,7 @@ const npmPath = './test/projects/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
 describe('UNIT: DockerWrapper', () => {
-  let dockerWrapper;
+  let dockerWrapper: DockerWrapper;
 
   before(() => {
     dockerWrapper = new DockerWrapper(config);
@@ -61,14 +61,20 @@ describe('UNIT: DockerWrapper', () => {
     it('no version', () => {
       const command = dockerWrapper.buildCommand();
       expect(command).to.startWith('docker run -v ');
-      expect(command).to.endWith(':/home/npm -i -a stdin -a stdout ethereum/solc:stable solc --standard-json --allow-paths "/home/project,/home/npm"');
+      expect(command).to.endWith(
+        ':/home/npm -i -a stdin -a stdout ethereum/solc:stable solc ' +
+        '--standard-json --allow-paths "/home/project,/home/npm"'
+      );
     });
 
     it('specific version', () => {
-      const dockerWrapper = new DockerWrapper({...config, 'docker-tag': '0.4.24'});
-      const command = dockerWrapper.buildCommand();
+      const wrapper = new DockerWrapper({...config, 'docker-tag': '0.4.24'});
+      const command = wrapper.buildCommand();
       expect(command).to.startWith('docker run -v ');
-      expect(command).to.endWith(':/home/npm -i -a stdin -a stdout ethereum/solc:0.4.24 solc --standard-json --allow-paths "/home/project,/home/npm"');
+      expect(command).to.endWith(
+        ':/home/npm -i -a stdin -a stdout ethereum/solc:0.4.24 solc ' +
+        '--standard-json --allow-paths "/home/project,/home/npm"'
+      );
     });
   });
 });

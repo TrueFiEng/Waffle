@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import solc from 'solc';
+import solc, { SolcCompiler } from 'solc';
 import {promisify} from 'util';
 import {readFileContent} from '../utils';
 import BaseWrapper from './baseWrapper';
@@ -8,16 +8,18 @@ import BaseWrapper from './baseWrapper';
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
 class SolcjsWrapper extends BaseWrapper {
-  async findInputs(files) {
-    return Object.assign(...files.map((file) => ({[file]: readFileContent(file)})));
+  protected solc: SolcCompiler;
+
+  public async findInputs(files: string[]) {
+    return Object.assign({}, ...files.map((file) => ({[file]: readFileContent(file)})));
   }
 
-  convertSources(sources) {
+  protected convertSources(sources: Record<string, any>) {
     Object.keys(sources).map((key) => sources[key] = {content: sources[key]});
     return sources;
   }
 
-  async loadCompiler() {
+  protected async loadCompiler() {
     if (this.solc) {
       return;
     } else if (this.config.solcVersion) {
@@ -27,7 +29,7 @@ class SolcjsWrapper extends BaseWrapper {
     }
   }
 
-  async compile(sourcesFiles, findImports) {
+  public async compile(sourcesFiles: string[], findImports: (...args: any) => any) {
     await this.loadCompiler();
     const sources = await this.findInputs(sourcesFiles);
     const input = {
@@ -45,11 +47,11 @@ class SolcjsWrapper extends BaseWrapper {
     return JSON.parse(output);
   }
 
-  getContent(ContractJSON) {
+  protected getContent(ContractJSON: object) {
     return JSON.stringify(ContractJSON, null, 2);
   }
 
-  async saveOutput(output, targetPath) {
+  public async saveOutput(output: any, targetPath: string) {
     for (const key of Object.keys(output.contracts)) {
       for (const contract of Object.keys(output.contracts[key])) {
         const filePath = path.join(targetPath, `${contract}.json`);
@@ -61,7 +63,7 @@ class SolcjsWrapper extends BaseWrapper {
         try {
           fs.writeFileSync(filePath, content);
         } catch (err) {
-          this.console.error(err);
+          console.error(err);
         }
       }
     }

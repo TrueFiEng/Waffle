@@ -1,20 +1,31 @@
 import fs from 'fs';
 import path from 'path';
-import defaultConfig from './config/defaultConfig';
+import defaultConfig, {Config} from './config/config';
 import {isDirectory, readFileContent, isWarningMessage} from './utils';
-import createWrapper from './wrappers/createWrapper';
+import {createWrapper, Wrapper} from './wrappers/createWrapper';
+
+interface CompilerOptions {
+  wrapper?: Wrapper;
+  overrideProcess?: NodeJS.Process;
+  overrideConsole?: Console;
+}
 
 export default class Compiler {
-  constructor(config = {}, {wrapper = null, overrideProcess = process, overrideConsole = console} = {}) {
+  private config: Config;
+  private process: NodeJS.Process;
+  private console: Console;
+  private wrapper: Wrapper;
+
+  constructor(config: Partial<Config> = {}, options: CompilerOptions = {}) {
     this.config = {...defaultConfig, ...config};
-    this.process = overrideProcess;
-    this.console = overrideConsole;
-    this.wrapper = wrapper || createWrapper(this.config);
+    this.process = options.overrideProcess;
+    this.console = options.overrideConsole;
+    this.wrapper = options.wrapper || createWrapper(this.config);
   }
 
-  async findInputFiles(sourcesPath) {
+  public async findInputFiles(sourcesPath: string) {
     const dirs = [sourcesPath];
-    const inputFiles = [];
+    const inputFiles: string[] = [];
     while (dirs.length) {
       const dir = dirs.pop();
       const files = fs.readdirSync(dir);
@@ -30,7 +41,7 @@ export default class Compiler {
     return inputFiles;
   }
 
-  findImports(file) {
+  public findImports(file: string) {
     const libPath = path.join(this.config.npmPath, file);
     if (fs.existsSync(file)) {
       const contents = readFileContent(file);
@@ -42,12 +53,12 @@ export default class Compiler {
     return {error: `File not found: ${file}`};
   }
 
-  async doCompile() {
+  public async doCompile() {
     const sourcesFiles = await this.findInputFiles(this.config.sourcesPath);
     return this.wrapper.compile(sourcesFiles, this.findImports.bind(this));
   }
 
-  anyNonWarningErrors(errors) {
+  private anyNonWarningErrors(errors?: any[]) {
     if (!errors) {
       return false;
     }
@@ -59,14 +70,14 @@ export default class Compiler {
     return false;
   }
 
-  toFormattedMessage(error) {
+  private toFormattedMessage(error: any) {
     return typeof error === 'string' ? error : error.formattedMessage;
   }
 
-  async compile() {
+  public async compile() {
     const output = await this.doCompile();
     if (output.errors) {
-      const errors = output.errors.map((error) => this.toFormattedMessage(error)).join('\n');
+      const errors = output.errors.map((error: any) => this.toFormattedMessage(error)).join('\n');
       this.console.error(errors);
     }
     if (this.anyNonWarningErrors(output.errors)) {
@@ -77,11 +88,11 @@ export default class Compiler {
   }
 }
 
-export async function compile(configPath, options = {}) {
+export async function compile(configPath: string, options = {}) {
   try {
     let config = {};
     if (configPath) {
-      const contents = fs.readFileSync(configPath);
+      const contents = fs.readFileSync(configPath, 'utf-8');
       config = JSON.parse(contents);
     }
     const compiler = new Compiler(config, options);
