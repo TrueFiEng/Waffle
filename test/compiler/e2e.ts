@@ -69,6 +69,7 @@ describe('E2E: Compiler integration', () => {
           const content = JSON.parse(readFileContent(filePath));
           expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok; // tslint:disable-line
           expect(content.evm.bytecode.object).to.startWith('60');
+          expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
         }
       });
 
@@ -76,7 +77,7 @@ describe('E2E: Compiler integration', () => {
         for (const artefact of artefacts) {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
-          expect(content.abi, `"${filePath}" expected to have abi`).to.be.ok; // tslint:disable-line
+          expect(content.abi, `"${filePath}" expected to have abi`).to.be.an.instanceOf(Array);
           expect(
             content.abi,
             `"${filePath}" abi expected to be array, but was "${typeof content.abi}"`
@@ -85,6 +86,7 @@ describe('E2E: Compiler integration', () => {
             content.abi[0],
             `"${filePath}" abi expected to contain objects, but was "${typeof content.abi[0]}"`
           ).to.be.an('object');
+          expect(content.interface).to.deep.eq(content.abi);
         }
       });
 

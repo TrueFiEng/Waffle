@@ -4,6 +4,24 @@ import {join, dirname} from 'path';
 import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
 
+export interface BytecodeJson {
+  linkReferences: object;
+  object: string;
+  opcodes: string;
+  sourceMap: string;
+}
+
+export interface EvmJson {
+  bytecode: BytecodeJson;
+}
+
+export interface ContractJson {
+  interface: object[];
+  abi: object[];
+  bytecode: string;
+  evm: EvmJson;
+}
+
 export default class BaseWrapper {
   protected config: Config;
   protected mappingBuilder: ImportMappingBuilder;
@@ -12,7 +30,9 @@ export default class BaseWrapper {
     this.config = config;
   }
 
-  protected getContent(contractJson: object) {
+  protected getContent(contractJson: ContractJson) {
+    contractJson.interface = contractJson.abi;
+    contractJson.bytecode = contractJson.evm.bytecode.object;
     return JSON.stringify(contractJson, null, 2);
   }
 
@@ -47,7 +67,7 @@ export default class BaseWrapper {
       sources: this.buildSources(sources),
       settings: {
         remappings: this.getMappings(sources),
-        outputSelection: {'*': {'*': ['abi', 'evm.bytecode']}}
+        outputSelection: {'*': {'*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']}}
       }
     };
   }
