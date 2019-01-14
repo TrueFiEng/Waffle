@@ -5,10 +5,10 @@ import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
 
 export interface BytecodeJson {
-  linkReferences: object,
-  object: string,
-  opcodes: string,
-  sourceMap: string
+  linkReferences: object;
+  object: string;
+  opcodes: string;
+  sourceMap: string;
 }
 
 export interface EvmJson {
@@ -16,8 +16,8 @@ export interface EvmJson {
 }
 
 export interface ContractJson {
-  interface: Array<object>;
-  abi: Array<object>;
+  interface: object[];
+  abi: object[];
   bytecode: string;
   evm: EvmJson;
 }
