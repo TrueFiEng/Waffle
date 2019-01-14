@@ -6,10 +6,6 @@ Library for writing and testing smart contracts.
 
 Sweeter, simpler, faster than Truffle.
 
-## Documentation
-
-Documentation available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
-
 ## Philosophy
 * __Simpler__: Minimalistic, few dependencies.
 * __Sweeter__: Nice syntax, easy to extend.
@@ -23,6 +19,9 @@ Documentation available [here](https://ethereum-waffle.readthedocs.io/en/latest/
 * Fixtures that help write fast and maintainable test suites
 * Well [documented](https://ethereum-waffle.readthedocs.io/en/latest/)
 
+
+## Documentation
+Documentation available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
 
 ## Installation:
 To start using with npm, type:
@@ -155,7 +154,7 @@ Make sure all tests and linters pass.
 Make sure you have test coverage for any new features.
 
 
-## Running tests
+### Running tests
 Note: To make end-to-end test pass, you need to:
 * have Docker installed, up and running
 * have native solidity 0.5.* installed
@@ -169,8 +168,6 @@ To run linter type:
 ```sh
 yarn lint
 ```
-## License
-Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT).
 
 
 ## Roadmap
@@ -181,9 +178,13 @@ Universal Login SDK is released under the [MIT License](https://opensource.org/l
 - [x] Documentation
 - [x] TypeScript rewrite
 
-## Waffle 2.1
+### Waffle 2.1
 - [ ] Faster testing with native geth (aside from ganache)
 - [ ] New matcher: changeBalance for ERC20 tokens
 
-## Waffle 2.2
+### Waffle 2.2
 - [ ] Debugging and profiling
+
+## License
+Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT).
+
