@@ -3,7 +3,7 @@ import path from 'path';
 import solc, { SolcCompiler } from 'solc';
 import {promisify} from 'util';
 import {readFileContent} from '../utils';
-import BaseWrapper from './baseWrapper';
+import BaseWrapper, {ContractJson} from './baseWrapper';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
@@ -38,7 +38,7 @@ class SolcjsWrapper extends BaseWrapper {
       settings: {
         outputSelection: {
           '*': {
-            '*': ['*']
+            '*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']
           }
         }
       }
@@ -47,8 +47,10 @@ class SolcjsWrapper extends BaseWrapper {
     return JSON.parse(output);
   }
 
-  protected getContent(ContractJSON: object) {
-    return JSON.stringify(ContractJSON, null, 2);
+  protected getContent(contractJson: ContractJson) {
+    contractJson.interface = contractJson.abi;
+    contractJson.bytecode = contractJson.evm.bytecode.object;
+    return JSON.stringify(contractJson, null, 2);
   }
 
   public async saveOutput(output: any, targetPath: string) {
