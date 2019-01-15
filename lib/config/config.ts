@@ -5,6 +5,7 @@ export interface Config {
   compiler?: 'native' | 'dockerized-solc' | 'solcjs';
   'docker-tag'?: string;
   solcVersion?: string;
+  legacyOutput?: string;
 }
 
 const defaultConfig: Config = {
