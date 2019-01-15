@@ -16,7 +16,7 @@ describe('INTEGRATION: Events', () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [wallet] = await getWallets(provider);
+    [wallet] = getWallets(provider);
     events = await deployContract(wallet, Events);
   });
 

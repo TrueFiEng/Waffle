@@ -19,7 +19,7 @@ Get example wallets
 Get wallets you can use to sign transactions:
 ::
 
-  [wallet, walletTo] = await getWallets(provider);
+  [wallet, walletTo] = getWallets(provider);
 
 You can get up to ten wallets.
 

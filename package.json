@@ -41,7 +41,7 @@
     "chai-string": "~1.4.0",
     "fs-extra": "^7.0.0",
     "mocha": "^5.1.1",
-    "openzeppelin-solidity": "^1.11.0",
+    "openzeppelin-solidity": "^2.1.1",
     "sinon": "^6.1.5",
     "sinon-chai": "^3.2.0",
     "solium": "^1.1.8",

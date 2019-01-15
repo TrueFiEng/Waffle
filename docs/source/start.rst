@@ -24,17 +24,15 @@ Below is example contract written in Solidity. Place it in ``contracts`` directo
 
   pragma solidity ^0.5.1;
 
-  import "../BasicToken.sol";
+  import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-  contract BasicTokenMock is BasicToken {
 
+  // Example class - a mock class using delivering from ERC20
+  contract BasicTokenMock is ERC20 {
     constructor(address initialAccount, uint256 initialBalance) public {
-      balances[initialAccount] = initialBalance;
-      totalSupply_ = initialBalance;
+      super._mint(initialAccount, initialBalance);
     }
-
   }
-
 
 Writing first tests
 -------------------
@@ -45,20 +43,18 @@ Belows is example test written for the contract above written with Waffle. Place
   import chai from 'chai';
   import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
   import BasicTokenMock from './build/BasicTokenMock';
+  import MyLibrary from './build/MyLibrary';
+  import LibraryConsumer from './build/LibraryConsumer';
 
   chai.use(solidity);
-
   const {expect} = chai;
 
-  describe('Example', () => {
-    let provider;
+  describe('INTEGRATION: Example', () => {
+    let provider = createMockProvider();
+    let [wallet, walletTo] = getWallets(provider);
     let token;
-    let wallet;
-    let walletTo;
 
     beforeEach(async () => {
-      provider = createMockProvider();
-      [wallet, walletTo] = await getWallets(provider);
       token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
     });
 
@@ -68,7 +64,6 @@ Belows is example test written for the contract above written with Waffle. Place
 
     it('Transfer adds amount to destination account', async () => {
       await token.transfer(walletTo.address, 7);
-      expect(await token.balanceOf(wallet.address)).to.eq(993);
       expect(await token.balanceOf(walletTo.address)).to.eq(7);
     });
 
@@ -78,11 +73,16 @@ Belows is example test written for the contract above written with Waffle. Place
         .withArgs(wallet.address, walletTo.address, 7);
     });
 
-    it('Can not transfer from empty account', async () => {
-      const tokenFromOtherWallet = contractWithWallet(token, walletTo);
-      await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
-        .to.be.revertedWith('Not enough balance on sender account');
+    it('Can not transfer above the amount', async () => {
+      await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
     });
+
+    it('Can not transfer from empty account', async () => {
+      const tokenFromOtherWallet = token.connect(walletTo);
+      await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
+        .to.be.reverted;
+    });
+
   });
 
 

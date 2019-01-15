@@ -92,7 +92,7 @@ describe('E2E: Compiler integration', () => {
 
       it('links library', async () => {
         const provider = createMockProvider();
-        const [wallet] = await getWallets(provider);
+        const [wallet] = getWallets(provider);
         const libraryPath = resolve(join(configuration.targetPath, 'MyLibrary.json'));
         const MyLibrary = require(libraryPath);
         const LibraryConsumer = deepCopy(require(resolve(join(configuration.targetPath, 'Two.json'))));
