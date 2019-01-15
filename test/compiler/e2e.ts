@@ -46,7 +46,7 @@ describe('E2E: Compiler integration', () => {
   });
 
   for (const configurationPath of configurations)  {
-    const configuration = loadConfig(configurationPath)
+    const configuration = loadConfig(configurationPath);
     const {name, targetPath} = configuration;
 
     /* eslint-disable no-loop-func */
