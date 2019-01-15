@@ -1,13 +1,14 @@
 import fs from 'fs';
 import fsx from 'fs-extra';
+import path from 'path';
 import {join, resolve} from 'path';
 import {expect} from 'chai';
-import {compile} from '../../lib/compiler';
+import {compile, loadConfig} from '../../lib/compiler';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
 
 const configurations = [
-  './test/projects/custom/config.json',
+  './test/projects/custom/config.js',
   './test/projects/custom/config_native.json',
   './test/projects/custom/config_docker.json',
   './test/projects/custom_solidity_4/config_solcjs.json',
@@ -45,7 +46,7 @@ describe('E2E: Compiler integration', () => {
   });
 
   for (const configurationPath of configurations)  {
-    const configuration = JSON.parse(readFileContent(configurationPath));
+    const configuration = loadConfig(configurationPath)
     const {name, targetPath} = configuration;
 
     /* eslint-disable no-loop-func */

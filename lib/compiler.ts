@@ -88,13 +88,16 @@ export default class Compiler {
   }
 }
 
+export function loadConfig(configPath: string) {
+  if (configPath) {
+    return require(path.join(process.cwd(), configPath));
+  }
+  return {};
+}
+
 export async function compile(configPath: string, options = {}) {
   try {
-    let config = {};
-    if (configPath) {
-      const contents = fs.readFileSync(configPath, 'utf-8');
-      config = JSON.parse(contents);
-    }
+    const config = loadConfig(configPath);
     const compiler = new Compiler(config, options);
     await compiler.compile();
   } catch (err) {
