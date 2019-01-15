@@ -14,13 +14,11 @@ const alwaysReject = new Promise((resolve, reject) => {
 });
 
 describe('INTEGRATION: Matchers: reverted', () => {
-  let provider;
+  let provider = createMockProvider();
+  let [wallet] = getWallets(provider);
   let matchers;
-  let wallet;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = await getWallets(provider);
     matchers = await deployContract(wallet, Matchers);
   });
 

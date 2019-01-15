@@ -12,12 +12,16 @@ Sweeter, simpler, faster than Truffle.
 * __Faster__: Strong focus on the speed of tests execution.
 
 ## Features:
-* Sweet set of chai matchers
-* Easy contract importing from npm modules
-* Fast compilation with native and dockerized solc
-* Typescript compatible
-* Fixtures that help write fast and maintainable test suites
-* Well [documented](https://ethereum-waffle.readthedocs.io/en/latest/)
+* Sweet set of chai matchers, e.g.:
+  * `expect(...).to.be.revertedWith('Error message')`
+  * `expect(...).to.emitEvent(contract, 'EventName).withArgs(...)`)
+* Importing contracts from npm modules working out of the box, e.g.:
+  * `import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";`
+* Fixtures that help write fast and maintainable test suites, e.g.:
+  * `const {token} = await loadFixture(standardTokenWithBalance);`
+* Sub-second compilation with native and dockerized solc
+* Support for TypeScript
+* [Documentation](https://ethereum-waffle.readthedocs.io/en/latest/)
 
 
 ## Documentation
@@ -36,21 +40,27 @@ yarn add ethereum-waffle
 
 ## Step by step guide
 
+### Add external dependency:
+To add external library add npm to your project:
+
+```sh
+npm i open-zeppelin
+```
+
 ### Example contract
 Below is example contract written in Solidity. Place it in `contracts` directory of your project:
 
 ```solidity
 pragma solidity ^0.5.1;
 
-import "../BasicToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-contract BasicTokenMock is BasicToken {
 
+// Example class - a mock class using delivering from ERC20
+contract BasicTokenMock is ERC20 {
   constructor(address initialAccount, uint256 initialBalance) public {
-    balances[initialAccount] = initialBalance;
-    totalSupply_ = initialBalance;
+    super._mint(initialAccount, initialBalance);
   }
-
 }
 ```
 
@@ -61,20 +71,18 @@ Belows is example test written for the contract above written with Waffle. Place
 import chai from 'chai';
 import {createMockProvider, deployContract, getWallets, solidity} from 'ethereum-waffle';
 import BasicTokenMock from './build/BasicTokenMock';
+import MyLibrary from './build/MyLibrary';
+import LibraryConsumer from './build/LibraryConsumer';
 
 chai.use(solidity);
-
 const {expect} = chai;
 
-describe('Example', () => {
-  let provider;
+describe('INTEGRATION: Example', () => {
+  let provider = createMockProvider();
+  let [wallet, walletTo] = getWallets(provider);
   let token;
-  let wallet;
-  let walletTo;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, walletTo] = await getWallets(provider);
     token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
   });
 
@@ -84,7 +92,6 @@ describe('Example', () => {
 
   it('Transfer adds amount to destination account', async () => {
     await token.transfer(walletTo.address, 7);
-    expect(await token.balanceOf(wallet.address)).to.eq(993);
     expect(await token.balanceOf(walletTo.address)).to.eq(7);
   });
 
@@ -94,11 +101,16 @@ describe('Example', () => {
       .withArgs(wallet.address, walletTo.address, 7);
   });
 
-  it('Can not transfer from empty account', async () => {
-    const tokenFromOtherWallet = contractWithWallet(token, walletTo);
-    await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
-      .to.be.revertedWith('Not enough balance on sender account');
+  it('Can not transfer above the amount', async () => {
+    await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
   });
+
+  it('Can not transfer from empty account', async () => {
+    const tokenFromOtherWallet = token.connect(walletTo);
+    await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
+      .to.be.reverted;
+  });
+
 });
 ```
 

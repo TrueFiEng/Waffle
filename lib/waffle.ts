@@ -12,7 +12,7 @@ export function createMockProvider(ganacheOptions: GanacheOpts = {}) {
   return new providers.Web3Provider(Ganache.provider(options));
 }
 
-export async function getWallets(provider: providers.Provider) {
+export function getWallets(provider: providers.Provider) {
   return defaultAccounts.map((account) => new Wallet(account.secretKey, provider));
 }
 
@@ -39,9 +39,6 @@ export async function deployContract(
   const receipt = await wallet.provider.getTransactionReceipt(tx.hash);
   return new Contract(receipt.contractAddress, abi, wallet);
 }
-
-export const contractWithWallet = (contract: Contract, wallet: Wallet) =>
-  new Contract(contract.address, contract.interface.abi, wallet);
 
 export const link = (contract: LinkableContract, libraryName: string, libraryAddress: string) => {
   const {object} = contract.evm.bytecode;
@@ -73,7 +70,7 @@ export function createFixtureLoader(provider = createMockProvider(), wallets?: W
       await provider.send('evm_snapshot', []);
       return matchingSnapshot.data;
     }
-    const data = await fixture(provider, wallets || await getWallets(provider));
+    const data = await fixture(provider, wallets || getWallets(provider));
     const id = await provider.send('evm_snapshot', []);
     snapshots.push({fixture, data, id});
     return data;

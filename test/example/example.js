@@ -1,5 +1,5 @@
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets, contractWithWallet, link} from '../../lib/waffle';
+import {createMockProvider, deployContract, getWallets, link} from '../../lib/waffle';
 import BasicTokenMock from './build/BasicTokenMock';
 import MyLibrary from './build/MyLibrary';
 import LibraryConsumer from './build/LibraryConsumer';
@@ -9,14 +9,11 @@ chai.use(solidity);
 const {expect} = chai;
 
 describe('INTEGRATION: Example', () => {
-  let provider;
+  let provider = createMockProvider();
+  let [wallet, walletTo] = getWallets(provider);
   let token;
-  let wallet;
-  let walletTo;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet, walletTo] = await getWallets(provider);
     token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
   });
 
@@ -40,9 +37,9 @@ describe('INTEGRATION: Example', () => {
   });
 
   it('Can not transfer from empty account', async () => {
-    const tokenFromOtherWallet = contractWithWallet(token, walletTo);
+    const tokenFromOtherWallet = token.connect(walletTo);
     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
-      .to.be.revertedWith('Not enough balance on sender account');
+      .to.be.reverted;
   });
 
   it('should use library to add 7', async() => {

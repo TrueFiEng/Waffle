@@ -12,7 +12,7 @@ describe('INTEGRATION: Balance observers', () => {
 
   beforeEach(async () => {
     provider = createMockProvider();
-    [sender, receiver] = await getWallets(provider);
+    [sender, receiver] = getWallets(provider);
   });
 
   describe('Change balance, one account', () => {
