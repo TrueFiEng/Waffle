@@ -31,8 +31,10 @@ export default class BaseWrapper {
   }
 
   protected getContent(contractJson: ContractJson) {
-    contractJson.interface = contractJson.abi;
-    contractJson.bytecode = contractJson.evm.bytecode.object;
+    if (this.config.legacyOutput) {
+      contractJson.interface = contractJson.abi;
+      contractJson.bytecode = contractJson.evm.bytecode.object;
+    }
     return JSON.stringify(contractJson, null, 2);
   }
 

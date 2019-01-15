@@ -47,7 +47,7 @@ describe('E2E: Compiler integration', () => {
 
   for (const configurationPath of configurations)  {
     const configuration = loadConfig(configurationPath);
-    const {name, targetPath} = configuration;
+    const {name, targetPath, legacyOutput} = configuration;
 
     /* eslint-disable no-loop-func */
     describe(name, () => {
@@ -70,9 +70,19 @@ describe('E2E: Compiler integration', () => {
           const content = JSON.parse(readFileContent(filePath));
           expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok; // tslint:disable-line
           expect(content.evm.bytecode.object).to.startWith('60');
-          expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
         }
       });
+
+      if (legacyOutput) {
+        it('produce legacy bytecode', async () => {
+          for (const artefact of artefacts) {
+            const filePath = join(targetPath, artefact);
+            const content = JSON.parse(readFileContent(filePath));
+            expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
+            expect(content.interface).to.deep.eq(content.abi);
+          }
+        });
+      }
 
       it('produce abi', async () => {
         for (const artefact of artefacts) {
@@ -87,7 +97,6 @@ describe('E2E: Compiler integration', () => {
             content.abi[0],
             `"${filePath}" abi expected to contain objects, but was "${typeof content.abi[0]}"`
           ).to.be.an('object');
-          expect(content.interface).to.deep.eq(content.abi);
         }
       });
 
