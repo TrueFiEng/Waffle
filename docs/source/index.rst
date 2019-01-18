@@ -38,4 +38,5 @@ Versions and ethers compatibility
    start.rst
    features.rst
    compilation.rst
+   configuration.rst
 

@@ -96,17 +96,3 @@ Than setup compiler in your waffle configuration file:
 Default docker tag is `latest`.
 
 You can now run tests in docker.
-
-
-Solcjs and version management
------------------------------
-Solcjs allows switching used version of solidity compiler on the fly. To set up a chosen version of solidity compiler add the following line in the Waffle configuration file:
-::
-
-  {
-    ...
-    "solcVersion": "v0.4.24+commit.e67f0147"
-  }
-
-
-Version naming is somewhat counter-intuitive. You can deduce version name from `list available here <https://ethereum.github.io/solc-bin/bin/list.json>`_.

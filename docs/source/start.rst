@@ -104,9 +104,9 @@ Example configuration file looks like this:
 ::
 
   {
-    "sourcesPath": "./custom_contracts",
-    "targetPath": "./custom_build",
-    "npmPath": "./custom_node_modules"
+    "sourcesPath": "./contracts",
+    "targetPath": "./build",
+    "npmPath": "./node_modules"
   }
 
 
