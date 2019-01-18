@@ -15,8 +15,9 @@ class SolcjsWrapper extends BaseWrapper {
   }
 
   protected convertSources(sources: Record<string, any>) {
-    Object.keys(sources).map((key) => sources[key] = {content: sources[key]});
-    return sources;
+    let convertedSources: Record<string, { content: string }> = {};
+    Object.keys(sources).map((key) => convertedSources[key.replace(/\\/g, '/')] = {content: sources[key]});
+    return convertedSources;
   }
 
   protected async loadCompiler() {
