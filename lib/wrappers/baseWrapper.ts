@@ -45,7 +45,7 @@ export default class BaseWrapper {
   protected buildSources(inputs: string[]) {
     const sources: Record<string, { urls: string[] }> = {};
     for (const input of inputs) {
-      sources[input] = {urls: [this.getAbsolutePath(input)]};
+      sources[input.replace(/\\/g, '/')] = {urls: [this.getAbsolutePath(input)]};
     }
     return sources;
   }
