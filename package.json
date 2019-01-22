@@ -17,7 +17,7 @@
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "tslint \"lib/**/*.ts\" \"test/**/*.ts\"",
     "build": "tsc -p tsconfig.build.json",
-    "clean": "rm -fr ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
+    "clean": "rimraf ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
   "engines": {
     "node": ">=10.0"
@@ -42,6 +42,7 @@
     "fs-extra": "^7.0.0",
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^2.1.1",
+    "rimraf": "^2.6.3",
     "sinon": "^6.1.5",
     "sinon-chai": "^3.2.0",
     "solium": "^1.1.8",
