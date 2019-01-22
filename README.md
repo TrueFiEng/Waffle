@@ -44,7 +44,7 @@ yarn add ethereum-waffle
 To add external library add npm to your project:
 
 ```sh
-npm i open-zeppelin
+npm i openzeppelin-solidity
 ```
 
 ### Example contract
