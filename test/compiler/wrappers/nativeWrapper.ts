@@ -9,17 +9,22 @@ const npmPath = './test/projects/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
 describe('UNIT: NativeWrapper', () => {
-  let wrapper: NativeWrapper;
-
-  before(() => {
-    wrapper = new NativeWrapper(config);
-  });
 
   it('buildCommand', async () => {
-    const expectedPrefix = 'solc --standard-json --allow-paths';
-    const expectedSuffix = 'test/projects/custom/custom_node_modules';
+    const wrapper = new NativeWrapper(config);
     const actualCommand = wrapper.buildCommand();
-    expect(actualCommand).to.startWith(expectedPrefix);
-    expect(actualCommand).to.endWith(expectedSuffix);
+    const expectedCommand = 'solc --standard-json --allow-paths ' +
+      '.*test/projects/custom/custom_contracts,.*/test/projects/custom/custom_node_modules';
+    expect(actualCommand).to.match(new RegExp(expectedCommand));
+  });
+
+  it('buildCommand with custom allow_paths', async () => {
+    const configWithAllowedPaths = {...config, allowedPaths: ['some/random/path', './yet/another/path']};
+    const wrapper = new NativeWrapper(configWithAllowedPaths);
+    const actualCommand = wrapper.buildCommand();
+    const expectedCommand = 'solc --standard-json --allow-paths ' +
+      '.*test/projects/custom/custom_contracts,.*/test/projects/custom/custom_node_modules' +
+      ',.*/some/random/path.*/yet/another/path';
+    expect(actualCommand).to.match(new RegExp(expectedCommand));
   });
 });

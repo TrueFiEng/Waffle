@@ -17,7 +17,8 @@ export default class NativeWrapper extends BaseWrapper {
   public buildCommand() {
     const command = 'solc';
     const params = '--standard-json';
-    const allowedPaths = `${resolve(this.config.sourcesPath)},${resolve(this.config.npmPath)}`;
-    return `${command} ${params} --allow-paths ${allowedPaths}`;
+    const customAllowedPaths = (this.config.allowedPaths || []).map( (path) => resolve(path));
+    const allowedPaths = [resolve(this.config.sourcesPath), resolve(this.config.npmPath), ...customAllowedPaths];
+    return `${command} ${params} --allow-paths ${allowedPaths.join(',')}`;
   }
 }
