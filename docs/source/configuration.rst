@@ -50,3 +50,46 @@ You can generate files that are compatible with both current and previous versio
     ...
     "legacyOutput": "true"
   }
+
+Monorepo
+--------
+Waffle works well with mono-repositories. It is enough to set up common npmPath in the configuration file to make it work.
+We recommend using `yarn workspaces <https://yarnpkg.com/lang/en/docs/workspaces/>`_ and `wsrun <https://github.com/whoeverest/wsrun>`_ for monorepo management.
+
+Lernajs + Native solc
+^^^^^^^^^^^^^^^^^^^^^
+Waffle works with `lerna <https://lernajs.io/>`_, but require additional configuration.
+When lerna cross-links npm packages in monorepo, it creates symbolic links to original catalog.
+That leads to sources files located beyond allowed paths. This process breaks compilation with native solc.
+
+
+If you see a message like below in your monorepo setup:
+::
+
+  contracts/Contract.sol:4:1: ParserError: Source ".../monorepo/node_modules/YourProjectContracts/contracts/Contract.sol" not found: File outside of allowed directories.
+  import "YourProjectContracts/contracts/Contract.sol";
+
+
+you probably need to add allowedPath to your waffle configuration.
+
+Assuming you have the following setup:
+::
+
+  /monorepo
+    /YourProjectContracts
+      /contracts
+    /YourProjectDapp
+      /contracts
+
+Add to waffle configuration in YourProjectDapp:
+::
+
+  {
+    ...
+    allowedPath: ["../YourProjectContracts"]
+  }
+
+
+That should solve a problem.
+
+Currently Waffle does not support similar feature for dockerized solc.
