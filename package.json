@@ -1,12 +1,13 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "main": "dist/waffle.js",
+  "types": "dist/waffle.d.ts",
   "bin": {
     "waffle": "./bin/waffle"
   },
