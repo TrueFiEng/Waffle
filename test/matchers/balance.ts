@@ -1,19 +1,13 @@
 import chai, {AssertionError} from 'chai';
 import {createMockProvider, getWallets, solidity} from '../../lib/waffle';
-import {utils} from 'ethers';
+import {utils, Wallet} from 'ethers';
 
 chai.use(solidity);
 const {expect} = chai;
 
 describe('INTEGRATION: Balance observers', () => {
-  let provider;
-  let sender;
-  let receiver;
-
-  beforeEach(async () => {
-    provider = createMockProvider();
-    [sender, receiver] = getWallets(provider);
-  });
+  const provider = createMockProvider();
+  const [sender, receiver] = getWallets(provider);
 
   describe('Change balance, one account', () => {
     it('Should pass when expected balance change is passed as string and is equal to an actual', async () => {
@@ -74,12 +68,8 @@ describe('INTEGRATION: Balance observers', () => {
     });
 
     it('Should throw when not a callback is passed to expect', async () => {
-      expect(() =>
-        expect(sender.sendTransaction({
-          to: receiver.address,
-          gasPrice: 0,
-          value: 200
-        })).to.changeBalance(sender, '-200')
+      await expect(() =>
+        expect(1).to.changeBalance(sender, '-200')
       ).to.throw(Error, `Expect subject should be a callback returning the Promise
         e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalance('0xa', -200)`);
     });

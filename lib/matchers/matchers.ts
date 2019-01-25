@@ -38,10 +38,10 @@ const solidity = (chai: any, utils: any) => {
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    return derivedPromise;
+    return this;
   });
 
-  Assertion.addMethod('revertedWith', function (revertReason: any) {
+  Assertion.addMethod('revertedWith', function (revertReason: string) {
     /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
     const derivedPromise = promise.then(
@@ -66,7 +66,7 @@ const solidity = (chai: any, utils: any) => {
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    return derivedPromise;
+    return this;
   });
 
   const filterLogsWithTopics = (logs: any[], topic: any) =>

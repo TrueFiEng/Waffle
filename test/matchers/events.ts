@@ -6,7 +6,8 @@ import {
   getWallets,
   solidity,
 } from '../../lib/waffle';
-import Events from './build/Events';
+import Events from './build/Events.json';
+import { Contract } from 'ethers';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
@@ -15,7 +16,7 @@ const {expect} = chai;
 
 describe('INTEGRATION: Events', () => {
   let provider;
-  let events;
+  let events: Contract;
   let wallet;
 
   beforeEach(async () => {
@@ -45,12 +46,16 @@ describe('INTEGRATION: Events', () => {
   });
 
   it('Emit both: success (two expects)', async () => {
-    await expect(events.emitBoth()).to.emit(events, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001');
+    await expect(events.emitBoth())
+      .to.emit(events, 'One')
+      .withArgs(1, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001');
     await expect(events.emitBoth()).to.emit(events, 'Two');
   });
 
   it('Emit both: success (one expect with two to)' , async () => {
-    await expect(events.emitBoth()).to.emit(events, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001')
+    await expect(events.emitBoth())
+      .to.emit(events, 'One')
+      .withArgs(1, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001')
       .and.to.emit(events, 'Two');
   });
 
