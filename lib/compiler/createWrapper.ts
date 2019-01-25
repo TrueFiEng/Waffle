@@ -1,6 +1,6 @@
 import { Config } from '../config/config';
 import {compileSolcjs} from './compileSolcjs';
-import NativeWrapper from './nativeWrapper';
+import {compileNative} from './compileNative';
 import {compileDocker} from './compileDocker';
 
 export interface Wrapper {
@@ -9,7 +9,7 @@ export interface Wrapper {
 
 export function createWrapper(config: Config): Wrapper {
   if (config.compiler === 'native') {
-    return new NativeWrapper(config);
+    return { compile: compileNative(config) };
   } else if (config.compiler === 'dockerized-solc') {
     return { compile: compileDocker(config) };
   } else if (config.compiler === 'solcjs' || !config.compiler) {
