@@ -3,19 +3,10 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiString from 'chai-string';
 import Compiler from '../../lib/compiler/compiler';
-import {readFileContent} from '../../lib/utils';
 
 const sourcesPath = './test/projects/example';
 const targetPath = './test/compiler/build';
 const config = {sourcesPath, targetPath};
-const expectedInputs = [
-  'test/projects/example/BasicToken.sol',
-  'test/projects/example/ERC20Basic.sol',
-  'test/projects/example/LibraryConsumer.sol',
-  'test/projects/example/MyLibrary.sol',
-  'test/projects/example/SafeMath.sol',
-  'test/projects/example/mock/BasicTokenMock.sol'
-];
 
 chai.use(chaiString);
 chai.use(sinonChai);
@@ -25,24 +16,6 @@ describe('INTEGRATION: Compiler', () => {
 
   beforeEach(async () => {
     compiler = new Compiler(config);
-  });
-
-  it('findImports in source path', async () => {
-    const expected = await readFileContent('test/projects/example/BasicToken.sol');
-    const actual = compiler.findImports('test/projects/example/BasicToken.sol');
-    expect(expected).to.eq(actual.contents);
-  });
-
-  it('findImports in imports path', async () => {
-    const expected = await readFileContent('node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol');
-    const actual = compiler.findImports('openzeppelin-solidity/contracts/math/SafeMath.sol');
-    expect(expected).to.eq(actual.contents);
-  });
-
-  it('findImports file not found', async () => {
-    const expected = {error: `File not found: random/nonexisting.sol`};
-    const actual = compiler.findImports('random/nonexisting.sol');
-    expect(expected).to.deep.eq(actual);
   });
 
   describe('doCompile', () => {

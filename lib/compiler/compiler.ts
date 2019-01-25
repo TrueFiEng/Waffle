@@ -1,9 +1,9 @@
-import fs from 'fs';
 import path from 'path';
 import defaultConfig, {Config} from '../config/config';
-import {readFileContent, isWarningMessage} from '../utils';
+import {isWarningMessage} from '../utils';
 import {createWrapper, Wrapper} from './createWrapper';
 import {findInputs} from './findInputs';
+import { findImports } from './findImports';
 
 interface CompilerOptions {
   wrapper?: Wrapper;
@@ -24,22 +24,10 @@ export default class Compiler {
     this.wrapper = options.wrapper || createWrapper(this.config);
   }
 
-  public findImports(file: string) {
-    const libPath = path.join(this.config.npmPath, file);
-    if (fs.existsSync(file)) {
-      const contents = readFileContent(file);
-      return {contents};
-    } else if (fs.existsSync(libPath)) {
-      const contents = readFileContent(libPath);
-      return {contents};
-    }
-    return {error: `File not found: ${file}`};
-  }
-
   public async doCompile() {
     return this.wrapper.compile(
       findInputs(this.config.sourcesPath),
-      this.findImports.bind(this)
+      findImports(this.config.npmPath)
     );
   }
 

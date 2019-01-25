@@ -4,7 +4,7 @@ import NativeWrapper from './nativeWrapper';
 import DockerWrapper from './dockerWrapper';
 
 export interface Wrapper {
-  compile(sourceFiles: string[], findImports: () => any): Promise<any>;
+  compile(sourceFiles: string[], findImports: (file: string) => any): Promise<any>;
   saveOutput(output: any, targetPath: string): Promise<void>;
 }
 
