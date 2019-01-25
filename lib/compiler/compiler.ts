@@ -1,28 +1,29 @@
 import {Config} from '../config/config';
 import {isWarningMessage} from '../utils';
-import {createWrapper, Wrapper} from './createWrapper';
+import {createWrapper} from './createWrapper';
 import {findInputs} from './findInputs';
 import {findImports} from './findImports';
 import {loadConfig} from '../config/loadConfig';
+import {saveOutput} from './saveOutput';
 
 export async function compileProject(configPath: string) {
   await compileAndSave(loadConfig(configPath));
 }
 
 export async function compileAndSave(config: Config) {
-  const wrapper = createWrapper(config);
-  const output = await compile(config, wrapper);
-  await processOutput(output, wrapper, config.targetPath);
+  const output = await compile(config);
+  await processOutput(output, config);
 }
 
-export async function compile(config: Config, wrapper: Wrapper = createWrapper(config)) {
+export async function compile(config: Config) {
+  const wrapper = createWrapper(config);
   return wrapper.compile(
     findInputs(config.sourcesPath),
     findImports(config.npmPath)
   );
 }
 
-async function processOutput(output: any, wrapper: Wrapper, targetPath: string) {
+async function processOutput(output: any, config: Config) {
   if (output.errors) {
     const errors = output.errors
       .map((error: any) => toFormattedMessage(error))
@@ -32,7 +33,7 @@ async function processOutput(output: any, wrapper: Wrapper, targetPath: string) 
   if (anyNonWarningErrors(output.errors)) {
     throw new Error('Compilation failed');
   } else {
-    await wrapper.saveOutput(output, targetPath);
+    await saveOutput(output, config);
   }
 }
 

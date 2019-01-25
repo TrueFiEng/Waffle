@@ -3,24 +3,7 @@ import fs from 'fs';
 import {join, dirname} from 'path';
 import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
-
-export interface BytecodeJson {
-  linkReferences: object;
-  object: string;
-  opcodes: string;
-  sourceMap: string;
-}
-
-export interface EvmJson {
-  bytecode: BytecodeJson;
-}
-
-export interface ContractJson {
-  interface: object[];
-  abi: object[];
-  bytecode: string;
-  evm: EvmJson;
-}
+import {saveOutput} from './saveOutput';
 
 export default class BaseWrapper {
   protected config: Config;
@@ -28,14 +11,6 @@ export default class BaseWrapper {
 
   constructor(config: Config) {
     this.config = config;
-  }
-
-  protected getContent(contractJson: ContractJson) {
-    if (this.config.legacyOutput) {
-      contractJson.interface = contractJson.abi;
-      contractJson.bytecode = contractJson.evm.bytecode.object;
-    }
-    return JSON.stringify(contractJson, null, 2);
   }
 
   protected getAbsolutePath(input: string) {
@@ -48,19 +23,6 @@ export default class BaseWrapper {
       sources[input.replace(/\\/g, '/')] = {urls: [this.getAbsolutePath(input)]};
     }
     return sources;
-  }
-
-  public async saveOutput(output: any, targetPath: string, filesystem = fs) {
-    for (const [, file] of Object.entries(output.contracts)) {
-      for (const [contractName, contractJson] of Object.entries(file)) {
-        const filePath = join(targetPath, `${contractName}.json`);
-        const dirPath = dirname(filePath);
-        if (!filesystem.existsSync(dirPath)) {
-          filesystem.mkdirSync(dirPath);
-        }
-        filesystem.writeFileSync(filePath, this.getContent(contractJson));
-      }
-    }
   }
 
   public buildInputJson(sources: string[]) {

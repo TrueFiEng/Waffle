@@ -5,7 +5,6 @@ import DockerWrapper from './dockerWrapper';
 
 export interface Wrapper {
   compile(sourceFiles: string[], findImports: (file: string) => any): Promise<any>;
-  saveOutput(output: any, targetPath: string): Promise<void>;
 }
 
 export function createWrapper(config: Config): Wrapper {

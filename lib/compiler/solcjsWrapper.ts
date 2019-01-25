@@ -1,7 +1,7 @@
 import solc, { SolcCompiler } from 'solc';
 import {promisify} from 'util';
 import {readFileContent} from '../utils';
-import BaseWrapper, {ContractJson} from './baseWrapper';
+import BaseWrapper from './baseWrapper';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
@@ -44,12 +44,6 @@ class SolcjsWrapper extends BaseWrapper {
     };
     const output = this.solc.compile(JSON.stringify(input), findImports);
     return JSON.parse(output);
-  }
-
-  protected getContent(contractJson: ContractJson) {
-    contractJson.interface = contractJson.abi;
-    contractJson.bytecode = contractJson.evm.bytecode.object;
-    return JSON.stringify(contractJson, null, 2);
   }
 }
 
