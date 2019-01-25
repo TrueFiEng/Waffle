@@ -3,7 +3,8 @@ import fsx from 'fs-extra';
 import path from 'path';
 import {join, resolve} from 'path';
 import {expect} from 'chai';
-import {compile, loadConfig} from '../../lib/compiler/compiler';
+import {compile} from '../../lib/compiler/compiler';
+import {loadConfig} from '../../lib/config/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
 
@@ -46,7 +47,7 @@ describe('E2E: Compiler integration', () => {
   });
 
   for (const configurationPath of configurations)  {
-    const configuration = loadConfig(configurationPath);
+    const configuration = loadConfig(configurationPath) as any;
     const {name, targetPath, legacyOutput} = configuration;
 
     /* eslint-disable no-loop-func */

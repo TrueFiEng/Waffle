@@ -3,10 +3,11 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiString from 'chai-string';
 import Compiler from '../../lib/compiler/compiler';
+import defaultConfig from '../../lib/config/config';
 
 const sourcesPath = './test/projects/example';
 const targetPath = './test/compiler/build';
-const config = {sourcesPath, targetPath};
+const config = {...defaultConfig, sourcesPath, targetPath};
 
 chai.use(chaiString);
 chai.use(sinonChai);
@@ -35,7 +36,7 @@ describe('INTEGRATION: Compiler', () => {
   describe('compile: invalid input', () => {
     const sourcesPath = './test/projects/invalidContracts'; // tslint:disable-line
     const targetPath = './test/projects/build'; // tslint:disable-line
-    const config = {sourcesPath, targetPath}; // tslint:disable-line
+    const config = {...defaultConfig, sourcesPath, targetPath}; // tslint:disable-line
     const expectedOutput = 'test/projects/invalidContracts/invalid.sol:6:14: ' +
       'DeclarationError: Identifier not found or not unique.\n' +
       '  function f(wrongType arg) public {\n             ^-------^\n';
