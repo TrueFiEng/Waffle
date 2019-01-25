@@ -9,7 +9,7 @@ export function compileNative(config: Config) {
     const command = createBuildCommand(config);
     const input = JSON.stringify(buildInputJson(sources, config), null, 2);
     return JSON.parse(execSync(command, {input}).toString());
-  }
+  };
 }
 
 export function createBuildCommand(config: Config) {
@@ -22,8 +22,8 @@ export function createBuildCommand(config: Config) {
 
 function buildInputJson(sources: string[], config: Config) {
   return buildInputObject(
-    buildSources(sources, input => join(process.cwd(), input)),
-    getMappings(sources, config),
+    buildSources(sources, (input) => join(process.cwd(), input)),
+    getMappings(sources, config)
   );
 }
 

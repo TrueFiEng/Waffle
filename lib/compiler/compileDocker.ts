@@ -31,8 +31,8 @@ export function getVolumes(config: Config) {
 
 export function buildInputJson(sources: string[], config: Config) {
   return buildInputObject(
-    buildSources(sources, input => join(CONTAINER_PATH, input)),
-    getMappings(sources, config),
+    buildSources(sources, (input) => join(CONTAINER_PATH, input)),
+    getMappings(sources, config)
   );
 }
 

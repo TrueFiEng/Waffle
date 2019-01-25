@@ -6,7 +6,7 @@ import {compileDocker} from './compileDocker';
 export type CompileFunction = (
   sources: string[],
   findImports: (file: string) => any
-) => any
+) => any;
 
 export function getCompileFunction(config: Config): CompileFunction {
   if (config.compiler === 'native') {
