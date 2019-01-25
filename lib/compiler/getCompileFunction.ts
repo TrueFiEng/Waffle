@@ -3,17 +3,18 @@ import {compileSolcjs} from './compileSolcjs';
 import {compileNative} from './compileNative';
 import {compileDocker} from './compileDocker';
 
-export interface Wrapper {
-  compile(sourceFiles: string[], findImports: (file: string) => any): Promise<any>;
-}
+export type CompileFunction = (
+  sources: string[],
+  findImports: (file: string) => any
+) => any
 
-export function createWrapper(config: Config): Wrapper {
+export function getCompileFunction(config: Config): CompileFunction {
   if (config.compiler === 'native') {
-    return { compile: compileNative(config) };
+    return compileNative(config);
   } else if (config.compiler === 'dockerized-solc') {
-    return { compile: compileDocker(config) };
+    return compileDocker(config);
   } else if (config.compiler === 'solcjs' || !config.compiler) {
-    return { compile: compileSolcjs(config) };
+    return compileSolcjs(config);
   }
   throw new Error(`Unknown compiler ${config.compiler}`);
 }

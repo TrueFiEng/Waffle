@@ -1,6 +1,6 @@
 import {Config} from '../config/config';
 import {isWarningMessage} from '../utils';
-import {createWrapper} from './createWrapper';
+import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
 import {findImports} from './findImports';
 import {loadConfig} from '../config/loadConfig';
@@ -16,8 +16,7 @@ export async function compileAndSave(config: Config) {
 }
 
 export async function compile(config: Config) {
-  const wrapper = createWrapper(config);
-  return wrapper.compile(
+  return getCompileFunction(config)(
     findInputs(config.sourcesPath),
     findImports(config.npmPath)
   );
