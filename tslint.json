@@ -30,6 +30,7 @@
       "allow-pascal-case"
     ],
     "no-shadowed-variable": false,
-    "no-empty": [true, "allow-empty-functions"]
+    "no-empty": [true, "allow-empty-functions"],
+    "no-unused-expression": false
   }
 }

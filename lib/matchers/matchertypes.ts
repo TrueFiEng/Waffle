@@ -1,3 +1,4 @@
+/* tslint:disable */
 /// <reference types="chai" />
 // I cannot get ethers types to work for some reason
 
@@ -21,6 +22,6 @@ declare namespace Chai {
   }
 
   interface EmitAssertion extends AsyncAssertion {
-    withArgs(...args: any[]): AsyncAssertion
+    withArgs(...args: any[]): AsyncAssertion;
   }
 }

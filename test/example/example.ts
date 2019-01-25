@@ -4,7 +4,7 @@ import {
   deployContract,
   getWallets,
   link,
-  solidity,
+  solidity
 } from '../../lib/waffle';
 import BasicTokenMock from './build/BasicTokenMock.json';
 import MyLibrary from './build/MyLibrary.json';
@@ -15,8 +15,8 @@ chai.use(solidity);
 const {expect} = chai;
 
 describe('INTEGRATION: Example', () => {
-  let provider = createMockProvider();
-  let [wallet, walletTo] = getWallets(provider);
+  const provider = createMockProvider();
+  const [wallet, walletTo] = getWallets(provider);
   let token: Contract;
 
   beforeEach(async () => {
@@ -48,7 +48,7 @@ describe('INTEGRATION: Example', () => {
       .to.be.reverted;
   });
 
-  it('should use library to add 7', async() => {
+  it('should use library to add 7', async () => {
     const myLibrary = await deployContract(wallet, MyLibrary, []);
     link(LibraryConsumer, 'test/projects/example/MyLibrary.sol:MyLibrary', myLibrary.address);
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);

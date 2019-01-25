@@ -4,7 +4,7 @@ import {
   createMockProvider,
   deployContract,
   getWallets,
-  solidity,
+  solidity
 } from '../../lib/waffle';
 import Matchers from './build/Matchers.json';
 import { Contract } from 'ethers';
@@ -19,8 +19,8 @@ const alwaysReject = new Promise((resolve, reject) => {
 });
 
 describe('INTEGRATION: Matchers: reverted', () => {
-  let provider = createMockProvider();
-  let [wallet] = getWallets(provider);
+  const provider = createMockProvider();
+  const [wallet] = getWallets(provider);
   let matchers: Contract;
 
   beforeEach(async () => {
@@ -147,4 +147,3 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     ).to.be.eventually.rejected;
   });
 });
-
