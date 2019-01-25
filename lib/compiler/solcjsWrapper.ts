@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import solc, { SolcCompiler } from 'solc';
 import {promisify} from 'util';
 import {readFileContent} from '../utils';
@@ -52,24 +50,6 @@ class SolcjsWrapper extends BaseWrapper {
     contractJson.interface = contractJson.abi;
     contractJson.bytecode = contractJson.evm.bytecode.object;
     return JSON.stringify(contractJson, null, 2);
-  }
-
-  public async saveOutput(output: any, targetPath: string) {
-    for (const key of Object.keys(output.contracts)) {
-      for (const contract of Object.keys(output.contracts[key])) {
-        const filePath = path.join(targetPath, `${contract}.json`);
-        const dirPath = path.dirname(filePath);
-        if (!fs.existsSync(dirPath)) {
-          fs.mkdirSync(dirPath);
-        }
-        const content = this.getContent(output.contracts[key][contract]);
-        try {
-          fs.writeFileSync(filePath, content);
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    }
   }
 }
 

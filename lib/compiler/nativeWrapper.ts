@@ -15,10 +15,14 @@ export default class NativeWrapper extends BaseWrapper {
   }
 
   public buildCommand() {
-    const command = 'solc';
-    const params = '--standard-json';
-    const customAllowedPaths = (this.config.allowedPaths || []).map( (path) => resolve(path));
-    const allowedPaths = [resolve(this.config.sourcesPath), resolve(this.config.npmPath), ...customAllowedPaths];
-    return `${command} ${params} --allow-paths ${allowedPaths.join(',')}`;
+    return createBuildCommand(this.config);
   }
+}
+
+export function createBuildCommand(config: Config) {
+  const command = 'solc';
+  const params = '--standard-json';
+  const customAllowedPaths = (config.allowedPaths || []).map((path: string) => resolve(path));
+  const allowedPaths = [resolve(config.sourcesPath), resolve(config.npmPath), ...customAllowedPaths];
+  return `${command} ${params} --allow-paths ${allowedPaths.join(',')}`;
 }
