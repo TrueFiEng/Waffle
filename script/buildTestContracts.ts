@@ -1,4 +1,4 @@
-import {compile} from '../lib/compiler/compiler';
+import {compileAndSave} from '../lib/compiler/compiler';
 import defaultConfig from '../lib/config/config';
 
 const buildExampleContracts = async () => {
@@ -6,7 +6,7 @@ const buildExampleContracts = async () => {
   const sourcesPath = './test/projects/example';
   const targetPath = './test/example/build';
   const config = {...defaultConfig, sourcesPath, targetPath};
-  await compile(config);
+  await compileAndSave(config);
 };
 
 const buildMatchers = async () => {
@@ -14,7 +14,7 @@ const buildMatchers = async () => {
   const sourcesPath = './test/matchers/contracts';
   const targetPath = './test/matchers/build';
   const config = {...defaultConfig, sourcesPath, targetPath};
-  await compile(config);
+  await compileAndSave(config);
 };
 
 const buildAll = async () => {
