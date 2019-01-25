@@ -1,5 +1,5 @@
 import { Config } from '../config/config';
-import SolcjsWrapper from './solcjsWrapper';
+import {compileSolcjs} from './compileSolcjs';
 import NativeWrapper from './nativeWrapper';
 import DockerWrapper from './dockerWrapper';
 
@@ -13,7 +13,7 @@ export function createWrapper(config: Config): Wrapper {
   } else if (config.compiler === 'dockerized-solc') {
     return new DockerWrapper(config);
   } else if (config.compiler === 'solcjs' || !config.compiler) {
-    return new SolcjsWrapper(config);
+    return { compile: compileSolcjs(config) };
   }
   throw new Error(`Unknown compiler ${config.compiler}`);
 }

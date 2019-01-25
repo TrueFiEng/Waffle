@@ -1,5 +1,5 @@
-import {join, dirname} from 'path'
-import fs from 'fs'
+import {join, dirname} from 'path';
+import fs from 'fs';
 import {Config} from '../config/config';
 
 export interface BytecodeJson {

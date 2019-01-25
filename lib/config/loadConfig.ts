@@ -12,5 +12,5 @@ export function loadConfig(configPath: string): Config {
   return {
     ...defaultConfig,
     ...readConfigFile(configPath)
-  }
+  };
 }

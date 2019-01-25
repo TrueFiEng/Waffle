@@ -8,7 +8,7 @@ chai.use(sinonChai);
 
 const sourcesPath = './test/projects/custom/custom_contracts';
 const npmPath = './test/projects/custom/custom_node_modules';
-const targetPath = './buildtmp'
+const targetPath = './buildtmp';
 const config = {sourcesPath, npmPath, targetPath};
 
 describe('UNIT: saveOutput', () => {

@@ -35,7 +35,7 @@ async function processOutput(output: any, config: Config) {
 }
 
 function anyNonWarningErrors(errors?: any[]) {
-  return errors && !errors.every(isWarningMessage)
+  return errors && !errors.every(isWarningMessage);
 }
 
 function formatErrors(errors: any[]) {
