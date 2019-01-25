@@ -1,9 +1,14 @@
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets, link} from '../../lib/waffle';
+import {
+  createMockProvider,
+  deployContract,
+  getWallets,
+  link,
+  solidity,
+} from '../../lib/waffle';
 import BasicTokenMock from './build/BasicTokenMock';
 import MyLibrary from './build/MyLibrary';
 import LibraryConsumer from './build/LibraryConsumer';
-import solidity from '../../lib/matchers';
 
 chai.use(solidity);
 const {expect} = chai;

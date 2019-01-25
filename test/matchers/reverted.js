@@ -1,8 +1,12 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
+import {
+  createMockProvider,
+  deployContract,
+  getWallets,
+  solidity,
+} from '../../lib/waffle';
 import Matchers from './build/Matchers';
-import solidity from '../../lib/matchers';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);

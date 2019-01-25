@@ -1,6 +1,6 @@
-import overwriteBigNumberFunction from './matchers/overwriteBigNumberFunction';
+import overwriteBigNumberFunction from './overwriteBigNumberFunction';
 import {bigNumberify} from 'ethers/utils';
-import {getBalanceChange, getBalanceChanges} from './utils';
+import {getBalanceChange, getBalanceChanges} from '../utils';
 import {Contract, Wallet} from 'ethers';
 
 const solidity = (chai: any, utils: any) => {
