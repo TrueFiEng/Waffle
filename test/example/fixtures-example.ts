@@ -1,9 +1,10 @@
 import {expect} from 'chai';
 import {loadFixture, deployContract} from '../../lib/waffle';
-import BasicTokenMock from './build/BasicTokenMock';
+import BasicTokenMock from './build/BasicTokenMock.json';
+import { Wallet, providers } from 'ethers';
 
 describe('INTEGRATION: Fixtures example', () => {
-  async function fixture(provider, [wallet, other]) {
+  async function fixture(provider: providers.Provider, [wallet, other]: Wallet[]) {
     const token = await deployContract(wallet, BasicTokenMock, [
       wallet.address, 1000
     ]);

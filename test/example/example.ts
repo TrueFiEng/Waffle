@@ -6,9 +6,10 @@ import {
   link,
   solidity,
 } from '../../lib/waffle';
-import BasicTokenMock from './build/BasicTokenMock';
-import MyLibrary from './build/MyLibrary';
-import LibraryConsumer from './build/LibraryConsumer';
+import BasicTokenMock from './build/BasicTokenMock.json';
+import MyLibrary from './build/MyLibrary.json';
+import LibraryConsumer from './build/LibraryConsumer.json';
+import { Contract } from 'ethers';
 
 chai.use(solidity);
 const {expect} = chai;
@@ -16,7 +17,7 @@ const {expect} = chai;
 describe('INTEGRATION: Example', () => {
   let provider = createMockProvider();
   let [wallet, walletTo] = getWallets(provider);
-  let token;
+  let token: Contract;
 
   beforeEach(async () => {
     token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
