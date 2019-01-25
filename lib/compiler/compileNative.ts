@@ -2,7 +2,7 @@ import {join, resolve} from 'path';
 import {execSync} from 'child_process';
 import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
-import {buildInputObject} from './buildInputObject';
+import {buildInputObject, buildSources} from './buildUitls';
 
 export function compileNative(config: Config) {
   return async function compile(sources: string[]) {
@@ -22,19 +22,9 @@ export function createBuildCommand(config: Config) {
 
 function buildInputJson(sources: string[], config: Config) {
   return buildInputObject(
-    buildSources(sources),
+    buildSources(sources, input => join(process.cwd(), input)),
     getMappings(sources, config),
   );
-}
-
-function buildSources(inputs: string[]) {
-  const sources: Record<string, { urls: string[] }> = {};
-  for (const input of inputs) {
-    sources[input.replace(/\\/g, '/')] = {urls: [
-      join(process.cwd(), input)
-    ]};
-  }
-  return sources;
 }
 
 function getMappings(sources: string[], config: Config) {

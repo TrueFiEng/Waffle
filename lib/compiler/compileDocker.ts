@@ -2,7 +2,7 @@ import {join} from 'path';
 import ImportMappingBuilder from './importMappingBuilder';
 import {Config} from '../config/config';
 import {execSync} from 'child_process';
-import {buildInputObject} from './buildInputObject';
+import {buildInputObject, buildSources} from './buildUitls';
 
 const CONTAINER_PATH = '/home/project';
 const NPM_PATH = '/home/npm';
@@ -31,21 +31,9 @@ export function getVolumes(config: Config) {
 
 export function buildInputJson(sources: string[], config: Config) {
   return buildInputObject(
-    buildSources(sources),
+    buildSources(sources, input => join(CONTAINER_PATH, input)),
     getMappings(sources, config),
   );
-}
-
-function buildSources(inputs: string[]) {
-  const sources: Record<string, { urls: string[] }> = {};
-  for (const input of inputs) {
-    sources[input.replace(/\\/g, '/')] = {urls: [getAbsolutePath(input)]};
-  }
-  return sources;
-}
-
-function getAbsolutePath(relativePath: string) {
-  return join(CONTAINER_PATH, relativePath);
 }
 
 function getMappings(sources: string[], config: Config) {

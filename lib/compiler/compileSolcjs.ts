@@ -2,7 +2,7 @@ import solc from 'solc';
 import {promisify} from 'util';
 import {readFileContent} from '../utils';
 import {Config} from '../config/config';
-import {buildInputObject} from './buildInputObject';
+import {buildInputObject} from './buildUitls';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
