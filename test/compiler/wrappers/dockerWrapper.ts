@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import DockerWrapper from '../../../lib/wrappers/dockerWrapper';
+import DockerWrapper from '../../../lib/compiler/dockerWrapper';
 import sinonChai from 'sinon-chai';
 import {join} from 'path';
 

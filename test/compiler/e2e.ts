@@ -3,7 +3,7 @@ import fsx from 'fs-extra';
 import path from 'path';
 import {join, resolve} from 'path';
 import {expect} from 'chai';
-import {compile, loadConfig} from '../../lib/compiler';
+import {compile, loadConfig} from '../../lib/compiler/compiler';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
 

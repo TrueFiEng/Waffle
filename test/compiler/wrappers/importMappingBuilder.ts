@@ -4,7 +4,7 @@ import ImportsMappingBuilder, {
   IMPORT_TYPE_A,
   IMPORT_TYPE_B,
   IMPORT_TYPE_C
-} from '../../../lib/wrappers/importMappingBuilder';
+} from '../../../lib/compiler/importMappingBuilder';
 
 chai.use(chaiString);
 

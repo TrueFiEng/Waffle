@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import BaseWrapper from '../../../lib/wrappers/baseWrapper';
+import BaseWrapper from '../../../lib/compiler/baseWrapper';
 import {readFileContent} from '../../../lib/utils';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';

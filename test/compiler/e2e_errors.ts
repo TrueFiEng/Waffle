@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {readFileContent} from '../../lib/utils';
-import {compile} from '../../lib/compiler';
+import {compile} from '../../lib/compiler/compiler';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 

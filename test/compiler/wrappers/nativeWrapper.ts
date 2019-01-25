@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiString from 'chai-string';
-import NativeWrapper from '../../../lib/wrappers/nativeWrapper';
+import NativeWrapper from '../../../lib/compiler/nativeWrapper';
 
 chai.use(chaiString);
 

@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiString from 'chai-string';
-import SolcJsWrapper from '../../../lib/wrappers/solcjsWrapper';
+import SolcJsWrapper from '../../../lib/compiler/solcjsWrapper';
 import {readFileContent} from '../../../lib/utils';
 
 chai.use(chaiString);

@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import defaultConfig, {Config} from './config/config';
-import {isDirectory, readFileContent, isWarningMessage} from './utils';
-import {createWrapper, Wrapper} from './wrappers/createWrapper';
+import defaultConfig, {Config} from '../config/config';
+import {isDirectory, readFileContent, isWarningMessage} from '../utils';
+import {createWrapper, Wrapper} from './createWrapper';
 
 interface CompilerOptions {
   wrapper?: Wrapper;

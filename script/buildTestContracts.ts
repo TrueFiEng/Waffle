@@ -1,4 +1,4 @@
-import Compiler from '../lib/compiler';
+import Compiler from '../lib/compiler/compiler';
 
 const buildExampleContracts = async () => {
   console.log('Building example contracts...');

@@ -2,7 +2,7 @@ import chai, {expect} from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import chaiString from 'chai-string';
-import Compiler from '../../lib/compiler';
+import Compiler from '../../lib/compiler/compiler';
 import {readFileContent} from '../../lib/utils';
 
 const sourcesPath = './test/projects/example';
