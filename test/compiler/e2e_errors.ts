@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {readFileContent} from '../../lib/utils';
-import {compile} from '../../lib/compiler/compiler';
+import {compileProject} from '../../lib/compiler/compiler';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 
@@ -22,7 +22,7 @@ describe('E2E: Compiler integration - error messages', () => {
 
       const expectedPattern = /invalid\.sol.*Identifier not found or not.*/;
 
-      const promise = compile(configurationPath);
+      const promise = compileProject(configurationPath);
       await expect(promise).to.be.rejectedWith(Error, 'Compilation failed');
       expect(console.error).to.be.calledWith(sinon.match(expectedPattern));
 

@@ -3,7 +3,7 @@
 'use strict';
 const Waffle = require('../dist/compiler/compiler.js');
 Waffle
-  .compile(process.argv[2])
+  .compileProject(process.argv[2])
   .catch(e => {
     console.error(e);
     process.exit(1);

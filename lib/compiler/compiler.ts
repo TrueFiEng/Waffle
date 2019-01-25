@@ -5,46 +5,41 @@ import {findInputs} from './findInputs';
 import {findImports} from './findImports';
 import {loadConfig} from '../config/loadConfig';
 
+export async function compileProject(configPath: string) {
+  await compileAndSave(loadConfig(configPath));
+}
+
+export async function compileAndSave(config: Config) {
+  const wrapper = createWrapper(config);
+  const output = await compile(config, wrapper);
+  await processOutput(output, wrapper, config.targetPath);
+}
+
+export async function compile(config: Config, wrapper: Wrapper = createWrapper(config)) {
+  return wrapper.compile(
+    findInputs(config.sourcesPath),
+    findImports(config.npmPath)
+  );
+}
+
+async function processOutput(output: any, wrapper: Wrapper, targetPath: string) {
+  if (output.errors) {
+    const errors = output.errors
+      .map((error: any) => toFormattedMessage(error))
+      .join('\n');
+    console.error(errors);
+  }
+  if (anyNonWarningErrors(output.errors)) {
+    throw new Error('Compilation failed');
+  } else {
+    await wrapper.saveOutput(output, targetPath);
+  }
+}
+
 function anyNonWarningErrors(errors?: any[]) {
   return errors && !errors.every(isWarningMessage)
 }
 
 function toFormattedMessage(error: any) {
   return typeof error === 'string' ? error : error.formattedMessage;
-}
-
-export default class Compiler {
-  private wrapper: Wrapper;
-
-  constructor(private config: Config) {
-    this.wrapper = createWrapper(this.config);
-  }
-
-  public async doCompile() {
-    return this.wrapper.compile(
-      findInputs(this.config.sourcesPath),
-      findImports(this.config.npmPath)
-    );
-  }
-
-  public async compile() {
-    const output = await this.doCompile();
-    if (output.errors) {
-      const errors = output.errors
-        .map((error: any) => toFormattedMessage(error))
-        .join('\n');
-      console.error(errors);
-    }
-    if (anyNonWarningErrors(output.errors)) {
-      throw new Error('Compilation failed');
-    } else {
-      await this.wrapper.saveOutput(output, this.config.targetPath);
-    }
-  }
-}
-
-export async function compile(configPath: string) {
-  const config = loadConfig(configPath);
-  const compiler = new Compiler(config);
-  await compiler.compile();
 }
