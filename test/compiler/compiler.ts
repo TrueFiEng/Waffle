@@ -41,12 +41,15 @@ describe('INTEGRATION: Compiler', () => {
       '  function f(wrongType arg) public {\n             ^-------^\n';
 
     it('shows error message', async () => {
-      const overrideConsole = {error: sinon.spy()} as any;
-      const overrideProcess = {exit: sinon.spy()} as any;
-      compiler = new Compiler(config, {overrideConsole, overrideProcess});
-      await compiler.compile();
-      expect(overrideConsole.error).to.be.calledWith(expectedOutput);
-      expect(overrideProcess.exit).to.be.calledWith(1);
+      const consoleError = console.error;
+      console.error = sinon.spy();
+
+      compiler = new Compiler(config);
+      const promise = compiler.compile();
+      await expect(promise).to.be.rejectedWith(Error, 'Compilation failed');
+      expect(console.error).to.be.calledWith(expectedOutput);
+
+      console.error = consoleError;
     });
   });
 });
