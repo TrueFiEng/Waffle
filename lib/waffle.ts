@@ -1,9 +1,10 @@
 import Ganache, { GanacheOpts } from 'ganache-core';
 import {ContractFactory, providers, Contract, Wallet} from 'ethers';
-import matchers from './matchers';
+import matchers from './matchers/matchers';
 import defaultAccounts from './config/defaultAccounts';
 import defaultDeployOptions from './config/defaultDeployOptions';
 import {linkSolidity4, linkSolidity5, LinkableContract} from './link';
+import './matchers/matchertypes';
 
 const defaultGanacheOptions = {accounts: defaultAccounts};
 

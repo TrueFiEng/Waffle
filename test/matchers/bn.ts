@@ -1,6 +1,6 @@
 import chai, {AssertionError} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import solidity from '../../lib/matchers';
+import {solidity} from '../../lib/waffle';
 import {utils} from 'ethers';
 
 chai.use(solidity);

@@ -1,17 +1,23 @@
 import chai from 'chai';
-import {createMockProvider, deployContract, getWallets, link} from '../../lib/waffle';
-import BasicTokenMock from './build/BasicTokenMock';
-import MyLibrary from './build/MyLibrary';
-import LibraryConsumer from './build/LibraryConsumer';
-import solidity from '../../lib/matchers';
+import {
+  createMockProvider,
+  deployContract,
+  getWallets,
+  link,
+  solidity
+} from '../../lib/waffle';
+import BasicTokenMock from './build/BasicTokenMock.json';
+import MyLibrary from './build/MyLibrary.json';
+import LibraryConsumer from './build/LibraryConsumer.json';
+import { Contract } from 'ethers';
 
 chai.use(solidity);
 const {expect} = chai;
 
 describe('INTEGRATION: Example', () => {
-  let provider = createMockProvider();
-  let [wallet, walletTo] = getWallets(provider);
-  let token;
+  const provider = createMockProvider();
+  const [wallet, walletTo] = getWallets(provider);
+  let token: Contract;
 
   beforeEach(async () => {
     token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
@@ -42,7 +48,7 @@ describe('INTEGRATION: Example', () => {
       .to.be.reverted;
   });
 
-  it('should use library to add 7', async() => {
+  it('should use library to add 7', async () => {
     const myLibrary = await deployContract(wallet, MyLibrary, []);
     link(LibraryConsumer, 'test/projects/example/MyLibrary.sol:MyLibrary', myLibrary.address);
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);

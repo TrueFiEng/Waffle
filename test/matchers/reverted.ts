@@ -1,8 +1,13 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
-import Matchers from './build/Matchers';
-import solidity from '../../lib/matchers';
+import {
+  createMockProvider,
+  deployContract,
+  getWallets,
+  solidity
+} from '../../lib/waffle';
+import Matchers from './build/Matchers.json';
+import { Contract } from 'ethers';
 
 chai.use(solidity);
 chai.use(chaiAsPromised);
@@ -14,9 +19,9 @@ const alwaysReject = new Promise((resolve, reject) => {
 });
 
 describe('INTEGRATION: Matchers: reverted', () => {
-  let provider = createMockProvider();
-  let [wallet] = getWallets(provider);
-  let matchers;
+  const provider = createMockProvider();
+  const [wallet] = getWallets(provider);
+  let matchers: Contract;
 
   beforeEach(async () => {
     matchers = await deployContract(wallet, Matchers);
@@ -67,7 +72,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
 
 describe('INTEGRATION: Matchers: revertedWith', () => {
   let provider;
-  let matchers;
+  let matchers: Contract;
   let wallet;
 
   beforeEach(async () => {
@@ -142,4 +147,3 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     ).to.be.eventually.rejected;
   });
 });
-

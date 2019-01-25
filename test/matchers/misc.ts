@@ -41,13 +41,19 @@ describe('UNIT: Miscellaneous', () => {
     it('Expect to throw if invalid private', async () => {
       expect(
         () => expect('0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c').to.be.properPrivateKey
-      ).to.throw(AssertionError, 'Expected "0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c" to be a proper private key');
+      ).to.throw(
+        AssertionError,
+        'Expected "0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c" to be a proper private key'
+      );
     });
 
     it('Expect to throw if negation with proper private)', async () => {
       expect(
         () => expect('0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c5').not.to.be.properPrivateKey
-      ).to.throw(AssertionError, 'Expected "0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c5" not to be a proper private key');
+      ).to.throw(
+        AssertionError,
+        'Expected "0x706618637b8ca922f6290ce1ecd4c31247e9ab75cf0530a0ac95c0332173d7c5" not to be a proper private key'
+      );
     });
   });
 
