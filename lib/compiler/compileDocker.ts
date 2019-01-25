@@ -2,6 +2,7 @@ import {join} from 'path';
 import ImportMappingBuilder from './importMappingBuilder';
 import {Config} from '../config/config';
 import {execSync} from 'child_process';
+import {buildInputObject} from './buildInputObject';
 
 const CONTAINER_PATH = '/home/project';
 const NPM_PATH = '/home/npm';
@@ -29,14 +30,10 @@ export function getVolumes(config: Config) {
 }
 
 export function buildInputJson(sources: string[], config: Config) {
-  return {
-    language: 'Solidity',
-    sources: buildSources(sources),
-    settings: {
-      remappings: getMappings(sources, config),
-      outputSelection: {'*': {'*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']}}
-    }
-  };
+  return buildInputObject(
+    buildSources(sources),
+    getMappings(sources, config),
+  );
 }
 
 function buildSources(inputs: string[]) {

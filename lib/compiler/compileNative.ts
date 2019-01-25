@@ -2,6 +2,7 @@ import {join, resolve} from 'path';
 import {execSync} from 'child_process';
 import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
+import {buildInputObject} from './buildInputObject';
 
 export function compileNative(config: Config) {
   return async function compile(sources: string[]) {
@@ -20,14 +21,10 @@ export function createBuildCommand(config: Config) {
 }
 
 function buildInputJson(sources: string[], config: Config) {
-  return {
-    language: 'Solidity',
-    sources: buildSources(sources),
-    settings: {
-      remappings: getMappings(sources, config),
-      outputSelection: {'*': {'*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']}}
-    }
-  };
+  return buildInputObject(
+    buildSources(sources),
+    getMappings(sources, config),
+  );
 }
 
 function buildSources(inputs: string[]) {

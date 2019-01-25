@@ -2,6 +2,7 @@ import solc from 'solc';
 import {promisify} from 'util';
 import {readFileContent} from '../utils';
 import {Config} from '../config/config';
+import {buildInputObject} from './buildInputObject';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
@@ -17,17 +18,7 @@ export function compileSolcjs(config: Config) {
   return async function compile(sources: string[], findImports: (file: string) => any) {
     const solc = await loadCompiler(config);
     const inputs = findInputs(sources);
-    const input = {
-      language: 'Solidity',
-      sources: convertInputs(inputs),
-      settings: {
-        outputSelection: {
-          '*': {
-            '*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']
-          }
-        }
-      }
-    };
+    const input = buildInputObject(convertInputs(inputs));
     const output = solc.compile(JSON.stringify(input), findImports);
     return JSON.parse(output);
   };
