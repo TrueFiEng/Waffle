@@ -1,9 +1,6 @@
 import {execSync} from 'child_process';
-import fs from 'fs';
-import {join, dirname} from 'path';
 import {Config} from '../config/config';
 import ImportMappingBuilder from './importMappingBuilder';
-import {saveOutput} from './saveOutput';
 
 export default class BaseWrapper {
   protected config: Config;

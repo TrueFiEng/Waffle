@@ -25,10 +25,7 @@ export async function compile(config: Config) {
 
 async function processOutput(output: any, config: Config) {
   if (output.errors) {
-    const errors = output.errors
-      .map((error: any) => toFormattedMessage(error))
-      .join('\n');
-    console.error(errors);
+    console.error(formatErrors(output.errors));
   }
   if (anyNonWarningErrors(output.errors)) {
     throw new Error('Compilation failed');
@@ -39,6 +36,10 @@ async function processOutput(output: any, config: Config) {
 
 function anyNonWarningErrors(errors?: any[]) {
   return errors && !errors.every(isWarningMessage)
+}
+
+function formatErrors(errors: any[]) {
+  return errors.map(toFormattedMessage).join('\n');
 }
 
 function toFormattedMessage(error: any) {
