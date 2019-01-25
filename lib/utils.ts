@@ -29,9 +29,6 @@ export async function getBalanceChanges(transactionCallback: () => any, wallets:
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
 
-export const isDirectory = (filePath: string) =>
-  fs.existsSync(filePath) && fs.statSync(filePath).isDirectory();
-
 export const isFile = (filePath: string) =>
   fs.existsSync(filePath) && fs.lstatSync(filePath).isFile();
 

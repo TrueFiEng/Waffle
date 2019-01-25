@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import defaultConfig, {Config} from '../config/config';
-import {isDirectory, readFileContent, isWarningMessage} from '../utils';
+import {readFileContent, isWarningMessage} from '../utils';
 import {createWrapper, Wrapper} from './createWrapper';
+import {findInputs} from './findInputs';
 
 interface CompilerOptions {
   wrapper?: Wrapper;
@@ -23,24 +24,6 @@ export default class Compiler {
     this.wrapper = options.wrapper || createWrapper(this.config);
   }
 
-  public async findInputFiles(sourcesPath: string) {
-    const dirs = [sourcesPath];
-    const inputFiles: string[] = [];
-    while (dirs.length) {
-      const dir = dirs.pop();
-      const files = fs.readdirSync(dir);
-      for (const file of files) {
-        const filePath = path.join(dir, file);
-        if (isDirectory(filePath)) {
-          dirs.push(filePath);
-        } else if (file.endsWith('.sol')) {
-          inputFiles.push(filePath);
-        }
-      }
-    }
-    return inputFiles;
-  }
-
   public findImports(file: string) {
     const libPath = path.join(this.config.npmPath, file);
     if (fs.existsSync(file)) {
@@ -54,8 +37,10 @@ export default class Compiler {
   }
 
   public async doCompile() {
-    const sourcesFiles = await this.findInputFiles(this.config.sourcesPath);
-    return this.wrapper.compile(sourcesFiles, this.findImports.bind(this));
+    return this.wrapper.compile(
+      findInputs(this.config.sourcesPath),
+      this.findImports.bind(this)
+    );
   }
 
   private anyNonWarningErrors(errors?: any[]) {

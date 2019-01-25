@@ -27,11 +27,6 @@ describe('INTEGRATION: Compiler', () => {
     compiler = new Compiler(config);
   });
 
-  it('findInputsFiles', async () => {
-    const actualInputs = await compiler.findInputFiles(sourcesPath);
-    expect(actualInputs).to.deep.eq(expectedInputs);
-  });
-
   it('findImports in source path', async () => {
     const expected = await readFileContent('test/projects/example/BasicToken.sol');
     const actual = compiler.findImports('test/projects/example/BasicToken.sol');
