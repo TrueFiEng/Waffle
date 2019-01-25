@@ -42,6 +42,5 @@ function buildSources(inputs: string[]) {
 
 function getMappings(sources: string[], config: Config) {
   const mappingBuilder = new ImportMappingBuilder(config.sourcesPath, config.npmPath);
-  const mappings = mappingBuilder.getMappings(sources);
-  return Object.entries(mappings).map(([key, value]) => `${key}=${value}`);
+  return mappingBuilder.getMappings(sources);
 }

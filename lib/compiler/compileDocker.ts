@@ -58,6 +58,5 @@ function getMappings(sources: string[], config: Config) {
     CONTAINER_PATH,
     NPM_PATH
   );
-  const mappings = mappingBuilder.getMappings(sources);
-  return Object.entries(mappings).map(([key, value]) => `${key}=${value}`);
+  return mappingBuilder.getMappings(sources);
 }
