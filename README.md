@@ -199,5 +199,5 @@ yarn lint
 - [ ] Debugging and profiling
 
 ## License
-Universal Login SDK is released under the [MIT License](https://opensource.org/licenses/MIT).
+Waffle is released under the [MIT License](https://opensource.org/licenses/MIT).
 
