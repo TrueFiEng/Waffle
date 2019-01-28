@@ -32,7 +32,7 @@ export async function getBalanceChanges(transactionCallback: () => any, wallets:
 export const isFile = (filePath: string) =>
   fs.existsSync(filePath) && fs.lstatSync(filePath).isFile();
 
-export const falttenObjectArray = (array: object[]) =>
+export const flattenObjectArray = (array: object[]) =>
   array.reduce((accum, object) => Object.assign(accum, object), {});
 
 export const last = <T>(array: T[]): T =>

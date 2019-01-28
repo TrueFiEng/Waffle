@@ -1,4 +1,4 @@
-import {isFile, falttenObjectArray, readFileContent} from '../utils';
+import {isFile, flattenObjectArray, readFileContent} from '../utils';
 import {join, sep, resolve, dirname, relative} from 'path';
 
 const PATH = `\\"(?<path>([^"\\r\\n\\\\]|'\\\\'.)*)\\"`;
@@ -55,7 +55,7 @@ class ImportMappingBuilder {
   }
 
   public getMappingForUnit(unit: string, filePath: string) {
-    return falttenObjectArray([
+    return flattenObjectArray([
       this.getMappingForUnitWithRegexp(unit, IMPORT_TYPE_A, filePath),
       this.getMappingForUnitWithRegexp(unit, IMPORT_TYPE_B, filePath),
       this.getMappingForUnitWithRegexp(unit, IMPORT_TYPE_C, filePath)
@@ -63,7 +63,7 @@ class ImportMappingBuilder {
   }
 
   public getMappings(sources: string[]) {
-    const mappings = falttenObjectArray(
+    const mappings = flattenObjectArray(
       sources.map((path) =>
         this.getMappingForUnit(readFileContent(path), path)
       ));
