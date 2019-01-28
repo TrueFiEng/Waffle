@@ -9,7 +9,7 @@ export function buildInputObject(sources: any, remappings?: any) {
   };
 }
 
-function toFullyQualifiedName(path: string) : string {
+function toFullyQualifiedName(path: string): string {
   return path.replace(/\\/g, '/');
 }
 
