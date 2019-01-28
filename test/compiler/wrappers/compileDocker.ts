@@ -1,5 +1,9 @@
 import chai, {expect} from 'chai';
-import DockerWrapper from '../../../lib/wrappers/dockerWrapper';
+import {
+  getVolumes,
+  buildInputJson,
+  createBuildCommand
+} from '../../../lib/compiler/compileDocker';
 import sinonChai from 'sinon-chai';
 import {join} from 'path';
 
@@ -13,24 +17,18 @@ const npmPath = './test/projects/custom/custom_node_modules';
 const config = {sourcesPath, npmPath};
 
 describe('UNIT: DockerWrapper', () => {
-  let dockerWrapper: DockerWrapper;
-
-  before(() => {
-    dockerWrapper = new DockerWrapper(config);
-  });
-
   describe('getVolumes', () => {
     it('simple config', () => {
       const hostProjectPath = process.cwd();
       const hostNpmPath = join(hostProjectPath, npmPath);
       const expectedVolumes = `-v ${hostProjectPath}:/home/project -v ${hostNpmPath}:/home/npm`;
-      expect(dockerWrapper.getVolumes()).to.eq(expectedVolumes);
+      expect(getVolumes(config)).to.eq(expectedVolumes);
     });
   });
 
   describe('buildInputJson', () => {
     it('empty sources', () => {
-      expect(dockerWrapper.buildInputJson([])).to.deep.eq({
+      expect(buildInputJson([], config)).to.deep.eq({
         language: 'Solidity',
         sources: {},
         settings: {
@@ -42,7 +40,7 @@ describe('UNIT: DockerWrapper', () => {
 
     it('example sources', () => {
       const prefix = '/home/project/';
-      expect(dockerWrapper.buildInputJson(inputs)).to.deep.eq({
+      expect(buildInputJson(inputs, config)).to.deep.eq({
         language: 'Solidity',
         sources: {
           'test/projects/custom/custom_contracts/Custom.sol': {urls: [`${prefix}${inputs[0]}`]},
@@ -59,7 +57,7 @@ describe('UNIT: DockerWrapper', () => {
 
   describe('buildCommand', () => {
     it('no version', () => {
-      const command = dockerWrapper.buildCommand();
+      const command = createBuildCommand(config);
       expect(command).to.startWith('docker run -v ');
       expect(command).to.endWith(
         ':/home/npm -i -a stdin -a stdout ethereum/solc:stable solc ' +
@@ -68,8 +66,7 @@ describe('UNIT: DockerWrapper', () => {
     });
 
     it('specific version', () => {
-      const wrapper = new DockerWrapper({...config, 'docker-tag': '0.4.24'});
-      const command = wrapper.buildCommand();
+      const command = createBuildCommand({...config, 'docker-tag': '0.4.24'});
       expect(command).to.startWith('docker run -v ');
       expect(command).to.endWith(
         ':/home/npm -i -a stdin -a stdout ethereum/solc:0.4.24 solc ' +

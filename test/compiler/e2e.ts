@@ -1,9 +1,9 @@
 import fs from 'fs';
 import fsx from 'fs-extra';
-import path from 'path';
 import {join, resolve} from 'path';
 import {expect} from 'chai';
-import {compile, loadConfig} from '../../lib/compiler';
+import {compileProject} from '../../lib/compiler/compiler';
+import {loadConfig} from '../../lib/config/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
 
@@ -33,7 +33,7 @@ describe('E2E: Compiler integration', () => {
     });
 
     it('compile and produce artefacts', async () => {
-      await compile('config_docker.json');
+      await compileProject('config_docker.json');
       for (const artefact of artefacts) {
         const filePath = join('../build', artefact);
         expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
@@ -46,14 +46,14 @@ describe('E2E: Compiler integration', () => {
   });
 
   for (const configurationPath of configurations)  {
-    const configuration = loadConfig(configurationPath);
+    const configuration = loadConfig(configurationPath) as any;
     const {name, targetPath, legacyOutput} = configuration;
 
     /* eslint-disable no-loop-func */
     describe(name, () => {
       before(async () => {
         fsx.removeSync(targetPath);
-        await compile(configurationPath);
+        await compileProject(configurationPath);
       });
 
       it('produce output files', async () => {

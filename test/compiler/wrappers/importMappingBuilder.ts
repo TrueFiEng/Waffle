@@ -4,7 +4,7 @@ import ImportsMappingBuilder, {
   IMPORT_TYPE_A,
   IMPORT_TYPE_B,
   IMPORT_TYPE_C
-} from '../../../lib/wrappers/importMappingBuilder';
+} from '../../../lib/compiler/importMappingBuilder';
 
 chai.use(chaiString);
 
@@ -28,7 +28,7 @@ describe('UNIT: ImportsMappingBuilder', () => {
 
   describe('convertPath', () => {
     let builder: ImportsMappingBuilder;
-    let expectedPath;
+    let expectedPath: string;
     let expectedMapping: any;
 
     before(() => {
@@ -92,7 +92,9 @@ describe('UNIT: ImportsMappingBuilder', () => {
 
     it('generates mapping for sources', async () => {
       const sources = ['./test/projects/custom/custom_contracts/Custom.sol'];
-      expect(builder.getMappings(sources)).to.deep.eq(expectedMapping);
+      expect(builder.getMappings(sources)).to.deep.eq([
+        `openzeppelin-solidity=${expectedPath}`
+      ]);
     });
   });
 });

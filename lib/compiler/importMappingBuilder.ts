@@ -63,10 +63,11 @@ class ImportMappingBuilder {
   }
 
   public getMappings(sources: string[]) {
-    return falttenObjectArray(
+    const mappings = falttenObjectArray(
       sources.map((path) =>
         this.getMappingForUnit(readFileContent(path), path)
       ));
+    return Object.entries(mappings).map(([key, value]) => `${key}=${value}`);
   }
 }
 

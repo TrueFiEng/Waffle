@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import chaiString from 'chai-string';
-import SolcJsWrapper from '../../../lib/wrappers/solcjsWrapper';
+import {findInputs} from '../../../lib/compiler/compileSolcjs';
 import {readFileContent} from '../../../lib/utils';
 
 chai.use(chaiString);
@@ -11,15 +11,9 @@ const expectedInputs = [
   'test/projects/example/mock/BasicTokenMock.sol'
 ];
 
-describe('UNIT: SolcJsWrapper', () => {
-  let wrapper: SolcJsWrapper;
-
-  before(() => {
-    wrapper = new SolcJsWrapper(null as any);
-  });
-
+describe('UNIT: findInputs', () => {
   it('findInputs', async () => {
-    const actualInputs = await wrapper.findInputs(expectedInputs);
+    const actualInputs = findInputs(expectedInputs);
     expect(Object.keys(actualInputs)).to.deep.eq(expectedInputs);
     const basicTokenContractActual = actualInputs['test/projects/example/BasicToken.sol'];
     const basicTokenContractExpected = await readFileContent('test/projects/example/BasicToken.sol');

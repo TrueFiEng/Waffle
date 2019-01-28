@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -40,7 +40,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-string": "~1.4.0",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "^7.0.1",
     "mocha": "^5.1.1",
     "openzeppelin-solidity": "^2.1.1",
     "rimraf": "^2.6.3",
