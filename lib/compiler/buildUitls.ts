@@ -9,10 +9,14 @@ export function buildInputObject(sources: any, remappings?: any) {
   };
 }
 
+function toFullyQualifiedName(path: string) : string {
+  return path.replace(/\\/g, '/');
+}
+
 export function buildSources(inputs: string[], transform: (input: string) => string) {
   const sources: Record<string, { urls: string[] }> = {};
   for (const input of inputs) {
-    sources[input.replace(/\\/g, '/')] = {urls: [transform(input)]};
+    sources[toFullyQualifiedName(input)] = {urls: [transform(input)]};
   }
   return sources;
 }
