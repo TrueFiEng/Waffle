@@ -107,7 +107,7 @@ describe('E2E: Compiler integration', () => {
         const MyLibrary = require(libraryPath);
         const LibraryConsumer = deepCopy(require(resolve(join(configuration.targetPath, 'Two.json'))));
         const myLibrary = await deployContract(wallet, MyLibrary, []);
-        const libraryName = `${configuration.sourcesPath.slice(2)}/MyLibrary.sol:MyLibrary`;
+        const libraryName = `${join(process.cwd(), configuration.sourcesPath.slice(2))}/MyLibrary.sol:MyLibrary`;
         link(LibraryConsumer, libraryName, myLibrary.address);
         const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
         expect(await libraryConsumer.useLibrary(3)).to.eq(10);

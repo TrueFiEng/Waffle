@@ -30,7 +30,7 @@ describe('INTEGRATION: Compiler', () => {
     const sourcesPath = './test/projects/invalidContracts'; // tslint:disable-line
     const targetPath = './test/projects/build'; // tslint:disable-line
     const config = {...defaultConfig, sourcesPath, targetPath}; // tslint:disable-line
-    const expectedOutput = 'test/projects/invalidContracts/invalid.sol:6:14: ' +
+    const expectedOutput = `${path.join(process.cwd(), 'test/projects/invalidContracts/invalid.sol')}:6:14: ` +
       'DeclarationError: Identifier not found or not unique.\n' +
       '  function f(wrongType arg) public {\n             ^-------^\n';
 

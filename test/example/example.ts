@@ -10,6 +10,7 @@ import BasicTokenMock from './build/BasicTokenMock.json';
 import MyLibrary from './build/MyLibrary.json';
 import LibraryConsumer from './build/LibraryConsumer.json';
 import { Contract } from 'ethers';
+import * as path from "path";
 
 chai.use(solidity);
 const {expect} = chai;
@@ -50,7 +51,10 @@ describe('INTEGRATION: Example', () => {
 
   it('should use library to add 7', async () => {
     const myLibrary = await deployContract(wallet, MyLibrary, []);
-    link(LibraryConsumer, 'test/projects/example/MyLibrary.sol:MyLibrary', myLibrary.address);
+    link(
+      LibraryConsumer,
+      `${path.join(process.cwd(), 'test/projects/example/MyLibrary.sol')}:MyLibrary`,
+      myLibrary.address);
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
     expect(await libraryConsumer.useLibrary(3)).to.eq(10);
   });

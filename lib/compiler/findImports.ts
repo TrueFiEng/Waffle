@@ -6,6 +6,6 @@ export function findImports(fileCache: ImportFile[]) {
     if (result) {
       return {contents: result.source};
     }
-    throw new Error(`File not found: ${file}`);
+    return {error: `File not found: ${file}`};
   };
 }
