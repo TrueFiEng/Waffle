@@ -6,11 +6,13 @@ import { ImportFile } from '@resolver-engine/imports';
 const DATA: ImportFile[] = [
   {
     url: '/tmp/waffle/b',
-    source: 'content of b.sol'
+    source: 'content of b.sol',
+    provider: 'unknown'
   },
   {
     url: 'test/projects/example/BasicToken.sol',
-    source: readFileContent('test/projects/example/BasicToken.sol')
+    source: readFileContent('test/projects/example/BasicToken.sol'),
+    provider: 'unkown'
   }
 ];
 
