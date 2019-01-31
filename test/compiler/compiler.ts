@@ -4,6 +4,7 @@ import sinonChai from 'sinon-chai';
 import chaiString from 'chai-string';
 import {compile, compileAndSave} from '../../lib/compiler/compiler';
 import defaultConfig from '../../lib/config/config';
+import * as path from 'path';
 
 const sourcesPath = './test/projects/example';
 const targetPath = './test/compiler/build';
@@ -15,7 +16,11 @@ chai.use(sinonChai);
 describe('INTEGRATION: Compiler', () => {
   it('compile just compiles', async () => {
     const output = await compile(config);
-    const basicTokenOutput = output.contracts['test/projects/example/BasicToken.sol'].BasicToken;
+    const basicTokenOutput = output.contracts[
+      path.join(
+        process.cwd(),
+        'test/projects/example/BasicToken.sol')
+      ].BasicToken;
     expect(output.errors).to.equal(undefined);
     expect(basicTokenOutput.evm.bytecode.object).to.startsWith('6080604052');
     expect(JSON.stringify(basicTokenOutput.abi)).to.startsWith('[{"constant":true,');

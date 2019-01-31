@@ -5,6 +5,7 @@ import {findInputs} from './findInputs';
 import {findImports} from './findImports';
 import {loadConfig} from '../config/loadConfig';
 import {saveOutput} from './saveOutput';
+import { ImportsFsEngine, BacktrackFsResolver, gatherSourcesAndCanonizeImports } from "@resolver-engine/imports-fs";
 
 export async function compileProject(configPath: string) {
   await compileAndSave(loadConfig(configPath));
@@ -16,9 +17,14 @@ export async function compileAndSave(config: Config) {
 }
 
 export async function compile(config: Config) {
+  // Added support for backwards compatibillity - renamable node_modules path
+  const resolver = ImportsFsEngine()
+    .addResolver(BacktrackFsResolver(config.npmPath));
+  const cache = await gatherSourcesAndCanonizeImports(findInputs(config.sourcesPath), process.cwd(), resolver);
+
   return getCompileFunction(config)(
-    findInputs(config.sourcesPath),
-    findImports(config.npmPath)
+    cache,
+    findImports(cache)
   );
 }
 
