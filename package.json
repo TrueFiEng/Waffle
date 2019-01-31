@@ -24,6 +24,8 @@
     "node": ">=10.0"
   },
   "dependencies": {
+    "@resolver-engine/imports-fs": "^0.3.0",
+    "@resolver-engine/imports": "^0.3.0",
     "ethers": "^4.0.0",
     "ganache-core": "2.2.1",
     "solc": "^0.5.1"
