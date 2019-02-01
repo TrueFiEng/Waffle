@@ -5,12 +5,12 @@
 
 Library for writing and testing smart contracts.
 
-Sweeter, simpler, faster than Truffle.
+Sweeter, simpler and faster than Truffle.
 
 ## Philosophy
 * __Simpler__: Minimalistic, few dependencies.
 * __Sweeter__: Nice syntax, easy to extend.
-* __Faster__: Strong focus on the speed of tests execution.
+* __Faster__: Strong focus on the speed of test execution.
 
 ## Features:
 * Sweet set of chai matchers, e.g.:
@@ -26,10 +26,10 @@ Sweeter, simpler, faster than Truffle.
 
 
 ## Documentation
-Documentation available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
+Documentation is available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
 
 ## Installation:
-To start using with npm, type:
+To get started using npm, type:
 ```sh
 npm i ethereum-waffle
 ```
@@ -42,14 +42,14 @@ yarn add ethereum-waffle
 ## Step by step guide
 
 ### Add external dependency:
-To add external library add npm to your project:
+To add an external library install it using npm:
 
 ```sh
 npm i openzeppelin-solidity
 ```
 
 ### Example contract
-Below is example contract written in Solidity. Place it in `contracts` directory of your project:
+Below is an example contract written in Solidity. Place it in `contracts` directory of your project:
 
 ```solidity
 pragma solidity ^0.5.1;
@@ -66,7 +66,7 @@ contract BasicTokenMock is ERC20 {
 ```
 
 ### Example test
-Belows is example test written for the contract above written with Waffle. Place it in `test` directory of your project:
+Below is an example test written for the contract above compiled with Waffle. Place it in `test` directory of your project:
 
 ```js
 import chai from 'chai';
@@ -115,18 +115,18 @@ describe('INTEGRATION: Example', () => {
 });
 ```
 
-### Compile
-To compile contracts type:
+### Compiling
+To compile your smart contracts run:
 ```sh
 npx waffle
 ```
 
-To compile using a custom configuration file:
+To compile using a custom configuration file run:
 ```sh
 npx waffle config.json
 ```
 
-Example configuration file looks like this:
+Example configuration file looks like this (all fields optional):
 ```json
 {
   "sourcesPath": "./custom_contracts",
@@ -135,16 +135,20 @@ Example configuration file looks like this:
 }
 ```
 
-### Run tests
-To run test type in the console:
+### Running tests
+To run the tests run the following command:
 ```sh
 mocha
 ```
 
-### Adding a task
-For convince, you can add a task to your `package.json`. In the sections `scripts`, add the following line:
+### Adding an npm script
+For convinience, you can add the following to your `package.json`:
 ```json
-  "test": "waffle && test"
+{
+  "scripts: {
+    "test": "waffle && mocha"
+  }
+}
 ```
 
 Now you can build and test your contracts with one command:
@@ -185,7 +189,7 @@ yarn lint
 
 ## Roadmap
 
-### Waffle 2.0 (currently in beta)
+### Waffle 2.0
 - [x] New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
 - [x] Faster compilation with native and dockerized solc (aside from solcjs)
 - [x] Documentation
