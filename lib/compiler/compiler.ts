@@ -19,14 +19,16 @@ export async function compileAndSave(config: Config) {
 
 export async function compile(config: Config) {
   // Added support for backwards compatibillity - renamable node_modules path
-  const resolver = ImportsFsEngine()
-    .addResolver(resolvers.BacktrackFsResolver(config.npmPath));
-  const cache = await gatherSourcesAndCanonizeImports(findInputs(config.sourcesPath), process.cwd(), resolver);
-
-  return getCompileFunction(config)(
-    cache,
-    findImports(cache)
+  const resolver = ImportsFsEngine().addResolver(
+    resolvers.BacktrackFsResolver(config.npmPath)
   );
+  const sources = await gatherSourcesAndCanonizeImports(
+    findInputs(config.sourcesPath),
+    process.cwd(),
+    resolver
+  );
+
+  return getCompileFunction(config)(sources, findImports(sources));
 }
 
 async function processOutput(output: any, config: Config) {

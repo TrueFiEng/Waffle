@@ -54,7 +54,8 @@ describe('INTEGRATION: Example', () => {
     link(
       LibraryConsumer,
       `${path.join(process.cwd(), 'test/projects/example/MyLibrary.sol')}:MyLibrary`,
-      myLibrary.address);
+      myLibrary.address
+    );
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
     expect(await libraryConsumer.useLibrary(3)).to.eq(10);
   });
