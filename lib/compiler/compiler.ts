@@ -6,7 +6,7 @@ import {findImports} from './findImports';
 import {loadConfig} from '../config/loadConfig';
 import {saveOutput} from './saveOutput';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
-import {gatherSourcesAndCanonizeImports, gatherSources} from '@resolver-engine/imports';
+import {gatherSources} from '@resolver-engine/imports';
 
 export async function compileProject(configPath: string) {
   await compileAndSave(loadConfig(configPath));
