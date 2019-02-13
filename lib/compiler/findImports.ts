@@ -1,8 +1,8 @@
 import { ImportFile } from '@resolver-engine/imports';
 
-export function findImports(fileCache: ImportFile[]) {
+export function findImports(sources: ImportFile[]) {
   return (file: string) => {
-    const result = fileCache.find((importFile) => importFile.url === file);
+    const result = sources.find((importFile) => importFile.url === file);
     if (result) {
       return {contents: result.source};
     }
