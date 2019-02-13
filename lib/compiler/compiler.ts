@@ -6,7 +6,7 @@ import {findImports} from './findImports';
 import {loadConfig} from '../config/loadConfig';
 import {saveOutput} from './saveOutput';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
-import {gatherSourcesAndCanonizeImports} from '@resolver-engine/imports';
+import {gatherSourcesAndCanonizeImports, gatherSources} from '@resolver-engine/imports';
 
 export async function compileProject(configPath: string) {
   await compileAndSave(loadConfig(configPath));
@@ -22,9 +22,9 @@ export async function compile(config: Config) {
   const resolver = ImportsFsEngine().addResolver(
     resolvers.BacktrackFsResolver(config.npmPath)
   );
-  const sources = await gatherSourcesAndCanonizeImports(
+  const sources = await gatherSources(
     findInputs(config.sourcesPath),
-    process.cwd(),
+    '.',
     resolver
   );
 

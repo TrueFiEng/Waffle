@@ -53,7 +53,7 @@ describe('INTEGRATION: Example', () => {
     const myLibrary = await deployContract(wallet, MyLibrary, []);
     link(
       LibraryConsumer,
-      `${path.join(process.cwd(), 'test/projects/example/MyLibrary.sol')}:MyLibrary`,
+      'test/projects/example/MyLibrary.sol:MyLibrary',
       myLibrary.address
     );
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
