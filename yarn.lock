@@ -18,19 +18,19 @@
     "@resolver-engine/core" "^0.3.0"
     debug "^3.1.0"
 
-"@resolver-engine/imports-fs@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@resolver-engine/imports-fs/-/imports-fs-0.3.0.tgz#740f86d9513af22156e24741492e03ace68d51f9"
-  integrity sha512-vrQqfs9aYbz9eYpfoNG5XBVUsLCDZWkdF9+Z5mYDGPe9UnpKEByLrWJUDgKIQUJunkGpRFVDOFUaGEIIoSSVtw==
+"@resolver-engine/imports-fs@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@resolver-engine/imports-fs/-/imports-fs-0.3.2.tgz#41ac4b286679843a1d1d61ed2f4add14997c3b22"
+  integrity sha512-EQMnDX98Aurtdc+Nol51V9Xa0g5ZNWybmVLeUH8w2tN8nEBa5N9KwmjH8ZwWG8z9Sn4SHdbQ3SOeuVKbAT6PUw==
   dependencies:
     "@resolver-engine/fs" "^0.3.0"
-    "@resolver-engine/imports" "^0.3.0"
+    "@resolver-engine/imports" "^0.3.2"
     debug "^3.1.0"
 
-"@resolver-engine/imports@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@resolver-engine/imports/-/imports-0.3.0.tgz#c51a94a77da08e3ca4eb3eee11847fe357b8a3aa"
-  integrity sha512-2ne8J9S3kHAABQ7RNWh4ed/hR7NYvfUPEsTzjlhqnl/TDOEvUb2u92HlIZKC8YHLUv2NjZ5TSbgaBsrWYivE0A==
+"@resolver-engine/imports@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@resolver-engine/imports/-/imports-0.3.2.tgz#2882652247df72917df44a8aa6cbcff9ed4143b1"
+  integrity sha512-DnXyYCupb6jGQKkqZD4DZUiHw9OOa7J/ONHS4c7uLTdQCAnixQCALbmqOkfXdEheElosotNcBwRY/ruayeWiIA==
   dependencies:
     "@resolver-engine/core" "^0.3.0"
     debug "^3.1.0"
