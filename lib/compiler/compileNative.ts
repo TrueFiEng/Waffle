@@ -7,7 +7,7 @@ import { ImportFile } from '@resolver-engine/imports';
 export function compileNative(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
-    const input = JSON.stringify(buildInputObject(buildSourcesObject(sources)), null, 2);
+    const input = JSON.stringify(buildInputObject(sources), null, 2);
     return JSON.parse(execSync(command, {input}).toString());
   };
 }

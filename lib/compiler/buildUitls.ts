@@ -6,7 +6,8 @@ export function buildSourcesObject(files: ImportFile[]): Record<string, { conten
   return result;
 }
 
-export function buildInputObject(sources: any, remappings?: any) {
+export function buildInputObject(files: ImportFile[], remappings?: any) {
+  const sources = buildSourcesObject(files);
   return {
     language: 'Solidity',
     sources,

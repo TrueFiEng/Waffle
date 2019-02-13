@@ -10,7 +10,7 @@ const NPM_PATH = '/home/npm';
 export function compileDocker(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
-    const input = JSON.stringify(buildInputObject(buildSourcesObject(sources)), null, 2);
+    const input = JSON.stringify(buildInputObject(sources), null, 2);
     return JSON.parse(execSync(command, {input}).toString());
   };
 }

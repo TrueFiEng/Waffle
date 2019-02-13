@@ -18,7 +18,7 @@ async function loadCompiler(config: Config) {
 export function compileSolcjs(config: Config) {
   return async function compile(sources: ImportFile[], findImports: (file: string) => any) {
     const solc = await loadCompiler(config);
-    const input = buildInputObject(buildSourcesObject(sources));
+    const input = buildInputObject(sources);
     const output = solc.compile(JSON.stringify(input), findImports);
     return JSON.parse(output);
   };
