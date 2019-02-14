@@ -2,9 +2,10 @@ import { Config } from '../config/config';
 import {compileSolcjs} from './compileSolcjs';
 import {compileNative} from './compileNative';
 import {compileDocker} from './compileDocker';
+import { ImportFile } from '@resolver-engine/imports';
 
 export type CompileFunction = (
-  sources: string[],
+  sources: ImportFile[],
   findImports: (file: string) => any
 ) => any;
 
