@@ -8,7 +8,7 @@ import {readFileContent} from '../../lib/utils';
 const configs = [
   'config.json',
   'config_docker.json',
-  'config_native.json',
+  'config_native.json'
 ];
 
 describe('E2E: Compiler options', () => {
@@ -18,12 +18,12 @@ describe('E2E: Compiler options', () => {
 
   beforeEach(() => {
     fsx.removeSync('build');
-  })
+  });
 
   for (const config of configs) {
     it(`[${config}] compiles using the provided options`, async () => {
       await compileProject(config);
-  
+
       const filePath = join('./build', 'Constantinople.json');
       const content = JSON.parse(readFileContent(filePath));
       expect(content.evm.bytecode.opcodes.includes(' SHL ')).to.equal(true);
