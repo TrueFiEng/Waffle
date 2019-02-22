@@ -6,14 +6,14 @@ export function buildSourcesObject(files: ImportFile[]): Record<string, { conten
   return result;
 }
 
-export function buildInputObject(files: ImportFile[], remappings?: any) {
+export function buildInputObject(files: ImportFile[], overrides: any = {}) {
   const sources = buildSourcesObject(files);
   return {
     language: 'Solidity',
     sources,
     settings: {
-      remappings,
-      outputSelection: {'*': {'*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']}}
+      outputSelection: {'*': {'*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']}},
+      ...overrides
     }
   };
 }

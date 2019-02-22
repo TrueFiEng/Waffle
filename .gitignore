@@ -5,6 +5,7 @@ yarn-error.log
 /test/projects/custom/custom_build
 /test/projects/insideOut/build
 /test/projects/custom_solidity_4/custom_build
+/test/projects/compilerOptions/build
 /test/matchers/build/
 /test/example/build/
 /build

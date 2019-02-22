@@ -1,7 +1,7 @@
 import {join} from 'path';
 import {Config} from '../config/config';
 import {execSync} from 'child_process';
-import {buildInputObject, buildSourcesObject} from './buildUitls';
+import {buildInputObject} from './buildUitls';
 import { ImportFile } from '@resolver-engine/imports';
 
 const CONTAINER_PATH = '/home/project';
@@ -10,7 +10,7 @@ const NPM_PATH = '/home/npm';
 export function compileDocker(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
-    const input = JSON.stringify(buildInputObject(sources), null, 2);
+    const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);
     return JSON.parse(execSync(command, {input}).toString());
   };
 }
