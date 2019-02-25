@@ -7,6 +7,7 @@ export interface Config {
   solcVersion?: string;
   legacyOutput?: string;
   allowedPaths?: string[];
+  compilerOptions?: Record<string, any>;
 }
 
 const defaultConfig: Config = {

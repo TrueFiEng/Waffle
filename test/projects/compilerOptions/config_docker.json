@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "evmVersion": "constantinople"
+  },
+  "compiler": "dockerized-solc"
+}
