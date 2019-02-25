@@ -51,6 +51,26 @@ You can generate files that are compatible with both current and previous versio
     "legacyOutput": "true"
   }
 
+
+Custom compiler options
+-----------------------
+To provide custom compiler options in waffle configuration file use compilerOptions section. Example below.
+
+::
+
+  {
+    "compilerOptions": {
+      "evmVersion": "constantinople"
+    },
+    "compiler": "native"
+  }
+
+For detailed list of options go to
+`solidity documentation <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#using-the-compiler>`_
+(sections: `'Setting the EVM version to target' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#setting-the-evm-version-to-target>`_,
+`'Target options' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#target-options>`_ and `'Compiler Input and Output JSON Description' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#compiler-input-and-output-json-description>`_).
+
+
 Monorepo
 --------
 Waffle works well with mono-repositories. It is enough to set up common npmPath in the configuration file to make it work.

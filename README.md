@@ -186,6 +186,12 @@ To run linter type:
 yarn lint
 ```
 
+Building documentation:
+```sh
+cd docs
+make html
+```
+
 
 ## Roadmap
 
