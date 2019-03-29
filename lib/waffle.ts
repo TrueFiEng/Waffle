@@ -31,14 +31,14 @@ export async function deployContract(
   const factory = new ContractFactory(
     contractJSON.abi,
     contractJSON.evm.bytecode,
-    wallet,
-  )
+    wallet
+  );
   const contract = await factory.deploy(...args, {
     ...defaultDeployOptions,
-    ...overrideOptions,
-  })
-  await contract.deployed()
-  return contract
+    ...overrideOptions
+  });
+  await contract.deployed();
+  return contract;
 }
 
 export const link = (contract: LinkableContract, libraryName: string, libraryAddress: string) => {

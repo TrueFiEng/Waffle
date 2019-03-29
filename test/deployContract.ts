@@ -3,7 +3,7 @@ import {
   deployContract,
   createMockProvider,
   getWallets,
-  solidity,
+  solidity
 } from '../lib/waffle';
 import SafeMath from './example/build/SafeMath.json';
 import { ContractFactory } from 'ethers';
@@ -20,13 +20,13 @@ describe('deployContract', () => {
   });
 
   it('uses ContractFactory.deploy', async () => {
-    const originalDeploy = ContractFactory.prototype.deploy
-    let called = false
+    const originalDeploy = ContractFactory.prototype.deploy;
+    let called = false;
     ContractFactory.prototype.deploy = function (...args: any[]) {
-      called = true
-      ContractFactory.prototype.deploy = originalDeploy
-      return originalDeploy.apply(this, args)
-    }
+      called = true;
+      ContractFactory.prototype.deploy = originalDeploy;
+      return originalDeploy.apply(this, args);
+    };
 
     await deployContract(
       wallet,
