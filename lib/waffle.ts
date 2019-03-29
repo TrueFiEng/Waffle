@@ -28,17 +28,17 @@ export async function deployContract(
   args: any[] = [],
   overrideOptions: providers.TransactionRequest = {}
 ) {
-  const {abi} = contractJSON;
-  const bytecode = `0x${contractJSON.evm.bytecode.object}`;
-  const factory = new ContractFactory(abi, bytecode, wallet);
-  const deployTransaction = {
+  const factory = new ContractFactory(
+    contractJSON.abi,
+    contractJSON.evm.bytecode,
+    wallet,
+  )
+  const contract = await factory.deploy(...args, {
     ...defaultDeployOptions,
     ...overrideOptions,
-    ...factory.getDeployTransaction(...args)
-  };
-  const tx = await wallet.sendTransaction(deployTransaction);
-  const receipt = await wallet.provider.getTransactionReceipt(tx.hash);
-  return new Contract(receipt.contractAddress, abi, wallet);
+  })
+  await contract.deployed()
+  return contract
 }
 
 export const link = (contract: LinkableContract, libraryName: string, libraryAddress: string) => {
