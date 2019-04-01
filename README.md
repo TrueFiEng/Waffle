@@ -66,7 +66,7 @@ contract BasicTokenMock is ERC20 {
 ```
 
 ### Example test
-Below is an example test written for the contract above compiled with Waffle. Place it in `test` directory of your project:
+Below is an example test written for the contract above compiled with Waffle. Place it under `test/basicTokenMock.js` file of your project:
 
 ```js
 const chai = require('chai');
