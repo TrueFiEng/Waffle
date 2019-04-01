@@ -71,9 +71,8 @@ Below is an example test written for the contract above compiled with Waffle. Pl
 ```js
 const chai = require('chai');
 const {createMockProvider, deployContract, getWallets, solidity} = require('ethereum-waffle');
-const BasicTokenMock = require('./build/BasicTokenMock');
-const MyLibrary = require('./build/MyLibrary');
-const LibraryConsumer = require('./build/LibraryConsumer');
+const BasicTokenMock = require('../build/BasicTokenMock');
+
 
 chai.use(solidity);
 const {expect} = chai;
