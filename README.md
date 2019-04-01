@@ -31,12 +31,12 @@ Documentation is available [here](https://ethereum-waffle.readthedocs.io/en/late
 ## Installation:
 To get started using npm, type:
 ```sh
-npm i ethereum-waffle
+npm i ethereum-waffle -D
 ```
 
 or with Yarn:
 ```sh
-yarn add ethereum-waffle
+yarn add ethereum-waffle -D
 ```
 
 ## Step by step guide
@@ -45,8 +45,15 @@ yarn add ethereum-waffle
 To add an external library install it using npm:
 
 ```sh
-npm i openzeppelin-solidity
+npm i openzeppelin-solidity -D
 ```
+
+or with yarn:
+
+```sh
+yarn add openzeppelin-solidity -D
+```
+
 
 ### Example contract
 Below is an example contract written in Solidity. Place it in `contracts/BasicTokenMock.sol` file of your project:
@@ -114,18 +121,18 @@ describe('INTEGRATION: Example', () => {
 });
 ```
 
-You will also need following dependecies to run example above:
+Note: You will also need to install following dependencies with npm to run the example above:
 
-```
-npm i mocha
-npm i chai
+```sh
+npm i chai -D
+npm i mocha -D
 ```
 
-And with yarn:
+Or with yarn:
 
-```
-yarn add mocha
-yarn add chai
+```sh
+yarn add mocha -D
+yarn add chai -D
 ```
 
 ### Compiling
@@ -156,9 +163,9 @@ mocha
 
 ### Adding an npm script
 For convinience, you can add the following to your `package.json`:
-```json
+```
 {
-  ...
+  ...,
   "scripts": {
     "test": "waffle && mocha"
   }
