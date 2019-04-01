@@ -49,7 +49,7 @@ npm i openzeppelin-solidity
 ```
 
 ### Example contract
-Below is an example contract written in Solidity. Place it in `contracts` directory of your project:
+Below is an example contract written in Solidity. Place it in `contracts/BasicTokenMock.sol` file of your project:
 
 ```solidity
 pragma solidity ^0.5.1;
