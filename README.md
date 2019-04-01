@@ -114,6 +114,20 @@ describe('INTEGRATION: Example', () => {
 });
 ```
 
+You will also need following dependecies to run example above:
+
+```
+npm i mocha
+npm i chai
+```
+
+And with yarn:
+
+```
+yarn add mocha
+yarn add chai
+```
+
 ### Compiling
 To compile your smart contracts run:
 ```sh
