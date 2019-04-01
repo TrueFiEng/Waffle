@@ -158,6 +158,7 @@ mocha
 For convinience, you can add the following to your `package.json`:
 ```json
 {
+  ...
   "scripts": {
     "test": "waffle && mocha"
   }
