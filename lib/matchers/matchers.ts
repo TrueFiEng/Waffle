@@ -26,7 +26,7 @@ const solidity = (chai: any, utils: any) => {
         return value;
       },
       (reason: any) => {
-        reason = ('message' in reason) ? reason.message : reason;
+        reason = (reason instanceof Object && 'message' in reason) ? reason.message : reason;
         const isReverted = reason.toString().search('revert') >= 0;
         const isThrown = reason.toString().search('invalid opcode') >= 0;
         this.assert(isReverted || isThrown,
@@ -55,7 +55,7 @@ const solidity = (chai: any, utils: any) => {
         return value;
       },
       (reason: any) => {
-        reason = ('message' in reason) ? reason.message : reason;
+        reason = (reason instanceof Object && 'message' in reason) ? reason.message : reason;
         const isReverted = reason.toString().search('revert') >= 0 && reason.toString().search(revertReason) >= 0;
         const isThrown = reason.toString().search('invalid opcode') >= 0 && revertReason === '';
         this.assert(isReverted || isThrown,
