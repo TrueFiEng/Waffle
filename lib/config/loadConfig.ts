@@ -9,8 +9,18 @@ function readConfigFile(configPath: string) {
 }
 
 export function loadConfig(configPath: string): Config {
-  return {
-    ...defaultConfig,
-    ...readConfigFile(configPath)
-  };
+  const userConfig = readConfigFile(configPath);
+  if (typeof userConfig !== 'object' && typeof userConfig.then === 'function') {
+    userConfig.then((config: object) => {
+      return {
+        ...defaultConfig,
+        ...config
+      };
+    });
+  } else {
+    return {
+      ...defaultConfig,
+      ...userConfig
+    };
+  }
 }
