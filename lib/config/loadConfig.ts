@@ -8,19 +8,14 @@ function readConfigFile(configPath: string) {
   return {};
 }
 
-export function loadConfig(configPath: string): Config {
-  const userConfig = readConfigFile(configPath);
-  if (typeof userConfig !== 'object' && typeof userConfig.then === 'function') {
-    userConfig.then((config: object) => {
-      return {
-        ...defaultConfig,
-        ...config
-      };
+export async function loadConfig(configPath: string): Promise<object> {
+  if (configPath) {
+    return new Promise((resolve, reject) => {
+      resolve(require(path.join(process.cwd(), configPath)));
     });
   } else {
-    return {
-      ...defaultConfig,
-      ...userConfig
-    };
+    return new Promise((resolve, reject) => {
+      resolve({});
+    });
   }
 }
