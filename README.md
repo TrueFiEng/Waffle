@@ -195,6 +195,7 @@ Make sure you have test coverage for any new features.
 ### Running tests
 Note: To make end-to-end test pass, you need to:
 * have Docker installed, up and running
+* have Ethereum stable docker image pulled, if not run `docker pull ethereum/solc:stable`
 * have native solidity 0.5.* installed
 
 To run tests type:
