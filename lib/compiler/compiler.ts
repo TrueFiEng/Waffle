@@ -9,11 +9,7 @@ import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
 
 export async function compileProject(configPath: string) {
-  const userConfig = await loadConfig(configPath);
-  await compileAndSave({
-    ...defaultConfig,
-    ...userConfig
-  });
+  await compileAndSave(await loadConfig(configPath));
 }
 
 export async function compileAndSave(config: Config) {

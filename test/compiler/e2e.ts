@@ -48,11 +48,7 @@ describe('E2E: Compiler integration', async () => {
   });
 
   for (const configurationPath of configurations)  {
-    const userConfig = await loadConfig(configurationPath);
-    const configuration = {
-      ...defaultConfig,
-      ...userConfig
-    } as any;
+    const configuration = await loadConfig(configurationPath) as any;
     const {name, targetPath, legacyOutput} = configuration;
 
     /* eslint-disable no-loop-func */
