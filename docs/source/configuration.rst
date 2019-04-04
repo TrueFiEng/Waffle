@@ -24,6 +24,18 @@ Configuration can also be of type js, e.g.:
 
 Native and dockerized solc compiler configuration is described in "Fast compilation" section.
 
+Configuration can even be a Promise in a js, e.g.:
+::
+
+  module.exports = new Promise((resolve, reject) => {
+    resolve({
+      "compiler": "native"
+    });
+  });
+
+.. hint::
+  This is a powerful feature if you want to asynchronously load different compliation configurations in different environments. 
+  For example, you can use native solc in CI for faster compilation, whereas deciding the exact solc-js version locally based on the contract versions being used, since many of those operations are asynchronous, you'll most likely be returning a Promise to waffle to handle. 
 
 Solcjs and version management
 -----------------------------

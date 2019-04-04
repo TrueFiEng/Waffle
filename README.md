@@ -20,7 +20,10 @@ Sweeter, simpler and faster than Truffle.
   * `import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";`
 * Fixtures that help write fast and maintainable test suites, e.g.:
   * `const {token} = await loadFixture(standardTokenWithBalance);`
-* Sub-second compilation with native and dockerized solc
+* Customizable compilation options with native solc, dockerized solc and any version of solc-js loaded remotely at compiled time
+* Support for promise-based configuration, e.g.:
+  * use native solc binary for fast compilation in CI environment
+  * use solc-js based on contract versions detected (async)
 * Support for TypeScript
 * [Documentation](https://ethereum-waffle.readthedocs.io/en/latest/)
 

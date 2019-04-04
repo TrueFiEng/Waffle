@@ -3,6 +3,7 @@ import fsx from 'fs-extra';
 import {join, resolve} from 'path';
 import {expect} from 'chai';
 import {compileProject} from '../../lib/compiler/compiler';
+import defaultConfig, {Config} from '../../lib/config/config';
 import {loadConfig} from '../../lib/config/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
@@ -11,6 +12,7 @@ const configurations = [
   './test/projects/custom/config.js',
   './test/projects/custom/config_native.json',
   './test/projects/custom/config_docker.json',
+  './test/projects/custom/config_promise.js',
   './test/projects/custom_solidity_4/config_solcjs.json',
   './test/projects/custom_solidity_4/config_docker.json'
 ];
@@ -25,7 +27,7 @@ const artefacts = [
   'OneAndAHalf.json'
 ];
 
-describe('E2E: Compiler integration', () => {
+describe('E2E: Compiler integration', async () => {
   describe('docker: inside out directory structure', () => {
     before(async () => {
       fsx.removeSync('test/projects/insideOut/build');
@@ -46,7 +48,7 @@ describe('E2E: Compiler integration', () => {
   });
 
   for (const configurationPath of configurations)  {
-    const configuration = loadConfig(configurationPath) as any;
+    const configuration = await loadConfig(configurationPath) as any;
     const {name, targetPath, legacyOutput} = configuration;
 
     /* eslint-disable no-loop-func */

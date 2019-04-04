@@ -1,4 +1,4 @@
-import {Config} from '../config/config';
+import defaultConfig, {Config} from '../config/config';
 import {isWarningMessage} from '../utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
@@ -9,7 +9,7 @@ import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
 
 export async function compileProject(configPath: string) {
-  await compileAndSave(loadConfig(configPath));
+  await compileAndSave(await loadConfig(configPath));
 }
 
 export async function compileAndSave(config: Config) {
