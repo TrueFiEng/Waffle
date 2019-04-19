@@ -11,9 +11,14 @@ export interface BytecodeJson {
 
 export interface EvmJson {
   bytecode: BytecodeJson;
+  deployedBytecode: BytecodeJson;
 }
 
 export interface ContractJson {
+  'srcmap-runtime': string;
+  srcmap: string;
+  bin: string;
+  'bin-runtime': string;
   interface: object[];
   abi: object[];
   bytecode: string;
@@ -21,6 +26,16 @@ export interface ContractJson {
 }
 
 export async function saveOutput(output: any, config: Config, filesystem = fs) {
+  if (config.outputType == 'singletons' || config.outputType == 'singletons-and-one-combined') {
+    saveOutputSingletons(output, config, filesystem);
+  }
+    
+  if (config.outputType == 'one-combined' || config.outputType == 'singletons-and-one-combined') {
+    saveOutputCombined(output, config, filesystem);
+  }
+}
+
+export async function saveOutputSingletons(output: any, config: Config, filesystem = fs) {
   for (const [, file] of Object.entries(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries(file)) {
       const filePath = join(config.targetPath, `${contractName}.json`);
@@ -31,6 +46,34 @@ export async function saveOutput(output: any, config: Config, filesystem = fs) {
       filesystem.writeFileSync(filePath, getContent(contractJson, config));
     }
   }
+}
+
+export async function saveOutputCombined(output: any, config: Config, filesystem = fs) {
+  for (const [key, file] of Object.entries(output.contracts)) {
+    for (const [contractName, contractJson] of Object.entries(file)) {
+      contractJson.bin = contractJson.evm.bytecode.object;
+      contractJson['bin-runtime'] = contractJson.evm.deployedBytecode.object;
+      contractJson.srcmap = contractJson.evm.bytecode.sourceMap;
+      contractJson['srcmap-runtime'] = contractJson.evm.deployedBytecode.sourceMap; 
+
+      output.contracts[String(key) + ':' + String(contractName)] = contractJson;
+    };
+    delete output.contracts[key];
+  }
+
+  const allSources: string[] =  [];
+
+  for (const [key, value] of Object.entries(output.sources) as any) {
+      value['AST'] = value['ast'];
+      delete value['ast'];
+      allSources.push(key);
+  }
+
+  output.sourceList = allSources;
+
+  filesystem.writeFileSync(join(config.targetPath, `Combined-Json.json`),
+         JSON.stringify(output, null, 2));
+
 }
 
 function getContent(contractJson: ContractJson, config: Config) {
