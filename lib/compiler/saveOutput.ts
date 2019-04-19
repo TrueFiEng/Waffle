@@ -27,12 +27,12 @@ export interface ContractJson {
 
 export async function saveOutput(output: any, config: Config, filesystem = fs) {
   config.outputType = config.outputType || 'singletons';
-  
-  if (config.outputType == 'singletons' || config.outputType == 'singletons-and-one-combined') {
+
+  if (config.outputType === 'singletons' || config.outputType === 'singletons-and-one-combined') {
     saveOutputSingletons(output, config, filesystem);
   }
-    
-  if (config.outputType == 'one-combined' || config.outputType == 'singletons-and-one-combined') {
+
+  if (config.outputType === 'one-combined' || config.outputType === 'singletons-and-one-combined') {
     saveOutputCombined(output, config, filesystem);
   }
 }
@@ -56,18 +56,18 @@ export async function saveOutputCombined(output: any, config: Config, filesystem
       contractJson.bin = contractJson.evm.bytecode.object;
       contractJson['bin-runtime'] = contractJson.evm.deployedBytecode.object;
       contractJson.srcmap = contractJson.evm.bytecode.sourceMap;
-      contractJson['srcmap-runtime'] = contractJson.evm.deployedBytecode.sourceMap; 
+      contractJson['srcmap-runtime'] = contractJson.evm.deployedBytecode.sourceMap;
 
       output.contracts[String(key) + ':' + String(contractName)] = contractJson;
-    };
+    }
     delete output.contracts[key];
   }
 
   const allSources: string[] =  [];
 
   for (const [key, value] of Object.entries(output.sources) as any) {
-      value['AST'] = value['ast'];
-      delete value['ast'];
+      value.AST = value.ast;
+      delete value.ast;
       allSources.push(key);
   }
 
