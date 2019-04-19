@@ -8,6 +8,7 @@ export interface Config {
   legacyOutput?: string;
   allowedPaths?: string[];
   compilerOptions?: Record<string, any>;
+  outputType?: 'singletons' | 'one-combined' | 'singletons-and-one-combined';
 }
 
 const defaultConfig: Config = {
