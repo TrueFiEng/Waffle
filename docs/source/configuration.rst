@@ -83,6 +83,60 @@ For detailed list of options go to
 `'Target options' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#target-options>`_ and `'Compiler Input and Output JSON Description' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#compiler-input-and-output-json-description>`_).
 
 
+KLAB compatibility
+------------------
+
+The default compilation process is not compatible with KLAB
+(a formal verification tool, see: https://github.com/dapphub/klab). To compile contracts to work with KLAB one must:
+
+1) Set appropriate compiler options, i.e.:
+
+::
+  compilerOptions: {
+    outputSelection: {
+      "*": {
+        "*": [ "evm.bytecode.object", "evm.deployedBytecode.object",
+               "abi" ,
+               "evm.bytecode.sourceMap", "evm.deployedBytecode.sourceMap" ],
+        
+        "": [ "ast" ]
+      },     
+    }
+  }
+
+2) Set appropriate output type. We support two types: one (default) generates single file for each contract
+and second (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The second type does not meet 
+(in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
+To choice of the output is set in config file, i.e.:
+
+::
+  outputType: 'combined'
+
+Possible options are:
+- `'multiple'`: single file for each contract;
+- `'combined'`: one KLAB friendly file;
+-  `'all'`: generates both above outputs.
+
+An example of full KLAB friendly config file:
+
+::
+  module.exports = {
+  compiler: process.env.WAFFLE_COMPILER,
+  legacyOutput: true,
+  outputType: 'all',
+  compilerOptions: {
+    outputSelection: {
+      "*": {
+        "*": [ "evm.bytecode.object", "evm.deployedBytecode.object",
+               "abi" ,
+               "evm.bytecode.sourceMap", "evm.deployedBytecode.sourceMap" ],
+        
+        "": [ "ast" ]
+      },     
+    }
+  }
+};
+
 Monorepo
 --------
 Waffle works well with mono-repositories. It is enough to set up common npmPath in the configuration file to make it work.
