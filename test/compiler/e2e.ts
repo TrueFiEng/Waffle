@@ -14,7 +14,8 @@ const configurations = [
   './test/projects/custom/config_docker.json',
   './test/projects/custom/config_promise.js',
   './test/projects/custom_solidity_4/config_solcjs.json',
-  './test/projects/custom_solidity_4/config_docker.json'
+  './test/projects/custom_solidity_4/config_docker.json',
+  './test/projects/custom/config_combined.js'
 ];
 
 const artefacts = [
