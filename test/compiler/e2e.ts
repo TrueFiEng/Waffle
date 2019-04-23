@@ -91,9 +91,9 @@ describe('E2E: Compiler integration', async () => {
         it('produce Combined-Json.json', async () => {
           const filePath = join(targetPath, 'Combined-Json.json');
           const content = JSON.parse(readFileContent(filePath));
-          expect(content.contracts).to.have.property('contracts');
-          expect(content.contracts).to.have.property('sources');
-          expect(content.contracts).to.have.property('sourceList');
+          expect(content).to.have.property('contracts');
+          expect(content).to.have.property('sources');
+          expect(content).to.have.property('sourceList');
         });
       }
 
