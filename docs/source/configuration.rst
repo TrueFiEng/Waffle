@@ -92,6 +92,7 @@ The default compilation process is not compatible with KLAB
 1) Set appropriate compiler options, i.e.:
 
 ::
+
   compilerOptions: {
     outputSelection: {
       "*": {
@@ -110,6 +111,7 @@ and second (KLAB friendly) generates one file (Combined-Json.json) combining all
 To choice of the output is set in config file, i.e.:
 
 ::
+
   outputType: 'combined'
 
 Possible options are:
@@ -120,6 +122,7 @@ Possible options are:
 An example of full KLAB friendly config file:
 
 ::
+
   module.exports = {
   compiler: process.env.WAFFLE_COMPILER,
   legacyOutput: true,
