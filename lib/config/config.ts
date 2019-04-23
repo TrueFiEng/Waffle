@@ -8,6 +8,7 @@ export interface Config {
   legacyOutput?: string;
   allowedPaths?: string[];
   compilerOptions?: Record<string, any>;
+  outputType?: 'multiple' | 'combined' | 'all';
 }
 
 const defaultConfig: Config = {

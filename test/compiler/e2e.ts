@@ -14,7 +14,8 @@ const configurations = [
   './test/projects/custom/config_docker.json',
   './test/projects/custom/config_promise.js',
   './test/projects/custom_solidity_4/config_solcjs.json',
-  './test/projects/custom_solidity_4/config_docker.json'
+  './test/projects/custom_solidity_4/config_docker.json',
+  './test/projects/custom/config_combined.js'
 ];
 
 const artefacts = [
@@ -83,6 +84,16 @@ describe('E2E: Compiler integration', async () => {
             expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
             expect(content.interface).to.deep.eq(content.abi);
           }
+        });
+      }
+
+      if (['all', 'combined'].includes(configuration.outputType)) {
+        it('produce Combined-Json.json', async () => {
+          const filePath = join(targetPath, 'Combined-Json.json');
+          const content = JSON.parse(readFileContent(filePath));
+          expect(content).to.have.property('contracts');
+          expect(content).to.have.property('sources');
+          expect(content).to.have.property('sourceList');
         });
       }
 
