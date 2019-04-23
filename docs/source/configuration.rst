@@ -89,7 +89,7 @@ KLAB compatibility
 The default compilation process is not compatible with KLAB
 (a formal verification tool, see: https://github.com/dapphub/klab). To compile contracts to work with KLAB one must:
 
-1) Set appropriate compiler options, i.e.:
+1. Set appropriate compiler options, i.e.:
 
 ::
 
@@ -106,7 +106,7 @@ The default compilation process is not compatible with KLAB
   }
 
 
-2) Set appropriate output type. We support two types: one (default) generates single file for each contract
+2. Set appropriate output type. We support two types: one (default) generates single file for each contract
 and second (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The second type does not meet 
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
 To choice of the output is set in config file, i.e.:
