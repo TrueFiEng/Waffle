@@ -28,11 +28,11 @@ export interface ContractJson {
 export async function saveOutput(output: any, config: Config, filesystem = fs) {
   config.outputType = config.outputType || 'multiple';
 
-  if (config.outputType === 'multiple' || config.outputType === 'all') {
+  if (['multiple', 'all'].includes(config.outputType)) {
     saveOutputSingletons(output, config, filesystem);
   }
 
-  if (config.outputType === 'combined' || config.outputType === 'all') {
+  if (['combined', 'all'].includes(config.outputType)) {
     saveOutputCombined(output, config, filesystem);
   }
 }
