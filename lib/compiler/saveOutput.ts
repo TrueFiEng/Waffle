@@ -26,13 +26,13 @@ export interface ContractJson {
 }
 
 export async function saveOutput(output: any, config: Config, filesystem = fs) {
-  config.outputType = config.outputType || 'singletons';
+  config.outputType = config.outputType || 'multiple';
 
-  if (config.outputType === 'singletons' || config.outputType === 'singletons-and-one-combined') {
+  if (config.outputType === 'multiple' || config.outputType === 'all') {
     saveOutputSingletons(output, config, filesystem);
   }
 
-  if (config.outputType === 'one-combined' || config.outputType === 'singletons-and-one-combined') {
+  if (config.outputType === 'combined' || config.outputType === 'all') {
     saveOutputCombined(output, config, filesystem);
   }
 }
