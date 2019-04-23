@@ -105,6 +105,7 @@ The default compilation process is not compatible with KLAB
     }
   }
 
+
 2) Set appropriate output type. We support two types: one (default) generates single file for each contract
 and second (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The second type does not meet 
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
@@ -124,21 +125,21 @@ An example of full KLAB friendly config file:
 ::
 
   module.exports = {
-  compiler: process.env.WAFFLE_COMPILER,
-  legacyOutput: true,
-  outputType: 'all',
-  compilerOptions: {
-    outputSelection: {
-      "*": {
-        "*": [ "evm.bytecode.object", "evm.deployedBytecode.object",
-               "abi" ,
-               "evm.bytecode.sourceMap", "evm.deployedBytecode.sourceMap" ],
-        
-        "": [ "ast" ]
-      },     
-    }
-  }
-};
+    compiler: process.env.WAFFLE_COMPILER,
+    legacyOutput: true,
+    outputType: 'all',
+    compilerOptions: {
+      outputSelection: {
+        "*": {
+          "*": [ "evm.bytecode.object", "evm.deployedBytecode.object",
+                 "abi" ,
+                 "evm.bytecode.sourceMap", "evm.deployedBytecode.sourceMap" ],
+
+          "": [ "ast" ]
+        },     
+     }
+   }
+  };
 
 Monorepo
 --------
