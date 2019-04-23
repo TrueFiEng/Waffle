@@ -87,6 +87,16 @@ describe('E2E: Compiler integration', async () => {
         });
       }
 
+      if (['all', 'combined'].includes(configuration.outputType)) {
+        it('produce Combined-Json.json', async () => {
+          const filePath = join(targetPath, 'Combined-Json.json');
+          const content = JSON.parse(readFileContent(filePath));
+          expect(content.contracts).to.have.property('contracts');
+          expect(content.contracts).to.have.property('sources');
+          expect(content.contracts).to.have.property('sourceList');
+        });
+      }
+
       it('produce abi', async () => {
         for (const artefact of artefacts) {
           const filePath = join(targetPath, artefact);
