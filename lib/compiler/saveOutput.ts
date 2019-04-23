@@ -11,17 +11,17 @@ export interface BytecodeJson {
 
 export interface EvmJson {
   bytecode: BytecodeJson;
-  deployedBytecode: BytecodeJson;
+  deployedBytecode?: BytecodeJson;
 }
 
 export interface ContractJson {
-  'srcmap-runtime': string;
-  srcmap: string;
-  bin: string;
-  'bin-runtime': string;
-  interface: object[];
+  'srcmap-runtime'?: string;
+  srcmap?: string;
+  bin?: string;
+  'bin-runtime'?: string;
+  interface?: object[];
   abi: object[];
-  bytecode: string;
+  bytecode?: string;
   evm: EvmJson;
 }
 
