@@ -27,7 +27,7 @@
     "@resolver-engine/imports-fs": "^0.3.2",
     "@resolver-engine/imports": "^0.3.2",
     "ethers": "^4.0.0",
-    "ganache-core": "2.4.0",
+    "ganache-core": "2.5.5",
     "solc": "^0.5.1"
   },
   "resolutions": {
