@@ -1,8 +1,34 @@
 import {expect} from 'chai';
-import {loadFixture, createFixtureLoader} from '../lib/waffle';
+import {loadFixture, createFixtureLoader, deployContract} from '../lib/waffle';
 import {utils, Wallet, providers} from 'ethers';
+import Check from './example/build/Check.json';
+
+const fixtureDeployCheck = async (porvider: providers.Provider, [someWallet]: Wallet[]) => {
+  const contract = await deployContract(someWallet, Check);
+  return {contract};
+};
 
 describe('Integration: Fixtures', () => {
+  let contract: any;
+
+  beforeEach(async () => {
+    ({contract} = await loadFixture(fixtureDeployCheck));
+  });
+
+  it('works for contract', async () => {
+    await contract.change();
+    expect(await contract.x()).to.equal(2);
+    ({contract} = await loadFixture(fixtureDeployCheck));
+    expect(await contract.x()).to.equal(1);
+  });
+
+  it('works for contract', async () => {
+    await contract.change();
+    expect(await contract.x()).to.equal(2);
+    ({contract} = await loadFixture(fixtureDeployCheck));
+    expect(await contract.x()).to.equal(1);
+  });
+
   it('are called once per fixture', async () => {
     let countA = 0;
     let countB = 0;
