@@ -183,3 +183,32 @@ Add to waffle configuration in YourProjectDapp:
 That should solve a problem.
 
 Currently Waffle does not support similar feature for dockerized solc.
+
+Human Readable Abi
+------------------
+
+Waffle supports `Human Readable Abi <https://blog.ricmoo.com/human-readable-contract-abis-in-ethers-js-141902f4d917>`. 
+
+In order to enable its output you need to specify a special flag in your config file:
+::
+
+  {
+    ...
+    outputHumanReadableAbi: true
+  }
+
+You will now see the following in your output:
+::
+
+  {
+    ...
+    "humanReadableAbi": [
+      "constructor(uint256 argOne)",
+      "event Bar(bool argOne, uint256 indexed argTwo)",
+      "event FooEvent()",
+      "function noArgs() view returns(uint200)",
+      "function oneArg(bool argOne)",
+      "function threeArgs(string argOne, bool argTwo, uint256[] argThree) view returns(bool, uint256)",
+      "function twoReturns(bool argOne) view returns(bool, uint256)"
+    ]
+  }
