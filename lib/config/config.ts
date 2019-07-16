@@ -9,6 +9,7 @@ export interface Config {
   allowedPaths?: string[];
   compilerOptions?: Record<string, any>;
   outputType?: 'multiple' | 'combined' | 'all';
+  outputHumanReadableAbi?: boolean;
 }
 
 const defaultConfig: Config = {

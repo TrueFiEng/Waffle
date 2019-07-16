@@ -1,6 +1,7 @@
 import {join, dirname} from 'path';
 import fs from 'fs';
 import {Config} from '../config/config';
+import { getHumanReadableAbi } from './getHumanReadableAbi';
 
 export interface BytecodeJson {
   linkReferences: object;
@@ -22,6 +23,7 @@ export interface ContractJson {
   interface?: object[];
   abi: object[];
   bytecode?: string;
+  humanReadableAbi?: string[];
   evm: EvmJson;
 }
 
@@ -66,15 +68,16 @@ export async function saveOutputCombined(output: any, config: Config, filesystem
   const allSources: string[] =  [];
 
   for (const [key, value] of Object.entries(output.sources) as any) {
-      value.AST = value.ast;
-      delete value.ast;
-      allSources.push(key);
+    value.AST = value.ast;
+    delete value.ast;
+    allSources.push(key);
   }
 
   output.sourceList = allSources;
 
-  filesystem.writeFileSync(join(config.targetPath, `Combined-Json.json`),
-         JSON.stringify(output, null, 2));
+  filesystem.writeFileSync(
+    join(config.targetPath, `Combined-Json.json`), JSON.stringify(output, null, 2)
+  );
 
 }
 
@@ -82,6 +85,9 @@ function getContent(contractJson: ContractJson, config: Config) {
   if (config.legacyOutput || !contractJson.interface) {
     contractJson.interface = contractJson.abi;
     contractJson.bytecode = contractJson.evm.bytecode.object;
+  }
+  if (config.outputHumanReadableAbi) {
+    contractJson.humanReadableAbi = getHumanReadableAbi(contractJson.abi);
   }
   return JSON.stringify(contractJson, null, 2);
 }
