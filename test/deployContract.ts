@@ -23,7 +23,7 @@ describe('deployContract', () => {
     const simplified = {
       abi: SafeMath.abi,
       bytecode: SafeMath.evm.bytecode.object
-    }
+    };
     const contract = await deployContract(wallet, simplified);
     expect(contract.address).to.be.properAddress;
   });

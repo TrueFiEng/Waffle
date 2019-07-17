@@ -33,7 +33,7 @@ const isStandard = (data: ContractJSON): data is StandardContractJSON =>
   typeof (data as any).evm === 'object' &&
   (data as any).evm !== null &&
   typeof (data as any).evm.bytecode === 'object' &&
-  (data as any).evm.bytecode !== null
+  (data as any).evm.bytecode !== null;
 
 export async function deployContract(
   wallet: Wallet,
