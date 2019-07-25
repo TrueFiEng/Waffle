@@ -7,6 +7,11 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run:
+          name: 'Install solc'
+          command: sudo add-apt-repository ppa:ethereum/ethereum -y && sudo apt-get update && apt-cache showpkg solc && sudo apt-get install solc
+      - setup_remote_docker:
+          docker_layer_caching: true
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
@@ -29,68 +34,8 @@ jobs:
           name: Test
           command: yarn test
 
-  node11:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:11.15
-    steps:
-      - checkout:
-          path: ~/project
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-node11-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-node11-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Lint
-          command: yarn lint
-      - run:
-          name: Build
-          command: yarn build
-      - run:
-          name: Test
-          command: yarn test
-
-  node12:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:12.7
-    steps:
-      - checkout:
-          path: ~/project
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-node12-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install Dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-node12-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Lint
-          command: yarn lint
-      - run:
-          name: Build
-          command: yarn build
-      - run:
-          name: Test
-          command: yarn test
-
 workflows:
   version: 2
   build_and_test:
     jobs:
       - node10
-      - node11
-      - node12
