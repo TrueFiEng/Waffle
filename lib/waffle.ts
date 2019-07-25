@@ -17,10 +17,23 @@ export function getWallets(provider: providers.Provider) {
   return defaultAccounts.map((account) => new Wallet(account.secretKey, provider));
 }
 
-interface ContractJSON {
+interface StandardContractJSON {
   abi: any;
   evm: {bytecode: {object: any}};
 }
+
+interface SimpleContractJSON {
+  abi: any[];
+  bytecode: string;
+}
+
+type ContractJSON = StandardContractJSON | SimpleContractJSON;
+
+const isStandard = (data: ContractJSON): data is StandardContractJSON =>
+  typeof (data as any).evm === 'object' &&
+  (data as any).evm !== null &&
+  typeof (data as any).evm.bytecode === 'object' &&
+  (data as any).evm.bytecode !== null;
 
 export async function deployContract(
   wallet: Wallet,
@@ -30,7 +43,7 @@ export async function deployContract(
 ) {
   const factory = new ContractFactory(
     contractJSON.abi,
-    contractJSON.evm.bytecode,
+    isStandard(contractJSON) ? contractJSON.evm.bytecode : contractJSON.bytecode,
     wallet
   );
   const contract = await factory.deploy(...args, {

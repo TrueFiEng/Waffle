@@ -19,6 +19,15 @@ describe('deployContract', () => {
     expect(contract.address).to.be.properAddress;
   });
 
+  it('accepts simplified json', async () => {
+    const simplified = {
+      abi: SafeMath.abi,
+      bytecode: SafeMath.evm.bytecode.object
+    };
+    const contract = await deployContract(wallet, simplified);
+    expect(contract.address).to.be.properAddress;
+  });
+
   it('uses ContractFactory.deploy', async () => {
     const originalDeploy = ContractFactory.prototype.deploy;
     let called = false;
