@@ -1,22 +1,7 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {
-  createMockProvider,
-  deployContract,
-  getWallets,
-  solidity
-} from '../../lib/waffle';
+import {expect} from 'chai';
+import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
 import Matchers from './build/Matchers.json';
 import { Contract } from 'ethers';
-
-chai.use(solidity);
-chai.use(chaiAsPromised);
-
-const {expect} = chai;
-
-const alwaysReject = new Promise((resolve, reject) => {
-  reject('Random reason');
-});
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const provider = createMockProvider();
@@ -60,12 +45,12 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 
   it('Revert: fail, random exception', async () => {
-    await expect(alwaysReject).not.to.be.reverted;
+    await expect(Promise.reject('Always reject')).not.to.be.reverted;
   });
 
   it('Not to revert: fail, random exception', async () => {
     await expect(
-      expect(alwaysReject).to.be.reverted
+      expect(Promise.reject('Always reject')).to.be.reverted
     ).to.be.eventually.rejected;
   });
 });
@@ -138,12 +123,12 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('Revert: fail, random exception', async () => {
-    await expect(alwaysReject).not.to.be.revertedWith('Random reason');
+    await expect(Promise.reject('Always reject')).not.to.be.revertedWith('Always reject');
   });
 
   it('Not to revert: fail, random exception', async () => {
     await expect(
-      expect(alwaysReject).to.be.revertedWith('Random reason')
+      expect(Promise.reject('Always reject')).to.be.revertedWith('Always reject')
     ).to.be.eventually.rejected;
   });
 });
