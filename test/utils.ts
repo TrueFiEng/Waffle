@@ -1,6 +1,5 @@
-import chai from 'chai';
+import {expect} from 'chai';
 import {flattenObjectArray} from '../lib/utils';
-const {expect} = chai;
 
 describe('UNIT: Utils', () => {
   describe('flattenObjectArray', () => {

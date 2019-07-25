@@ -1,27 +1,14 @@
-import chai, {AssertionError} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {
-  createMockProvider,
-  deployContract,
-  getWallets,
-  solidity
-} from '../../lib/waffle';
+import {expect, AssertionError} from 'chai';
+import {createMockProvider, deployContract, getWallets} from '../../lib/waffle';
 import Events from './build/Events.json';
 import { Contract } from 'ethers';
 
-chai.use(solidity);
-chai.use(chaiAsPromised);
-
-const {expect} = chai;
-
 describe('INTEGRATION: Events', () => {
-  let provider;
+  const provider = createMockProvider();
+  const [wallet] = getWallets(provider);
   let events: Contract;
-  let wallet;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = getWallets(provider);
     events = await deployContract(wallet, Events);
   });
 

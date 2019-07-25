@@ -1,19 +1,9 @@
-import chai from 'chai';
-import {
-  createMockProvider,
-  deployContract,
-  getWallets,
-  link,
-  solidity
-} from '../../lib/waffle';
+import {expect} from 'chai';
+import {createMockProvider, deployContract, getWallets, link} from '../../lib/waffle';
+import {Contract} from 'ethers';
 import BasicTokenMock from './build/BasicTokenMock.json';
 import MyLibrary from './build/MyLibrary.json';
 import LibraryConsumer from './build/LibraryConsumer.json';
-import { Contract } from 'ethers';
-import * as path from 'path';
-
-chai.use(solidity);
-const {expect} = chai;
 
 describe('INTEGRATION: Example', () => {
   const provider = createMockProvider();

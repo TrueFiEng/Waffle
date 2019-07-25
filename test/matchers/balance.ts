@@ -1,9 +1,6 @@
-import chai, {AssertionError} from 'chai';
-import {createMockProvider, getWallets, solidity} from '../../lib/waffle';
-import {utils, Wallet} from 'ethers';
-
-chai.use(solidity);
-const {expect} = chai;
+import {expect, AssertionError} from 'chai';
+import {createMockProvider, getWallets} from '../../lib/waffle';
+import {utils} from 'ethers';
 
 describe('INTEGRATION: Balance observers', () => {
   const provider = createMockProvider();

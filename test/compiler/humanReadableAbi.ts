@@ -3,7 +3,7 @@ import {join} from 'path';
 import {expect} from 'chai';
 import {compileProject} from '../../lib/compiler/compiler';
 import {readFileContent} from '../../lib/utils';
-import { utils } from 'ethers';
+import {utils} from 'ethers';
 
 describe('E2E: humanReadableAbi', () => {
   before(() => {

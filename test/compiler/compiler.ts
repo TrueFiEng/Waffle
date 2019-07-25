@@ -1,17 +1,11 @@
-import chai, {expect} from 'chai';
+import {expect} from 'chai';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
-import chaiString from 'chai-string';
 import {compile, compileAndSave} from '../../lib/compiler/compiler';
 import defaultConfig from '../../lib/config/config';
-import * as path from 'path';
 
 const sourcesPath = './test/projects/example';
 const targetPath = './test/compiler/build';
 const config = {...defaultConfig, sourcesPath, targetPath};
-
-chai.use(chaiString);
-chai.use(sinonChai);
 
 describe('INTEGRATION: Compiler', () => {
   it('compile just compiles', async () => {

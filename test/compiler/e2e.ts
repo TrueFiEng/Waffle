@@ -3,7 +3,6 @@ import fsx from 'fs-extra';
 import {join, resolve} from 'path';
 import {expect} from 'chai';
 import {compileProject} from '../../lib/compiler/compiler';
-import defaultConfig, {Config} from '../../lib/config/config';
 import {loadConfig} from '../../lib/config/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
 import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
@@ -18,7 +17,7 @@ const configurations = [
   './test/projects/custom/config_combined.js'
 ];
 
-const artefacts = [
+const artifacts = [
   'Custom.json',
   'CustomSafeMath.json',
   'ERC20.json',
@@ -35,9 +34,9 @@ describe('E2E: Compiler integration', async () => {
       process.chdir('test/projects/insideOut/main');
     });
 
-    it('compile and produce artefacts', async () => {
+    it('compile and produce artifacts', async () => {
       await compileProject('config_docker.json');
-      for (const artefact of artefacts) {
+      for (const artefact of artifacts) {
         const filePath = join('../build', artefact);
         expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
       }
@@ -61,14 +60,14 @@ describe('E2E: Compiler integration', async () => {
 
       it('produce output files', async () => {
         expect(fs.existsSync(targetPath), `Expected build path "${targetPath}" to exist.`).to.equal(true);
-        for (const artefact of artefacts) {
+        for (const artefact of artifacts) {
           const filePath = join(targetPath, artefact);
           expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
         }
       });
 
       it('produce bytecode', async () => {
-        for (const artefact of artefacts) {
+        for (const artefact of artifacts) {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok; // tslint:disable-line
@@ -78,7 +77,7 @@ describe('E2E: Compiler integration', async () => {
 
       if (legacyOutput) {
         it('produce legacy bytecode', async () => {
-          for (const artefact of artefacts) {
+          for (const artefact of artifacts) {
             const filePath = join(targetPath, artefact);
             const content = JSON.parse(readFileContent(filePath));
             expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
@@ -98,7 +97,7 @@ describe('E2E: Compiler integration', async () => {
       }
 
       it('produce abi', async () => {
-        for (const artefact of artefacts) {
+        for (const artefact of artifacts) {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.abi, `"${filePath}" expected to have abi`).to.be.an.instanceOf(Array);

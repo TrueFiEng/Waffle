@@ -1,10 +1,7 @@
-import chai, {expect} from 'chai';
-import {readFileContent} from '../../../lib/utils';
+import {expect} from 'chai';
 import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
+import {readFileContent} from '../../../lib/utils';
 import {saveOutput} from '../../../lib/compiler/saveOutput';
-
-chai.use(sinonChai);
 
 const sourcesPath = './test/projects/custom/custom_contracts';
 const npmPath = './test/projects/custom/custom_node_modules';

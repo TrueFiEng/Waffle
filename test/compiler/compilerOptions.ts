@@ -1,4 +1,3 @@
-import fs from 'fs';
 import fsx from 'fs-extra';
 import {join} from 'path';
 import {expect} from 'chai';

@@ -1,8 +1,5 @@
-import chai, {expect} from 'chai';
-import chaiString from 'chai-string';
+import {expect} from 'chai';
 import {createBuildCommand} from '../../../lib/compiler/compileNative';
-
-chai.use(chaiString);
 
 const sourcesPath = './test/projects/custom/custom_contracts';
 const npmPath = './test/projects/custom/custom_node_modules';
