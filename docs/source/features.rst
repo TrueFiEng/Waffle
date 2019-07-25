@@ -26,11 +26,30 @@ You can get up to ten wallets.
 Deploy contract
 ^^^^^^^^^^^^^^^
 
+Once you compile your contracts using waffle you can deploy them in your javascript code. It accepts three arguments:
+  - wallet to send the deploy transaction
+  - contract information (abi and bytecode)
+  - contract constructor arguments
+
 Deploy a contract:
 ::
 
+  import BasicTokenMock from "build/BasicTokenMock.json";
+
   token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
 
+The contract information can be one of the following formats:
+::
+
+  interface StandardContractJSON {
+    abi: any;
+    evm: {bytecode: {object: any}};
+  }
+
+  interface SimpleContractJSON {
+    abi: any[];
+    bytecode: string;
+  }
 
 Linking
 ^^^^^^^
