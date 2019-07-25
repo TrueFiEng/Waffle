@@ -8,8 +8,12 @@ jobs:
       - checkout:
           path: ~/project
       - run:
-          name: 'Install solc'
-          command: sudo add-apt-repository ppa:ethereum/ethereum -y && sudo apt-get update && apt-cache showpkg solc && sudo apt-get install solc
+          name: Install solc
+          command: |
+            sudo add-apt-repository ppa:ethereum/ethereum -y
+            sudo apt-get update
+            apt-cache showpkg solc
+            sudo apt-get install solc
       - setup_remote_docker:
           docker_layer_caching: true
       - restore_cache:
