@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import {expect} from 'chai';
-import { findInputs } from '../../lib/compiler/findInputs';
+import {findInputs} from '../../lib/compiler/findInputs';
 
 describe('INTEGRATION: findInputs', () => {
   before(async () => {

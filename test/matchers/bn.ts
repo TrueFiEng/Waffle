@@ -1,12 +1,5 @@
-import chai, {AssertionError} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {solidity} from '../../lib/waffle';
+import {expect, AssertionError} from 'chai';
 import {utils} from 'ethers';
-
-chai.use(solidity);
-chai.use(chaiAsPromised);
-
-const {expect} = chai;
 
 describe('UNIT: Bignumber matchers', () => {
   it('equal', async () => {

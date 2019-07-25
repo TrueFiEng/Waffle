@@ -1,10 +1,7 @@
-import chai, {expect} from 'chai';
+import {expect} from 'chai';
+import sinon from 'sinon';
 import {readFileContent} from '../../lib/utils';
 import {compileProject} from '../../lib/compiler/compiler';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
-
-chai.use(sinonChai);
 
 const configurations = [
   './test/projects/invalidContracts/config_solcjs.json',

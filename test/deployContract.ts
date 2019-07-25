@@ -1,14 +1,7 @@
-import {expect, use} from 'chai';
-import {
-  deployContract,
-  createMockProvider,
-  getWallets,
-  solidity
-} from '../lib/waffle';
+import {expect} from 'chai';
+import {deployContract, createMockProvider, getWallets} from '../lib/waffle';
+import {ContractFactory} from 'ethers';
 import SafeMath from './example/build/SafeMath.json';
-import { ContractFactory } from 'ethers';
-
-use(solidity);
 
 describe('deployContract', () => {
   const provider = createMockProvider();

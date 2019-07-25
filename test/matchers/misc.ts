@@ -1,6 +1,4 @@
-import chai, {AssertionError} from 'chai';
-
-const {expect} = chai;
+import {expect, AssertionError} from 'chai';
 
 describe('UNIT: Miscellaneous', () => {
   describe('Proper address', () => {

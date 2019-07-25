@@ -1,6 +1,5 @@
-import chai from 'chai';
+import {expect} from 'chai';
 import {linkSolidity4, linkSolidity5} from '../lib/link';
-const {expect} = chai;
 
 const libraryAddress = '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA';
 

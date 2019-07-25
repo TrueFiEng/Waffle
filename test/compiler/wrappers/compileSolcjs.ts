@@ -1,9 +1,6 @@
-import chai, {expect} from 'chai';
-import chaiString from 'chai-string';
+import {expect} from 'chai';
 import {findInputs} from '../../../lib/compiler/compileSolcjs';
 import {readFileContent} from '../../../lib/utils';
-
-chai.use(chaiString);
 
 const expectedInputs = [
   'test/projects/example/BasicToken.sol',
