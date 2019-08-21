@@ -43,12 +43,12 @@ export const deepCopy = (obj: any) =>
   JSON.parse(JSON.stringify(obj));
 
 export const isDirectory = (directoryPath: string) => {
-  if (!fs.existsSync(fullPath(directoryPath))) {
+  if (!fs.existsSync(relativePathToWorkingDir(directoryPath))) {
     return false;
   }
-  const stats = fs.statSync(fullPath(directoryPath));
+  const stats = fs.statSync(relativePathToWorkingDir(directoryPath));
   return stats.isDirectory();
 };
 
-export const fullPath = (pathName: string) =>
+export const relativePathToWorkingDir = (pathName: string) =>
   path.resolve(pathName);
