@@ -35,15 +35,26 @@ const isStandard = (data: ContractJSON): data is StandardContractJSON =>
   typeof (data as any).evm.bytecode === 'object' &&
   (data as any).evm.bytecode !== null;
 
+const hasByteCode = (bytecode: {object: any} | string) => {
+  if (typeof bytecode === 'object') {
+    return Object.entries(bytecode.object).length !== 0;
+  }
+  return Object.entries(bytecode).length !== 0;
+};
+
 export async function deployContract(
   wallet: Wallet,
   contractJSON: ContractJSON,
   args: any[] = [],
   overrideOptions: providers.TransactionRequest = {}
 ) {
+  const bytecode = isStandard(contractJSON) ? contractJSON.evm.bytecode : contractJSON.bytecode;
+  if (!hasByteCode(bytecode)) {
+    throw new Error('Cannot deploy contract with empty bytecode');
+  }
   const factory = new ContractFactory(
     contractJSON.abi,
-    isStandard(contractJSON) ? contractJSON.evm.bytecode : contractJSON.bytecode,
+    bytecode,
     wallet
   );
   const contract = await factory.deploy(...args, {
