@@ -16,7 +16,7 @@ describe('UNIT: Utils', () => {
     });
   });
 
-  describe('INTEGRITY: isDirectory', () => {
+  describe('INTEGRATION: isDirectory', () => {
     it('valid directory path', () => {
       expect(isDirectory('test')).to.be.true;
     });

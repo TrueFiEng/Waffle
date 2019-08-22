@@ -13,7 +13,7 @@ const requiredInputs = {
   sourcesPath: 'test', npmPath: 'test'
 };
 
-describe('INTEGRITY: findInputs', () => {
+describe('INTEGRATION: findInputs', () => {
   it('findInputs', async () => {
     const actualInputs = findInputs(expectedInputs);
     expect(Object.keys(actualInputs)).to.deep.eq(expectedInputs);
@@ -23,7 +23,7 @@ describe('INTEGRITY: findInputs', () => {
   });
 });
 
-describe('INTEGRITY: loadCompiler', () => {
+describe('INTEGRATION: loadCompiler', () => {
   it('loadCompiler with solcVersion as version', async () => {
     const solcLoaded = await loadCompiler({solcVersion: 'v0.5.9+commit.e560f70d', ...requiredInputs});
     expect(solcLoaded.version()).to.eq('0.5.9+commit.e560f70d.Emscripten.clang');
