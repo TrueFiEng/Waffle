@@ -42,13 +42,8 @@ export const last = <T>(array: T[]): T =>
 export const deepCopy = (obj: any) =>
   JSON.parse(JSON.stringify(obj));
 
-export const isDirectory = (directoryPath: string) => {
-  if (!fs.existsSync(relativePathToWorkingDir(directoryPath))) {
-    return false;
-  }
-  const stats = fs.statSync(relativePathToWorkingDir(directoryPath));
-  return stats.isDirectory();
-};
+export const isDirectory = (directoryPath: string) =>
+  fs.existsSync(relativePathToWorkingDir(directoryPath)) &&
+  fs.statSync(relativePathToWorkingDir(directoryPath)).isDirectory();
 
-export const relativePathToWorkingDir = (pathName: string) =>
-  path.resolve(pathName);
+export const relativePathToWorkingDir = (pathName: string) => path.resolve(pathName);
