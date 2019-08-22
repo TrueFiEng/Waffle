@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import { Wallet } from 'ethers';
 
 export const readFileContent = (path: string): string =>
@@ -40,3 +41,9 @@ export const last = <T>(array: T[]): T =>
 
 export const deepCopy = (obj: any) =>
   JSON.parse(JSON.stringify(obj));
+
+export const isDirectory = (directoryPath: string) =>
+  fs.existsSync(relativePathToWorkingDir(directoryPath)) &&
+  fs.statSync(relativePathToWorkingDir(directoryPath)).isDirectory();
+
+export const relativePathToWorkingDir = (pathName: string) => path.resolve(pathName);
