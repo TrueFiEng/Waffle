@@ -7,6 +7,16 @@ describe('deployContract', () => {
   const provider = createMockProvider();
   const [wallet] = getWallets(provider);
 
+  it('cannot deploys contract without bytecode', async () => {
+    const contractJson = {abi: '0x', evm: {bytecode: {object: ''}}};
+    await expect(deployContract(wallet, contractJson)).to.be.rejectedWith('Cannot deploy contract with empty bytecode');
+  });
+
+  it('cannot deploys contract without bytecode - simplified json', async () => {
+    const contractJson = {abi: ['0x'], bytecode: ''};
+    await expect(deployContract(wallet, contractJson)).to.be.rejectedWith('Cannot deploy contract with empty bytecode');
+  });
+
   it('deploys contracts', async () => {
     const contract = await deployContract(wallet, SafeMath);
     expect(contract.address).to.be.properAddress;

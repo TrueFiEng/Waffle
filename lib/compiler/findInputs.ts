@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import {isDirectory} from '../utils';
 
 export function findInputs(sourcePath: string) {
   const stack = [sourcePath];
@@ -18,7 +19,3 @@ export function findInputs(sourcePath: string) {
   }
   return inputFiles;
 }
-
-const isDirectory = (filePath: string) =>
-  fs.existsSync(filePath) &&
-  fs.statSync(filePath).isDirectory();

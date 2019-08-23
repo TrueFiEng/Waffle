@@ -1,18 +1,20 @@
 import solc from 'solc';
 import {promisify} from 'util';
-import {readFileContent} from '../utils';
+import {readFileContent, isDirectory, relativePathToWorkingDir} from '../utils';
 import {Config} from '../config/config';
 import {buildInputObject} from './buildUitls';
 import { ImportFile } from '@resolver-engine/imports';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
-async function loadCompiler(config: Config) {
+export async function loadCompiler(config: Config) {
   if (config.solcVersion) {
+    if (isDirectory(config.solcVersion)) {
+      return require(relativePathToWorkingDir(config.solcVersion));
+    }
     return loadRemoteVersion(config.solcVersion);
-  } else {
-    return solc;
   }
+  return solc;
 }
 
 export function compileSolcjs(config: Config) {

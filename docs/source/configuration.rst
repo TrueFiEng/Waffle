@@ -50,6 +50,14 @@ Solcjs allows switching used version of solidity compiler on the fly. To set up 
 
 Version naming is somewhat counter-intuitive. You can deduce version name from `list available here <https://ethereum.github.io/solc-bin/bin/list.json>`_.
 
+Also Solcjs can be provided by passing path to Solcjs directory. Path have to be relative to working directory.
+::
+  
+  {
+    ...
+    "solcVersion": "./node_modules/solc"
+  }
+
 
 Legacy / Truffle compatibility
 ------------------------------

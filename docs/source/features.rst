@@ -12,6 +12,21 @@ To create a mock provider for running your contracts test against it, e.g.:
 
   provider = createMockProvider();
 
+To modify default provider behavior createMockProvider() takes optional Ganache options parameter. It can be object with specified options or absolute path to waffle.json or another config file, e.g.:
+::
+
+  provider = createMockProvider({gasLimit: 0x6691b7, gasPrice: 0x77359400});
+
+  provider = createMockProvider('./waffle.json');
+
+  waffle.json:
+    {
+      ...
+      "ganacheOptions": {
+        "gasLimit": "0x6691b7", 
+        "gasPrice": "0x77359400"
+      }
+    }
 
 Get example wallets
 ^^^^^^^^^^^^^^^^^^^

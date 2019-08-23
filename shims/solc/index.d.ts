@@ -7,4 +7,5 @@ declare module 'solc' {
     version: string,
     callback: (err?: Error, solc?: SolcCompiler) => void
   ): void;
+  export function version(): string;
 }

@@ -10,6 +10,7 @@ export interface Config {
   compilerOptions?: Record<string, any>;
   outputType?: 'multiple' | 'combined' | 'all';
   outputHumanReadableAbi?: boolean;
+  ganacheOptions?: Record<string, any>;
 }
 
 const defaultConfig: Config = {
