@@ -25,7 +25,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.reverted;
+    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('Exceeds block gas limit');
   });
 
   it('Revert: success', async () => {
@@ -79,7 +79,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
+    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('Exceeds block gas limit');
   });
 
   it('Revert: success', async () => {
