@@ -82,7 +82,7 @@ export async function saveOutputCombined(output: any, config: Config, filesystem
 }
 
 function getContent(contractJson: ContractJson, config: Config) {
-  if (config.legacyOutput || !contractJson.interface) {
+  if (config.legacyOutput) {
     contractJson.interface = contractJson.abi;
     contractJson.bytecode = contractJson.evm.bytecode.object;
   }
