@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { Wallet } from 'ethers';
+import {Wallet, Contract, ContractFactory} from 'ethers';
+import {TransactionResponse} from 'ethers/providers';
 
 export const readFileContent = (path: string): string =>
   fs.readFileSync(path).toString();
@@ -47,3 +48,28 @@ export const isDirectory = (directoryPath: string) =>
   fs.statSync(relativePathToWorkingDir(directoryPath)).isDirectory();
 
 export const relativePathToWorkingDir = (pathName: string) => path.resolve(pathName);
+
+const defaultDeployOptions = {
+  gasLimit: 4000000,
+  gasPrice: 9000000000
+};
+
+export const deployContract =
+  async (wallet: Wallet, contractJSON: any, args: any[] = [], overrideOptions: any = {}): Promise<Contract> => {
+    const {provider} = wallet;
+    const bytecode = `0x${contractJSON.bytecode}`;
+    const abi = contractJSON.interface;
+    const deployTransaction = {
+      ...defaultDeployOptions,
+      ...overrideOptions,
+      ...new ContractFactory(abi, bytecode).getDeployTransaction(...args)
+    };
+    const tx = await wallet.sendTransaction(deployTransaction);
+    const receipt = await provider.waitForTransaction(tx.hash);
+    return new Contract(receipt.contractAddress, abi, wallet);
+};
+
+export const waitToBeMined = async (receipt: TransactionResponse) => {
+  const {wait} = receipt;
+  await wait();
+};

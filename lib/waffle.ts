@@ -5,6 +5,7 @@ import defaultAccounts from './config/defaultAccounts';
 import defaultDeployOptions from './config/defaultDeployOptions';
 import {linkSolidity4, linkSolidity5, LinkableContract} from './link';
 import './matchers/matchertypes';
+import ENSBuilder from './ENSBuilder/ENSBuilder';
 
 const defaultGanacheOptions = {accounts: defaultAccounts};
 
@@ -118,3 +119,5 @@ export function createFixtureLoader(overrideProvider?: providers.Web3Provider, o
   };
 }
 export const loadFixture = createFixtureLoader();
+
+export {ENSBuilder};
