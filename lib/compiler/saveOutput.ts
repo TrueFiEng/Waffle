@@ -29,7 +29,11 @@ export interface ContractJson {
 
 export async function saveOutput(output: any, config: Config, filesystem = fs) {
   config.outputType = config.outputType || 'multiple';
-
+  
+  if (!filesystem.existsSync(config.targetPath)) {
+        filesystem.mkdirSync(config.targetPath);
+  }
+  
   if (['multiple', 'all'].includes(config.outputType)) {
     saveOutputSingletons(output, config, filesystem);
   }
@@ -43,10 +47,7 @@ export async function saveOutputSingletons(output: any, config: Config, filesyst
   for (const [, file] of Object.entries(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries(file)) {
       const filePath = join(config.targetPath, `${contractName}.json`);
-      const dirPath = dirname(filePath);
-      if (!filesystem.existsSync(dirPath)) {
-        filesystem.mkdirSync(dirPath);
-      }
+      
       filesystem.writeFileSync(filePath, getContent(contractJson, config));
     }
   }
