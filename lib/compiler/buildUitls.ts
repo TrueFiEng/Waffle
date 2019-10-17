@@ -1,4 +1,4 @@
-import { ImportFile } from '@resolver-engine/imports';
+import {ImportFile} from '@resolver-engine/imports';
 
 export function buildSourcesObject(files: ImportFile[]): Record<string, { content: string}> {
   const result: Record<string, { content: string}> = {};

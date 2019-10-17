@@ -1,11 +1,10 @@
 import {expect} from 'chai';
 import {ContractFactory} from 'ethers';
-import {deployContract, createMockProvider, getWallets} from '../lib';
-import {ContractJSON} from '../lib/ContractJSON';
+import {deployContract, createGanacheProvider, getWallets, ContractJSON} from '../lib';
 import SafeMath from './example/build/SafeMath.json';
 
 describe('deployContract', () => {
-  const provider = createMockProvider();
+  const provider = createGanacheProvider();
   const [wallet] = getWallets(provider);
 
   it('cannot deploys contract without bytecode', async () => {
