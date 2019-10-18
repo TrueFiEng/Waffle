@@ -8,7 +8,16 @@ export interface LinkableContract {
   };
 }
 
-export function linkSolidity4(
+export function link(contract: LinkableContract, libraryName: string, libraryAddress: string) {
+  const {object} = contract.evm.bytecode;
+  if (object.indexOf('$') >= 0) {
+    linkSolidity5(contract, libraryName, libraryAddress);
+  } else {
+    linkSolidity4(contract, libraryName, libraryAddress);
+  }
+};
+
+function linkSolidity4(
   contract: LinkableContract,
   libraryName: string,
   libraryAddress: string
@@ -22,7 +31,7 @@ export function linkSolidity4(
   contract.evm.bytecode.object = contract.evm.bytecode.object.replace(pattern, address);
 }
 
-export function linkSolidity5(
+function linkSolidity5(
   contract: LinkableContract,
   libraryName: string,
   libraryAddress: string

@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {deployContract, createMockProvider, getWallets} from '../lib/waffle';
+import {deployContract, createMockProvider, getWallets} from '../lib';
 import {ContractFactory} from 'ethers';
 import SafeMath from './example/build/SafeMath.json';
 
