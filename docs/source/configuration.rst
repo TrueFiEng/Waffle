@@ -3,8 +3,188 @@
 Configuration
 =============
 
-Waffle configuration file
--------------------------
+Configuration file
+------------------
+
+While Waffle works well enough without any configurations advanced users might
+want to excert more control over what happens when they use Waffle in their
+projects.
+
+This is why we made it very easy to configure Waffle to match your needs. All
+you need to do is create a :code:`.waffle.json` file inside your project and
+point waffle to it.
+
+First create your :code:`.waffle.json` configuration file:
+
+.. code-block:: json
+
+  {}
+
+.. note::
+
+  All of the configuration options are optional.
+
+Afterwards update your :code:`package.json` build script:
+
+.. code-block:: json
+
+  {
+    "scripts": {
+      "build": "waffle .waffle.json"
+    }
+  }
+
+Next, you will learn about the configuration options:
+
+- :ref:`sourcesPath`
+- :ref:`targetPath`
+- :ref:`npmPath`
+- :ref:`compiler`
+- :ref:`docker-tag`
+- :ref:`solcVersion`
+- :ref:`legacyOutput`
+- :ref:`allowedPaths`
+- :ref:`compilerOptions`
+- :ref:`outputType`
+- :ref:`outputHumanReadableAbi`
+- :ref:`ganacheOptions`
+
+.. _sourcesPath:
+
+sourcesPath
+^^^^^^^^^^^
+
+You can specify a custom path to the directory containing your smart contracts.
+Waffle uses :code:`./contracts` as the default value for :code:`./sourcesPath`.
+
+.. _targetPath:
+
+targetPath
+^^^^^^^^^^
+
+You can specify a custom path to the directory to which Waffle saves the
+compilation output. Waffle uses :code:`./build` as the default value for
+:code:`./targetPath`.
+
+.. _npmPath:
+
+npmPath
+^^^^^^^
+
+You can specify a custom path to the :code:`node_modules` folder which Waffle
+will use to resolve third party dependencies. Waffle uses :code:`node_modules`
+as the default value for :code:`./npmPath`.
+
+For more information about third party libraries, see :ref:`third-party`.
+
+.. _compiler:
+
+compiler
+^^^^^^^^
+
+.. _docker-tag:
+
+docker-tag
+^^^^^^^^^^
+
+.. _solcVersion:
+
+solcVersion
+^^^^^^^^^^^
+
+`solc-js <https://github.com/ethereum/solc-js>`__ allows setting the version
+of the solidity compiler on the fly. To change the version of the solidity
+compiler update the value of the :code:`solcVersion` field in your config file:
+
+.. code-block:: json
+
+  {
+    "solcVersion": "v0.4.24+commit.e67f0147"
+  }
+
+To find an appropriate version name please consult the `list of available solc versions <https://ethereum.github.io/solc-bin/bin/list.json>`__.
+
+Instead of specifying a version tag you can pass the path to the solc-js package.
+
+.. code-block:: json
+
+  {
+    "solcVersion": "./node_modules/solc"
+  }
+
+
+.. _legacyOutput:
+
+legacyOutput
+^^^^^^^^^^^^
+
+Starting with Waffle 2.0, the format of contract output JSON files is the
+solidity standard JSON. This is not compatible with older Waffle versions and
+with Truffle.
+
+You can generate files that are compatible with both current and previous
+versions by setting :code:`"legacyOutput": "true"` in the configuration file:
+
+.. code-block:: json
+
+  {
+    "legacyOutput": "true"
+  }
+
+.. _allowedPaths:
+
+allowedPaths
+^^^^^^^^^^^^
+
+.. _compilerOptions:
+
+compilerOptions
+^^^^^^^^^^^^^^^
+
+.. _outputType:
+
+outputType
+^^^^^^^^^^
+
+.. _outputHumanReadableAbi:
+
+outputHumanReadableAbi
+^^^^^^^^^^^^^^^^^^^^^^
+
+Waffle supports `Human Readable Abi <https://blog.ricmoo.com/human-readable-contract-abis-in-ethers-js-141902f4d917>`__.
+
+In order to enable its output you need to set :code:`outputHumanReadableAbi` to :code:`true` in your config file:
+
+.. code-block:: json
+
+  {
+    "outputHumanReadableAbi": true
+  }
+
+For the compiled contracts you will now see the following in the output:
+
+.. code-block:: json
+
+  {
+    "humanReadableAbi": [
+      "constructor(uint256 argOne)",
+      "event Bar(bool argOne, uint256 indexed argTwo)",
+      "event FooEvent()",
+      "function noArgs() view returns(uint200)",
+      "function oneArg(bool argOne)",
+      "function threeArgs(string argOne, bool argTwo, uint256[] argThree) view returns(bool, uint256)",
+      "function twoReturns(bool argOne) view returns(bool, uint256)"
+    ]
+  }
+
+
+.. _ganacheOptions:
+
+ganacheOptions
+^^^^^^^^^^^^^^
+
+Other configuration file formats
+--------------------------------
 Waffle takes as a first argument configuration file. The configuration file can be of type JSON, e.g.:
 ::
 
@@ -39,40 +219,20 @@ Configuration can even be a Promise in a js, e.g.:
   This is a powerful feature if you want to asynchronously load different compliation configurations in different environments.
   For example, you can use native solc in CI for faster compilation, whereas deciding the exact solc-js version locally based on the contract versions being used, since many of those operations are asynchronous, you'll most likely be returning a Promise to waffle to handle.
 
-Solcjs and version management
------------------------------
-Solcjs allows switching used version of solidity compiler on the fly. To set up a chosen version of solidity compiler add the following line in the Waffle configuration file:
-::
+Setting Solidity compiler version
+---------------------------------
 
-  {
-    ...
-    "solcVersion": "v0.4.24+commit.e67f0147"
-  }
+See :ref:`solcVersion`.
 
+Usage with Truffle
+------------------
 
-Version naming is somewhat counter-intuitive. You can deduce version name from `list available here <https://ethereum.github.io/solc-bin/bin/list.json>`_.
+See :ref:`legacyOutput`.
 
-Also Solcjs can be provided by passing path to Solcjs directory. Path have to be relative to working directory.
-::
-
-  {
-    ...
-    "solcVersion": "./node_modules/solc"
-  }
-
-
-Legacy / Truffle compatibility
+Usage with old Waffle versions
 ------------------------------
 
-Starting with Waffle 2.0, the format of contract output .json files in solidity standard JSON. This is not compatible with older Waffle versions and with Truffle.
-You can generate files that are compatible with both current and previous versions by adding "legacyOutput": "true" flag Waffle in the configuration file:
-::
-
-  {
-    ...
-    "legacyOutput": "true"
-  }
-
+See :ref:`legacyOutput`.
 
 Custom compiler options
 -----------------------
@@ -193,32 +353,3 @@ Add to waffle configuration in YourProjectDapp:
 That should solve a problem.
 
 Currently Waffle does not support similar feature for dockerized solc.
-
-Human Readable Abi
-------------------
-
-Waffle supports `Human Readable Abi <https://blog.ricmoo.com/human-readable-contract-abis-in-ethers-js-141902f4d917>`.
-
-In order to enable its output you need to specify a special flag in your config file:
-::
-
-  {
-    ...
-    outputHumanReadableAbi: true
-  }
-
-You will now see the following in your output:
-::
-
-  {
-    ...
-    "humanReadableAbi": [
-      "constructor(uint256 argOne)",
-      "event Bar(bool argOne, uint256 indexed argTwo)",
-      "event FooEvent()",
-      "function noArgs() view returns(uint200)",
-      "function oneArg(bool argOne)",
-      "function threeArgs(string argOne, bool argTwo, uint256[] argThree) view returns(bool, uint256)",
-      "function twoReturns(bool argOne) view returns(bool, uint256)"
-    ]
-  }

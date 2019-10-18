@@ -1,6 +1,8 @@
 Compilation
 ===========
 
+.. _third-party:
+
 Using third party libraries
 ---------------------------
 
