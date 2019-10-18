@@ -14,6 +14,7 @@ export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | Ganache
   if (typeof ganacheOptionsOrPathToConfig === 'object') {
     return ganacheOptionsOrPathToConfig;
   }
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const {ganacheOptions} = require(ganacheOptionsOrPathToConfig);
   return ganacheOptions;
 }

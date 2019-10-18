@@ -3,8 +3,8 @@ import {utils} from 'ethers';
 export interface LinkableContract {
   evm: {
     bytecode: {
-      object: any
-    }
+      object: any;
+    };
   };
 }
 
