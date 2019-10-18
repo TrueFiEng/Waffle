@@ -6,7 +6,7 @@ const defaultGanacheOptions = {accounts: defaultAccounts};
 
 export function createMockProvider(ganacheOptionsOrPathToConfig: string | GanacheOpts = {}) {
   const ganacheOptions = getGanacheOptions(ganacheOptionsOrPathToConfig);
-  const options = {...defaultGanacheOptions, ...ganacheOptions };
+  const options = {...defaultGanacheOptions, ...ganacheOptions};
   return new providers.Web3Provider(Ganache.provider(options));
 }
 

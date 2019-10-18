@@ -14,7 +14,6 @@ const solidity = (chai: any, utils: any) => {
   Assertion.overwriteMethod('most', (_super: any) => overwriteBigNumberFunction('lte', 'at most', _super, utils));
 
   Assertion.addProperty('reverted', function () {
-    /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
     const derivedPromise = promise.then(
       (value: any) => {
@@ -43,7 +42,6 @@ const solidity = (chai: any, utils: any) => {
   });
 
   Assertion.addMethod('revertedWith', function (revertReason: string) {
-    /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
     const derivedPromise = promise.then(
       (value: any) => {
@@ -75,7 +73,6 @@ const solidity = (chai: any, utils: any) => {
     logs.filter((log) => log.topics.includes(topic));
 
   Assertion.addMethod('emit', function (contract: Contract, eventName: string) {
-    /* eslint-disable no-underscore-dangle */
     const promise = this._obj;
     const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
@@ -102,7 +99,7 @@ const solidity = (chai: any, utils: any) => {
     context.assert(actualArgs.length === expectedArgs.length,
       `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
       `but has ${actualArgs.length}`,
-      `Do not combine .not. with .withArgs()`,
+      'Do not combine .not. with .withArgs()',
       expectedArgs.length,
       actualArgs.length);
     for (let index = 0; index < expectedArgs.length; index++) {
@@ -121,7 +118,6 @@ const solidity = (chai: any, utils: any) => {
   });
 
   Assertion.addProperty('properAddress', function () {
-    /* eslint-disable no-underscore-dangle */
     const subject = this._obj;
     this.assert(/^0x[0-9-a-fA-F]{40}$/.test(subject),
       `Expected "${subject}" to be a proper address`,
@@ -131,7 +127,6 @@ const solidity = (chai: any, utils: any) => {
   });
 
   Assertion.addProperty('properPrivateKey', function () {
-    /* eslint-disable no-underscore-dangle */
     const subject = this._obj;
     this.assert(/^0x[0-9-a-fA-F]{64}$/.test(subject),
       `Expected "${subject}" to be a proper private key`,
@@ -141,7 +136,6 @@ const solidity = (chai: any, utils: any) => {
   });
 
   Assertion.addMethod('properHex', function (length: number) {
-    /* eslint-disable no-underscore-dangle */
     const subject = this._obj;
     const regexp = new RegExp(`^0x[0-9-a-fA-F]{${length}}$`);
     this.assert(regexp.test(subject),

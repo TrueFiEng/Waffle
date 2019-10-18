@@ -16,7 +16,7 @@
     "test:buildonly": "ts-node script/buildTestContracts",
     "test:nobuild": "export NODE_ENV=test && mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
-    "lint": "tslint '{lib,test}/**/*.ts'",
+    "lint": "eslint '{lib,test}/**/*.ts'",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
@@ -56,7 +56,6 @@
     "sinon-chai": "^3.3.0",
     "solium": "^1.1.8",
     "ts-node": "^8.4.1",
-    "tslint": "^5.12.1",
     "typescript": "^3.6.4"
   }
 }

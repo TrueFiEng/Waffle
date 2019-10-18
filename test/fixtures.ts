@@ -67,12 +67,12 @@ describe('Integration: Fixtures', () => {
   describe('allow for multiple uses of different fixtures', () => {
     async function sendAB(provider: providers.Provider, [a, b]: Wallet[]) {
       await send(a, b);
-      return { a, b };
+      return {a, b};
     }
 
     async function sendBA(provider: providers.Provider, [a, b]: Wallet[]) {
       await send(b, a);
-      return { a, b };
+      return {a, b};
     }
 
     async function send(from: Wallet, to: Wallet) {
@@ -85,12 +85,12 @@ describe('Integration: Fixtures', () => {
     }
 
     async function testAB() {
-      const { a, b } = await loadFixture(sendAB);
+      const {a, b} = await loadFixture(sendAB);
       await testTransfer(a, b);
     }
 
     async function testBA() {
-      const { a, b } = await loadFixture(sendBA);
+      const {a, b} = await loadFixture(sendBA);
       await testTransfer(b, a);
     }
 

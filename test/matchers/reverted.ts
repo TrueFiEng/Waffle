@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {createMockProvider, deployContract, getWallets} from '../../lib';
 import Matchers from './build/Matchers.json';
-import { Contract } from 'ethers';
+import {Contract} from 'ethers';
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const provider = createMockProvider();

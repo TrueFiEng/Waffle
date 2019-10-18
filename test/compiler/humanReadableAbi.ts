@@ -14,11 +14,11 @@ describe('E2E: humanReadableAbi', () => {
     fsx.removeSync('build');
   });
 
-  it(`"outputHumanReadableAbi" makes output contain humanReadableAbi`, async () => {
+  it('"outputHumanReadableAbi" makes output contain humanReadableAbi', async () => {
     await compileProject('config.json');
 
     const filePath = join('./build', 'MyContract.json');
-    const { humanReadableAbi } = JSON.parse(readFileContent(filePath));
+    const {humanReadableAbi} = JSON.parse(readFileContent(filePath));
 
     expect(humanReadableAbi.sort()).to.deep.equal([
       'constructor(uint256 argOne)',
@@ -32,11 +32,11 @@ describe('E2E: humanReadableAbi', () => {
     expect(() => new utils.Interface(humanReadableAbi)).not.to.throw();
   });
 
-  it(`By default output does not contain humanReadableAbi`, async () => {
+  it('By default output does not contain humanReadableAbi', async () => {
     await compileProject('config2.json');
 
     const filePath = join('./build', 'MyContract.json');
-    const { humanReadableAbi } = JSON.parse(readFileContent(filePath));
+    const {humanReadableAbi} = JSON.parse(readFileContent(filePath));
 
     expect(humanReadableAbi).to.equal(undefined);
   });

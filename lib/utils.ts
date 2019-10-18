@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { Wallet } from 'ethers';
+import {Wallet} from 'ethers';
 
 export const readFileContent = (path: string): string =>
   fs.readFileSync(path).toString();

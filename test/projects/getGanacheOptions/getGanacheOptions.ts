@@ -10,7 +10,7 @@ describe('INTEGRATION: getGanacheOptions', () => {
 
   it('ganacheOptions as invalid path to config', () => {
     const pathToConfig = ('./config.json');
-    expect(() => getGanacheOptions(pathToConfig)).to.throw(Error, `Cannot find module './config.json'`);
+    expect(() => getGanacheOptions(pathToConfig)).to.throw(Error, 'Cannot find module \'./config.json\'');
   });
 
   it('ganacheOptions as valid path to config', () => {

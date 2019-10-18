@@ -1,7 +1,7 @@
 import {expect, AssertionError} from 'chai';
 import {createMockProvider, deployContract, getWallets} from '../../lib';
 import Events from './build/Events.json';
-import { Contract } from 'ethers';
+import {Contract} from 'ethers';
 
 describe('INTEGRATION: Events', () => {
   const provider = createMockProvider();
@@ -39,7 +39,7 @@ describe('INTEGRATION: Events', () => {
     await expect(events.emitBoth()).to.emit(events, 'Two');
   });
 
-  it('Emit both: success (one expect with two to)' , async () => {
+  it('Emit both: success (one expect with two to)', async () => {
     await expect(events.emitBoth())
       .to.emit(events, 'One')
       .withArgs(1, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001')
