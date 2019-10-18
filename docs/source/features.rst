@@ -80,22 +80,6 @@ Link a library:
 
 Note: Note: As the second parameter of the link function, you need to use a fully qualified name (full path to file, followed by a colon and the contract name).
 
-
-Import contracts from npm library
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Install library:
-::
-
-  npm i open-zeppelin
-
-
-
-Import solidity files from project imported to npm modules:
-::
-
-  import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-
-
 Chai matchers
 -------------
 A set of sweet chai matchers, makes your test easy to write and read. Below is the list of available matchers:

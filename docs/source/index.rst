@@ -35,7 +35,7 @@ Versions and ethers compatibility
    :caption: Contents:
 
    getting-started.rst
-   features.rst
    compilation.rst
+   features.rst
    configuration.rst
 

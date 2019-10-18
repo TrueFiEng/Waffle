@@ -1,98 +1,116 @@
-Fast compilation
-================
+Compilation
+===========
 
-By default, Waffle uses solcjs. Solcjs is solidity complier cross-complied to javascript. It is slow, but easy to install.
-As an alternative, you can use the native Solidity compiler, which is faster. There are two options:
-1) Native solc
-2) Dockerized native solc
+Using third party libraries
+---------------------------
 
+One of the nice things about Waffle is that it enables you to import third party
+libraries when writing your smart contracts. All you need to do is install the
+library from :code:`npm`.
 
+For example you can install the popular :code:`@openzeppelin/contracts` package:
 
-Native solc
------------
+.. code-block:: none
 
-This option is by far the fastest but requires you to install native solidity.
-If you need an old version that might be somewhat complicated and require you to build `solidity` from sources.
-Therefore it is the recommended option if you want to use latest solidity version.
+  yarn add @openzeppelin/contracts
 
-You can find detailed installation instructions for native `solc` in
-`documentation <https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages>`__.
+Or if you prefer npm:
 
-**Note:** You need to install version compatible with your sources.
+.. code-block:: none
 
-If you need the latest version that is pretty straight forward, see installation instructions below.
+  npm install @openzeppelin/contracts
 
-Installation
-^^^^^^^^^^^^
+After installing a library you can import it in your Solidity code:
 
-MacOS
-"""""
+.. code-block:: none
 
-To install lastest versions on MacOS:
-::
+  pragma solidity ^0.5.0;
 
-  brew install solidity
+  import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 
+If you are using a custom :code:`node_modules` location you can configure Waffle
+to recognize it. Change the :code:`npmPath` setting in your :code:`.waffle.json` file:
 
-To install other versions, it seems that currently, you need to build it from source:
-
-#. Download sources from `release list on GitHub <https://github.com/ethereum/solidity/releases>`__
-#. Follow installation instructions in the `documentation <https://solidity.readthedocs.io/en/develop/installing-solidity.html#building-from-source>`__
-
-Ubuntu
-""""""
-
-To install lastest versions on Ubuntu:
-::
-
-  sudo add-apt-repository ppa:ethereum/ethereum
-  sudo apt-get update
-  sudo apt-get install solc
-
-
-Project setup
-^^^^^^^^^^^^^
-
-Setup compiler in your waffle configuration file:
-::
+.. code-block:: json
 
   {
-    ...
+    "npmPath": "path/to/node_modules"
+  }
+
+To read more about configuring Waffle, see :ref:`configuration`.
+
+Reducing compile times
+----------------------
+
+By default, Waffle uses `solc-js <https://github.com/ethereum/solc-js>`__
+for compiling smart contracts. The package provides JavaScript bindings for the
+Solidity compiler. It is slow, but easy to use and install in the JS ecosystem.
+
+Because we value speed and flexibility we provide some alternatives that you can
+use with Waffle. There are two other options:
+
+1. Installing solc directly on your computer, see :ref:`native-solc`
+2. Using solc installed in a docker container, see :ref:`dockerized-solc`
+
+.. _native-solc:
+
+Using native solc
+-----------------
+
+This is the fastest option but comes with some downsides. A system wide
+installation means that you are stuck with a single Solidity version across all
+of your projects. Additionally it might be complicated to install old versions
+of the compiler using this method.
+
+We recommend this option if you only care about the latest solidity version.
+
+You can find detailed installation instructions for native :code:`solc` in the
+`Solidity documentation <https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages>`__.
+
+.. note::
+  You need to install version compatible with your source files.
+
+Change the :code:`compiler` setting in your :code:`.waffle.json` file:
+
+.. code-block:: json
+
+  {
     "compiler": "native"
   }
 
+To read more about configuring Waffle, see :ref:`configuration`.
 
-You can now run tests with native solc, eg:
+When compiling your smart contracts Waffle will now use the native solc installation.
+
+.. _dockerized-solc:
+
+Using dockerized solc
+---------------------
+
+This is the recommended option if you want flexibility when it comes to the
+compiler version. It is pretty easy to set up, especially if you have Docker
+installed.
+
+If you don't have docker visit the `Docker documentation <https://www.docker.com/get-started>`__
+to learn how to install it.
+
+After you've installed docker you can install the Solidity compiler. Pull the
+docker container tagged with the version you are interested in, for example for
+version 0.4.24:
 ::
-
-  npx waffle
-
-
-
-Dockerized solc
----------------
-
-This option is pretty easy to install especially if you have Docker installed.
-This is the recommended option if you need to use old solidity version.
-If you don't have docker use `following instructions <https://www.docker.com/get-started>`_ to install it.
-
-Pull solc docker container tagged with the version you are interested in, for example for version 0.4.24:
-::
-
 
   docker pull ethereum/solc:0.4.24
 
-
-Than setup compiler in your waffle configuration file:
+Then, change the :code:`compiler` setting in your :code:`.waffle.json` file:
 ::
 
   {
-    ...
     "compiler": "dockerized-solc",
     "docker-tag": "0.4.24"
   }
 
+The default value for :code:`docker-tag` is :code:`latest`. To read more about
+configuring Waffle, see :ref:`configuration`.
 
-Default docker tag is `latest`.
-
-You can now run tests in docker.
+When compiling your smart contracts Waffle will now use the docker image you
+pulled.
