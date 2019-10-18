@@ -16,7 +16,7 @@ If you need an old version that might be somewhat complicated and require you to
 Therefore it is the recommended option if you want to use latest solidity version.
 
 You can find detailed installation instructions for native `solc` in
-`documentation <https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages>`_.
+`documentation <https://solidity.readthedocs.io/en/latest/installing-solidity.html#binary-packages>`__.
 
 **Note:** You need to install version compatible with your sources.
 
@@ -36,8 +36,8 @@ To install lastest versions on MacOS:
 
 To install other versions, it seems that currently, you need to build it from source:
 
-#. Download sources from `release list on GitHub <https://github.com/ethereum/solidity/releases>`_
-#. Follow installation instructions in the `documentation <https://solidity.readthedocs.io/en/develop/installing-solidity.html#building-from-source>`_
+#. Download sources from `release list on GitHub <https://github.com/ethereum/solidity/releases>`__
+#. Follow installation instructions in the `documentation <https://solidity.readthedocs.io/en/develop/installing-solidity.html#building-from-source>`__
 
 Ubuntu
 """"""

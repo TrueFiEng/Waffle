@@ -34,7 +34,7 @@ Versions and ethers compatibility
    :maxdepth: 2
    :caption: Contents:
 
-   start.rst
+   getting-started.rst
    features.rst
    compilation.rst
    configuration.rst

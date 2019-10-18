@@ -1,3 +1,5 @@
+.. _configuration:
+
 Configuration
 =============
 
@@ -34,8 +36,8 @@ Configuration can even be a Promise in a js, e.g.:
   });
 
 .. hint::
-  This is a powerful feature if you want to asynchronously load different compliation configurations in different environments. 
-  For example, you can use native solc in CI for faster compilation, whereas deciding the exact solc-js version locally based on the contract versions being used, since many of those operations are asynchronous, you'll most likely be returning a Promise to waffle to handle. 
+  This is a powerful feature if you want to asynchronously load different compliation configurations in different environments.
+  For example, you can use native solc in CI for faster compilation, whereas deciding the exact solc-js version locally based on the contract versions being used, since many of those operations are asynchronous, you'll most likely be returning a Promise to waffle to handle.
 
 Solcjs and version management
 -----------------------------
@@ -52,7 +54,7 @@ Version naming is somewhat counter-intuitive. You can deduce version name from `
 
 Also Solcjs can be provided by passing path to Solcjs directory. Path have to be relative to working directory.
 ::
-  
+
   {
     ...
     "solcVersion": "./node_modules/solc"
@@ -107,15 +109,15 @@ The default compilation process is not compatible with KLAB
         "*": [ "evm.bytecode.object", "evm.deployedBytecode.object",
                "abi" ,
                "evm.bytecode.sourceMap", "evm.deployedBytecode.sourceMap" ],
-        
+
         "": [ "ast" ]
-      },     
+      },
     }
   }
 
 
 2. Set appropriate output type. We support two types: one (default) generates single file for each contract
-and second (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The second type does not meet 
+and second (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The second type does not meet
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
 To choice of the output is set in config file, i.e.:
 
@@ -144,7 +146,7 @@ An example of full KLAB friendly config file:
                  "evm.bytecode.sourceMap", "evm.deployedBytecode.sourceMap" ],
 
           "": [ "ast" ]
-        },     
+        },
      }
    }
   };
@@ -195,7 +197,7 @@ Currently Waffle does not support similar feature for dockerized solc.
 Human Readable Abi
 ------------------
 
-Waffle supports `Human Readable Abi <https://blog.ricmoo.com/human-readable-contract-abis-in-ethers-js-141902f4d917>`. 
+Waffle supports `Human Readable Abi <https://blog.ricmoo.com/human-readable-contract-abis-in-ethers-js-141902f4d917>`.
 
 In order to enable its output you need to specify a special flag in your config file:
 ::

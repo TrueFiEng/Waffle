@@ -1,3 +1,5 @@
+.. _features:
+
 Features
 ========
 
@@ -23,7 +25,7 @@ To modify default provider behavior createMockProvider() takes optional Ganache 
     {
       ...
       "ganacheOptions": {
-        "gasLimit": "0x6691b7", 
+        "gasLimit": "0x6691b7",
         "gasPrice": "0x77359400"
       }
     }
