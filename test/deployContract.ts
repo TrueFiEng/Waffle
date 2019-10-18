@@ -1,6 +1,7 @@
 import {expect} from 'chai';
-import {deployContract, createMockProvider, getWallets} from '../lib';
 import {ContractFactory} from 'ethers';
+import {deployContract, createMockProvider, getWallets} from '../lib';
+import {ContractJSON} from '../lib/ContractJSON';
 import SafeMath from './example/build/SafeMath.json';
 
 describe('deployContract', () => {
@@ -23,7 +24,7 @@ describe('deployContract', () => {
   });
 
   it('accepts simplified json', async () => {
-    const simplified = {
+    const simplified: ContractJSON = {
       abi: SafeMath.abi,
       bytecode: SafeMath.evm.bytecode.object
     };
