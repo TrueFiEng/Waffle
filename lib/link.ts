@@ -15,7 +15,7 @@ export function link(contract: LinkableContract, libraryName: string, libraryAdd
   } else {
     linkSolidity4(contract, libraryName, libraryAddress);
   }
-};
+}
 
 function linkSolidity4(
   contract: LinkableContract,

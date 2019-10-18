@@ -16,7 +16,7 @@
     "test:buildonly": "ts-node script/buildTestContracts",
     "test:nobuild": "export NODE_ENV=test && mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
-    "lint": "tslint 'lib/**/*.ts' 'test/**/*.ts'",
+    "lint": "tslint '{lib,test}/**/*.ts'",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },

@@ -8,7 +8,7 @@ export function createMockProvider(ganacheOptionsOrPathToConfig: string | Ganach
   const ganacheOptions = getGanacheOptions(ganacheOptionsOrPathToConfig);
   const options = {...defaultGanacheOptions, ...ganacheOptions };
   return new providers.Web3Provider(Ganache.provider(options));
-};
+}
 
 export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | GanacheOpts) {
   if (typeof ganacheOptionsOrPathToConfig === 'object') {
@@ -16,7 +16,7 @@ export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | Ganache
   }
   const {ganacheOptions} = require(ganacheOptionsOrPathToConfig);
   return ganacheOptions;
-};
+}
 
 export function getWallets(provider: providers.Provider) {
   return defaultAccounts.map((account) => new Wallet(account.secretKey, provider));
