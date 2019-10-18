@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getGanacheOptions} from '../../../lib/waffle';
+import {getGanacheOptions} from '../../../lib';
 import path from 'path';
 
 describe('INTEGRATION: getGanacheOptions', () => {

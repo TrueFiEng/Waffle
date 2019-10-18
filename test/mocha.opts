@@ -1,0 +1,4 @@
+-r ts-node/register
+--timeout 50000
+--no-warnings
+test/**/*.{js,ts}

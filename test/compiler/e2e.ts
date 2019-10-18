@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {compileProject} from '../../lib/compiler/compiler';
 import {loadConfig} from '../../lib/config/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../lib/utils';
-import {deployContract, link, getWallets, createMockProvider} from '../../lib/waffle';
+import {deployContract, link, getWallets, createMockProvider} from '../../lib';
 
 const configurations = [
   './test/projects/custom/config.js',
