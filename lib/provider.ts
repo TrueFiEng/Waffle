@@ -19,7 +19,6 @@ const defaultBuidlerOptions = {
   };
 
 export const createMockProvider = (providerOptionsOrPathToConfig: string | GanacheOpts = {}) => {
-  console.warn(`WARNING! 'createMockProvider' method is deprecated. Use 'createGanacheProvider' or 'createBuidlerProvider' instead.`);
   return createGanacheProvider(providerOptionsOrPathToConfig);
 };
 
