@@ -1,5 +1,5 @@
 import {providers, Wallet} from 'ethers';
-import {createGanacheProvider, getWallets} from './provider';
+import {createGanacheProvider, getWallets} from './';
 
 type Fixture<T> = (provider: providers.Provider, wallets: Wallet[]) => Promise<T>;
 interface Snapshot<T> {
