@@ -3,7 +3,7 @@ import {promisify} from 'util';
 import {readFileContent, isDirectory, relativePathToWorkingDir} from '../utils';
 import {Config} from '../config/config';
 import {buildInputObject} from './buildUitls';
-import { ImportFile } from '@resolver-engine/imports';
+import {ImportFile} from '@resolver-engine/imports';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 

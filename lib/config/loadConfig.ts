@@ -1,5 +1,5 @@
 import path from 'path';
-import defaultConfig, { Config } from './config';
+import defaultConfig, {Config} from './config';
 
 function readConfigFile(configPath: string) {
   if (configPath) {
