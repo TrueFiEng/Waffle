@@ -1,8 +1,8 @@
-import { Config } from '../config/config';
+import {Config} from '../config/config';
 import {compileSolcjs} from './compileSolcjs';
 import {compileNative} from './compileNative';
 import {compileDocker} from './compileDocker';
-import { ImportFile } from '@resolver-engine/imports';
+import {ImportFile} from '@resolver-engine/imports';
 
 export type CompileFunction = (
   sources: ImportFile[],

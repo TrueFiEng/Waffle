@@ -2,7 +2,7 @@ import {join} from 'path';
 import {Config} from '../config/config';
 import {execSync} from 'child_process';
 import {buildInputObject} from './buildUitls';
-import { ImportFile } from '@resolver-engine/imports';
+import {ImportFile} from '@resolver-engine/imports';
 
 const CONTAINER_PATH = '/home/project';
 const NPM_PATH = '/home/npm';

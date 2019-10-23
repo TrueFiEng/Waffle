@@ -1,7 +1,7 @@
 import {join, dirname} from 'path';
 import fs from 'fs';
 import {Config} from '../config/config';
-import { getHumanReadableAbi } from './getHumanReadableAbi';
+import {getHumanReadableAbi} from './getHumanReadableAbi';
 
 export interface BytecodeJson {
   linkReferences: object;

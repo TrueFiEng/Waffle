@@ -18,7 +18,7 @@ describe('E2E: humanReadableAbi', () => {
     await compileProject('config.json');
 
     const filePath = join('./build', 'MyContract.json');
-    const { humanReadableAbi } = JSON.parse(readFileContent(filePath));
+    const {humanReadableAbi} = JSON.parse(readFileContent(filePath));
 
     expect(humanReadableAbi.sort()).to.deep.equal([
       'constructor(uint256 argOne)',
@@ -36,7 +36,7 @@ describe('E2E: humanReadableAbi', () => {
     await compileProject('config2.json');
 
     const filePath = join('./build', 'MyContract.json');
-    const { humanReadableAbi } = JSON.parse(readFileContent(filePath));
+    const {humanReadableAbi} = JSON.parse(readFileContent(filePath));
 
     expect(humanReadableAbi).to.equal(undefined);
   });
