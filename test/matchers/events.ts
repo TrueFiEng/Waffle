@@ -1,10 +1,10 @@
 import {expect, AssertionError} from 'chai';
-import {createGanacheProvider, getWallets, deployContract} from '../../lib';
+import {createMockProvider, getWallets, deployContract} from '../../lib';
 import Events from './build/Events.json';
 import {Contract} from 'ethers';
 
 describe('INTEGRATION: Events', () => {
-  const provider = createGanacheProvider();
+  const provider = createMockProvider();
   const [wallet] = getWallets(provider);
   let events: Contract;
 

@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {createGanacheProvider, getWallets, deployContract} from '../../lib';
+import {createMockProvider, getWallets, deployContract} from '../../lib';
 import Matchers from './build/Matchers.json';
 import {Contract} from 'ethers';
 
 describe('INTEGRATION: Matchers: reverted', () => {
-  const provider = createGanacheProvider();
+  const provider = createMockProvider();
   const [wallet] = getWallets(provider);
   let matchers: Contract;
 
@@ -61,7 +61,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   let wallet;
 
   beforeEach(async () => {
-    provider = createGanacheProvider();
+    provider = createMockProvider();
     [wallet] = await getWallets(provider);
     matchers = await deployContract(wallet, Matchers);
   });

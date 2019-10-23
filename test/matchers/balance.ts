@@ -1,9 +1,9 @@
 import {expect, AssertionError} from 'chai';
-import {createGanacheProvider, getWallets} from '../../lib';
+import {createMockProvider, getWallets} from '../../lib';
 import {utils} from 'ethers';
 
 describe('INTEGRATION: Balance observers', () => {
-  const provider = createGanacheProvider();
+  const provider = createMockProvider();
   const [sender, receiver] = getWallets(provider);
 
   describe('Change balance, one account', () => {
