@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {createMockProvider, getWallets, deployContract} from '../../lib';
+import {getWallets, deployContract} from '../../lib';
 import Matchers from './build/Matchers.json';
 import {Contract} from 'ethers';
+import {forEachProvider} from '../helpers';
 
-describe('INTEGRATION: Matchers: reverted', () => {
-  const provider = createMockProvider();
+forEachProvider.describe('INTEGRATION: Matchers: reverted', (provider) => {
   const [wallet] = getWallets(provider);
   let matchers: Contract;
 
@@ -25,7 +25,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('Exceeds block gas limit');
+    await expect(matchers.doThrowAndModify()).to.be.rejected;
   });
 
   it('Revert: success', async () => {
@@ -55,13 +55,11 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 });
 
-describe('INTEGRATION: Matchers: revertedWith', () => {
-  let provider;
+forEachProvider.describe('INTEGRATION: Matchers: revertedWith', (provider) => {
   let matchers: Contract;
   let wallet;
 
   beforeEach(async () => {
-    provider = createMockProvider();
     [wallet] = await getWallets(provider);
     matchers = await deployContract(wallet, Matchers);
   });
@@ -79,7 +77,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('Exceeds block gas limit');
+    await expect(matchers.doThrowAndModify()).to.be.rejected;
   });
 
   it('Revert: success', async () => {

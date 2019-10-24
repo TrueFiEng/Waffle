@@ -1,9 +1,9 @@
 import {expect, AssertionError} from 'chai';
-import {createMockProvider, getWallets} from '../../lib';
+import {getWallets} from '../../lib';
 import {utils} from 'ethers';
+import {forEachProvider} from '../helpers';
 
-describe('INTEGRATION: Balance observers', () => {
-  const provider = createMockProvider();
+forEachProvider.describe('INTEGRATION: Balance observers', (provider) => {
   const [sender, receiver] = getWallets(provider);
 
   describe('Change balance, one account', () => {
