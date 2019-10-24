@@ -9,7 +9,7 @@ const defaultBuidlerOptions = {
     privateKey: account.secretKey
   })),
   blockGasLimit: 8000000000000,
-  hardfork: 'petersburg',
+  hardfork: 'istanbul',
   throwOnTransactionFailures: true,
   throwOnCallFailures: true,
   chainId: 17
