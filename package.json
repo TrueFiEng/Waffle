@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -24,8 +24,6 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@nomiclabs/buidler": "^1.0.1",
-    "@nomiclabs/buidler-ethers": "^1.0.1",
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
     "@types/ganache-core": "^2.1.2",
@@ -37,6 +35,8 @@
     "web3": "1.0.0-beta.35"
   },
   "devDependencies": {
+    "@nomiclabs/buidler": "^1.0.1",
+    "@nomiclabs/buidler-ethers": "^1.0.1",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/chai-string": "^1.4.2",

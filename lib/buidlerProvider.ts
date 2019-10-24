@@ -1,5 +1,3 @@
-import {createProvider} from '@nomiclabs/buidler/internal/core/providers/construction';
-import {EthersProviderWrapper} from '@nomiclabs/buidler-ethers/dist/ethers-provider-wrapper';
 import {BuidlerNetworkConfig} from '@nomiclabs/buidler/types';
 import defaultAccounts from './config/defaultAccounts';
 
@@ -16,6 +14,9 @@ const defaultBuidlerOptions = {
   };
 
 export const createBuidlerProvider = (buidlerOptionsOrPathToConfig: string | BuidlerNetworkConfig = {}) => {
+  const {createProvider} = require('@nomiclabs/buidler/internal/core/providers/construction');
+  const {EthersProviderWrapper} = require('@nomiclabs/buidler-ethers/dist/ethers-provider-wrapper');
+
   const buidlerOptions = getBuidlerOptions(buidlerOptionsOrPathToConfig);
   const options = {...defaultBuidlerOptions, ...buidlerOptions };
   return  new EthersProviderWrapper(createProvider('buidlerevm', options));
