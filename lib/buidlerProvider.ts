@@ -14,8 +14,16 @@ const defaultBuidlerOptions = {
   };
 
 export const createBuidlerProvider = (buidlerOptionsOrPathToConfig: string | BuidlerNetworkConfig = {}) => {
-  const {createProvider} = require('@nomiclabs/buidler/internal/core/providers/construction');
-  const {EthersProviderWrapper} = require('@nomiclabs/buidler-ethers/dist/ethers-provider-wrapper');
+  let createProvider;
+  let EthersProviderWrapper;
+
+  try {
+    createProvider = require('@nomiclabs/buidler/internal/core/providers/construction').createProvider;
+    EthersProviderWrapper = require('@nomiclabs/buidler-ethers/dist/ethers-provider-wrapper').EthersProviderWrapper;
+  } catch (error) {
+    console.error('To use createBuidlerProvider method you need to have the following packages installed: @nomiclabs/buidler, @nomiclabs/buidler-ethers');
+    throw new Error('Missing packages');
+  }
 
   const buidlerOptions = getBuidlerOptions(buidlerOptionsOrPathToConfig);
   const options = {...defaultBuidlerOptions, ...buidlerOptions };
