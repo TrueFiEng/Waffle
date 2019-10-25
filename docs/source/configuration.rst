@@ -210,10 +210,26 @@ Example:
 compilerOptions
 ^^^^^^^^^^^^^^^
 
+You can customize the behaviour of :code:`solc` by providing custom settings for
+it. All of the information is provided in the `Solidity documentation <https://solidity.readthedocs.io/en/v0.5.12/using-the-compiler.html#input-description>`__. Value of the :code:`compilerOptions`
+configuration setting will be passed to :code:`solc` as :code:`settings`.
+
+Example:
+
+.. code-block:: json
+
+  {
+    "compilerOptions": {
+      "evmVersion": "constantinople"
+    }
+  }
+
 .. _outputType:
 
 outputType
 ^^^^^^^^^^
+
+See: :ref:`klab`.
 
 .. _outputHumanReadableAbi:
 
@@ -252,10 +268,27 @@ For the compiled contracts you will now see the following in the output:
 ganacheOptions
 ^^^^^^^^^^^^^^
 
+Values specified here will be read by :code:`createMockProvider` if passed the
+path to the config file.
+
+Example:
+
+.. code-block:: json
+
+  {
+    "ganacheOptions": {
+      "gasLimit": 50,
+      "gasPrice": 1
+    }
+  }
+
+
 Other configuration file formats
 --------------------------------
+
 Waffle takes as a first argument configuration file. The configuration file can be of type JSON, e.g.:
-::
+
+.. code-block:: json
 
   {
     "sourcesPath": "./some_custom/contracts_path",
@@ -264,7 +297,8 @@ Waffle takes as a first argument configuration file. The configuration file can 
   }
 
 Configuration can also be of type js, e.g.:
-::
+
+.. code-block:: js
 
   module.exports = {
     npmPath: "../node_modules",
@@ -276,7 +310,8 @@ Configuration can also be of type js, e.g.:
 Native and dockerized solc compiler configuration is described in "Fast compilation" section.
 
 Configuration can even be a Promise in a js, e.g.:
-::
+
+.. code-block:: js
 
   module.exports = new Promise((resolve, reject) => {
     resolve({
@@ -307,7 +342,7 @@ Custom compiler options
 -----------------------
 To provide custom compiler options in waffle configuration file use compilerOptions section. Example below.
 
-::
+.. code-block:: json
 
   {
     "compilerOptions": {
@@ -322,6 +357,8 @@ For detailed list of options go to
 `'Target options' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#target-options>`_ and `'Compiler Input and Output JSON Description' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#compiler-input-and-output-json-description>`_).
 
 
+.. _klab:
+
 KLAB compatibility
 ------------------
 
@@ -330,7 +367,7 @@ The default compilation process is not compatible with KLAB
 
 1. Set appropriate compiler options, i.e.:
 
-::
+.. code-block:: js
 
   compilerOptions: {
     outputSelection: {
@@ -361,7 +398,7 @@ Possible options are:
 
 An example of full KLAB friendly config file:
 
-::
+.. code-block:: js
 
   module.exports = {
     compiler: process.env.WAFFLE_COMPILER,
@@ -414,11 +451,11 @@ Assuming you have the following setup:
       /contracts
 
 Add to waffle configuration in YourProjectDapp:
-::
+
+.. code-block:: json
 
   {
-    ...
-    allowedPath: ["../YourProjectContracts"]
+    "allowedPaths": ["../YourProjectContracts"]
   }
 
 
