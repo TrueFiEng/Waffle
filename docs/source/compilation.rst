@@ -38,6 +38,8 @@ to recognize it. Change the :code:`npmPath` setting in your :code:`.waffle.json`
 
 To read more about configuring Waffle, see :ref:`configuration`.
 
+.. _compile-times:
+
 Reducing compile times
 ----------------------
 
@@ -101,7 +103,8 @@ version 0.4.24:
   docker pull ethereum/solc:0.4.24
 
 Then, change the :code:`compiler` setting in your :code:`.waffle.json` file:
-::
+
+.. code-block:: json
 
   {
     "compiler": "dockerized-solc",

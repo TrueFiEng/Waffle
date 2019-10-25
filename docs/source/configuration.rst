@@ -57,6 +57,14 @@ sourcesPath
 You can specify a custom path to the directory containing your smart contracts.
 Waffle uses :code:`./contracts` as the default value for :code:`./sourcesPath`.
 
+Example:
+
+.. code-block:: json
+
+  {
+    "sourcesPath": "./custom/path/to/contracts"
+  }
+
 .. _targetPath:
 
 targetPath
@@ -65,6 +73,14 @@ targetPath
 You can specify a custom path to the directory to which Waffle saves the
 compilation output. Waffle uses :code:`./build` as the default value for
 :code:`./targetPath`.
+
+Example:
+
+.. code-block:: json
+
+  {
+    "targetPath": "./custom/path/to/output"
+  }
 
 .. _npmPath:
 
@@ -77,15 +93,52 @@ as the default value for :code:`./npmPath`.
 
 For more information about third party libraries, see :ref:`third-party`.
 
+Example:
+
+.. code-block:: json
+
+  {
+    "npmPath": "./custom/path/to/node_modules"
+  }
+
+
 .. _compiler:
 
 compiler
 ^^^^^^^^
 
+Specifies the compiler to use. For more information see: :ref:`compile-times`.
+Allowed values:
+
+  - :code:`solcjs` (default)
+  - :code:`native`
+  - :code:`dockerized-solc`
+
+Example:
+
+.. code-block:: json
+
+  {
+    "compiler": "dockerized-solc"
+  }
+
+
 .. _docker-tag:
 
 docker-tag
 ^^^^^^^^^^
+
+Specifies the docker tag. Only use alongside :code:`"compiler": "dockerized-solc"`.
+For more information, see: :ref:`dockerized-solc`.
+
+Example:
+
+.. code-block:: json
+
+  {
+    "compiler": "dockerized-solc",
+    "docker-tag": "0.4.24"
+  }
 
 .. _solcVersion:
 
@@ -135,6 +188,22 @@ versions by setting :code:`"legacyOutput": "true"` in the configuration file:
 
 allowedPaths
 ^^^^^^^^^^^^
+
+The :code:`solc` compiler has restrictions on paths it can access for security
+reasons. The value of :code:`allowedPaths` will be passed as a command line
+argument: :code:`solc --allow-paths <VALUE>`.
+
+This is especially useful if you are doing a monorepo setup with Lerna,
+see: :ref:`monorepo`.
+
+Example:
+
+.. code-block:: json
+
+  {
+    "allowedPaths": ["../contracts"]
+  }
+
 
 .. _compilerOptions:
 
@@ -310,6 +379,9 @@ An example of full KLAB friendly config file:
      }
    }
   };
+
+
+.. _monorepo:
 
 Monorepo
 --------
