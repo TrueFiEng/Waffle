@@ -194,7 +194,7 @@ reasons. The value of :code:`allowedPaths` will be passed as a command line
 argument: :code:`solc --allow-paths <VALUE>`.
 
 This is especially useful if you are doing a monorepo setup with Lerna,
-see: :ref:`monorepo`.
+see: :ref:`lerna`.
 
 Example:
 
@@ -213,6 +213,11 @@ compilerOptions
 You can customize the behaviour of :code:`solc` by providing custom settings for
 it. All of the information is provided in the `Solidity documentation <https://solidity.readthedocs.io/en/v0.5.12/using-the-compiler.html#input-description>`__. Value of the :code:`compilerOptions`
 configuration setting will be passed to :code:`solc` as :code:`settings`.
+
+For detailed list of options go to
+`solidity documentation <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#using-the-compiler>`_
+(sections: `'Setting the EVM version to target' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#setting-the-evm-version-to-target>`_,
+`'Target options' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#target-options>`_ and `'Compiler Input and Output JSON Description' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#compiler-input-and-output-json-description>`_).
 
 Example:
 
@@ -282,42 +287,34 @@ Example:
     }
   }
 
-
 Other configuration file formats
 --------------------------------
 
-Waffle takes as a first argument configuration file. The configuration file can be of type JSON, e.g.:
+Waffle supports the following configuration file formats:
+
+*JSON*:
 
 .. code-block:: json
 
   {
-    "sourcesPath": "./some_custom/contracts_path",
-    "targetPath": "../some_custom/build",
-    "npmPath": "./other/node_modules"
+    "sourcesPath": "./src/contracts",
   }
 
-Configuration can also be of type js, e.g.:
+*JavaScript*:
 
 .. code-block:: js
 
   module.exports = {
-    npmPath: "../node_modules",
-    compiler: process.env.WAFFLE_COMPILER,
-    legacyOutput: true
-  };
+    sourcesPath: './src/contracts'
+  }
 
-
-Native and dockerized solc compiler configuration is described in "Fast compilation" section.
-
-Configuration can even be a Promise in a js, e.g.:
+The configuration can even be a promise
 
 .. code-block:: js
 
-  module.exports = new Promise((resolve, reject) => {
-    resolve({
-      "compiler": "native"
-    });
-  });
+  module.exports = Promise.resolve({
+    sourcesPath: './src/contracts'
+  })
 
 .. hint::
   This is a powerful feature if you want to asynchronously load different compliation configurations in different environments.
@@ -340,22 +337,8 @@ See :ref:`legacyOutput`.
 
 Custom compiler options
 -----------------------
-To provide custom compiler options in waffle configuration file use compilerOptions section. Example below.
 
-.. code-block:: json
-
-  {
-    "compilerOptions": {
-      "evmVersion": "constantinople"
-    },
-    "compiler": "native"
-  }
-
-For detailed list of options go to
-`solidity documentation <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#using-the-compiler>`_
-(sections: `'Setting the EVM version to target' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#setting-the-evm-version-to-target>`_,
-`'Target options' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#target-options>`_ and `'Compiler Input and Output JSON Description' <https://solidity.readthedocs.io/en/v0.5.1/using-the-compiler.html#compiler-input-and-output-json-description>`_).
-
+See :ref:`compilerOptions`.
 
 .. _klab:
 
@@ -417,7 +400,6 @@ An example of full KLAB friendly config file:
    }
   };
 
-
 .. _monorepo:
 
 Monorepo
@@ -425,9 +407,12 @@ Monorepo
 Waffle works well with mono-repositories. It is enough to set up common npmPath in the configuration file to make it work.
 We recommend using `yarn workspaces <https://yarnpkg.com/lang/en/docs/workspaces/>`_ and `wsrun <https://github.com/whoeverest/wsrun>`_ for monorepo management.
 
-Lernajs + Native solc
-^^^^^^^^^^^^^^^^^^^^^
-Waffle works with `lerna <https://lernajs.io/>`_, but require additional configuration.
+.. _lerna:
+
+Usage with Lernajs
+------------------
+
+Waffle works with `lerna <https://lernajs.io/>`__, but require additional configuration.
 When lerna cross-links npm packages in monorepo, it creates symbolic links to original catalog.
 That leads to sources files located beyond allowed paths. This process breaks compilation with native solc.
 
