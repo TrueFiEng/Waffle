@@ -19,8 +19,7 @@ Writing a contract
 
 Below is example contract written in Solidity. Save it as :code:`Counter.sol`
 inside the :code:`contracts` directory of your project.
-
-.. code-block:: none
+::
 
   pragma solidity ^0.5.0;
 

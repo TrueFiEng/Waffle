@@ -11,20 +11,17 @@ libraries when writing your smart contracts. All you need to do is install the
 library from :code:`npm`.
 
 For example you can install the popular :code:`@openzeppelin/contracts` package:
-
-.. code-block:: none
+::
 
   yarn add @openzeppelin/contracts
 
 Or if you prefer npm:
-
-.. code-block:: none
+::
 
   npm install @openzeppelin/contracts
 
 After installing a library you can import it in your Solidity code:
-
-.. code-block:: none
+::
 
   pragma solidity ^0.5.0;
 
