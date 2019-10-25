@@ -36,6 +36,8 @@ Versions and ethers compatibility
 
    getting-started.rst
    compilation.rst
-   features.rst
+   basic-testing.rst
+   matchers.rst
+   fixtures.rst
    configuration.rst
 

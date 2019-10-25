@@ -164,4 +164,4 @@ You should see the following output:
 
   3 passing (426ms)
 
-If you want to know more about testing with Waffle, see :ref:`features`.
+If you want to know more about testing with Waffle, see :ref:`testing`.
