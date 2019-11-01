@@ -84,14 +84,14 @@ Import contracts from npm library
 Install library:
 ::
 
-  npm i open-zeppelin
+  npm i @openzeppelin/contracts
 
 
 
 Import solidity files from project imported to npm modules:
 ::
 
-  import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+  import "@openzeppelin/contracts/math/SafeMath.sol";
 
 
 Chai matchers
