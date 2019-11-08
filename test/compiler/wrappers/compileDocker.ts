@@ -13,7 +13,7 @@ describe('UNIT: DockerWrapper', () => {
       const hostProjectPath = process.cwd();
       const hostNpmPath = join(hostProjectPath, config.npmPath);
       const expectedVolumes = `-v ${hostProjectPath}:/home/project -v ${hostNpmPath}:/home/npm`;
-      expect(getVolumes(config)).to.eq(expectedVolumes);
+      expect(getVolumes(config)).to.equal(expectedVolumes);
     });
   });
 

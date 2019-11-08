@@ -15,12 +15,12 @@ describe('INTEGRATION: Example', () => {
   });
 
   it('Assigns initial balance', async () => {
-    expect(await token.balanceOf(wallet.address)).to.eq(1000);
+    expect(await token.balanceOf(wallet.address)).to.equal(1000);
   });
 
   it('Transfer adds amount to destination account', async () => {
     await token.transfer(walletTo.address, 7);
-    expect(await token.balanceOf(walletTo.address)).to.eq(7);
+    expect(await token.balanceOf(walletTo.address)).to.equal(7);
   });
 
   it('Transfer emits event', async () => {
@@ -47,6 +47,6 @@ describe('INTEGRATION: Example', () => {
       myLibrary.address
     );
     const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
-    expect(await libraryConsumer.useLibrary(3)).to.eq(10);
+    expect(await libraryConsumer.useLibrary(3)).to.equal(10);
   });
 });

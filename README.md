@@ -15,7 +15,7 @@ Sweeter, simpler and faster than Truffle.
 ## Features:
 * Sweet set of chai matchers, e.g.:
   * `expect(...).to.be.revertedWith('Error message')`
-  * `expect(...).to.emitEvent(contract, 'EventName).withArgs(...)`)
+  * `expect(...).to.emit(contract, 'EventName).withArgs(...)`)
 * Importing contracts from npm modules working out of the box, e.g.:
   * `import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";`
 * Fixtures that help write fast and maintainable test suites, e.g.:
@@ -97,12 +97,12 @@ describe('INTEGRATION: Example', () => {
   });
 
   it('Assigns initial balance', async () => {
-    expect(await token.balanceOf(wallet.address)).to.eq(1000);
+    expect(await token.balanceOf(wallet.address)).to.equal(1000);
   });
 
   it('Transfer adds amount to destination account', async () => {
     await token.transfer(walletTo.address, 7);
-    expect(await token.balanceOf(walletTo.address)).to.eq(7);
+    expect(await token.balanceOf(walletTo.address)).to.equal(7);
   });
 
   it('Transfer emits event', async () => {

@@ -77,7 +77,26 @@ const solidity = (chai: any, utils: any) => {
     const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
     ).then((receipt: any) => {
-      const {topic} = contract.interface.events[eventName];
+      const eventDescription = contract.interface.events[eventName];
+
+      if (eventDescription === undefined) {
+        const isNegated = this.__flags.negate === true;
+
+        this.assert(
+          isNegated,
+          `Expected event "${eventName}" to be emitted, but it doesn't` +
+          ` exist in the contract. Please make sure you've compiled` +
+          ` its latest version before running the test.`,
+          `WARNING: Expected event "${eventName}" NOT to be emitted.` +
+          ` The event wasn't emitted because it doesn't` +
+          ` exist in the contract. Please make sure you've compiled` +
+          ` its latest version before running the test.`,
+          eventName,
+          ''
+        );
+      }
+
+      const {topic} = eventDescription;
       this.logs = filterLogsWithTopics(receipt.logs, topic);
       if (this.logs.length < 1) {
         this.assert(false,
