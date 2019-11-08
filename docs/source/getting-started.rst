@@ -72,6 +72,20 @@ Writing tests
 After you have successfully authored a Smart Contract you can now think about
 testing it. Fortunately for you Waffle is packed with tools that help with that.
 
+Tests in waffle are written using `Mocha <https://mochajs.org/>`__ alongide with
+`Chai <https://www.chaijs.com/>`__. You can use a different test environment,
+but Waffle matchers only work with :code:`chai`.
+
+Run:
+::
+
+  yarn add --dev mocha chai
+
+Or:
+::
+
+  npm install --save-dev mocha chai
+
 Belows is an example test file for the contract above written with Waffle. You
 can save the file as :code:`Counter.test.js` in the :code:`test` directory of
 your project.
@@ -120,19 +134,6 @@ your project.
 Running tests
 -------------
 
-In order to run tests you will need to install a test runner. We recomment using
-`Mocha <https://mochajs.org/>`__ alongide with `Chai <https://www.chaijs.com/>`__.
-
-Run:
-::
-
-  yarn add --dev mocha chai
-
-Or:
-::
-
-  npm install --save-dev mocha chai
-
 Update your :code:`package.json` file to include:
 
 .. code-block:: json
@@ -144,7 +145,7 @@ Update your :code:`package.json` file to include:
     }
   }
 
-And finally run:
+And run:
 ::
 
   yarn test
