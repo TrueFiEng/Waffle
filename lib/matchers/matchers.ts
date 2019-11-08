@@ -85,12 +85,12 @@ const solidity = (chai: any, utils: any) => {
         this.assert(
           isNegated,
           `Expected event "${eventName}" to be emitted, but it doesn't` +
-          ` exist in the contract. Please make sure you've compiled` +
-          ` its latest version before running the test.`,
+          ' exist in the contract. Please make sure you\'ve compiled' +
+          ' its latest version before running the test.',
           `WARNING: Expected event "${eventName}" NOT to be emitted.` +
-          ` The event wasn't emitted because it doesn't` +
-          ` exist in the contract. Please make sure you've compiled` +
-          ` its latest version before running the test.`,
+          ' The event wasn\'t emitted because it doesn\'t' +
+          ' exist in the contract. Please make sure you\'ve compiled' +
+          ' its latest version before running the test.',
           eventName,
           ''
         );
