@@ -17,26 +17,27 @@ Philosophy:
 
 Features:
 ---------
-- Sweet set of chai matchers
-- Easy contract importing from npm modules
-- Fast compilation with native and dockerized solc
-- Typescript compatible
-- Fixtures that help write fast and maintainable test suites
-- Well documented
+- Sweet set of chai matchers,
+- Easy contract importing from npm modules,
+- Fast compilation with native and dockerized solc,
+- Typescript compatible,
+- Fixtures that help write fast and maintainable test suites,
+- Well documented.
 
 Versions and ethers compatibility
 ---------------------------------
-- Use version 0.2.3+ with ethers 3.* and solidity 4.*
-- Use version 1.0.0+ with ethers 4.* and solidity 4.*
-- Use version 2.0.5-beta with ethers 4.*; solidity 4, 5 and to use experimental native solc and dockerized solc.
-
+- Use version :code:`0.2.3` with ethers 3 and solidity 4,
+- Use version :code:`1.2.0` with ethers 4 and solidity 4,
+- Use version :code:`2.*.*` with ethers 4, solidity 4, 5 and ability to use native or dockerized solc.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   start.rst
-   features.rst
+   getting-started.rst
    compilation.rst
+   basic-testing.rst
+   matchers.rst
+   fixtures.rst
    configuration.rst
 

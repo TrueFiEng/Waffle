@@ -122,7 +122,7 @@ describe('E2E: Compiler integration', async () => {
         const libraryName = `${configuration.sourcesPath.slice(2)}/MyLibrary.sol:MyLibrary`;
         link(LibraryConsumer, libraryName, myLibrary.address);
         const libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
-        expect(await libraryConsumer.useLibrary(3)).to.eq(10);
+        expect(await libraryConsumer.useLibrary(3)).to.equal(10);
       });
     });
   }
