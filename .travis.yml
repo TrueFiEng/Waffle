@@ -7,7 +7,7 @@ before_install:
   - apt-cache showpkg solc
   - sudo apt-get install solc
 node_js:
-  - '10.9.0'
+  - '10.15.0'
 install:
   - yarn install
 script:
