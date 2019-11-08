@@ -2,7 +2,7 @@ import {resolve} from 'path';
 import {execSync} from 'child_process';
 import {Config} from '../config/config';
 import {buildInputObject} from './buildUitls';
-import { ImportFile } from '@resolver-engine/imports';
+import {ImportFile} from '@resolver-engine/imports';
 
 export function compileNative(config: Config) {
   return async function compile(sources: ImportFile[]) {

@@ -1,7 +1,7 @@
 import {expect, AssertionError} from 'chai';
 import {createMockProvider, deployContract, getWallets} from '../../lib';
 import Events from './build/Events.json';
-import { Contract } from 'ethers';
+import {Contract} from 'ethers';
 
 describe('INTEGRATION: Events', () => {
   const provider = createMockProvider();
@@ -30,6 +30,14 @@ describe('INTEGRATION: Events', () => {
     await expect(
       expect(events.emitTwo()).to.emit(events, 'One')
     ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "One" to emitted, but wasn\'t');
+  });
+
+  it('Emit unexistent event: fail', async () => {
+    await expect(expect(events.emitOne()).to.emit(events, 'Three')).to.be.eventually.rejectedWith(AssertionError, 'Expected event "Three" to be emitted, but it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version before running the test.');
+  });
+
+  it('Negate emit unexistent event: fail', async () => {
+    await expect(expect(events.emitOne()).not.to.emit(events, 'Three')).to.be.eventually.rejectedWith(AssertionError, 'WARNING: Expected event "Three" NOT to be emitted. The event wasn\'t emitted because it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version before running the test.');
   });
 
   it('Emit both: success (two expects)', async () => {

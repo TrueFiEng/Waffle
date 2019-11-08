@@ -1,4 +1,4 @@
-import { ImportFile } from '@resolver-engine/imports';
+import {ImportFile} from '@resolver-engine/imports';
 
 export function findImports(sources: ImportFile[]) {
   return (file: string) => {
