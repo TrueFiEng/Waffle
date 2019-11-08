@@ -9,7 +9,7 @@ Testing equality of big numbers:
 
 ::
 
-  expect(await token.balanceOf(wallet.address)).to.eq(993);
+  expect(await token.balanceOf(wallet.address)).to.equal(993);
 
 Available matchers for BigNumbers are: `equal`, `eq`, `above`, `below`, `least`, `most`.
 

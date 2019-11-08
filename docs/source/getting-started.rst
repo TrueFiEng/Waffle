@@ -78,8 +78,8 @@ your project.
 
 .. code-block:: javascript
 
-  const { use, expect } = require('chai');
-  const { solidity, createMockProvider, getWallets, deployContract } = require('ethereum-waffle');
+  const {use, expect} = require('chai');
+  const {solidity, createMockProvider, getWallets, deployContract} = require('ethereum-waffle');
   const Counter = require('../build/Counter.json');
 
   use(solidity);
@@ -99,13 +99,13 @@ your project.
 
     it('sets initial value in the constructor', async () => {
       const counter = await deployCounter(200);
-      expect(await counter.value()).to.eq(200);
+      expect(await counter.value()).to.equal(200);
     });
 
     it('can increment the value', async () => {
       const counter = await deployCounter(200);
       await counter.increment(42);
-      expect(await counter.value()).to.eq(242);
+      expect(await counter.value()).to.equal(242);
     });
 
     it('emits the Increment event', async () => {

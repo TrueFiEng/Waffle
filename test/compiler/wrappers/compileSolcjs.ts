@@ -26,16 +26,16 @@ describe('INTEGRATION: findInputs', () => {
 describe('INTEGRATION: loadCompiler', () => {
   it('loadCompiler with solcVersion as version', async () => {
     const solcLoaded = await loadCompiler({solcVersion: 'v0.5.9+commit.e560f70d', ...requiredInputs});
-    expect(solcLoaded.version()).to.eq('0.5.9+commit.e560f70d.Emscripten.clang');
+    expect(solcLoaded.version()).to.equal('0.5.9+commit.e560f70d.Emscripten.clang');
   });
 
   it('loadCompiler with solcVersion as path', async () => {
     const solcLoaded = await loadCompiler({solcVersion: 'node_modules/solc', ...requiredInputs});
-    expect(solcLoaded.version()).to.eq(solc.version());
+    expect(solcLoaded.version()).to.equal(solc.version());
   });
 
   it('loadCompier without solcVersion', async () => {
     const solcLoaded = await loadCompiler(requiredInputs);
-    expect(solcLoaded.version()).to.eq(solc.version());
+    expect(solcLoaded.version()).to.equal(solc.version());
   });
 });

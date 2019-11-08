@@ -14,7 +14,7 @@ describe('UNIT: Linking', () => {
       const libraryName = 'test/projects/custom_solidity_4/custom_contracts/MyLibrary.sol:MyLibrary';
       const contract = {evm: {bytecode: {object: compiledBytecode}}};
       link(contract, libraryName, libraryAddress);
-      expect(contract.evm.bytecode.object).to.eq(runtimeBytecode);
+      expect(contract.evm.bytecode.object).to.equal(runtimeBytecode);
     });
 
     it('invalid name', async () => {
@@ -36,7 +36,7 @@ describe('UNIT: Linking', () => {
       const libraryName = 'test/projects/custom/custom_contracts/MyLibrary.sol:MyLibrary';
       const contract = {evm: {bytecode: {object: compiledBytecode}}};
       link(contract, libraryName, libraryAddress);
-      expect(contract.evm.bytecode.object).to.eq(runtimeBytecode);
+      expect(contract.evm.bytecode.object).to.equal(runtimeBytecode);
     });
 
     it('invalid name', async () => {

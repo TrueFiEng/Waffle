@@ -23,13 +23,13 @@ Example:
 
     it('Assigns initial balance', async () => {
       const {token, wallet} = await loadFixture(fixture);
-      expect(await token.balanceOf(wallet.address)).to.eq(1000);
+      expect(await token.balanceOf(wallet.address)).to.equal(1000);
     });
 
     it('Transfer adds amount to destination account', async () => {
       const {token, other} = await loadFixture(fixture);
       await token.transfer(other.address, 7);
-      expect(await token.balanceOf(other.address)).to.eq(7);
+      expect(await token.balanceOf(other.address)).to.equal(7);
     });
   });
 
