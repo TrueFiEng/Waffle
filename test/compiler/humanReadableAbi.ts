@@ -14,7 +14,7 @@ describe('E2E: humanReadableAbi', () => {
     fsx.removeSync('build');
   });
 
-  it(`"outputHumanReadableAbi" makes output contain humanReadableAbi`, async () => {
+  it('"outputHumanReadableAbi" makes output contain humanReadableAbi', async () => {
     await compileProject('config.json');
 
     const filePath = join('./build', 'MyContract.json');
@@ -32,7 +32,7 @@ describe('E2E: humanReadableAbi', () => {
     expect(() => new utils.Interface(humanReadableAbi)).not.to.throw();
   });
 
-  it(`By default output does not contain humanReadableAbi`, async () => {
+  it('By default output does not contain humanReadableAbi', async () => {
     await compileProject('config2.json');
 
     const filePath = join('./build', 'MyContract.json');

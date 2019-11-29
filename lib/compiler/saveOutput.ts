@@ -65,7 +65,7 @@ export async function saveOutputCombined(output: any, config: Config, filesystem
     delete output.contracts[key];
   }
 
-  const allSources: string[] =  [];
+  const allSources: string[] = [];
 
   for (const [key, value] of Object.entries(output.sources) as any) {
     value.AST = value.ast;
@@ -76,9 +76,8 @@ export async function saveOutputCombined(output: any, config: Config, filesystem
   output.sourceList = allSources;
 
   filesystem.writeFileSync(
-    join(config.targetPath, `Combined-Json.json`), JSON.stringify(output, null, 2)
+    join(config.targetPath, 'Combined-Json.json'), JSON.stringify(output, null, 2)
   );
-
 }
 
 function getContent(contractJson: ContractJson, config: Config) {

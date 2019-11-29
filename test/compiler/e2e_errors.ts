@@ -10,7 +10,7 @@ const configurations = [
 ];
 
 describe('E2E: Compiler integration - error messages', () => {
-  for (const configurationPath of configurations)  {
+  for (const configurationPath of configurations) {
     const configuration = JSON.parse(readFileContent(configurationPath));
 
     it(configuration.name, async () => {

@@ -26,6 +26,6 @@ describe('INTEGRATION: findImports', () => {
 
   it('findImports file not found', async () => {
     const result = findImports(DATA)('random/nonexisting.sol');
-    expect(result).to.deep.equal({error: `File not found: random/nonexisting.sol`});
+    expect(result).to.deep.equal({error: 'File not found: random/nonexisting.sol'});
   });
 });

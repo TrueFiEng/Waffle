@@ -33,11 +33,20 @@ describe('INTEGRATION: Events', () => {
   });
 
   it('Emit unexistent event: fail', async () => {
-    await expect(expect(events.emitOne()).to.emit(events, 'Three')).to.be.eventually.rejectedWith(AssertionError, 'Expected event "Three" to be emitted, but it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version before running the test.');
+    await expect(expect(events.emitOne()).to.emit(events, 'Three')).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected event "Three" to be emitted, but it doesn\'t exist in the contract. ' +
+      'Please make sure you\'ve compiled its latest version before running the test.'
+    );
   });
 
   it('Negate emit unexistent event: fail', async () => {
-    await expect(expect(events.emitOne()).not.to.emit(events, 'Three')).to.be.eventually.rejectedWith(AssertionError, 'WARNING: Expected event "Three" NOT to be emitted. The event wasn\'t emitted because it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version before running the test.');
+    await expect(expect(events.emitOne()).not.to.emit(events, 'Three')).to.be.eventually.rejectedWith(
+      AssertionError,
+      'WARNING: Expected event "Three" NOT to be emitted. The event wasn\'t emitted because ' +
+      'it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version ' +
+      'before running the test.'
+    );
   });
 
   it('Emit both: success (two expects)', async () => {
@@ -47,7 +56,7 @@ describe('INTEGRATION: Events', () => {
     await expect(events.emitBoth()).to.emit(events, 'Two');
   });
 
-  it('Emit both: success (one expect with two to)' , async () => {
+  it('Emit both: success (one expect with two to)', async () => {
     await expect(events.emitBoth())
       .to.emit(events, 'One')
       .withArgs(1, 'One', '0x0000000000000000000000000000000000000000000000000000000000000001')

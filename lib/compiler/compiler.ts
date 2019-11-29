@@ -1,4 +1,4 @@
-import defaultConfig, {Config} from '../config/config';
+import {Config} from '../config/config';
 import {isWarningMessage} from '../utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';

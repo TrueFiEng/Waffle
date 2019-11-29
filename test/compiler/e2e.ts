@@ -47,11 +47,10 @@ describe('E2E: Compiler integration', async () => {
     });
   });
 
-  for (const configurationPath of configurations)  {
+  for (const configurationPath of configurations) {
     const configuration = await loadConfig(configurationPath) as any;
     const {name, targetPath, legacyOutput} = configuration;
 
-    /* eslint-disable no-loop-func */
     describe(name, () => {
       before(async () => {
         fsx.removeSync(targetPath);
@@ -70,7 +69,7 @@ describe('E2E: Compiler integration', async () => {
         for (const artefact of artifacts) {
           const filePath = join(targetPath, artefact);
           const content = JSON.parse(readFileContent(filePath));
-          expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok; // tslint:disable-line
+          expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok;
           expect(content.evm.bytecode.object).to.startWith('60');
         }
       });

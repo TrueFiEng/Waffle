@@ -11,8 +11,8 @@ describe('INTEGRATION: Compiler', () => {
   it('compile just compiles', async () => {
     const output = await compile(config);
     const basicTokenOutput = output.contracts[
-        'test/projects/example/BasicToken.sol'
-      ].BasicToken;
+      'test/projects/example/BasicToken.sol'
+    ].BasicToken;
     expect(output.errors).to.equal(undefined);
     expect(basicTokenOutput.evm.bytecode.object).to.startsWith('6080604052');
     expect(JSON.stringify(basicTokenOutput.abi)).to.startsWith('[{"constant":true,');
