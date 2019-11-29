@@ -1,7 +1,7 @@
 {
   "name": "solidity 5, dokerized solc, inside out directory structure",
   "sourcesPath": "./contracts",
-  "targetPath": "../build",
+  "targetPath": "../build/nested",
   "npmPath": "../modules",
   "compiler": "dockerized-solc"
 }

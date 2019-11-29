@@ -29,6 +29,7 @@
     "@types/ganache-core": "^2.7.0",
     "ethers": "^4.0.0",
     "ganache-core": "^2.8.0",
+    "mkdirp": "^0.5.1",
     "solc": "^0.5.10"
   },
   "resolutions": {
@@ -39,6 +40,7 @@
     "@types/chai-as-promised": "^7.1.2",
     "@types/chai-string": "^1.4.2",
     "@types/fs-extra": "^8.0.1",
+    "@types/mkdirp": "^0.5.2",
     "@types/mocha": "^5.2.7",
     "@types/sinon": "^7.5.0",
     "@types/sinon-chai": "^3.2.3",
