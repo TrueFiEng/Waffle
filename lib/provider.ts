@@ -1,16 +1,16 @@
-import Ganache, {GanacheOpts} from 'ganache-core';
+import Ganache from 'ganache-core';
 import {providers, Wallet} from 'ethers';
 import defaultAccounts from './config/defaultAccounts';
 
 const defaultGanacheOptions = {accounts: defaultAccounts};
 
-export function createMockProvider(ganacheOptionsOrPathToConfig: string | GanacheOpts = {}) {
+export function createMockProvider(ganacheOptionsOrPathToConfig: string | Ganache.IProviderOptions = {}) {
   const ganacheOptions = getGanacheOptions(ganacheOptionsOrPathToConfig);
   const options = {...defaultGanacheOptions, ...ganacheOptions};
-  return new providers.Web3Provider(Ganache.provider(options));
+  return new providers.Web3Provider(Ganache.provider(options) as any);
 }
 
-export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | GanacheOpts) {
+export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | Ganache.IProviderOptions) {
   if (typeof ganacheOptionsOrPathToConfig === 'object') {
     return ganacheOptionsOrPathToConfig;
   }
