@@ -26,13 +26,13 @@
   "dependencies": {
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
-    "@types/ganache-core": "^2.1.2",
+    "@types/ganache-core": "^2.7.0",
     "ethers": "^4.0.0",
-    "ganache-core": "2.6.1",
+    "ganache-core": "^2.8.0",
     "solc": "^0.5.10"
   },
   "resolutions": {
-    "web3": "1.0.0-beta.35"
+    "web3": "1.2.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.3",

@@ -25,7 +25,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('Exceeds block gas limit');
+    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('execution error: invalid opcode');
   });
 
   it('Revert: success', async () => {
@@ -75,11 +75,11 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('Revert with modification: success', async () => {
-    await expect(matchers.doRevertAndModify()).to.be.revertedWith('Revert cause');
+    await expect(matchers.doRevertAndModify()).to.be.revertedWith('execution error: revert');
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('Exceeds block gas limit');
+    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('execution error: invalid opcode');
   });
 
   it('Revert: success', async () => {

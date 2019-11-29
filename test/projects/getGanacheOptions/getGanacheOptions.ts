@@ -4,7 +4,7 @@ import path from 'path';
 
 describe('INTEGRATION: getGanacheOptions', () => {
   it('ganacheOptions as object', () => {
-    const ganacheOptions = {gasLimit: 50, gasPrice: 1};
+    const ganacheOptions = {gasLimit: 50, gasPrice: '1'};
     expect(getGanacheOptions(ganacheOptions)).to.equal(ganacheOptions);
   });
 
