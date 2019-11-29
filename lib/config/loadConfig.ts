@@ -8,7 +8,7 @@ function readConfigFile(configPath: string) {
   return {};
 }
 
-export async function loadConfig(configPath: string): Promise<Config> {
+export async function loadConfig(configPath?: string): Promise<Config> {
   if (configPath) {
     return new Promise(async (resolve, reject) => {
       resolve({

@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-
 'use strict';
-const Waffle = require('../dist/compiler/compiler.js');
+
+const Waffle = require('../dist/cli.js');
 Waffle
-  .compileProject(process.argv[2])
+  .runCli(process.argv.slice(2))
   .catch(e => {
     console.error(e);
     process.exit(1);
