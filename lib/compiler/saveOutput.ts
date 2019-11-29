@@ -1,7 +1,8 @@
-import {join, dirname} from 'path';
+import {join} from 'path';
 import fs from 'fs';
 import {Config} from '../config/config';
 import {getHumanReadableAbi} from './getHumanReadableAbi';
+import mkdirp from 'mkdirp';
 
 export interface BytecodeJson {
   linkReferences: object;
@@ -27,8 +28,15 @@ export interface ContractJson {
   evm: EvmJson;
 }
 
-export async function saveOutput(output: any, config: Config, filesystem = fs) {
+const fsOps = {
+  createDirectory: mkdirp.sync,
+  writeFile: fs.writeFileSync
+};
+
+export async function saveOutput(output: any, config: Config, filesystem = fsOps) {
   config.outputType = config.outputType || 'multiple';
+
+  filesystem.createDirectory(config.targetPath);
 
   if (['multiple', 'all'].includes(config.outputType)) {
     saveOutputSingletons(output, config, filesystem);
@@ -39,20 +47,16 @@ export async function saveOutput(output: any, config: Config, filesystem = fs) {
   }
 }
 
-export async function saveOutputSingletons(output: any, config: Config, filesystem = fs) {
+async function saveOutputSingletons(output: any, config: Config, filesystem = fsOps) {
   for (const [, file] of Object.entries(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries(file)) {
       const filePath = join(config.targetPath, `${contractName}.json`);
-      const dirPath = dirname(filePath);
-      if (!filesystem.existsSync(dirPath)) {
-        filesystem.mkdirSync(dirPath);
-      }
-      filesystem.writeFileSync(filePath, getContent(contractJson, config));
+      filesystem.writeFile(filePath, getContent(contractJson, config));
     }
   }
 }
 
-export async function saveOutputCombined(output: any, config: Config, filesystem = fs) {
+async function saveOutputCombined(output: any, config: Config, filesystem = fsOps) {
   for (const [key, file] of Object.entries(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries(file)) {
       contractJson.bin = contractJson.evm.bytecode.object;
@@ -75,7 +79,7 @@ export async function saveOutputCombined(output: any, config: Config, filesystem
 
   output.sourceList = allSources;
 
-  filesystem.writeFileSync(
+  filesystem.writeFile(
     join(config.targetPath, 'Combined-Json.json'), JSON.stringify(output, null, 2)
   );
 }

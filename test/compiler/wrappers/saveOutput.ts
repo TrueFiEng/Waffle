@@ -10,14 +10,14 @@ const config = {sourcesPath, npmPath, targetPath};
 
 describe('UNIT: saveOutput', () => {
   it('calls the required fs methods', () => {
-    const fs = {
-      writeFileSync: sinon.spy(),
-      existsSync: sinon.spy(),
-      mkdirSync: sinon.spy()
+    const fsOps = {
+      writeFile: sinon.spy(),
+      createDirectory: sinon.spy()
     };
     const output = JSON.parse(readFileContent('./test/compiler/wrappers/compilerOutput.json'));
-    saveOutput(output, config, fs as any);
+    saveOutput(output, config, fsOps);
     const expectedContent = JSON.stringify(output.contracts['One.sol'].One, null, 2);
-    expect(fs.writeFileSync).to.be.calledWith('buildtmp/One.json', expectedContent);
+    expect(fsOps.createDirectory).to.be.calledWith('./buildtmp');
+    expect(fsOps.writeFile).to.be.calledWith('buildtmp/One.json', expectedContent);
   });
 });
