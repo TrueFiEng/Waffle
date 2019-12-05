@@ -122,7 +122,7 @@ const solidity = (chai: any, utils: any) => {
       expectedArgs.length,
       actualArgs.length);
     for (let index = 0; index < expectedArgs.length; index++) {
-      new chai.Assertion(expectedArgs[index]).equal(actualArgs[index]);
+        new chai.Assertion(JSON.stringify(expectedArgs[index])).equal(JSON.stringify(actualArgs[index]));
     }
   };
 
