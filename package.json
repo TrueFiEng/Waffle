@@ -17,6 +17,7 @@
     "test:nobuild": "export NODE_ENV=test && mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "eslint '{lib,test}/**/*.ts'",
+    "lint:fix": "eslint --fix '{lib,test}/**/*.ts'",
     "build": "tsc -p tsconfig.build.json",
     "clean": "rimraf ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },

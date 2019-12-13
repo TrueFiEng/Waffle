@@ -122,7 +122,13 @@ const solidity = (chai: any, utils: any) => {
       expectedArgs.length,
       actualArgs.length);
     for (let index = 0; index < expectedArgs.length; index++) {
-      new chai.Assertion(expectedArgs[index]).equal(actualArgs[index]);
+      if (expectedArgs[index].length !== undefined && typeof expectedArgs[index] !== 'string') {
+        for (let j = 0; j < expectedArgs[index].length; j++) {
+          new chai.Assertion(expectedArgs[index][j]).equal(actualArgs[index][j]);
+        }
+      } else {
+        new chai.Assertion((expectedArgs[index])).equal((actualArgs[index]));
+      }
     }
   };
 
