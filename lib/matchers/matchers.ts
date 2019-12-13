@@ -121,15 +121,15 @@ const solidity = (chai: any, utils: any) => {
       'Do not combine .not. with .withArgs()',
       expectedArgs.length,
       actualArgs.length);
-      for (let index = 0; index < expectedArgs.length; index++) {
-        if (expectedArgs[index].length !== undefined && typeof expectedArgs[index] !== "string"){
-            for (let j = 0; j < expectedArgs[index].length; j++){
-                new chai.Assertion(expectedArgs[index][j]).equal(actualArgs[index][j]);
-            }
-        } else {
-            new chai.Assertion((expectedArgs[index])).equal((actualArgs[index]));
+    for (let index = 0; index < expectedArgs.length; index++) {
+      if (expectedArgs[index].length !== undefined && typeof expectedArgs[index] !== 'string') {
+        for (let j = 0; j < expectedArgs[index].length; j++) {
+          new chai.Assertion(expectedArgs[index][j]).equal(actualArgs[index][j]);
         }
-     }
+      } else {
+        new chai.Assertion((expectedArgs[index])).equal((actualArgs[index]));
+      }
+    }
   };
 
   Assertion.addMethod('withArgs', function (...expectedArgs: any[]) {
