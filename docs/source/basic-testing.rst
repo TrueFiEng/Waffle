@@ -72,8 +72,8 @@ Link a library:
 ::
 
   myLibrary = await deployContract(wallet, MyLibrary, []);
-  link(LibraryConsumer, 'path/to/file/MyLibrary.sol/MyLibrary', myLibrary.address);
+  link(LibraryConsumer, 'contracts/MyLibrary.sol:MyLibrary', myLibrary.address);
   libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
 
-Note: Note: As the second parameter of the link function, you need to use a fully qualified name (full path to file, followed by a colon and the contract name).
+Note: Note: As the second parameter of the link function, you need to use a fully qualified name (path to the file relative to the root of the project, followed by a colon and the contract name).
 
