@@ -5,6 +5,7 @@ jobs:
     working_directory: ~/project
     docker:
       - image: circleci/node:11.15
+      - image: ethereum/solc:0.5.15-alpine
     environment:
       NODE_ENV: test
     steps:
