@@ -36,7 +36,7 @@ const fsOps = {
 export async function saveOutput(output: any, config: Config, filesystem = fsOps) {
   config.outputType = config.outputType || 'multiple';
 
-  filesystem.createDirectory(config.targetPath);
+  filesystem.createDirectory(config.targetPath!);
 
   if (['multiple', 'all'].includes(config.outputType)) {
     saveOutputSingletons(output, config, filesystem);
@@ -48,17 +48,17 @@ export async function saveOutput(output: any, config: Config, filesystem = fsOps
 }
 
 async function saveOutputSingletons(output: any, config: Config, filesystem = fsOps) {
-  for (const [, file] of Object.entries(output.contracts)) {
-    for (const [contractName, contractJson] of Object.entries(file)) {
-      const filePath = join(config.targetPath, `${contractName}.json`);
+  for (const [, file] of Object.entries<any>(output.contracts)) {
+    for (const [contractName, contractJson] of Object.entries<any>(file)) {
+      const filePath = join(config.targetPath!, `${contractName}.json`);
       filesystem.writeFile(filePath, getContent(contractJson, config));
     }
   }
 }
 
 async function saveOutputCombined(output: any, config: Config, filesystem = fsOps) {
-  for (const [key, file] of Object.entries(output.contracts)) {
-    for (const [contractName, contractJson] of Object.entries(file)) {
+  for (const [key, file] of Object.entries<any>(output.contracts)) {
+    for (const [contractName, contractJson] of Object.entries<any>(file)) {
       contractJson.bin = contractJson.evm.bytecode.object;
       contractJson['bin-runtime'] = contractJson.evm.deployedBytecode.object;
       contractJson.srcmap = contractJson.evm.bytecode.sourceMap;
@@ -80,7 +80,7 @@ async function saveOutputCombined(output: any, config: Config, filesystem = fsOp
   output.sourceList = allSources;
 
   filesystem.writeFile(
-    join(config.targetPath, 'Combined-Json.json'), JSON.stringify(output, null, 2)
+    join(config.targetPath!, 'Combined-Json.json'), JSON.stringify(output, null, 2)
   );
 }
 

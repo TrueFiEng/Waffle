@@ -13,7 +13,7 @@ const solidity = (chai: any, utils: any) => {
   Assertion.overwriteMethod('least', (_super: any) => overwriteBigNumberFunction('gte', 'at least', _super, utils));
   Assertion.overwriteMethod('most', (_super: any) => overwriteBigNumberFunction('lte', 'at most', _super, utils));
 
-  Assertion.addProperty('reverted', function () {
+  Assertion.addProperty('reverted', function (this: any) {
     const promise = this._obj;
     const derivedPromise = promise.then(
       (value: any) => {
@@ -41,7 +41,7 @@ const solidity = (chai: any, utils: any) => {
     return this;
   });
 
-  Assertion.addMethod('revertedWith', function (revertReason: string) {
+  Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
     const promise = this._obj;
     const derivedPromise = promise.then(
       (value: any) => {
@@ -72,7 +72,7 @@ const solidity = (chai: any, utils: any) => {
   const filterLogsWithTopics = (logs: any[], topic: any) =>
     logs.filter((log) => log.topics.includes(topic));
 
-  Assertion.addMethod('emit', function (contract: Contract, eventName: string) {
+  Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     const promise = this._obj;
     const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
@@ -132,7 +132,7 @@ const solidity = (chai: any, utils: any) => {
     }
   };
 
-  Assertion.addMethod('withArgs', function (...expectedArgs: any[]) {
+  Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
     const derivedPromise = this.promise.then(() => {
       const actualArgs = this.contract.interface.parseLog(this.logs[0]);
       assertArgsArraysEqual(this, expectedArgs, actualArgs.values);
@@ -142,7 +142,7 @@ const solidity = (chai: any, utils: any) => {
     return this;
   });
 
-  Assertion.addProperty('properAddress', function () {
+  Assertion.addProperty('properAddress', function (this: any) {
     const subject = this._obj;
     this.assert(/^0x[0-9-a-fA-F]{40}$/.test(subject),
       `Expected "${subject}" to be a proper address`,
@@ -151,7 +151,7 @@ const solidity = (chai: any, utils: any) => {
       subject);
   });
 
-  Assertion.addProperty('properPrivateKey', function () {
+  Assertion.addProperty('properPrivateKey', function (this: any) {
     const subject = this._obj;
     this.assert(/^0x[0-9-a-fA-F]{64}$/.test(subject),
       `Expected "${subject}" to be a proper private key`,
@@ -160,7 +160,7 @@ const solidity = (chai: any, utils: any) => {
       subject);
   });
 
-  Assertion.addMethod('properHex', function (length: number) {
+  Assertion.addMethod('properHex', function (this: any, length: number) {
     const subject = this._obj;
     const regexp = new RegExp(`^0x[0-9-a-fA-F]{${length}}$`);
     this.assert(regexp.test(subject),
@@ -170,7 +170,7 @@ const solidity = (chai: any, utils: any) => {
       subject);
   });
 
-  Assertion.addMethod('changeBalance', function (wallet: Wallet, balanceChange: any) {
+  Assertion.addMethod('changeBalance', function (this: any, wallet: Wallet, balanceChange: any) {
     const subject = this._obj;
     if (typeof subject !== 'function') {
       throw new Error(`Expect subject should be a callback returning the Promise
@@ -191,7 +191,7 @@ const solidity = (chai: any, utils: any) => {
     return this;
   });
 
-  Assertion.addMethod('changeBalances', function (wallets: Wallet[], balanceChanges: any[]) {
+  Assertion.addMethod('changeBalances', function (this: any, wallets: Wallet[], balanceChanges: any[]) {
     const subject = this._obj;
     if (typeof subject !== 'function') {
       throw new Error(`Expect subject should be a callback returning the Promise

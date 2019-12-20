@@ -5,7 +5,7 @@ const overwriteBigNumberFunction = (
   readableName: string,
   _super: (...args: any[]) => any,
   chaiUtils: {flag: (...args: any[]) => any}
-) => function (...args: any[]) {
+) => function (this: any, ...args: any[]) {
   const [actual] = args;
   const expected = chaiUtils.flag(this, 'object');
   if (utils.BigNumber.isBigNumber(expected)) {

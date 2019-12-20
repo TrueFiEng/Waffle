@@ -6,7 +6,7 @@ export function findInputs(sourcePath: string) {
   const stack = [sourcePath];
   const inputFiles: string[] = [];
   while (stack.length > 0) {
-    const dir = stack.pop();
+    const dir = stack.pop()!;
     const files = fs.readdirSync(dir);
     for (const file of files) {
       const filePath = path.join(dir, file);

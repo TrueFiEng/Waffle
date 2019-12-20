@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
-    "allowJs": true,
+    "target": "ES2018",
     "lib": [
-      "esnext"
+      "ES2018"
     ],
     "typeRoots": [
       "node_modules/@types",
       "shims",
     ],
+    "strict": true,
     "outDir": "dist",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "noImplicitAny": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true
   }
 }
