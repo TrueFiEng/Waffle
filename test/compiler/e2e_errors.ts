@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {readFileContent} from '../../lib/utils';
-import {compileProject} from '../../lib/compiler/compiler';
+import {readFileContent} from '../../src/utils';
+import {compileProject} from '../../src/compiler/compiler';
 
 const configurations = [
   './test/projects/invalidContracts/config_solcjs.json',

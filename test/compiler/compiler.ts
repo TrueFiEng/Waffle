@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {compile, compileAndSave} from '../../lib/compiler/compiler';
-import defaultConfig from '../../lib/config/config';
+import {compile, compileAndSave} from '../../src/compiler/compiler';
+import defaultConfig from '../../src/config/config';
 
 const sourcesPath = './test/projects/example';
 const targetPath = './test/compiler/build';

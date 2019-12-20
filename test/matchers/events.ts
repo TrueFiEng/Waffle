@@ -1,5 +1,5 @@
 import {expect, AssertionError} from 'chai';
-import {createMockProvider, deployContract, getWallets} from '../../lib';
+import {createMockProvider, deployContract, getWallets} from '../../src';
 import Events from './build/Events.json';
 import {Contract, utils} from 'ethers';
 

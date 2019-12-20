@@ -1,5 +1,5 @@
-import {compileAndSave} from '../lib/compiler/compiler';
-import defaultConfig from '../lib/config/config';
+import {compileAndSave} from '../src/compiler/compiler';
+import defaultConfig from '../src/config/config';
 
 const buildExampleContracts = async () => {
   console.log('Building example contracts...');

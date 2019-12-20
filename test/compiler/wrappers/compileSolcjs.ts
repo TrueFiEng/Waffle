@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {findInputs, loadCompiler} from '../../../lib/compiler/compileSolcjs';
-import {readFileContent} from '../../../lib/utils';
+import {findInputs, loadCompiler} from '../../../src/compiler/compileSolcjs';
+import {readFileContent} from '../../../src/utils';
 import solc from 'solc';
 
 const expectedInputs = [

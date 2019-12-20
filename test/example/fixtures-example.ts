@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {loadFixture, deployContract} from '../../lib';
+import {loadFixture, deployContract} from '../../src';
 import {Wallet, providers} from 'ethers';
 import BasicTokenMock from './build/BasicTokenMock.json';
 
