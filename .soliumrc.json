@@ -1,31 +1,30 @@
 {
-    "extends": "solium:all",
-    "plugins": [
-      "security"
+  "extends": "solium:all",
+  "plugins": [
+    "security"
+  ],
+  "rules": {
+    "arg-overflow": 0,
+    "indentation": [
+      "error",
+      2
     ],
-    "rules": {
-      "max-len": [
-        "error",
-        160
-      ],
-      "quotes": [
-        "error",
-        "double"
-      ],
-      "indentation": [
-        "error",
-        2
-      ],
-      "operator-whitespace": [
-        "error"
-      ],
-      "arg-overflow": 0,
-      "security/no-block-members": [
-        "error",
-        ["blockhash"]
-      ],
-      "operator-whitespace": [
-              "error"			
+    "max-len": [
+      "error",
+      160
+    ],
+    "operator-whitespace": [
+      "error"
+    ],
+    "quotes": [
+      "error",
+      "double"
+    ],
+    "security/no-block-members": [
+      "error",
+      [
+        "blockhash"
       ]
-    }
+    ]
   }
+}
