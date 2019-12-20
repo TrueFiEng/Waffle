@@ -9,13 +9,13 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-waffle-{{ checksum "yarn.lock" }}
+            - yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-waffle-{{ checksum "yarn.lock" }}
+          key: yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
@@ -34,13 +34,13 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-waffle-{{ checksum "yarn.lock" }}
+            - yarn-packages-waffle-10-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-waffle-{{ checksum "yarn.lock" }}
+          key: yarn-packages-waffle-10-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
@@ -59,13 +59,13 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-waffle-{{ checksum "yarn.lock" }}
+            - yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-waffle-{{ checksum "yarn.lock" }}
+          key: yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
       - run:
