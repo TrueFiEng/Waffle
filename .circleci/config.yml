@@ -25,7 +25,7 @@ jobs:
             - ~/.cache/yarn
       - run:
           name: Setup native solc
-          command: alias solc="docker run -it ethereum/solc:0.5.15"
+          command: sudo cp ~/project/.circleci/solc /bin
       - run:
           name: Lint
           command: yarn lint
