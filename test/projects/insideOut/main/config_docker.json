@@ -3,5 +3,6 @@
   "sourcesPath": "./contracts",
   "targetPath": "../build/nested",
   "npmPath": "../modules",
-  "compiler": "dockerized-solc"
+  "compiler": "dockerized-solc",
+  "docker-tag": "0.5.15"
 }
