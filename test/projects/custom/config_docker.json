@@ -4,5 +4,6 @@
   "targetPath": "./test/projects/custom/custom_build",
   "npmPath": "./test/projects/custom/custom_node_modules",
   "compiler": "dockerized-solc",
+  "docker-tag": "0.5.15",
   "legacyOutput": "true"
 }
