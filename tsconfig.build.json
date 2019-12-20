@@ -3,8 +3,4 @@
   "include": [
     "lib",
   ],
-  "compilerOptions": {
-    "allowJs": false,
-    "declaration": true
-  }
 }

@@ -6,19 +6,22 @@
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.ts",
+  "types": "dist/esm/index.d.ts",
   "bin": {
     "waffle": "./bin/waffle"
   },
   "scripts": {
-    "prepublishOnly": "yarn clean && yarn build",
+    "prepublishOnly": "yarn build",
     "test:buildonly": "ts-node script/buildTestContracts",
     "test:nobuild": "export NODE_ENV=test && mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "eslint '{lib,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{lib,test}/**/*.ts'",
-    "build": "tsc -p tsconfig.build.json",
+    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
     "clean": "rimraf ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
   },
   "engines": {
