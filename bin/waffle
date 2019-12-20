@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const Waffle = require('../dist/cli.js');
+const Waffle = require('../dist/cjs/cli.js');
 Waffle
   .runCli(process.argv.slice(2))
   .catch(e => {
