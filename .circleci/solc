@@ -1,2 +1,2 @@
 #!/bin/sh
-docker run -it ethereum/solc:0.5.15 $@
+docker run ethereum/solc:0.5.15 $@
