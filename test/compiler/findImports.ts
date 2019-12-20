@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {findImports} from '../../lib/compiler/findImports';
-import {readFileContent} from '../../lib/utils';
+import {findImports} from '../../src/compiler/findImports';
+import {readFileContent} from '../../src/utils';
 import {ImportFile} from '@resolver-engine/imports';
 
 const DATA: ImportFile[] = [

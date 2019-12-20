@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {ContractFactory} from 'ethers';
-import {deployContract, createMockProvider, getWallets} from '../lib';
-import {ContractJSON} from '../lib/ContractJSON';
+import {deployContract, createMockProvider, getWallets} from '../src';
+import {ContractJSON} from '../src/ContractJSON';
 import SafeMath from './example/build/SafeMath.json';
 
 describe('deployContract', () => {

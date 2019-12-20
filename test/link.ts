@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {link} from '../lib/link';
+import {link} from '../src/link';
 
 const libraryAddress = '0xA193E42526F1FEA8C99AF609dcEabf30C1c29fAA';
 

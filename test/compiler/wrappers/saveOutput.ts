@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {readFileContent} from '../../../lib/utils';
-import {saveOutput} from '../../../lib/compiler/saveOutput';
+import {readFileContent} from '../../../src/utils';
+import {saveOutput} from '../../../src/compiler/saveOutput';
 
 const sourcesPath = './test/projects/custom/custom_contracts';
 const npmPath = './test/projects/custom/custom_node_modules';

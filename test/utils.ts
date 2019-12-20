@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {flattenObjectArray, isDirectory} from '../lib/utils';
+import {flattenObjectArray, isDirectory} from '../src/utils';
 
 describe('UNIT: Utils', () => {
   describe('flattenObjectArray', () => {

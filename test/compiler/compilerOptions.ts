@@ -1,8 +1,8 @@
 import fsx from 'fs-extra';
 import {join} from 'path';
 import {expect} from 'chai';
-import {compileProject} from '../../lib/compiler/compiler';
-import {readFileContent} from '../../lib/utils';
+import {compileProject} from '../../src/compiler/compiler';
+import {readFileContent} from '../../src/utils';
 
 const configs = [
   'config.json',

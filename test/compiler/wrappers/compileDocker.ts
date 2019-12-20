@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getVolumes, createBuildCommand} from '../../../lib/compiler/compileDocker';
+import {getVolumes, createBuildCommand} from '../../../src/compiler/compileDocker';
 import {join} from 'path';
 
 const config = {

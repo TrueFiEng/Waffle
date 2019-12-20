@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createBuildCommand} from '../../../lib/compiler/compileNative';
+import {createBuildCommand} from '../../../src/compiler/compileNative';
 
 const sourcesPath = './test/projects/custom/custom_contracts';
 const npmPath = './test/projects/custom/custom_node_modules';

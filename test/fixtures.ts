@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {loadFixture, deployContract, createFixtureLoader} from '../lib';
+import {loadFixture, deployContract, createFixtureLoader} from '../src';
 import {utils, Wallet, providers} from 'ethers';
 import Check from './example/build/Check.json';
 

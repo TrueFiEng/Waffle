@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createMockProvider, deployContract, getWallets} from '../../lib';
+import {createMockProvider, deployContract, getWallets} from '../../src';
 import Matchers from './build/Matchers.json';
 import {Contract} from 'ethers';
 

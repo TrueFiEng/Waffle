@@ -1,5 +1,5 @@
 import {expect, AssertionError} from 'chai';
-import {createMockProvider, getWallets} from '../../lib';
+import {createMockProvider, getWallets} from '../../src';
 import {utils} from 'ethers';
 
 describe('INTEGRATION: Balance observers', () => {
