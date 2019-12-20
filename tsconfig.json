@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "declaration": true,
+    "esModuleInterop": true,
     "lib": [
       "ES2018"
     ],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2018",
     "typeRoots": [
       "node_modules/@types",
-      "shims",
-    ],
-    "strict": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "declaration": true
+      "shims"
+    ]
   }
 }
