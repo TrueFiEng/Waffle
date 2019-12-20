@@ -1,15 +1,35 @@
 version: 2.1
 
 jobs:
-  build_and_test:
-    working_directory: ~/project
+  lint_and_build:
     docker:
       - image: circleci/node:11.15
-    environment:
-      NODE_ENV: test
     steps:
-      - checkout:
-          path: ~/project
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-waffle-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-waffle-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Lint
+          command: yarn lint
+      - run:
+          name: Build
+          command: yarn build
+
+  test_node_10:
+    docker:
+      - image: circleci/node:10.18
+    steps:
+      - checkout
       - setup_remote_docker
       - restore_cache:
           name: Restore Yarn Package Cache
@@ -27,11 +47,30 @@ jobs:
           name: Setup native solc
           command: sudo cp ~/project/.circleci/solc /bin
       - run:
-          name: Lint
-          command: yarn lint
+          name: Test
+          command: yarn test
+
+  test_node_11:
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout
+      - setup_remote_docker
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-waffle-{{ checksum "yarn.lock" }}
       - run:
-          name: Build
-          command: yarn build
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-waffle-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+      - run:
+          name: Setup native solc
+          command: sudo cp ~/project/.circleci/solc /bin
       - run:
           name: Test
           command: yarn test
@@ -39,4 +78,6 @@ jobs:
 workflows:
   waffle_all:
     jobs:
-      - build_and_test
+      - lint_and_build
+      - test_node_10
+      - test_node_11
