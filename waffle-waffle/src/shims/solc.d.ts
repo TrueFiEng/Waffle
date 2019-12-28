@@ -1,6 +1,6 @@
 declare module 'solc' {
   export interface SolcCompiler {
-    compile(sources: string, findImports: Function): any
+    compile(sources: string, findImports: Function): any;
   }
   export function compile(sources: string, findImports: Function): any
   export function loadRemoteVersion(

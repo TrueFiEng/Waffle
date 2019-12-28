@@ -1,7 +1,20 @@
 import overwriteBigNumberFunction from './overwriteBigNumberFunction';
 import {bigNumberify} from 'ethers/utils';
-import {getBalanceChange, getBalanceChanges} from '../utils';
 import {Contract, Wallet} from 'ethers';
+
+export async function getBalanceChange(transactionCallback: () => any, wallet: Wallet) {
+  const balanceBefore = await wallet.getBalance();
+  await transactionCallback();
+  const balanceAfter = await wallet.getBalance();
+  return balanceAfter.sub(balanceBefore);
+}
+
+export async function getBalanceChanges(transactionCallback: () => any, wallets: Wallet[]) {
+  const balancesBefore = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
+  await transactionCallback();
+  const balancesAfter = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
+  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+}
 
 const solidity = (chai: any, utils: any) => {
   const {Assertion} = chai;

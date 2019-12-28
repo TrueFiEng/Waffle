@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import {Wallet} from 'ethers';
 
 export const readFileContent = (path: string): string =>
   fs.readFileSync(path).toString();
@@ -15,20 +14,6 @@ export const eventParseResultToArray = (eventResult: object) =>
 
 export const isWarningMessage = (error: any) =>
   error.severity === 'warning';
-
-export async function getBalanceChange(transactionCallback: () => any, wallet: Wallet) {
-  const balanceBefore = await wallet.getBalance();
-  await transactionCallback();
-  const balanceAfter = await wallet.getBalance();
-  return balanceAfter.sub(balanceBefore);
-}
-
-export async function getBalanceChanges(transactionCallback: () => any, wallets: Wallet[]) {
-  const balancesBefore = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
-  await transactionCallback();
-  const balancesAfter = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
-  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
-}
 
 export const isFile = (filePath: string) =>
   fs.existsSync(filePath) && fs.lstatSync(filePath).isFile();

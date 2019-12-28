@@ -6,7 +6,7 @@ import {deprecate} from './deprecate';
  * @deprecated Use `new MockProvider(options?)`
  */
 export function createMockProvider(ganacheOptionsOrPathToConfig: string | Ganache.IProviderOptions = {}) {
-  deprecate('createMockProvider', 'Use "new MockProvider(options?)" instead.')
+  deprecate('createMockProvider', 'Use "new MockProvider(options?)" instead.');
   return new MockProvider(getGanacheOptions(ganacheOptionsOrPathToConfig));
 }
 
@@ -14,7 +14,7 @@ export function createMockProvider(ganacheOptionsOrPathToConfig: string | Ganach
  * @deprecated
  */
 export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | Ganache.IProviderOptions) {
-  deprecate('getGanacheOptions')
+  deprecate('getGanacheOptions');
   if (typeof ganacheOptionsOrPathToConfig !== 'string') {
     return ganacheOptionsOrPathToConfig;
   }
@@ -26,6 +26,6 @@ export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | Ganache
  * @deprecated Use `mockProvider.getWallets()`
  */
 export function getWallets(provider: MockProvider) {
-  deprecate('getWallets', 'Use "mockProvider.getWallets()" instead.')
+  deprecate('getWallets', 'Use "mockProvider.getWallets()" instead.');
   return provider.getWallets();
 }
