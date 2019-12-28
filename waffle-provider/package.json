@@ -1,5 +1,5 @@
 {
-  "name": "@waffle/mock-provider",
+  "name": "@waffle/provider",
   "description": "A mock provider for your blockchain testing needs.",
   "version": "2.2.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
