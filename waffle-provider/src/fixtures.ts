@@ -1,5 +1,5 @@
 import {providers, Wallet} from 'ethers';
-import {MockProvider} from '@waffle/provider';
+import {MockProvider} from './MockProvider';
 
 type Fixture<T> = (provider: MockProvider, wallets: Wallet[]) => Promise<T>;
 interface Snapshot<T> {

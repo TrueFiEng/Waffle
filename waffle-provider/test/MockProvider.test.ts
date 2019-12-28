@@ -48,12 +48,6 @@ describe('INTEGRATION: MockProvider', () => {
     expect(balance.eq(value)).to.equal(true);
   });
 
-  it('can deploy a contract', async () => {
-    const [wallet] = new MockProvider().getWallets();
-    const contract = await deployToken(wallet, 10_000);
-    expect(contract.address).to.be.a('string'); // TODO: properAddress
-  });
-
   it('can query a contract', async () => {
     const [wallet] = new MockProvider().getWallets();
     const contract = await deployToken(wallet, 10_000);

@@ -1,31 +1,32 @@
 import {expect} from 'chai';
-import {MockProvider, loadFixture, deployContract, createFixtureLoader} from '../src';
-import {utils, Wallet} from 'ethers';
-import Check from './example/build/Check.json';
+import {utils, Wallet, ContractFactory} from 'ethers';
+import {MockProvider, loadFixture, createFixtureLoader} from '../src';
+import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 
 describe('Integration: Fixtures', () => {
   describe('correctly restores state', () => {
-    let contract: any;
+    async function tokenFixture(provider: MockProvider, [sender, recipient]: Wallet[]) {
+      const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, sender);
+      return {
+        contract: await factory.deploy(1_000),
+        sender,
+        recipient
+      };
+    }
 
-    const deployCheck = async (provider: MockProvider, [someWallet]: Wallet[]) => {
-      return deployContract(someWallet, Check);
-    };
+    async function test () {
+      const {contract, sender, recipient} = await loadFixture(tokenFixture);
+      const balanceBefore: utils.BigNumber = await contract.balanceOf(sender.address)
+      expect(balanceBefore.eq(1_000)).to.equal(true);
 
-    beforeEach(async () => {
-      contract = await loadFixture(deployCheck);
-    });
+      await contract.transfer(recipient.address, 50);
 
-    it('works the first time', async () => {
-      expect(await contract.x()).to.equal(1);
-      await contract.change();
-      expect(await contract.x()).to.equal(2);
-    });
+      const balanceAfter: utils.BigNumber = await contract.balanceOf(sender.address)
+      expect(balanceAfter.eq(950)).to.equal(true);
+    }
 
-    it('works the second time', async () => {
-      expect(await contract.x()).to.equal(1);
-      await contract.change();
-      expect(await contract.x()).to.equal(2);
-    });
+    it('works the first time', test);
+    it('works the second time', test);
   });
 
   it('are called once per fixture', async () => {
