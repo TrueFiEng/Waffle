@@ -35,9 +35,6 @@
     "mkdirp": "^0.5.1",
     "solc": "^0.5.10"
   },
-  "resolutions": {
-    "web3": "1.2.1"
-  },
   "devDependencies": {
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
