@@ -30,7 +30,7 @@ describe('INTEGRATION: loadCompiler', () => {
   });
 
   it('loadCompiler with solcVersion as path', async () => {
-    const solcLoaded = await loadCompiler({solcVersion: 'node_modules/solc', ...requiredInputs});
+    const solcLoaded = await loadCompiler({solcVersion: '../node_modules/solc', ...requiredInputs});
     expect(solcLoaded.version()).to.equal(solc.version());
   });
 
