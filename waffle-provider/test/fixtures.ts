@@ -14,14 +14,14 @@ describe('Integration: Fixtures', () => {
       };
     }
 
-    async function test () {
+    async function test() {
       const {contract, sender, recipient} = await loadFixture(tokenFixture);
-      const balanceBefore: utils.BigNumber = await contract.balanceOf(sender.address)
+      const balanceBefore: utils.BigNumber = await contract.balanceOf(sender.address);
       expect(balanceBefore.eq(1_000)).to.equal(true);
 
       await contract.transfer(recipient.address, 50);
 
-      const balanceAfter: utils.BigNumber = await contract.balanceOf(sender.address)
+      const balanceAfter: utils.BigNumber = await contract.balanceOf(sender.address);
       expect(balanceAfter.eq(950)).to.equal(true);
     }
 
