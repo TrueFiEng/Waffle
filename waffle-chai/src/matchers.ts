@@ -1,30 +1,15 @@
-import overwriteBigNumberFunction from './overwriteBigNumberFunction';
-import {bigNumberify} from 'ethers/utils';
-import {Contract, Wallet} from 'ethers';
+import {getBalanceChange, getBalanceChanges, overwriteBigNumberFunction} from './utils';
+import {Contract, Wallet, utils} from 'ethers';
 
-export async function getBalanceChange(transactionCallback: () => any, wallet: Wallet) {
-  const balanceBefore = await wallet.getBalance();
-  await transactionCallback();
-  const balanceAfter = await wallet.getBalance();
-  return balanceAfter.sub(balanceBefore);
-}
-
-export async function getBalanceChanges(transactionCallback: () => any, wallets: Wallet[]) {
-  const balancesBefore = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
-  await transactionCallback();
-  const balancesAfter = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
-  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
-}
-
-const solidity = (chai: any, utils: any) => {
+export const waffleChai = (chai: any, chaiUtils: any) => {
   const {Assertion} = chai;
 
-  Assertion.overwriteMethod('equal', (_super: any) => overwriteBigNumberFunction('eq', 'equal', _super, utils));
-  Assertion.overwriteMethod('eq', (_super: any) => overwriteBigNumberFunction('eq', 'equal', _super, utils));
-  Assertion.overwriteMethod('above', (_super: any) => overwriteBigNumberFunction('gt', 'above', _super, utils));
-  Assertion.overwriteMethod('below', (_super: any) => overwriteBigNumberFunction('lt', 'below', _super, utils));
-  Assertion.overwriteMethod('least', (_super: any) => overwriteBigNumberFunction('gte', 'at least', _super, utils));
-  Assertion.overwriteMethod('most', (_super: any) => overwriteBigNumberFunction('lte', 'at most', _super, utils));
+  Assertion.overwriteMethod('equal', (_super: any) => overwriteBigNumberFunction('eq', 'equal', _super, chaiUtils));
+  Assertion.overwriteMethod('eq', (_super: any) => overwriteBigNumberFunction('eq', 'equal', _super, chaiUtils));
+  Assertion.overwriteMethod('above', (_super: any) => overwriteBigNumberFunction('gt', 'above', _super, chaiUtils));
+  Assertion.overwriteMethod('below', (_super: any) => overwriteBigNumberFunction('lt', 'below', _super, chaiUtils));
+  Assertion.overwriteMethod('least', (_super: any) => overwriteBigNumberFunction('gte', 'at least', _super, chaiUtils));
+  Assertion.overwriteMethod('most', (_super: any) => overwriteBigNumberFunction('lte', 'at most', _super, chaiUtils));
 
   Assertion.addProperty('reverted', function (this: any) {
     const promise = this._obj;
@@ -191,7 +176,7 @@ const solidity = (chai: any, utils: any) => {
     }
     const derivedPromise = getBalanceChange(subject, wallet)
       .then((actualChange) => {
-        this.assert(actualChange.eq(bigNumberify(balanceChange)),
+        this.assert(actualChange.eq(utils.bigNumberify(balanceChange)),
           `Expected "${wallet.address}" to change balance by ${balanceChange} wei, ` +
           `but it has changed by ${actualChange} wei`,
           `Expected "${wallet.address}" to not change balance by ${balanceChange} wei,`,
@@ -213,7 +198,7 @@ const solidity = (chai: any, utils: any) => {
     const derivedPromise = getBalanceChanges(subject, wallets)
       .then((actualChanges) => {
         const walletsAddresses = wallets.map((wallet) => wallet.address);
-        this.assert(actualChanges.every((change, ind) => change.eq(bigNumberify(balanceChanges[ind]))),
+        this.assert(actualChanges.every((change, ind) => change.eq(utils.bigNumberify(balanceChanges[ind]))),
           `Expected ${walletsAddresses} to change balance by ${balanceChanges} wei, ` +
           `but it has changed by ${actualChanges} wei`,
           `Expected ${walletsAddresses} to not change balance by ${balanceChanges} wei,`,
@@ -226,5 +211,3 @@ const solidity = (chai: any, utils: any) => {
     return this;
   });
 };
-
-export default solidity;

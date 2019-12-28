@@ -1,7 +1,7 @@
 import {expect, AssertionError} from 'chai';
 import {utils} from 'ethers';
 
-describe('UNIT: Bignumber matchers', () => {
+describe('UNIT: BigNumber matchers', () => {
   it('equal', async () => {
     expect(utils.bigNumberify(10)).to.be.equal(10);
     expect(utils.bigNumberify(10)).to.be.equal('10');

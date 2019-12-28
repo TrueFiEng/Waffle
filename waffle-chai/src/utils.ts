@@ -1,6 +1,20 @@
-import {utils} from 'ethers';
+import {Wallet, utils} from 'ethers';
 
-const overwriteBigNumberFunction = (
+export async function getBalanceChange(transactionCallback: () => any, wallet: Wallet) {
+  const balanceBefore = await wallet.getBalance();
+  await transactionCallback();
+  const balanceAfter = await wallet.getBalance();
+  return balanceAfter.sub(balanceBefore);
+}
+
+export async function getBalanceChanges(transactionCallback: () => any, wallets: Wallet[]) {
+  const balancesBefore = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
+  await transactionCallback();
+  const balancesAfter = await Promise.all(wallets.map((wallet) => wallet.getBalance()));
+  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+}
+
+export const overwriteBigNumberFunction = (
   functionName: string,
   readableName: string,
   _super: (...args: any[]) => any,
@@ -24,5 +38,3 @@ const overwriteBigNumberFunction = (
     _super.apply(this, args);
   }
 };
-
-export default overwriteBigNumberFunction;

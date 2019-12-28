@@ -9,17 +9,4 @@ const buildExampleContracts = async () => {
   await compileAndSave(config);
 };
 
-const buildMatchers = async () => {
-  console.log('Building matchers contracts...');
-  const sourcesPath = './test/matchers/contracts';
-  const targetPath = './test/matchers/build';
-  const config = {...defaultConfig, sourcesPath, targetPath};
-  await compileAndSave(config);
-};
-
-const buildAll = async () => {
-  await buildExampleContracts();
-  await buildMatchers();
-};
-
-buildAll();
+buildExampleContracts();

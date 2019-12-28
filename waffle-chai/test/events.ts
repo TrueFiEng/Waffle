@@ -1,14 +1,15 @@
 import {expect, AssertionError} from 'chai';
-import {MockProvider, deployContract} from '../../src';
-import Events from './build/Events.json';
-import {Contract, utils} from 'ethers';
+import {Contract, utils, ContractFactory} from 'ethers';
+import {MockProvider} from '@waffle/provider';
+import {EVENTS_ABI, EVENTS_BYTECODE} from './contracts/Events';
 
 describe('INTEGRATION: Events', () => {
   const [wallet] = new MockProvider().getWallets();
   let events: Contract;
 
   beforeEach(async () => {
-    events = await deployContract(wallet, Events);
+    const factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
+    events = await factory.deploy();
   });
 
   it('Emit one: success', async () => {

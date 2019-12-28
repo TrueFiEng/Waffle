@@ -1,14 +1,15 @@
 import {expect} from 'chai';
-import {MockProvider, deployContract} from '../../src';
-import Matchers from './build/Matchers.json';
-import {Contract} from 'ethers';
+import {MockProvider} from '@waffle/provider';
+import {Contract, ContractFactory} from 'ethers';
+import {MATCHERS_ABI, MATCHERS_BYTECODE} from './contracts/Matchers';
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const [wallet] = new MockProvider().getWallets();
   let matchers: Contract;
 
   beforeEach(async () => {
-    matchers = await deployContract(wallet, Matchers);
+    const factory = new ContractFactory(MATCHERS_ABI, MATCHERS_BYTECODE, wallet);
+    matchers = await factory.deploy();
   });
 
   it('Throw: success', async () => {
@@ -59,7 +60,8 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   let matchers: Contract;
 
   beforeEach(async () => {
-    matchers = await deployContract(wallet, Matchers);
+    const factory = new ContractFactory(MATCHERS_ABI, MATCHERS_BYTECODE, wallet);
+    matchers = await factory.deploy();
   });
 
   it('Throw: success', async () => {
