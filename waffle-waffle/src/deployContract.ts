@@ -1,6 +1,10 @@
 import {Wallet, providers, ContractFactory} from 'ethers';
 import {ContractJSON, isStandard, hasByteCode} from './ContractJSON';
-import defaultDeployOptions from './config/defaultDeployOptions';
+
+const defaultDeployOptions = {
+  gasLimit: 4000000,
+  gasPrice: 9000000000
+};
 
 export async function deployContract(
   wallet: Wallet,

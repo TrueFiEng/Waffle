@@ -1,4 +1,4 @@
-import {compileProject} from './compiler/compiler';
+import {compileProject} from '@waffle/compiler';
 
 export async function runCli(args: string[]) {
   const options = args.filter((x) => x.startsWith('-'));
