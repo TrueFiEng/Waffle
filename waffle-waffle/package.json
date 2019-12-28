@@ -30,9 +30,8 @@
   "dependencies": {
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
-    "@types/ganache-core": "^2.7.0",
+    "@waffle/provider": "^2.2.0",
     "ethers": "^4.0.0",
-    "ganache-core": "^2.8.0",
     "mkdirp": "^0.5.1",
     "solc": "^0.5.10"
   },

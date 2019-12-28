@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
-import {createMockProvider, getWallets} from './provider';
+import {MockProvider} from '@waffle/provider';
 
-type Fixture<T> = (provider: providers.Provider, wallets: Wallet[]) => Promise<T>;
+type Fixture<T> = (provider: MockProvider, wallets: Wallet[]) => Promise<T>;
 interface Snapshot<T> {
   fixture: Fixture<T>;
   data: T;
@@ -12,7 +12,7 @@ interface Snapshot<T> {
 
 export const loadFixture = createFixtureLoader();
 
-export function createFixtureLoader(overrideProvider?: providers.Web3Provider, overrideWallets?: Wallet[]) {
+export function createFixtureLoader(overrideProvider?: MockProvider, overrideWallets?: Wallet[]) {
   const snapshots: Snapshot<any>[] = [];
 
   return async function load<T>(fixture: Fixture<T>): Promise<T> {
@@ -22,8 +22,8 @@ export function createFixtureLoader(overrideProvider?: providers.Web3Provider, o
       snapshot.id = await snapshot.provider.send('evm_snapshot', []);
       return snapshot.data;
     } else {
-      const provider = overrideProvider || createMockProvider();
-      const wallets = overrideWallets || getWallets(provider);
+      const provider = overrideProvider ?? new MockProvider();
+      const wallets = overrideWallets ?? provider.getWallets();
 
       const data = await fixture(provider, wallets);
       const id = await provider.send('evm_snapshot', []);

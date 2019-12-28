@@ -1,13 +1,13 @@
 import {expect} from 'chai';
-import {createMockProvider, deployContract, getWallets, link} from '../../src';
+import {MockProvider, deployContract, link} from '../../src';
 import {Contract} from 'ethers';
 import BasicTokenMock from './build/BasicTokenMock.json';
 import MyLibrary from './build/MyLibrary.json';
 import LibraryConsumer from './build/LibraryConsumer.json';
 
 describe('INTEGRATION: Example', () => {
-  const provider = createMockProvider();
-  const [wallet, walletTo] = getWallets(provider);
+  const provider = new MockProvider();
+  const [wallet, walletTo] = provider.getWallets();
   let token: Contract;
 
   beforeEach(async () => {

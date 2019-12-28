@@ -1,11 +1,10 @@
 import {expect} from 'chai';
-import {createMockProvider, deployContract, getWallets} from '../../src';
+import {MockProvider, deployContract} from '../../src';
 import Matchers from './build/Matchers.json';
 import {Contract} from 'ethers';
 
 describe('INTEGRATION: Matchers: reverted', () => {
-  const provider = createMockProvider();
-  const [wallet] = getWallets(provider);
+  const [wallet] = new MockProvider().getWallets();
   let matchers: Contract;
 
   beforeEach(async () => {
@@ -56,13 +55,10 @@ describe('INTEGRATION: Matchers: reverted', () => {
 });
 
 describe('INTEGRATION: Matchers: revertedWith', () => {
-  let provider;
+  const [wallet] = new MockProvider().getWallets();
   let matchers: Contract;
-  let wallet;
 
   beforeEach(async () => {
-    provider = createMockProvider();
-    [wallet] = await getWallets(provider);
     matchers = await deployContract(wallet, Matchers);
   });
 

@@ -1,12 +1,11 @@
 import {expect} from 'chai';
 import {ContractFactory} from 'ethers';
-import {deployContract, createMockProvider, getWallets} from '../src';
+import {MockProvider, deployContract} from '../src';
 import {ContractJSON} from '../src/ContractJSON';
 import SafeMath from './example/build/SafeMath.json';
 
 describe('deployContract', () => {
-  const provider = createMockProvider();
-  const [wallet] = getWallets(provider);
+  const [wallet] = new MockProvider().getWallets();
 
   it('cannot deploys contract without bytecode', async () => {
     const contractJson = {abi: '0x', evm: {bytecode: {object: ''}}};

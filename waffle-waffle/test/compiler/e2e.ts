@@ -5,7 +5,7 @@ import {expect} from 'chai';
 import {compileProject} from '../../src/compiler/compiler';
 import {loadConfig} from '../../src/config/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../src/utils';
-import {deployContract, link, getWallets, createMockProvider} from '../../src';
+import {deployContract, link, MockProvider} from '../../src';
 
 const configurations = [
   './test/projects/custom/config.js',
@@ -112,8 +112,7 @@ describe('E2E: Compiler integration', async () => {
       });
 
       it('links library', async () => {
-        const provider = createMockProvider();
-        const [wallet] = getWallets(provider);
+        const [wallet] = new MockProvider().getWallets();
         const libraryPath = resolve(join(configuration.targetPath, 'MyLibrary.json'));
         const MyLibrary = require(libraryPath);
         const LibraryConsumer = deepCopy(require(resolve(join(configuration.targetPath, 'Two.json'))));

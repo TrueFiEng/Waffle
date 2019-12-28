@@ -1,13 +1,13 @@
 import {expect} from 'chai';
-import {loadFixture, deployContract, createFixtureLoader} from '../src';
-import {utils, Wallet, providers} from 'ethers';
+import {MockProvider, loadFixture, deployContract, createFixtureLoader} from '../src';
+import {utils, Wallet} from 'ethers';
 import Check from './example/build/Check.json';
 
 describe('Integration: Fixtures', () => {
   describe('correctly restores state', () => {
     let contract: any;
 
-    const deployCheck = async (provider: providers.Provider, [someWallet]: Wallet[]) => {
+    const deployCheck = async (provider: MockProvider, [someWallet]: Wallet[]) => {
       return deployContract(someWallet, Check);
     };
 
@@ -45,7 +45,7 @@ describe('Integration: Fixtures', () => {
 
   it('allow for restoring blockchain state', async () => {
     const fixture = async (
-      provider: providers.Provider,
+      provider: MockProvider,
       [wallet, other]: Wallet[]
     ) => ({wallet, other, provider});
 
@@ -65,12 +65,12 @@ describe('Integration: Fixtures', () => {
   });
 
   describe('allow for multiple uses of different fixtures', () => {
-    async function sendAB(provider: providers.Provider, [a, b]: Wallet[]) {
+    async function sendAB(provider: MockProvider, [a, b]: Wallet[]) {
       await send(a, b);
       return {a, b};
     }
 
-    async function sendBA(provider: providers.Provider, [a, b]: Wallet[]) {
+    async function sendBA(provider: MockProvider, [a, b]: Wallet[]) {
       await send(b, a);
       return {a, b};
     }
@@ -111,8 +111,8 @@ describe('Integration: Fixtures', () => {
   });
 
   it('run on isolated chains', async () => {
-    const fixtureA = async (provider: providers.Provider) => (provider);
-    const fixtureB = async (provider: providers.Provider) => (provider);
+    const fixtureA = async (provider: MockProvider) => (provider);
+    const fixtureB = async (provider: MockProvider) => (provider);
 
     const providerA1 = await loadFixture(fixtureA);
     const providerA2 = await loadFixture(fixtureA);

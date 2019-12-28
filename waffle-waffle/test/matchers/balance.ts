@@ -1,10 +1,9 @@
 import {expect, AssertionError} from 'chai';
-import {createMockProvider, getWallets} from '../../src';
+import {MockProvider} from '../../src';
 import {utils} from 'ethers';
 
 describe('INTEGRATION: Balance observers', () => {
-  const provider = createMockProvider();
-  const [sender, receiver] = getWallets(provider);
+  const [sender, receiver] = new MockProvider().getWallets();
 
   describe('Change balance, one account', () => {
     it('Should pass when expected balance change is passed as string and is equal to an actual', async () => {
