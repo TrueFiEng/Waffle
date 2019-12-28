@@ -1,29 +1,41 @@
 version: 2.1
 
+commands:
+  install_dependencies:
+    description: "Install dependencies and save cache"
+    parameters:
+      key:
+        type: integer
+    steps:
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-waffle-<< parameters.key >>-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-waffle-<< parameters.key >>-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+  setup_solc:
+    steps:
+      - run:
+          name: Setup native solc
+          command: sudo cp ~/project/.circleci/solc /bin
+
+
 jobs:
   lint_and_build:
     docker:
       - image: circleci/node:11.15
     steps:
       - checkout
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Lint
-          command: yarn lint
-      - run:
-          name: Build
-          command: yarn build
+      - install_dependencies:
+          key: 11
+      - run: yarn lint
+      - run: yarn build
 
   test_node_10:
     docker:
@@ -31,24 +43,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-waffle-10-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-waffle-10-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Setup native solc
-          command: sudo cp ~/project/.circleci/solc /bin
-      - run:
-          name: Test
-          command: yarn test
+      - install_dependencies:
+          key: 10
+      - setup_solc
+      - run: yarn build
+      - run: yarn test
 
   test_node_11:
     docker:
@@ -56,24 +55,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - restore_cache:
-          name: Restore Yarn Package Cache
-          keys:
-            - yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile
-      - save_cache:
-          name: Save Yarn Package Cache
-          key: yarn-packages-waffle-11-{{ checksum "yarn.lock" }}
-          paths:
-            - ~/.cache/yarn
-      - run:
-          name: Setup native solc
-          command: sudo cp ~/project/.circleci/solc /bin
-      - run:
-          name: Test
-          command: yarn test
+      - install_dependencies:
+          key: 11
+      - setup_solc
+      - run: yarn build
+      - run: yarn test
 
 workflows:
   waffle_all:
