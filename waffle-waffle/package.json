@@ -36,19 +36,14 @@
   "devDependencies": {
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
-    "@types/fs-extra": "^8.0.1",
-    "@types/mkdirp": "^0.5.2",
     "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.5.1",
-    "fs-extra": "^8.1.0",
     "mocha": "^6.2.1",
-    "openzeppelin-solidity": "^2.1.1",
     "rimraf": "^3.0.0",
-    "solium": "^1.1.8",
     "ts-node": "^8.4.1",
     "typescript": "^3.7.2"
   }
