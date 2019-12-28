@@ -1,0 +1,46 @@
+{
+  "name": "@waffle/mock-provider",
+  "description": "A mock provider for your blockchain testing needs.",
+  "version": "2.2.0",
+  "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
+  "repository": "git@github.com:EthWorks/Waffle.git",
+  "private": false,
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.ts",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "prepublishOnly": "yarn build",
+    "test": "export NODE_ENV=test && mocha",
+    "lint": "eslint '{lib,test}/**/*.ts'",
+    "lint:fix": "eslint --fix '{lib,test}/**/*.ts'",
+    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "dependencies": {
+    "@types/ganache-core": "^2.7.0",
+    "ethers": "^4.0.0",
+    "ganache-core": "^2.8.0"
+  },
+  "resolutions": {
+    "web3": "1.2.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.3",
+    "@types/chai-as-promised": "^7.1.2",
+    "@types/mocha": "^5.2.7",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^6.5.1",
+    "mocha": "^6.2.1",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.2"
+  }
+}
