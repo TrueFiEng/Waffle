@@ -5,4 +5,3 @@ test
 buildTestContracts.ts
 tsconfig.build.json
 tsconfig.json
-yarn.lock

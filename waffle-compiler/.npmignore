@@ -3,4 +3,3 @@ test
 .eslintrc.js
 tsconfig.build.json
 tsconfig.json
-yarn.lock
