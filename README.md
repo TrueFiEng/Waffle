@@ -226,12 +226,14 @@ make html
 - [x] Documentation
 - [x] TypeScript rewrite
 
-### Waffle 2.1
-- [ ] Faster testing with native geth (aside from ganache)
-- [ ] New matcher: changeBalance for ERC20 tokens
+### Waffle 3.0
+- [ ] Split into multiple packages
+- [ ] Better MockProvider
 
-### Waffle 2.2
+### Waffle 3.*
 - [ ] Debugging and profiling
+- [ ] ENS integration
+- [ ] Mocking
 
 ## License
 Waffle is released under the [MIT License](https://opensource.org/licenses/MIT).
