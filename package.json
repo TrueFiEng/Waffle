@@ -1,67 +1,18 @@
 {
-  "name": "ethereum-waffle",
-  "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.3.0-istanbul.0",
-  "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
-  "repository": "git@github.com:EthWorks/Waffle.git",
-  "private": false,
-  "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
-  "bin": {
-    "waffle": "./bin/waffle"
-  },
-  "scripts": {
-    "prepublishOnly": "yarn build",
-    "test:buildonly": "ts-node script/buildTestContracts",
-    "test:nobuild": "export NODE_ENV=test && mocha",
-    "test": "yarn test:buildonly && yarn test:nobuild",
-    "lint": "eslint '{lib,test}/**/*.ts'",
-    "lint:fix": "eslint --fix '{lib,test}/**/*.ts'",
-    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
-    "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
-    "clean": "rimraf ./dist ./test/compiler/build ./test/example/build ./test/matchers/build"
-  },
+  "name": "waffle-monorepo",
+  "private": true,
   "engines": {
     "node": ">=10.0"
   },
-  "dependencies": {
-    "@resolver-engine/imports": "^0.3.3",
-    "@resolver-engine/imports-fs": "^0.3.3",
-    "@types/ganache-core": "^2.7.0",
-    "ethers": "^4.0.0",
-    "ganache-core": "^2.9.0-istanbul.0",
-    "mkdirp": "^0.5.1",
-    "solc": "^0.5.10"
-  },
-  "resolutions": {
-    "web3": "1.2.1"
+  "workspaces": [
+    "waffle-*"
+  ],
+  "scripts": {
+    "lint": "wsrun -c lint",
+    "build": "wsrun -te -c build",
+    "test": "wsrun -c test"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.3",
-    "@types/chai-as-promised": "^7.1.2",
-    "@types/chai-string": "^1.4.2",
-    "@types/fs-extra": "^8.0.1",
-    "@types/mkdirp": "^0.5.2",
-    "@types/mocha": "^5.2.7",
-    "@types/sinon": "^7.5.0",
-    "@types/sinon-chai": "^3.2.3",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "chai-string": "^1.5.0",
-    "eslint": "^6.5.1",
-    "fs-extra": "^8.1.0",
-    "mocha": "^6.2.1",
-    "openzeppelin-solidity": "^2.1.1",
-    "rimraf": "^3.0.0",
-    "sinon": "^7.5.0",
-    "sinon-chai": "^3.3.0",
-    "solium": "^1.1.8",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.2"
+    "wsrun": "^5.2.0"
   }
 }

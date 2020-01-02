@@ -7,6 +7,10 @@ Library for writing and testing smart contracts.
 
 Sweeter, simpler and faster than Truffle.
 
+## Links
+* Website - https://getwaffle.io/
+* Documentation - https://ethereum-waffle.readthedocs.io/
+
 ## Philosophy
 * __Simpler__: Minimalistic, few dependencies.
 * __Sweeter__: Nice syntax, easy to extend.
@@ -27,19 +31,19 @@ Sweeter, simpler and faster than Truffle.
 * Support for TypeScript
 * [Documentation](https://ethereum-waffle.readthedocs.io/en/latest/)
 
-
 ## Documentation
 Documentation is available [here](https://ethereum-waffle.readthedocs.io/en/latest/).
 
 ## Installation:
-To get started using npm, type:
-```sh
-npm i ethereum-waffle -D
+
+To get started install `ethereum-waffle` with yarn:
+```
+yarn add --dev ethereum-waffle
 ```
 
-or with Yarn:
-```sh
-yarn add ethereum-waffle -D
+Or if you prefer using npm:
+```
+npm install --save-dev ethereum-waffle
 ```
 
 ## Step by step guide
@@ -57,18 +61,17 @@ or with yarn:
 yarn add openzeppelin-solidity -D
 ```
 
-
 ### Example contract
-Below is an example contract written in Solidity. Place it in `contracts/BasicTokenMock.sol` file of your project:
+Below is an example contract written in Solidity. Place it in `contracts/BasicToken.sol` file of your project:
 
 ```solidity
+// contracts/BasicToken.sol
 pragma solidity ^0.5.1;
 
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
-
 // Example class - a mock class using delivering from ERC20
-contract BasicTokenMock is ERC20 {
+contract BasicToken is ERC20 {
   constructor(address initialAccount, uint256 initialBalance) public {
     super._mint(initialAccount, initialBalance);
   }
@@ -76,20 +79,18 @@ contract BasicTokenMock is ERC20 {
 ```
 
 ### Example test
-Below is an example test written for the contract above compiled with Waffle. Place it under `test/basicTokenMock.js` file of your project:
+Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.js` file of your project:
 
 ```js
-const chai = require('chai');
-const {createMockProvider, deployContract, getWallets, solidity} = require('ethereum-waffle');
-const BasicTokenMock = require('../build/BasicTokenMock');
+// test/BasicToken.js
+const {use, expect} = require('chai');
+const {MockProvider, deployContract, solidity} = require('ethereum-waffle');
+const BasicToken = require('../build/BasicToken');
 
+use(solidity);
 
-chai.use(solidity);
-const {expect} = chai;
-
-describe('INTEGRATION: Example', () => {
-  let provider = createMockProvider();
-  let [wallet, walletTo] = getWallets(provider);
+describe('BasicToken', () => {
+  const [wallet, walletTo] = new MockProvider().getWallets();
   let token;
 
   beforeEach(async () => {
@@ -120,31 +121,32 @@ describe('INTEGRATION: Example', () => {
     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
       .to.be.reverted;
   });
-
 });
 ```
 
-Note: You will also need to install following dependencies with npm to run the example above:
-
-```sh
-npm i chai -D
-npm i mocha -D
-```
-
-Or with yarn:
+Note: You will also need to install following dependencies with to run the example above:
 
 ```sh
 yarn add mocha -D
 yarn add chai -D
 ```
 
+Or with npm:
+
+```
+npm i chai -D
+npm i mocha -D
+```
+
 ### Compiling
 To compile your smart contracts run:
+
 ```sh
 npx waffle
 ```
 
 To compile using a custom configuration file run:
+
 ```sh
 npx waffle config.json
 ```
@@ -160,8 +162,9 @@ Example configuration file looks like this (all fields optional):
 
 ### Running tests
 To run the tests run the following command:
+
 ```sh
-mocha
+npx mocha
 ```
 
 ### Adding an npm script
@@ -176,14 +179,13 @@ For convinience, you can add the following to your `package.json`:
 ```
 
 Now you can build and test your contracts with one command:
+
 ```sh
 npm test
 ```
 
 ## Documentation
 For detailed feature walkthrough checkout [documentation](https://ethereum-waffle.readthedocs.io/en/latest/).
-
-
 
 ## Contributing
 
@@ -193,7 +195,6 @@ Before you issue pull request:
 
 Make sure all tests and linters pass.
 Make sure you have test coverage for any new features.
-
 
 ### Running tests
 Note: To make end-to-end test pass, you need to:
@@ -211,29 +212,16 @@ To run linter type:
 yarn lint
 ```
 
-Building documentation:
+Building documentation (requires Sphinx):
 ```sh
 cd docs
 make html
 ```
 
-
 ## Roadmap
 
-### Waffle 2.0
-- [x] New matcher: changeBalance (see [#9](https://github.com/EthWorks/Waffle/issues/9))
-- [x] Faster compilation with native and dockerized solc (aside from solcjs)
-- [x] Documentation
-- [x] TypeScript rewrite
-
-### Waffle 3.0
-- [ ] Split into multiple packages
-- [ ] Better MockProvider
-
-### Waffle 3.*
-- [ ] Debugging and profiling
-- [ ] ENS integration
-- [ ] Mocking
+See https://github.com/EthWorks/Waffle/issues/155
 
 ## License
+
 Waffle is released under the [MIT License](https://opensource.org/licenses/MIT).
