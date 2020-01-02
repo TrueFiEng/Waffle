@@ -27,7 +27,7 @@ commands:
 
 
 jobs:
-  lint_and_build:
+  lint:
     docker:
       - image: circleci/node:11.15
     steps:
@@ -35,7 +35,6 @@ jobs:
       - install_dependencies:
           key: 11
       - run: yarn lint
-      - run: yarn build
 
   test_node_10:
     docker:
@@ -64,6 +63,6 @@ jobs:
 workflows:
   waffle_all:
     jobs:
-      - lint_and_build
+      - lint
       - test_node_10
       - test_node_11
