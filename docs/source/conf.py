@@ -20,7 +20,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'waffle'
-copyright = '2019, Marek Kirejczyk'
+copyright = '2020 Ethworks sp z o.o.'
 author = 'Marek Kirejczyk'
 
 # The short X.Y version
