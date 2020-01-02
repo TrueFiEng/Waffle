@@ -1,6 +1,6 @@
 import {expect, AssertionError} from 'chai';
 import {Contract, utils, ContractFactory} from 'ethers';
-import {MockProvider} from '@waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 import {EVENTS_ABI, EVENTS_BYTECODE} from './contracts/Events';
 
 describe('INTEGRATION: Events', () => {

@@ -1,5 +1,5 @@
 import {expect, AssertionError} from 'chai';
-import {MockProvider} from '@waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 import {utils} from 'ethers';
 
 describe('INTEGRATION: Balance observers', () => {

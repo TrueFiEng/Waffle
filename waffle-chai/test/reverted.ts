@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {MockProvider} from '@waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 import {Contract, ContractFactory} from 'ethers';
 import {MATCHERS_ABI, MATCHERS_BYTECODE} from './contracts/Matchers';
 

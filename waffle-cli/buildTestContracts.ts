@@ -1,4 +1,4 @@
-import {compileAndSave} from '@waffle/compiler';
+import {compileAndSave} from '@ethereum-waffle/compiler';
 
 const buildExampleContracts = async () => {
   console.log('Building example contracts...');

@@ -1,4 +1,4 @@
-import {compileProject} from '@waffle/compiler';
+import {compileProject} from '@ethereum-waffle/compiler';
 
 export async function runCli(args: string[]) {
   const options = args.filter((x) => x.startsWith('-'));

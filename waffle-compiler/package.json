@@ -1,5 +1,5 @@
 {
-  "name": "@waffle/compiler",
+  "name": "@ethereum-waffle/compiler",
   "description": "Compile solidity without the hassle.",
   "version": "2.3.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -38,8 +38,8 @@
     "@types/sinon-chai": "^3.2.3",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
-    "@waffle/chai": "^2.3.0",
-    "@waffle/provider": "^2.3.0",
+    "@ethereum-waffle/chai": "^2.3.0",
+    "@ethereum-waffle/provider": "^2.3.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-string": "^1.5.0",

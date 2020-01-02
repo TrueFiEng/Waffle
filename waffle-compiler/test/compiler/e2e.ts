@@ -6,7 +6,7 @@ import {compileProject} from '../../src/compiler';
 import {loadConfig} from '../../src/loadConfig';
 import {readFileContent, isFile, deepCopy} from '../../src/utils';
 import {link} from '../../src';
-import {MockProvider} from '@waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 
 const configurations = [

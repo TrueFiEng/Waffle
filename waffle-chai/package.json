@@ -1,5 +1,5 @@
 {
-  "name": "@waffle/chai",
+  "name": "@ethereum-waffle/chai",
   "description": "A sweet set of chai matchers for your blockchain testing needs.",
   "version": "2.3.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -30,7 +30,7 @@
     "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
-    "@waffle/provider": "^2.3.0",
+    "@ethereum-waffle/provider": "^2.3.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.5.1",
