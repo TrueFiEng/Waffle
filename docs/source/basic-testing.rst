@@ -3,42 +3,60 @@
 Basic testing
 =============
 
-Create a mock provider
-----------------------
-
-To create a mock provider for running your contracts test against it, e.g.:
-::
-
-  provider = createMockProvider();
-
-To modify default provider behavior createMockProvider() takes optional Ganache options parameter. It can be object with specified options or absolute path to waffle.json or another config file, e.g.:
-::
-
-  provider = createMockProvider({gasLimit: 0x6691b7, gasPrice: 0x77359400});
-
-  provider = createMockProvider('./waffle.json');
-
-  waffle.json:
-    {
-      ...
-      "ganacheOptions": {
-        "gasLimit": "0x6691b7",
-        "gasPrice": "0x77359400"
-      }
-    }
-
-Get example wallets
+Creating a provider
 -------------------
 
-Get wallets you can use to sign transactions:
-::
+Creating a mock provider for your tests is super simple.
 
-  [wallet, walletTo] = getWallets(provider);
+.. code-block:: js
 
-You can get up to ten wallets.
+  import { MockProvider } from 'ethereum-waffle';
+  const provider = new MockProvider();
 
-Deploy contract
+This class takes an optional options parameter in the constructor. The options are then passed to the underlying ganache-core implementation. You can read more `about the options here <https://github.com/trufflesuite/ganache-core#options>`__.
+
+.. note::
+  Prior to Waffle :code:`2.3.0` provider was created using :code:`createMockProvider(options?)`. It behaved exactly like :code:`new MockProvider` but it returned :code:`providers.Web3Provider`, which is the parent class of :code:`MockProvider`.
+
+Getting wallets
 ---------------
+
+To obtain wallets that have been prefunded with eth use the provider
+
+.. code-block:: js
+
+  import { MockProvider } from 'ethereum-waffle';
+
+  const provider = new MockProvider();
+  const [wallet, otherWallet] = provider.getWallets();
+
+  // or use a shorthand
+
+  const [wallet, otherWallet] = new MockProvider().getWallets();
+
+By default this method returns 10 wallets. You can modify the returned wallets, by changing MockProvider configuration.
+
+.. code-block:: js
+
+  import { MockProvider } from 'ethereum-waffle';
+  const provider = new MockProvider({
+    accounts: [{balance: 'BALANCE IN WEI', secretKey: 'PRIVATE KEY'}]
+  });
+  const wallets = provider.getWallets();
+
+You can also get an empty random wallet by calling:
+
+.. code-block:: js
+
+  import { MockProvider } from 'ethereum-waffle';
+  const provider = new MockProvider();
+  const wallet = provider.createEmptyWallet();
+
+.. note::
+  Prior to Waffle :code:`2.3.0` wallets were obtained using :code:`getWallets(provider)`.
+
+Deploying contracts
+-------------------
 
 Once you compile your contracts using waffle you can deploy them in your javascript code. It accepts three arguments:
   - wallet to send the deploy transaction
