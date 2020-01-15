@@ -96,13 +96,10 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
 
       const {topic} = eventDescription;
       this.logs = filterLogsWithTopics(receipt.logs, topic);
-      if (this.logs.length < 1) {
-        this.assert(false,
-          `Expected event "${eventName}" to emitted, but wasn't`,
-          `Expected event "${eventName}" NOT to emitted, but it was`,
-          eventName,
-          '');
-      }
+      this.assert(this.logs.length > 0,
+        `Expected event "${eventName}" to be emitted, but it wasn't`,
+        `Expected event "${eventName}" NOT to be emitted, but it was`
+      );
     });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);

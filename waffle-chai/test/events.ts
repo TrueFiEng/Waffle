@@ -19,7 +19,7 @@ describe('INTEGRATION: Events', () => {
   it('Emit one: fail', async () => {
     await expect(
       expect(events.emitOne()).to.emit(events, 'Two')
-    ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "Two" to emitted, but wasn\'t');
+    ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "Two" to be emitted, but it wasn\'t');
   });
 
   it('Emit two: success', async () => {
@@ -29,7 +29,17 @@ describe('INTEGRATION: Events', () => {
   it('Emit two: fail', async () => {
     await expect(
       expect(events.emitTwo()).to.emit(events, 'One')
-    ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "One" to emitted, but wasn\'t');
+    ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "One" to be emitted, but it wasn\'t');
+  });
+
+  it('Do not emit one: fail', async () => {
+    await expect(
+      expect(events.emitOne()).to.not.emit(events, 'One')
+    ).to.be.eventually.rejectedWith(AssertionError, 'Expected event "One" NOT to be emitted, but it was');
+  });
+
+  it('Do not emit two: success', async () => {
+    await expect(events.emitTwo()).to.not.emit(events, 'One');
   });
 
   it('Emit unexistent event: fail', async () => {
