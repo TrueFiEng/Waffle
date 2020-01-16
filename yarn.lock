@@ -2879,7 +2879,7 @@ ganache-core@*:
     ethereumjs-wallet "0.6.3"
     web3 "1.2.1"
 
-ganache-core@^2.9.0-istanbul.0:
+ganache-core@2.9.0-istanbul.0:
   version "2.9.0-istanbul.0"
   resolved "https://registry.yarnpkg.com/ganache-core/-/ganache-core-2.9.0-istanbul.0.tgz#bc336c770775a2b9fb06f5cae827088ecc194283"
   integrity sha512-wqNWyxrfZe4QPxzaR/n4hGxIfa1iZAkymPg17wET0iWZ9uurMywGgpG4ZvxjVU9q7WCjIobOSzE1m9OT0dIYcQ==
