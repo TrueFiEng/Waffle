@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -42,7 +42,7 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/provider": "^2.3.1",
+    "@ethereum-waffle/provider": "^2.3.2",
     "@ethereum-waffle/chai": "^2.3.0",
     "@ethereum-waffle/compiler": "^2.3.0",
     "ethers": "^4.0.0"

@@ -1,4 +1,5 @@
 import Ganache from 'ganache-core';
+import {providers, Wallet} from 'ethers';
 import {MockProvider} from './MockProvider';
 import {deprecate} from './deprecate';
 
@@ -23,9 +24,18 @@ export function getGanacheOptions(ganacheOptionsOrPathToConfig: string | Ganache
 }
 
 /**
+ * Enables third party providers to use the legacy `getWallets` api.
+ * @deprecated
+ */
+export interface MockProviderLike extends providers.Provider {
+  getWallets(): Wallet[];
+  createEmptyWallet(): Wallet;
+}
+
+/**
  * @deprecated Use `mockProvider.getWallets()`
  */
-export function getWallets(provider: MockProvider) {
+export function getWallets(provider: MockProviderLike) {
   deprecate('getWallets', 'Use "mockProvider.getWallets()" instead.');
   return provider.getWallets();
 }
