@@ -18,8 +18,8 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(false,
           'Expected transaction to be reverted',
           'Expected transaction NOT to be reverted',
-          'not reverted',
-          'reverted');
+          'Transaction reverted.',
+          'Transaction NOT reverted.');
         return value;
       },
       (reason: any) => {
@@ -29,7 +29,7 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(isReverted || isThrown,
           `Expected transaction to be reverted, but other exception was thrown: ${reason}`,
           'Expected transaction NOT to be reverted',
-          'Reverted',
+          'Transaction reverted.',
           reason);
         return reason;
       }
@@ -46,8 +46,8 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(false,
           'Expected transaction to be reverted',
           'Expected transaction NOT to be reverted',
-          'not reverted',
-          'reverted');
+          'Transaction reverted.',
+          'Transaction NOT reverted.');
         return value;
       },
       (reason: any) => {
@@ -57,7 +57,7 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(isReverted || isThrown,
           `Expected transaction to be reverted with ${revertReason}, but other exception was thrown: ${reason}`,
           `Expected transaction NOT to be reverted with ${revertReason}`,
-          'Reverted',
+          `Transaction reverted with ${revertReason}.`,
           reason);
         return reason;
       }
