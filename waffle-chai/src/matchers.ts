@@ -136,7 +136,10 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         return;
       } catch {}
     }
-    context.assert(false, `Specified args not emitted in any of ${context.logs.length} emitted "${context.eventName}" events`, 'Do not combine .not. with .withArgs()');
+    context.assert(false,
+      `Specified args not emitted in any of ${context.logs.length} emitted "${context.eventName}" events`,
+      'Do not combine .not. with .withArgs()'
+    );
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
