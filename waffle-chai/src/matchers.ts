@@ -109,7 +109,8 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
     return this;
   });
 
-  const assertArgsArraysEqual = (context: any, expectedArgs: any[], actualArgs: any[]) => {
+  const assertArgsArraysEqual = (context: any, expectedArgs: any[], log: any) => {
+    const actualArgs = context.contract.interface.parseLog(log).values;
     context.assert(actualArgs.length === expectedArgs.length,
       `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
       `but has ${actualArgs.length}`,
@@ -127,10 +128,20 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
     }
   };
 
+  const tryAssertArgsArraysEqual = (context: any, expectedArgs: any[], logs: any[]) => {
+    if (logs.length === 1) return assertArgsArraysEqual(context, expectedArgs, logs[0])
+    for (const index in logs) {
+      try {
+        assertArgsArraysEqual(context, expectedArgs, logs[index])
+        return
+      } catch {}
+    }
+    context.assert(false, `Specified args not emitted in any of ${context.logs.length} emitted "${context.eventName}" events`, 'Do not combine .not. with .withArgs()')
+  };
+
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
     const derivedPromise = this.promise.then(() => {
-      const actualArgs = this.contract.interface.parseLog(this.logs[0]);
-      assertArgsArraysEqual(this, expectedArgs, actualArgs.values);
+      tryAssertArgsArraysEqual(this, expectedArgs, this.logs)
     });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
