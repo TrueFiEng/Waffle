@@ -5,7 +5,7 @@ import {EVENTS_ABI, EVENTS_BYTECODE} from './contracts/Events';
 
 describe('INTEGRATION: Events', () => {
   const [wallet] = new MockProvider().getWallets();
-  let eventFactory: ContractFactory
+  let eventFactory: ContractFactory;
   let events: Contract;
 
   beforeEach(async () => {
@@ -167,6 +167,6 @@ describe('INTEGRATION: Events', () => {
     const differentEvents = await eventFactory.deploy();
     await expect(events.emitOne())
       .to.emit(events, 'One')
-      .and.not.to.emit(differentEvents, 'One')
+      .and.not.to.emit(differentEvents, 'One');
   });
 });
