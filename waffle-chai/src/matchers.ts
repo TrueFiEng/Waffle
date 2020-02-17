@@ -67,8 +67,9 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
     return this;
   });
 
-  const filterLogsWithTopics = (logs: any[], topic: any) =>
-    logs.filter((log) => log.topics.includes(topic));
+  const filterLogsWithTopics = (logs: any[], topic: any, contractAddress: string) =>
+    logs.filter((log) => log.topics.includes(topic))
+      .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     const promise = this._obj;
@@ -95,7 +96,7 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
       }
 
       const {topic} = eventDescription;
-      this.logs = filterLogsWithTopics(receipt.logs, topic);
+      this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
       this.assert(this.logs.length > 0,
         `Expected event "${eventName}" to be emitted, but it wasn't`,
         `Expected event "${eventName}" NOT to be emitted, but it was`

@@ -5,11 +5,14 @@ import {EVENTS_ABI, EVENTS_BYTECODE} from './contracts/Events';
 
 describe('INTEGRATION: Events', () => {
   const [wallet] = new MockProvider().getWallets();
+  let eventFactory: ContractFactory
   let events: Contract;
 
   beforeEach(async () => {
     const factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
     events = await factory.deploy();
+    eventFactory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
+    events = await eventFactory.deploy();
   });
 
   it('Emit one: success', async () => {
@@ -158,5 +161,12 @@ describe('INTEGRATION: Events', () => {
       'Expected \"0\" ' +
       'to be equal 1'
     );
+  });
+
+  it('Event emitted in one contract but not in the other', async () => {
+    const differentEvents = await eventFactory.deploy();
+    await expect(events.emitOne())
+      .to.emit(events, 'One')
+      .and.not.to.emit(differentEvents, 'One')
   });
 });
