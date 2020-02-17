@@ -129,19 +129,19 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
   };
 
   const tryAssertArgsArraysEqual = (context: any, expectedArgs: any[], logs: any[]) => {
-    if (logs.length === 1) return assertArgsArraysEqual(context, expectedArgs, logs[0])
+    if (logs.length === 1) return assertArgsArraysEqual(context, expectedArgs, logs[0]);
     for (const index in logs) {
       try {
-        assertArgsArraysEqual(context, expectedArgs, logs[index])
-        return
+        assertArgsArraysEqual(context, expectedArgs, logs[index]);
+        return;
       } catch {}
     }
-    context.assert(false, `Specified args not emitted in any of ${context.logs.length} emitted "${context.eventName}" events`, 'Do not combine .not. with .withArgs()')
+    context.assert(false, `Specified args not emitted in any of ${context.logs.length} emitted "${context.eventName}" events`, 'Do not combine .not. with .withArgs()');
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
     const derivedPromise = this.promise.then(() => {
-      tryAssertArgsArraysEqual(this, expectedArgs, this.logs)
+      tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
     });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);

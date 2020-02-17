@@ -164,7 +164,7 @@ describe('INTEGRATION: Events', () => {
     await expect(events.emitOneMultipleTimes()).to.emit(events, 'One')
       .withArgs(1, 'One', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123')
       .and.to.emit(events, 'One')
-      .withArgs(1, 'DifferentKindOfOne', '0x0000000000000000000000000000000000000000000000000000000000000001')
+      .withArgs(1, 'DifferentKindOfOne', '0x0000000000000000000000000000000000000000000000000000000000000001');
   });
 
   it('Event args not found among multiple emitted events', async () => {
