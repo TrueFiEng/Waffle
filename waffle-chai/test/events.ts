@@ -166,7 +166,7 @@ describe('INTEGRATION: Events', () => {
     await expect(events.emitOne())
       .to.emit(events, 'One')
       .and.not.to.emit(differentEvents, 'One');
-  })
+  });
 
   it('Emit event multiple times with different args', async () => {
     await expect(events.emitOneMultipleTimes()).to.emit(events, 'One')
