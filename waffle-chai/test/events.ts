@@ -159,4 +159,17 @@ describe('INTEGRATION: Events', () => {
       'to be equal 1'
     );
   });
+
+  it('Emit event multiple times with different args', async () => {
+    await expect(events.emitOneMultipleTimes()).to.emit(events, 'One')
+      .withArgs(1, 'One', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123')
+      .and.to.emit(events, 'One')
+      .withArgs(1, 'DifferentKindOfOne', '0x0000000000000000000000000000000000000000000000000000000000000001');
+  });
+
+  it('Event args not found among multiple emitted events', async () => {
+    await expect(
+      expect(events.emitOneMultipleTimes()).to.emit(events, 'One').withArgs(1, 2, 3, 4)
+    ).to.be.eventually.rejectedWith(AssertionError, 'Specified args not emitted in any of 3 emitted "One" events');
+  });
 });
