@@ -5,10 +5,11 @@ import {EVENTS_ABI, EVENTS_BYTECODE} from './contracts/Events';
 
 describe('INTEGRATION: Events', () => {
   const [wallet] = new MockProvider().getWallets();
+  let factory: ContractFactory;
   let events: Contract;
 
   beforeEach(async () => {
-    const factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
+    factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
     events = await factory.deploy();
   });
 
@@ -158,6 +159,13 @@ describe('INTEGRATION: Events', () => {
       'Expected \"0\" ' +
       'to be equal 1'
     );
+  });
+
+  it('Event emitted in one contract but not in the other', async () => {
+    const differentEvents = await factory.deploy();
+    await expect(events.emitOne())
+      .to.emit(events, 'One')
+      .and.not.to.emit(differentEvents, 'One');
   });
 
   it('Emit event multiple times with different args', async () => {
