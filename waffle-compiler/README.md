@@ -30,12 +30,12 @@ npm install --save-dev @ethereum-waffle/compiler
 
 This package exposes programmatic api for compiling solidity smart contracts.
 
-Read more [in the documentation](https://ethereum-waffle.readthedocs.io/en/latest/compilation.html).
+You can learn more about it [in the documentation](https://ethereum-waffle.readthedocs.io/en/latest/compilation.html).
 
 Examples:
 ```ts
 // Compilation with a config file
-import {compileProject} from '@ethereum-waffle/compiler';
+const {compileProject} = require('@ethereum-waffle/compiler');
 
 main();
 async function main () {
@@ -45,7 +45,7 @@ async function main () {
 
 ```ts
 // Compilation with js config
-import {compileAndSave, compile} from '@ethereum-waffle/compiler';
+const {compileAndSave, compile} = require('@ethereum-waffle/compiler');
 
 main();
 async function main () {
@@ -64,5 +64,5 @@ async function main () {
 
 Example:
 ```ts
-import {link} from '@ethereum-waffle/compiler';
+const {link} = require('@ethereum-waffle/compiler');
 ```
