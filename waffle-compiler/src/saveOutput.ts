@@ -1,6 +1,6 @@
 import {join} from 'path';
 import fs from 'fs';
-import {Config} from './config';
+import {NewConfig} from './config';
 import {getHumanReadableAbi} from './getHumanReadableAbi';
 import mkdirp from 'mkdirp';
 
@@ -33,10 +33,14 @@ const fsOps = {
   writeFile: fs.writeFileSync
 };
 
-export async function saveOutput(output: any, config: Config, filesystem = fsOps) {
+export async function saveOutput(
+  output: any,
+  config: NewConfig,
+  filesystem = fsOps
+) {
   config.outputType = config.outputType || 'multiple';
 
-  filesystem.createDirectory(config.targetPath!);
+  filesystem.createDirectory(config.outputDirectory);
 
   if (['multiple', 'all'].includes(config.outputType)) {
     saveOutputSingletons(output, config, filesystem);
@@ -47,16 +51,24 @@ export async function saveOutput(output: any, config: Config, filesystem = fsOps
   }
 }
 
-async function saveOutputSingletons(output: any, config: Config, filesystem = fsOps) {
+async function saveOutputSingletons(
+  output: any,
+  config: NewConfig,
+  filesystem = fsOps
+) {
   for (const [, file] of Object.entries<any>(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries<any>(file)) {
-      const filePath = join(config.targetPath!, `${contractName}.json`);
+      const filePath = join(config.outputDirectory, `${contractName}.json`);
       filesystem.writeFile(filePath, getContent(contractJson, config));
     }
   }
 }
 
-async function saveOutputCombined(output: any, config: Config, filesystem = fsOps) {
+async function saveOutputCombined(
+  output: any,
+  config: NewConfig,
+  filesystem = fsOps
+) {
   for (const [key, file] of Object.entries<any>(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries<any>(file)) {
       contractJson.bin = contractJson.evm.bytecode.object;
@@ -80,15 +92,14 @@ async function saveOutputCombined(output: any, config: Config, filesystem = fsOp
   output.sourceList = allSources;
 
   filesystem.writeFile(
-    join(config.targetPath!, 'Combined-Json.json'), JSON.stringify(output, null, 2)
+    join(config.outputDirectory, 'Combined-Json.json'),
+    JSON.stringify(output, null, 2)
   );
 }
 
-function getContent(contractJson: ContractJson, config: Config) {
-  if (config.legacyOutput || !contractJson.interface) {
-    contractJson.interface = contractJson.abi;
-    contractJson.bytecode = contractJson.evm.bytecode.object;
-  }
+function getContent(contractJson: ContractJson, config: NewConfig) {
+  contractJson.interface = contractJson.abi;
+  contractJson.bytecode = contractJson.evm.bytecode.object;
   if (config.outputHumanReadableAbi) {
     contractJson.humanReadableAbi = getHumanReadableAbi(contractJson.abi);
   }

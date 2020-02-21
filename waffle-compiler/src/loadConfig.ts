@@ -1,11 +1,10 @@
 import path from 'path';
-import defaultConfig, {Config} from './config';
+import {Config} from './config';
 
 export async function loadConfig(configPath?: string): Promise<Config> {
   if (configPath) {
-    const config = await require(path.join(process.cwd(), configPath));
-    return {...defaultConfig, ...config};
+    return require(path.join(process.cwd(), configPath));
   } else {
-    return {...defaultConfig};
+    return {};
   }
 }

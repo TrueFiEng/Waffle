@@ -1,11 +1,11 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
 import {compile, compileAndSave} from '../../src/compiler';
-import defaultConfig from '../../src/config';
+import {toNewConfig} from '../../src/config';
 
-const sourcesPath = './test/projects/example';
-const targetPath = './test/compiler/build';
-const config = {...defaultConfig, sourcesPath, targetPath};
+const inputDirectory = './test/projects/example';
+const outputDirectory = './test/compiler/build';
+const config = toNewConfig({inputDirectory, outputDirectory});
 
 describe('INTEGRATION: Compiler', () => {
   it('compile just compiles', async () => {
@@ -19,9 +19,9 @@ describe('INTEGRATION: Compiler', () => {
   });
 
   describe('compileAndSave: invalid input', () => {
-    const sourcesPath = './test/projects/invalidContracts'; // tslint:disable-line
-    const targetPath = './test/projects/build'; // tslint:disable-line
-    const config = {...defaultConfig, sourcesPath, targetPath}; // tslint:disable-line
+    const inputDirectory = './test/projects/invalidContracts'; // tslint:disable-line
+    const outputDirectory = './test/projects/build'; // tslint:disable-line
+    const config = toNewConfig({inputDirectory, outputDirectory});
     const expectedOutput = `${'test/projects/invalidContracts/invalid.sol'}:6:14: ` +
       'DeclarationError: Identifier not found or not unique.\n' +
       '  function f(wrongType arg) public {\n             ^-------^\n';

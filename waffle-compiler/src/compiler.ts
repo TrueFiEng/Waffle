@@ -1,4 +1,4 @@
-import {Config} from './config';
+import {Config, toNewConfig, NewConfig} from './config';
 import {isWarningMessage} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
@@ -12,26 +12,30 @@ export async function compileProject(configPath?: string) {
   await compileAndSave(await loadConfig(configPath));
 }
 
-export async function compileAndSave(config: Config) {
+export async function compileAndSave(input: Config) {
+  const config = toNewConfig(input);
   const output = await compile(config);
   await processOutput(output, config);
 }
 
-export async function compile(config: Config) {
-  // Added support for backwards compatibillity - renamable node_modules path
+export async function compile(input: Config) {
+  return newCompile(toNewConfig(input));
+}
+
+async function newCompile(config: NewConfig) {
   const resolver = ImportsFsEngine().addResolver(
-    resolvers.BacktrackFsResolver(config.npmPath)
+    // Backwards compatibility - change node_modules path
+    resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
   const sources = await gatherSources(
-    findInputs(config.sourcesPath),
+    findInputs(config.inputDirectory),
     '.',
     resolver
   );
-
   return getCompileFunction(config)(sources, findImports(sources));
 }
 
-async function processOutput(output: any, config: Config) {
+async function processOutput(output: any, config: NewConfig) {
   if (output.errors) {
     console.error(formatErrors(output.errors));
   }
