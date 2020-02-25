@@ -1,6 +1,16 @@
 import {getBalanceChange, getBalanceChanges, overwriteBigNumberFunction} from './utils';
 import {Contract, Wallet, utils} from 'ethers';
 
+/**
+ * .assert (expression, errorMessage, negatedErrorMessage, expected, actual)
+ * 
+ * @param expression - expression to test for truthiness
+ * @param errorMessage - text to display if expression is false
+ * @param negatedErrorMessage - text to display if expression is true, when combined with `.not`
+ * [optional] @param expected - what was expected
+ * [optional] @param actual - what was provided
+ */
+
 export const waffleChai = (chai: any, chaiUtils: any) => {
   const {Assertion} = chai;
 
