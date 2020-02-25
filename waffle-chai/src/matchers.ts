@@ -7,8 +7,8 @@ import {Contract, Wallet, utils} from 'ethers';
  * @param expression - expression to test for truthiness
  * @param errorMessage - text to display if expression is false
  * @param negatedErrorMessage - text to display if expression is true, when combined with `.not`
- * [optional] @param expected - what was expected
- * [optional] @param actual - what was provided
+ * @param [expected] - what was expected
+ * @param [actual] - what was provided
  */
 
 export const waffleChai = (chai: any, chaiUtils: any) => {
