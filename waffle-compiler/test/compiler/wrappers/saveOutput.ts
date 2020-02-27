@@ -4,11 +4,11 @@ import {readFileContent} from '../../../src/utils';
 import {saveOutput} from '../../../src/saveOutput';
 import {Config} from '../../../src/config';
 
-const inputDirectory = './test/projects/custom/custom_contracts';
+const sourceDirectory = './test/projects/custom/custom_contracts';
 const nodeModulesDirectory = './test/projects/custom/custom_node_modules';
 const outputDirectory = './buildtmp';
 const config = {
-  inputDirectory,
+  sourceDirectory,
   nodeModulesDirectory,
   outputDirectory
 };

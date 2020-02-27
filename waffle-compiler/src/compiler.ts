@@ -1,4 +1,4 @@
-import {InputConfig, toNewConfig, Config} from './config';
+import {InputConfig, inputToConfig, Config} from './config';
 import {isWarningMessage} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
@@ -13,13 +13,13 @@ export async function compileProject(configPath?: string) {
 }
 
 export async function compileAndSave(input: InputConfig) {
-  const config = toNewConfig(input);
+  const config = inputToConfig(input);
   const output = await compile(config);
   await processOutput(output, config);
 }
 
 export async function compile(input: InputConfig) {
-  return newCompile(toNewConfig(input));
+  return newCompile(inputToConfig(input));
 }
 
 async function newCompile(config: Config) {
@@ -28,7 +28,7 @@ async function newCompile(config: Config) {
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
   const sources = await gatherSources(
-    findInputs(config.inputDirectory),
+    findInputs(config.sourceDirectory),
     '.',
     resolver
   );

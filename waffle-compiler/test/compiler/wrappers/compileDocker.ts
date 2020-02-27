@@ -4,7 +4,7 @@ import {join} from 'path';
 import {Config} from '../../../src/config';
 
 const config = {
-  inputDirectory: './test/projects/custom/custom_contracts',
+  sourceDirectory: './test/projects/custom/custom_contracts',
   nodeModulesDirectory: './test/projects/custom/custom_node_modules'
 } as Config;
 

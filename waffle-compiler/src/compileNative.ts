@@ -18,7 +18,7 @@ export function createBuildCommand(config: Config) {
   const customAllowedPaths = config.compilerAllowedPaths
     .map((path: string) => resolve(path));
   const allowedPaths = [
-    resolve(config.inputDirectory),
+    resolve(config.sourceDirectory),
     resolve(config.nodeModulesDirectory),
     ...customAllowedPaths
   ];

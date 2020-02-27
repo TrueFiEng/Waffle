@@ -2,11 +2,11 @@ import {expect} from 'chai';
 import {createBuildCommand} from '../../../src/compileNative';
 import {Config} from '../../../src/config';
 
-const inputDirectory = './test/projects/custom/custom_contracts';
+const sourceDirectory = './test/projects/custom/custom_contracts';
 const nodeModulesDirectory = './test/projects/custom/custom_node_modules';
 const compilerAllowedPaths: string[] = [];
 const config = {
-  inputDirectory,
+  sourceDirectory,
   nodeModulesDirectory,
   compilerAllowedPaths
 } as Config;

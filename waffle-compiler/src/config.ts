@@ -2,7 +2,7 @@ import {deprecate} from './deprecate';
 
 export interface Config {
   /** Location of the project sources e.g. ./contracts */
-  inputDirectory: string;
+  sourceDirectory: string;
   /** Location of the compilation artifacts e.g. ./dist */
   outputDirectory: string;
   /** Location of the dependencies e.g. ./node_modules */
@@ -55,8 +55,8 @@ export interface LegacyConfig {
   ganacheOptions?: Record<string, any>;
 }
 
-const defaultConfig: Config = {
-  inputDirectory: './contracts',
+export const defaultConfig: Config = {
+  sourceDirectory: './contracts',
   outputDirectory: './build',
   nodeModulesDirectory: './node_modules',
   compilerType: 'solcjs',
@@ -70,7 +70,7 @@ const defaultConfig: Config = {
 };
 
 export type InputConfig = Partial<Config> & LegacyConfig
-export function toNewConfig(input: InputConfig) {
+export function inputToConfig(input: InputConfig) {
   const result: any = {...defaultConfig};
   function set(key: string, value: any) {
     result[key] = value;
@@ -81,8 +81,8 @@ export function toNewConfig(input: InputConfig) {
       if (key in defaultConfig) {
         set(key, (input as any)[key]);
       } else if (key === 'sourcesPath') {
-        deprecate('sourcesPath', 'Use inputDirectory instead.');
-        set('inputDirectory', input[key]);
+        deprecate('sourcesPath', 'Use sourceDirectory instead.');
+        set('sourceDirectory', input[key]);
       } else if (key === 'targetPath') {
         deprecate('targetPath', 'Use outputDirectory instead.');
         set('outputDirectory', input[key]);
