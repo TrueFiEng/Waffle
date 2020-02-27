@@ -51,45 +51,43 @@ describe('E2E: Compiler integration', async () => {
 
   for (const configurationPath of configurations) {
     const configuration = await loadConfig(configurationPath) as any;
-    const {name, targetPath, legacyOutput} = configuration;
+    const {name, outputDirectory} = configuration;
 
     describe(name, () => {
       before(async () => {
-        fsx.removeSync(targetPath);
+        fsx.removeSync(outputDirectory);
         await compileProject(configurationPath);
       });
 
       it('produce output files', async () => {
-        expect(fs.existsSync(targetPath), `Expected build path "${targetPath}" to exist.`).to.equal(true);
+        expect(fs.existsSync(outputDirectory), `Expected build path "${outputDirectory}" to exist.`).to.equal(true);
         for (const artefact of artifacts) {
-          const filePath = join(targetPath, artefact);
+          const filePath = join(outputDirectory, artefact);
           expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
         }
       });
 
       it('produce bytecode', async () => {
         for (const artefact of artifacts) {
-          const filePath = join(targetPath, artefact);
+          const filePath = join(outputDirectory, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok;
           expect(content.evm.bytecode.object).to.startWith('60');
         }
       });
 
-      if (legacyOutput) {
-        it('produce legacy bytecode', async () => {
-          for (const artefact of artifacts) {
-            const filePath = join(targetPath, artefact);
-            const content = JSON.parse(readFileContent(filePath));
-            expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
-            expect(content.interface).to.deep.eq(content.abi);
-          }
-        });
-      }
+      it('produce legacy bytecode', async () => {
+        for (const artefact of artifacts) {
+          const filePath = join(outputDirectory, artefact);
+          const content = JSON.parse(readFileContent(filePath));
+          expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
+          expect(content.interface).to.deep.eq(content.abi);
+        }
+      });
 
       if (['all', 'combined'].includes(configuration.outputType)) {
         it('produce Combined-Json.json', async () => {
-          const filePath = join(targetPath, 'Combined-Json.json');
+          const filePath = join(outputDirectory, 'Combined-Json.json');
           const content = JSON.parse(readFileContent(filePath));
           expect(content).to.have.property('contracts');
           expect(content).to.have.property('sources');
@@ -99,7 +97,7 @@ describe('E2E: Compiler integration', async () => {
 
       it('produce abi', async () => {
         for (const artefact of artifacts) {
-          const filePath = join(targetPath, artefact);
+          const filePath = join(outputDirectory, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.abi, `"${filePath}" expected to have abi`).to.be.an.instanceOf(Array);
           expect(
@@ -115,14 +113,14 @@ describe('E2E: Compiler integration', async () => {
 
       it('links library', async () => {
         const [wallet] = new MockProvider().getWallets();
-        const libraryPath = resolve(join(configuration.targetPath, 'MyLibrary.json'));
+        const libraryPath = resolve(join(configuration.outputDirectory, 'MyLibrary.json'));
         const MyLibrary = require(libraryPath);
-        const LibraryConsumer = deepCopy(require(resolve(join(configuration.targetPath, 'Two.json'))));
+        const LibraryConsumer = deepCopy(require(resolve(join(configuration.outputDirectory, 'Two.json'))));
 
         const libraryFactory = new ContractFactory(MyLibrary.abi, MyLibrary.evm.bytecode.object, wallet);
         const myLibrary = await libraryFactory.deploy();
 
-        const libraryName = `${configuration.sourcesPath.slice(2)}/MyLibrary.sol:MyLibrary`;
+        const libraryName = `${configuration.sourceDirectory.slice(2)}/MyLibrary.sol:MyLibrary`;
         link(LibraryConsumer, libraryName, myLibrary.address);
 
         const consumerFactory = new ContractFactory(LibraryConsumer.abi, LibraryConsumer.evm.bytecode.object, wallet);

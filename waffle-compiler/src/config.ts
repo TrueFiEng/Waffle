@@ -17,8 +17,6 @@ export interface Config {
   compilerType: 'native' | 'dockerized-solc' | 'solcjs';
   /** Version of the solidity compiler e.g. "0.5.1" or "default" */
   compilerVersion: string;
-  /** Enable optimisation */
-  compilerOptimize: boolean;
   /**
    * Additional allowed paths for the compiler.
    * Only used for native compiler type.
@@ -61,7 +59,6 @@ export const defaultConfig: Config = {
   nodeModulesDirectory: './node_modules',
   compilerType: 'solcjs',
   compilerVersion: 'default',
-  compilerOptimize: false,
   compilerAllowedPaths: [],
   compilerOptions: {},
   outputHumanReadableAbi: false,

@@ -1,8 +1,8 @@
 {
   "name": "solidity 5, dokerized solc, invalid contract",
-  "sourcesPath": "./test/projects/invalidContracts",
-  "targetPath": "./test/projects/invalidContracts/custom_build",
-  "npmPath": "./test/projects/invalidContracts/custom_node_modules",
-  "compiler": "dockerized-solc",
-  "docker-tag": "0.5.15"
+  "sourceDirectory": "./test/projects/invalidContracts",
+  "outputDirectory": "./test/projects/invalidContracts/custom_build",
+  "nodeModulesDirectory": "./test/projects/invalidContracts/custom_node_modules",
+  "compilerType": "dockerized-solc",
+  "compilerVersion": "0.5.15"
 }

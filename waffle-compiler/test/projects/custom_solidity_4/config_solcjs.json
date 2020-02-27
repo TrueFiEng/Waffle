@@ -1,7 +1,7 @@
 {
   "name": "solidity 4, solcjs",
-  "sourcesPath": "./test/projects/custom_solidity_4/custom_contracts",
-  "targetPath": "./test/projects/custom_solidity_4/custom_build",
-  "npmPath": "./test/projects/custom_solidity_4/custom_node_modules",
-  "solcVersion": "v0.4.24+commit.e67f0147"
+  "sourceDirectory": "./test/projects/custom_solidity_4/custom_contracts",
+  "outputDirectory": "./test/projects/custom_solidity_4/custom_build",
+  "nodeModulesDirectory": "./test/projects/custom_solidity_4/custom_node_modules",
+  "compilerVersion": "v0.4.24+commit.e67f0147"
 }
