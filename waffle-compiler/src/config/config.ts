@@ -25,8 +25,6 @@ export interface Config {
 
   /** Include the humanReadableAbi format */
   outputHumanReadableAbi: boolean;
-  /** Only output abi and bytecode */
-  outputMinimal: boolean;
   /**
    * What files should be outputted
    * - multiple - single file for each contract

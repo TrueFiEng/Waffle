@@ -55,7 +55,6 @@ function validate(config: any): asserts config is Config {
     checkCompilerAllowedPaths(config.compilerAllowedPaths) &&
     checkCompilerOptions(config.compilerOptions) &&
     checkOutputHumanReadableAbi(config.outputHumanReadableAbi) &&
-    checkOutputMinimal(config.outputMinimal) &&
     checkOutputType(config.outputType)
   );
   if (!success) {
@@ -82,7 +81,6 @@ function checkCompilerAllowedPaths(compilerAllowedPaths: unknown) {
 
 const checkCompilerOptions = checkType('compilerOptions', 'object');
 const checkOutputHumanReadableAbi = checkType('outputHumanReadableAbi', 'boolean');
-const checkOutputMinimal = checkType('outputMinimal', 'boolean');
 const checkOutputType = checkEnum('outputType', ['multiple', 'combined', 'all']);
 
 function checkType(key: string, type: 'string' | 'boolean' | 'object') {

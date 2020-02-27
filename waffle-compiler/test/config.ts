@@ -184,10 +184,6 @@ describe('UNIT: inputToConfig', () => {
         outputHumanReadableAbi: 'foo'
       },
       {
-        name: 'outputMinimal string',
-        outputMinimal: 'foo'
-      },
-      {
         name: 'outputType non-string',
         outputType: 1
       },

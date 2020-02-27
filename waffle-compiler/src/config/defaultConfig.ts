@@ -9,6 +9,5 @@ export const defaultConfig: Config = {
   compilerAllowedPaths: [],
   compilerOptions: {},
   outputHumanReadableAbi: false,
-  outputMinimal: false,
   outputType: 'multiple'
 };
