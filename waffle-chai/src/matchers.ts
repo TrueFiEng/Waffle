@@ -1,6 +1,16 @@
 import {getBalanceChange, getBalanceChanges, overwriteBigNumberFunction} from './utils';
 import {Contract, Wallet, utils} from 'ethers';
 
+/**
+ * .assert (expression, errorMessage, negatedErrorMessage, expected, actual)
+ *
+ * @param expression - expression to test for truthiness
+ * @param errorMessage - text to display if expression is false
+ * @param negatedErrorMessage - text to display if expression is true, when combined with `.not`
+ * @param [expected] - what was expected
+ * @param [actual] - what was provided
+ */
+
 export const waffleChai = (chai: any, chaiUtils: any) => {
   const {Assertion} = chai;
 
@@ -18,8 +28,8 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(false,
           'Expected transaction to be reverted',
           'Expected transaction NOT to be reverted',
-          'not reverted',
-          'reverted');
+          'Transaction reverted.',
+          'Transaction NOT reverted.');
         return value;
       },
       (reason: any) => {
@@ -29,7 +39,7 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(isReverted || isThrown,
           `Expected transaction to be reverted, but other exception was thrown: ${reason}`,
           'Expected transaction NOT to be reverted',
-          'Reverted',
+          'Transaction reverted.',
           reason);
         return reason;
       }
@@ -46,8 +56,8 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(false,
           'Expected transaction to be reverted',
           'Expected transaction NOT to be reverted',
-          'not reverted',
-          'reverted');
+          'Transaction reverted.',
+          'Transaction NOT reverted.');
         return value;
       },
       (reason: any) => {
@@ -57,7 +67,7 @@ export const waffleChai = (chai: any, chaiUtils: any) => {
         this.assert(isReverted || isThrown,
           `Expected transaction to be reverted with ${revertReason}, but other exception was thrown: ${reason}`,
           `Expected transaction NOT to be reverted with ${revertReason}`,
-          'Reverted',
+          `Transaction reverted with ${revertReason}.`,
           reason);
         return reason;
       }
