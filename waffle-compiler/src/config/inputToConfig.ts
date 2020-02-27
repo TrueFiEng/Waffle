@@ -70,10 +70,10 @@ const checkCompilerVersion = checkType('compilerVersion', 'string');
 
 function checkCompilerAllowedPaths(compilerAllowedPaths: unknown) {
   if (!Array.isArray(compilerAllowedPaths)) {
-    console.warn('compilerAllowedPaths must be string[], but is not an array');
+    console.warn('Warning: compilerAllowedPaths must be string[], but is not an array');
     return false;
   } else if (compilerAllowedPaths.some(x => typeof x !== 'string')) {
-    console.warn('compilerAllowedPaths must be string[], but some of the values are not strings');
+    console.warn('Warning: compilerAllowedPaths must be string[], but some of the values are not strings');
     return false;
   }
   return true;
@@ -86,9 +86,7 @@ const checkOutputType = checkEnum('outputType', ['multiple', 'combined', 'all'])
 function checkType(key: string, type: 'string' | 'boolean' | 'object') {
   return function (value: unknown) {
     if (typeof value !== type) { // eslint-disable-line valid-typeof
-      console.warn(
-        `Warning: "${key}" must have type of ${type}. Received: ${typeof value}.`
-      );
+      console.warn(`Warning: "${key}" must have type of ${type}. Received: ${typeof value}.`);
       return false;
     }
     return true;
@@ -98,9 +96,7 @@ function checkType(key: string, type: 'string' | 'boolean' | 'object') {
 function checkEnum(key: string, values: unknown[]) {
   return function (value: unknown) {
     if (!values.includes(value)) {
-      console.warn(
-        `Warning: ${key} must be one of: ${values.join(', ')}. Received: ${value}.`
-      );
+      console.warn(`Warning: ${key} must be one of: ${values.join(', ')}. Received: ${value}.`);
       return false;
     }
     return true;
