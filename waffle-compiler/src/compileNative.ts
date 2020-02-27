@@ -1,10 +1,10 @@
 import {resolve} from 'path';
 import {execSync} from 'child_process';
-import {NewConfig} from './config';
+import {Config} from './config';
 import {buildInputObject} from './buildUitls';
 import {ImportFile} from '@resolver-engine/imports';
 
-export function compileNative(config: NewConfig) {
+export function compileNative(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
     const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);
@@ -12,7 +12,7 @@ export function compileNative(config: NewConfig) {
   };
 }
 
-export function createBuildCommand(config: NewConfig) {
+export function createBuildCommand(config: Config) {
   const command = 'solc';
   const params = '--standard-json';
   const customAllowedPaths = config.compilerAllowedPaths

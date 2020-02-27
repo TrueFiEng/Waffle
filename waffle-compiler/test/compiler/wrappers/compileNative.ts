@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {createBuildCommand} from '../../../src/compileNative';
-import {NewConfig} from '../../../src/config';
+import {Config} from '../../../src/config';
 
 const inputDirectory = './test/projects/custom/custom_contracts';
 const nodeModulesDirectory = './test/projects/custom/custom_node_modules';
@@ -9,7 +9,7 @@ const config = {
   inputDirectory,
   nodeModulesDirectory,
   compilerAllowedPaths
-} as NewConfig;
+} as Config;
 
 describe('UNIT: compileNative', () => {
   it('buildCommand', async () => {

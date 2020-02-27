@@ -1,4 +1,4 @@
-import {Config, toNewConfig, NewConfig} from './config';
+import {InputConfig, toNewConfig, Config} from './config';
 import {isWarningMessage} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
@@ -12,17 +12,17 @@ export async function compileProject(configPath?: string) {
   await compileAndSave(await loadConfig(configPath));
 }
 
-export async function compileAndSave(input: Config) {
+export async function compileAndSave(input: InputConfig) {
   const config = toNewConfig(input);
   const output = await compile(config);
   await processOutput(output, config);
 }
 
-export async function compile(input: Config) {
+export async function compile(input: InputConfig) {
   return newCompile(toNewConfig(input));
 }
 
-async function newCompile(config: NewConfig) {
+async function newCompile(config: Config) {
   const resolver = ImportsFsEngine().addResolver(
     // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
@@ -35,7 +35,7 @@ async function newCompile(config: NewConfig) {
   return getCompileFunction(config)(sources, findImports(sources));
 }
 
-async function processOutput(output: any, config: NewConfig) {
+async function processOutput(output: any, config: Config) {
   if (output.errors) {
     console.error(formatErrors(output.errors));
   }

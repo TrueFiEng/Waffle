@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import sinon from 'sinon';
 import {readFileContent} from '../../../src/utils';
 import {saveOutput} from '../../../src/saveOutput';
-import {NewConfig} from '../../../src/config';
+import {Config} from '../../../src/config';
 
 const inputDirectory = './test/projects/custom/custom_contracts';
 const nodeModulesDirectory = './test/projects/custom/custom_node_modules';
@@ -20,7 +20,7 @@ describe('UNIT: saveOutput', () => {
       createDirectory: sinon.spy()
     };
     const output = JSON.parse(readFileContent('./test/compiler/wrappers/compilerOutput.json'));
-    saveOutput(output, config as NewConfig, fsOps);
+    saveOutput(output, config as Config, fsOps);
     const expectedContent = JSON.stringify(output.contracts['One.sol'].One, null, 2);
     expect(fsOps.createDirectory).to.be.calledWith('./buildtmp');
     expect(fsOps.writeFile).to.be.calledWith('buildtmp/One.json', expectedContent);

@@ -1,6 +1,6 @@
 import {deprecate} from './deprecate';
 
-export interface NewConfig {
+export interface Config {
   /** Location of the project sources e.g. ./contracts */
   inputDirectory: string;
   /** Location of the compilation artifacts e.g. ./dist */
@@ -55,7 +55,7 @@ export interface LegacyConfig {
   ganacheOptions?: Record<string, any>;
 }
 
-const defaultConfig: NewConfig = {
+const defaultConfig: Config = {
   inputDirectory: './contracts',
   outputDirectory: './build',
   nodeModulesDirectory: './node_modules',
@@ -69,8 +69,8 @@ const defaultConfig: NewConfig = {
   outputType: 'multiple'
 };
 
-export type Config = Partial<NewConfig> & LegacyConfig
-export function toNewConfig(input: Config) {
+export type InputConfig = Partial<Config> & LegacyConfig
+export function toNewConfig(input: InputConfig) {
   const result: any = {...defaultConfig};
   function set(key: string, value: any) {
     result[key] = value;
@@ -113,6 +113,6 @@ export function toNewConfig(input: Config) {
   return result;
 }
 
-function validate(config: any): asserts config is NewConfig {
+function validate(config: any): asserts config is Config {
   // TODO: check if all values match schema
 }

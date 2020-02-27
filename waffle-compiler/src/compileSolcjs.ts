@@ -1,13 +1,13 @@
 import solc from 'solc';
 import {promisify} from 'util';
 import {readFileContent, isDirectory, relativePathToWorkingDir} from './utils';
-import {NewConfig} from './config';
+import {Config} from './config';
 import {buildInputObject} from './buildUitls';
 import {ImportFile} from '@resolver-engine/imports';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
-export async function loadCompiler(config: NewConfig) {
+export async function loadCompiler(config: Config) {
   if (config.compilerVersion !== 'default') {
     if (isDirectory(config.compilerVersion)) {
       return require(relativePathToWorkingDir(config.compilerVersion));
@@ -17,7 +17,7 @@ export async function loadCompiler(config: NewConfig) {
   return solc;
 }
 
-export function compileSolcjs(config: NewConfig) {
+export function compileSolcjs(config: Config) {
   return async function compile(sources: ImportFile[], findImports: (file: string) => any) {
     const solc = await loadCompiler(config);
     const input = buildInputObject(sources, config.compilerOptions);

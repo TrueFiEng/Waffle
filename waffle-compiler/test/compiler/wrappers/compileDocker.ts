@@ -1,12 +1,12 @@
 import {expect} from 'chai';
 import {getVolumes, createBuildCommand} from '../../../src/compileDocker';
 import {join} from 'path';
-import {NewConfig} from '../../../src/config';
+import {Config} from '../../../src/config';
 
 const config = {
   inputDirectory: './test/projects/custom/custom_contracts',
   nodeModulesDirectory: './test/projects/custom/custom_node_modules'
-} as NewConfig;
+} as Config;
 
 describe('UNIT: DockerWrapper', () => {
   describe('getVolumes', () => {

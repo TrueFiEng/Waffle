@@ -1,4 +1,4 @@
-import {NewConfig} from './config';
+import {Config} from './config';
 import {compileSolcjs} from './compileSolcjs';
 import {compileNative} from './compileNative';
 import {compileDocker} from './compileDocker';
@@ -9,7 +9,7 @@ export type CompileFunction = (
   findImports: (file: string) => any
 ) => any;
 
-export function getCompileFunction(config: NewConfig): CompileFunction {
+export function getCompileFunction(config: Config): CompileFunction {
   if (config.compilerType === 'native') {
     return compileNative(config);
   } else if (config.compilerType === 'dockerized-solc') {

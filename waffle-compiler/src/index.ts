@@ -1,3 +1,3 @@
 export * from './compiler';
 export * from './link';
-export {Config} from './config';
+export {InputConfig as Config} from './config';

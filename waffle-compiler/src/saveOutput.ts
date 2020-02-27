@@ -1,6 +1,6 @@
 import {join} from 'path';
 import fs from 'fs';
-import {NewConfig} from './config';
+import {Config} from './config';
 import {getHumanReadableAbi} from './getHumanReadableAbi';
 import mkdirp from 'mkdirp';
 
@@ -35,7 +35,7 @@ const fsOps = {
 
 export async function saveOutput(
   output: any,
-  config: NewConfig,
+  config: Config,
   filesystem = fsOps
 ) {
   config.outputType = config.outputType || 'multiple';
@@ -53,7 +53,7 @@ export async function saveOutput(
 
 async function saveOutputSingletons(
   output: any,
-  config: NewConfig,
+  config: Config,
   filesystem = fsOps
 ) {
   for (const [, file] of Object.entries<any>(output.contracts)) {
@@ -66,7 +66,7 @@ async function saveOutputSingletons(
 
 async function saveOutputCombined(
   output: any,
-  config: NewConfig,
+  config: Config,
   filesystem = fsOps
 ) {
   for (const [key, file] of Object.entries<any>(output.contracts)) {
@@ -97,7 +97,7 @@ async function saveOutputCombined(
   );
 }
 
-function getContent(contractJson: ContractJson, config: NewConfig) {
+function getContent(contractJson: ContractJson, config: Config) {
   contractJson.interface = contractJson.abi;
   contractJson.bytecode = contractJson.evm.bytecode.object;
   if (config.outputHumanReadableAbi) {
