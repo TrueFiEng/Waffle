@@ -88,7 +88,9 @@ const checkOutputType = checkEnum('outputType', ['multiple', 'combined', 'all'])
 function checkType(key: string, type: 'string' | 'boolean' | 'object') {
   return function (value: unknown) {
     if (typeof value !== type) { // eslint-disable-line valid-typeof
-      console.warn(`${key} must be ${type}, received: ${typeof value}`);
+      console.warn(
+        `Warning: "${key}" must have type of ${type}. Received: ${typeof value}.`
+      );
       return false;
     }
     return true;
@@ -98,7 +100,9 @@ function checkType(key: string, type: 'string' | 'boolean' | 'object') {
 function checkEnum(key: string, values: unknown[]) {
   return function (value: unknown) {
     if (!values.includes(value)) {
-      console.warn(`${key} must be one of: ${values.join(', ')}, received: ${value}`);
+      console.warn(
+        `Warning: ${key} must be one of: ${values.join(', ')}. Received: ${value}.`
+      );
       return false;
     }
     return true;

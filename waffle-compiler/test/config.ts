@@ -142,6 +142,65 @@ describe('UNIT: inputToConfig', () => {
   });
 
   describe('invalid configs', () => {
-    // TODO: test
-  })
+    const testCases = [
+      {
+        name: 'sourceDirectory non-string',
+        sourceDirectory: 2
+      },
+      {
+        name: 'outputDirectory non-string',
+        outputDirectory: []
+      },
+      {
+        name: 'nodeModulesDirectory non-string',
+        nodeModulesDirectory: false
+      },
+      {
+        name: 'compilerType non-string',
+        compilerType: false
+      },
+      {
+        name: 'compilerType string',
+        compilerType: 'foo'
+      },
+      {
+        name: 'compilerVersion non-string',
+        compilerVersion: 1234
+      },
+      {
+        name: 'compilerAllowedPaths non-array',
+        compilerAllowedPaths: 'foo'
+      },
+      {
+        name: 'compilerAllowedPaths non-string array',
+        compilerAllowedPaths: [1234, 'foo']
+      },
+      {
+        name: 'compilerOptions string',
+        compilerAllowedPaths: 'foo'
+      },
+      {
+        name: 'outputHumanReadableAbi string',
+        outputHumanReadableAbi: 'foo'
+      },
+      {
+        name: 'outputMinimal string',
+        outputMinimal: 'foo'
+      },
+      {
+        name: 'outputType non-string',
+        outputType: 1
+      },
+      {
+        name: 'outputType string',
+        outputType: 'foo'
+      }
+    ];
+
+    for (const testCase of testCases) {
+      it(testCase.name, () => {
+        expect(() => inputToConfig(testCase as any)).to.throw(TypeError);
+      });
+    }
+  });
 });
