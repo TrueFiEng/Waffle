@@ -18,7 +18,7 @@ export async function compileAndSave(config: Config) {
 }
 
 export async function compile(config: Config) {
-  // Added support for backwards compatibillity - renamable node_modules path
+  // Added support for backwards compatibility - custom node_modules path
   const resolver = ImportsFsEngine().addResolver(
     resolvers.BacktrackFsResolver(config.npmPath)
   );

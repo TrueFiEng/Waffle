@@ -6,6 +6,19 @@
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "solidity",
+    "testing",
+    "javascript",
+    "typescript",
+    "library"
+  ],
+  "homepage": "https://github.com/EthWorks/Waffle",
+  "bugs": {
+    "url": "https://github.com/EthWorks/Waffle/issues"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
