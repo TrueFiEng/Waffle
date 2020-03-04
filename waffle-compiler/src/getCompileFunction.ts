@@ -10,12 +10,12 @@ export type CompileFunction = (
 ) => any;
 
 export function getCompileFunction(config: Config): CompileFunction {
-  if (config.compiler === 'native') {
+  if (config.compilerType === 'native') {
     return compileNative(config);
-  } else if (config.compiler === 'dockerized-solc') {
+  } else if (config.compilerType === 'dockerized-solc') {
     return compileDocker(config);
-  } else if (config.compiler === 'solcjs' || !config.compiler) {
+  } else if (config.compilerType === 'solcjs') {
     return compileSolcjs(config);
   }
-  throw new Error(`Unknown compiler ${config.compiler}`);
+  throw new Error(`Unknown compiler ${config.compilerType}`);
 }

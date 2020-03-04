@@ -1,4 +1,4 @@
-import {Config} from './config';
+import {InputConfig, inputToConfig, Config} from './config';
 import {isWarningMessage} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
@@ -12,22 +12,26 @@ export async function compileProject(configPath?: string) {
   await compileAndSave(await loadConfig(configPath));
 }
 
-export async function compileAndSave(config: Config) {
+export async function compileAndSave(input: InputConfig) {
+  const config = inputToConfig(input);
   const output = await compile(config);
   await processOutput(output, config);
 }
 
-export async function compile(config: Config) {
-  // Added support for backwards compatibility - custom node_modules path
+export async function compile(input: InputConfig) {
+  return newCompile(inputToConfig(input));
+}
+
+async function newCompile(config: Config) {
   const resolver = ImportsFsEngine().addResolver(
-    resolvers.BacktrackFsResolver(config.npmPath)
+    // Backwards compatibility - change node_modules path
+    resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
   const sources = await gatherSources(
-    findInputs(config.sourcesPath),
+    findInputs(config.sourceDirectory),
     '.',
     resolver
   );
-
   return getCompileFunction(config)(sources, findImports(sources));
 }
 

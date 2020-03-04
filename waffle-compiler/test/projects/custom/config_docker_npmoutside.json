@@ -1,8 +1,8 @@
 {
   "name": "solidity 5, dokerized solc, npm outside main directory",
-  "sourcesPath": "./test/projects/custom/custom_contracts",
-  "targetPath": "./test/projects/custom/custom_build",
-  "npmPath": "../custom_node_modules",
-  "compiler": "dockerized-solc",
-  "docker-tag": "0.5.15"
+  "sourceDirectory": "./test/projects/custom/custom_contracts",
+  "outputDirectory": "./test/projects/custom/custom_build",
+  "nodeModulesDirectory": "../custom_node_modules",
+  "compilerType": "dockerized-solc",
+  "compilerVersion": "0.5.15"
 }

@@ -2,6 +2,6 @@
   "compilerOptions": {
     "evmVersion": "constantinople"
   },
-  "compiler": "dockerized-solc",
-  "docker-tag": "0.5.15"
+  "compilerType": "dockerized-solc",
+  "compilerVersion": "0.5.15"
 }

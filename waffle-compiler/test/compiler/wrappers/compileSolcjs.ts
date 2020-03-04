@@ -2,16 +2,13 @@ import {expect} from 'chai';
 import {findInputs, loadCompiler} from '../../../src/compileSolcjs';
 import {readFileContent} from '../../../src/utils';
 import solc from 'solc';
+import {Config} from '../../../src/config';
 
 const expectedInputs = [
   'test/projects/example/BasicToken.sol',
   'test/projects/example/ERC20Basic.sol',
   'test/projects/example/mock/BasicTokenMock.sol'
 ];
-
-const requiredInputs = {
-  sourcesPath: 'test', npmPath: 'test'
-};
 
 describe('INTEGRATION: findInputs', () => {
   it('findInputs', async () => {
@@ -25,17 +22,23 @@ describe('INTEGRATION: findInputs', () => {
 
 describe('INTEGRATION: loadCompiler', () => {
   it('loadCompiler with solcVersion as version', async () => {
-    const solcLoaded = await loadCompiler({solcVersion: 'v0.5.9+commit.e560f70d', ...requiredInputs});
+    const solcLoaded = await loadCompiler(
+      {compilerVersion: 'v0.5.9+commit.e560f70d'} as Config
+    );
     expect(solcLoaded.version()).to.equal('0.5.9+commit.e560f70d.Emscripten.clang');
   });
 
   it('loadCompiler with solcVersion as path', async () => {
-    const solcLoaded = await loadCompiler({solcVersion: '../node_modules/solc', ...requiredInputs});
+    const solcLoaded = await loadCompiler(
+      {compilerVersion: '../node_modules/solc'} as Config
+    );
     expect(solcLoaded.version()).to.equal(solc.version());
   });
 
   it('loadCompier without solcVersion', async () => {
-    const solcLoaded = await loadCompiler(requiredInputs);
+    const solcLoaded = await loadCompiler(
+      {compilerVersion: 'default'} as Config
+    );
     expect(solcLoaded.version()).to.equal(solc.version());
   });
 });

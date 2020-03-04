@@ -2,5 +2,5 @@
   "compilerOptions": {
     "evmVersion": "constantinople"
   },
-  "compiler": "native"
+  "compilerType": "native"
 }

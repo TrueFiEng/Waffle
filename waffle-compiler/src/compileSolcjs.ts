@@ -8,11 +8,11 @@ import {ImportFile} from '@resolver-engine/imports';
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 
 export async function loadCompiler(config: Config) {
-  if (config.solcVersion) {
-    if (isDirectory(config.solcVersion)) {
-      return require(relativePathToWorkingDir(config.solcVersion));
+  if (config.compilerVersion !== 'default') {
+    if (isDirectory(config.compilerVersion)) {
+      return require(relativePathToWorkingDir(config.compilerVersion));
     }
-    return loadRemoteVersion(config.solcVersion);
+    return loadRemoteVersion(config.compilerVersion);
   }
   return solc;
 }

@@ -15,7 +15,12 @@ export function compileNative(config: Config) {
 export function createBuildCommand(config: Config) {
   const command = 'solc';
   const params = '--standard-json';
-  const customAllowedPaths = (config.allowedPaths || []).map((path: string) => resolve(path));
-  const allowedPaths = [resolve(config.sourcesPath), resolve(config.npmPath), ...customAllowedPaths];
+  const customAllowedPaths = config.compilerAllowedPaths
+    .map((path: string) => resolve(path));
+  const allowedPaths = [
+    resolve(config.sourceDirectory),
+    resolve(config.nodeModulesDirectory),
+    ...customAllowedPaths
+  ];
   return `${command} ${params} --allow-paths ${allowedPaths.join(',')}`;
 }

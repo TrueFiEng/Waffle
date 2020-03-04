@@ -1,9 +1,15 @@
 import {expect} from 'chai';
 import {createBuildCommand} from '../../../src/compileNative';
+import {Config} from '../../../src/config';
 
-const sourcesPath = './test/projects/custom/custom_contracts';
-const npmPath = './test/projects/custom/custom_node_modules';
-const config = {sourcesPath, npmPath};
+const sourceDirectory = './test/projects/custom/custom_contracts';
+const nodeModulesDirectory = './test/projects/custom/custom_node_modules';
+const compilerAllowedPaths: string[] = [];
+const config = {
+  sourceDirectory,
+  nodeModulesDirectory,
+  compilerAllowedPaths
+} as Config;
 
 describe('UNIT: compileNative', () => {
   it('buildCommand', async () => {
@@ -14,8 +20,10 @@ describe('UNIT: compileNative', () => {
   });
 
   it('buildCommand with custom allow_paths', async () => {
-    const configWithAllowedPaths = {...config, allowedPaths: ['some/random/path', './yet/another/path']};
-    const actualCommand = createBuildCommand(configWithAllowedPaths);
+    const actualCommand = createBuildCommand({
+      ...config,
+      compilerAllowedPaths: ['some/random/path', './yet/another/path']
+    });
     const expectedCommand = 'solc --standard-json --allow-paths ' +
       '.*test/projects/custom/custom_contracts,.*/test/projects/custom/custom_node_modules' +
       ',.*/some/random/path.*/yet/another/path';

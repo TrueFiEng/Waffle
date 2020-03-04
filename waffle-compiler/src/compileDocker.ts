@@ -16,7 +16,7 @@ export function compileDocker(config: Config) {
 }
 
 export function createBuildCommand(config: Config) {
-  const configTag = config['docker-tag'];
+  const configTag = config.compilerVersion;
   const tag = configTag ? `:${configTag}` : ':stable';
   const allowedPaths = `"${CONTAINER_PATH},${NPM_PATH}"`;
   return `docker run ${getVolumes(config)} -i -a stdin -a stdout ` +
@@ -25,6 +25,6 @@ export function createBuildCommand(config: Config) {
 
 export function getVolumes(config: Config) {
   const hostPath = process.cwd();
-  const hostNpmPath = join(hostPath, config.npmPath);
+  const hostNpmPath = join(hostPath, config.nodeModulesDirectory);
   return `-v ${hostPath}:${CONTAINER_PATH} -v ${hostNpmPath}:${NPM_PATH}`;
 }
