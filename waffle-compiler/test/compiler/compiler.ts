@@ -9,7 +9,7 @@ const compilerVersion = 'v0.5.9+commit.e560f70d';
 const config = inputToConfig({
   sourceDirectory,
   outputDirectory,
-  compilerVersion,
+  compilerVersion
 });
 
 describe('INTEGRATION: Compiler', () => {

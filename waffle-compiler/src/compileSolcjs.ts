@@ -21,7 +21,7 @@ export function compileSolcjs(config: Config) {
   return async function compile(sources: ImportFile[], findImports: (file: string) => any) {
     const solc = await loadCompiler(config);
     const input = buildInputObject(sources, config.compilerOptions);
-    const output = solc.compile(JSON.stringify(input), { imports: findImports });
+    const output = solc.compile(JSON.stringify(input), {imports: findImports});
     return JSON.parse(output);
   };
 }
