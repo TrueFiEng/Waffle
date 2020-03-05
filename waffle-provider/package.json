@@ -35,12 +35,11 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@types/ganache-core": "^2.7.0",
-    "ethers": "^4.0.0",
-    "ganache-core": "2.9.0-istanbul.0"
+    "ethers": "^4.0.45",
+    "ganache-core": "^2.10.2"
   },
   "resolutions": {
-    "web3": "1.2.1"
+    "web3": "1.2.4"
   },
   "devDependencies": {
     "@types/chai": "^4.2.3",
