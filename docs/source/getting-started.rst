@@ -93,14 +93,14 @@ your project.
 .. code-block:: javascript
 
   const {use, expect} = require('chai');
-  const {solidity, createMockProvider, getWallets, deployContract} = require('ethereum-waffle');
+  const {solidity, MockProvider, getWallets, deployContract} = require('ethereum-waffle');
   const Counter = require('../build/Counter.json');
 
   use(solidity);
 
   describe('Counter smart contract', () => {
-    const provider = createMockProvider();
-    const [wallet] = getWallets(provider);
+    const provider = new MockProvider();
+    const [wallet] = provider.getWallets();
 
     async function deployCounter (initialValue) {
       const counter = await deployContract(
