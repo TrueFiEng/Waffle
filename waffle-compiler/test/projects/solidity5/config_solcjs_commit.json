@@ -1,7 +1,7 @@
 {
-  "name": "Solidity 6 - solcjs",
+  "name": "Solidity 5 - solcjs with commit version",
   "sourceDirectory": "./custom_contracts",
   "outputDirectory": "./custom_build",
   "nodeModulesDirectory": "./custom_node_modules",
-  "compilerVersion": "0.6.2"
+  "compilerVersion": "v0.5.9+commit.e560f70d"
 }

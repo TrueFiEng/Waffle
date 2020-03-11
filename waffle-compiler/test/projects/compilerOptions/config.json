@@ -2,5 +2,5 @@
   "compilerOptions": {
     "evmVersion": "constantinople"
   },
-  "compilerVersion": "v0.5.9+commit.e560f70d"
+  "compilerVersion": "0.5.9"
 }

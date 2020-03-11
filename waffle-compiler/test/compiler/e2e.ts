@@ -12,13 +12,17 @@ import {ContractFactory} from 'ethers';
 const configurations = [
   './test/projects/solidity4/config_docker.json',
   './test/projects/solidity4/config_solcjs.json',
+  './test/projects/solidity4/config_solcjs_commit.json',
   './test/projects/solidity5/config_commonjs.js',
   './test/projects/solidity5/config_docker.json',
   './test/projects/solidity5/config_klab.json',
   './test/projects/solidity5/config_native.json',
   './test/projects/solidity5/config_promise.js',
+  './test/projects/solidity5/config_solcjs.json',
+  './test/projects/solidity5/config_solcjs_commit.json',
   './test/projects/solidity6/config_docker.json',
-  './test/projects/solidity6/config_solcjs.json'
+  './test/projects/solidity6/config_solcjs.json',
+  './test/projects/solidity6/config_solcjs_commit.json'
 ];
 
 const artifacts = [
@@ -61,6 +65,9 @@ describe('E2E: Compiler integration', async () => {
       before(async () => {
         process.chdir(dirname(configurationPath));
         fsx.removeSync(outputDirectory);
+      });
+
+      it('compiles without errors', async () => {
         await compileProject(basename(configurationPath));
       });
 

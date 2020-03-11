@@ -3,5 +3,5 @@
     "evmVersion": "constantinople"
   },
   "compilerType": "dockerized-solc",
-  "compilerVersion": "0.5.15"
+  "compilerVersion": "0.5.9"
 }

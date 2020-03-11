@@ -4,5 +4,5 @@
   "outputDirectory": "./test/projects/invalidContracts/custom_build",
   "nodeModulesDirectory": "./test/projects/invalidContracts/custom_node_modules",
   "compilerType": "dockerized-solc",
-  "compilerVersion": "0.5.15"
+  "compilerVersion": "0.5.9"
 }

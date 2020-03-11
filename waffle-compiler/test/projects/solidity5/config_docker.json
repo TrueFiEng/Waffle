@@ -4,5 +4,5 @@
   "outputDirectory": "./custom_build",
   "nodeModulesDirectory": "./custom_node_modules",
   "compilerType": "dockerized-solc",
-  "compilerVersion": "0.5.15"
+  "compilerVersion": "0.5.9"
 }

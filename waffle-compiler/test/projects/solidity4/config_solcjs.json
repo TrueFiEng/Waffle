@@ -3,5 +3,5 @@
   "sourceDirectory": "./custom_contracts",
   "outputDirectory": "./custom_build",
   "nodeModulesDirectory": "./custom_node_modules",
-  "compilerVersion": "v0.4.24+commit.e67f0147"
+  "compilerVersion": "0.4.24"
 }
