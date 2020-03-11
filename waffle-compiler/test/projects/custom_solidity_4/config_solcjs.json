@@ -1,7 +1,0 @@
-{
-  "name": "solidity 4, solcjs",
-  "sourceDirectory": "./test/projects/custom_solidity_4/custom_contracts",
-  "outputDirectory": "./test/projects/custom_solidity_4/custom_build",
-  "nodeModulesDirectory": "./test/projects/custom_solidity_4/custom_node_modules",
-  "compilerVersion": "v0.4.24+commit.e67f0147"
-}

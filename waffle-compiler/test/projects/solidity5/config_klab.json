@@ -1,0 +1,24 @@
+{
+  "name": "Solidity 5 - KLAB",
+  "sourceDirectory": "./custom_contracts",
+  "outputDirectory": "./custom_build",
+  "nodeModulesDirectory": "./custom_node_modules",
+  "outputType": "all",
+  "compilerOptions": {
+    "outputSelection": {
+      "*": {
+        "*": [
+          "evm.bytecode.object",
+          "evm.deployedBytecode.object",
+          "abi",
+          "evm.bytecode.sourceMap",
+          "evm.deployedBytecode.sourceMap"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    }
+  },
+  "compilerVersion": "v0.5.9+commit.e560f70d"
+}
