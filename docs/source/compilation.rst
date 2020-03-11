@@ -28,12 +28,12 @@ After installing a library you can import it in your Solidity code:
   import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 
 If you are using a custom :code:`node_modules` location you can configure Waffle
-to recognize it. Change the :code:`npmPath` setting in your :code:`.waffle.json` file:
+to recognize it. Change the :code:`nodeModulesDirectory` setting in your :code:`.waffle.json` file:
 
 .. code-block:: json
 
   {
-    "npmPath": "path/to/node_modules"
+    "nodeModulesDirectory": "path/to/node_modules"
   }
 
 To read more about configuring Waffle, see :ref:`configuration`.
@@ -71,12 +71,12 @@ You can find detailed installation instructions for native :code:`solc` in the
 .. note::
   You need to install version compatible with your source files.
 
-Change the :code:`compiler` setting in your :code:`.waffle.json` file:
+Change the :code:`compilerType` setting in your :code:`.waffle.json` file:
 
 .. code-block:: json
 
   {
-    "compiler": "native"
+    "compilerType": "native"
   }
 
 To read more about configuring Waffle, see :ref:`configuration`.
@@ -102,17 +102,17 @@ version 0.4.24:
 
   docker pull ethereum/solc:0.4.24
 
-Then, change the :code:`compiler` setting in your :code:`.waffle.json` file:
+Then, change the :code:`compilerType` setting in your :code:`.waffle.json` file:
 
 .. code-block:: json
 
   {
-    "compiler": "dockerized-solc",
-    "docker-tag": "0.4.24"
+    "compilerType": "dockerized-solc",
+    "compilerVersion": "0.4.24"
   }
 
-The default value for :code:`docker-tag` is :code:`latest`. To read more about
-configuring Waffle, see :ref:`configuration`.
+If no :code:`compilerVersion` is specified the docker tag pulled defaults to
+:code:`latest`. To read more about configuring Waffle, see :ref:`configuration`.
 
 When compiling your smart contracts Waffle will now use the docker image you
 pulled.

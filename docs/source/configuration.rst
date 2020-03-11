@@ -34,62 +34,74 @@ Afterwards update your :code:`package.json` build script:
     }
   }
 
-Next, you will learn about the configuration options:
+Configuration options starting waffle 2.4.0:
 
-- :ref:`sourcesPath`
-- :ref:`targetPath`
-- :ref:`npmPath`
-- :ref:`compiler`
-- :ref:`docker-tag`
-- :ref:`solcVersion`
-- :ref:`legacyOutput`
-- :ref:`allowedPaths`
+- :ref:`sourceDirectory`
+- :ref:`outputDirectory`
+- :ref:`nodeModulesDirectory`
+- :ref:`compilerType`
+- :ref:`compilerVersion`
+- :ref:`compilerAllowedPaths`
 - :ref:`compilerOptions`
-- :ref:`outputType`
 - :ref:`outputHumanReadableAbi`
-- :ref:`ganacheOptions`
+- :ref:`outputType`
 
-.. _sourcesPath:
+Deprecated configuration for waffle 2.3.0 and earlier:
 
-sourcesPath
-^^^^^^^^^^^
+- :code:`sourcesPath` - renamed to :ref:`sourceDirectory`
+- :code:`targetPath` - renamed to :ref:`outputDirectory`
+- :code:`npmPath` - renamed to :ref:`nodeModulesDirectory`
+- :code:`compiler` - renamed to :ref:`compilerType`
+- :code:`docker-tag` - replaced by :ref:`compilerVersion`
+- :code:`solcVersion` - replaced by :ref:`compilerVersion`
+- :code:`legacyOutput` - removed, setting it to false had no effect
+- :code:`allowedPaths` - renamed to :ref:`compilerAllowedPaths`
+- :code:`ganacheOptions` - removed, wasn't used by the compiler
+
+.. _sourceDirectory:
+
+sourceDirectory
+^^^^^^^^^^^^^^^
 
 You can specify a custom path to the directory containing your smart contracts.
-Waffle uses :code:`./contracts` as the default value for :code:`./sourcesPath`.
+Waffle uses :code:`./contracts` as the default value for :code:`./sourceDirectory`.
+The path you provide will be resolved relative to the current working directory.
 
 Example:
 
 .. code-block:: json
 
   {
-    "sourcesPath": "./custom/path/to/contracts"
+    "sourceDirectory": "./custom/path/to/contracts"
   }
 
-.. _targetPath:
+.. _outputDirectory:
 
-targetPath
-^^^^^^^^^^
+outputDirectory
+^^^^^^^^^^^^^^^
 
 You can specify a custom path to the directory to which Waffle saves the
 compilation output. Waffle uses :code:`./build` as the default value for
-:code:`./targetPath`.
+:code:`./outputDirectory`. The path you provide will be resolved relative to the
+current working directory.
 
 Example:
 
 .. code-block:: json
 
   {
-    "targetPath": "./custom/path/to/output"
+    "outputDirectory": "./custom/path/to/output"
   }
 
-.. _npmPath:
+.. _nodeModulesDirectory:
 
-npmPath
-^^^^^^^
+nodeModulesDirectory
+^^^^^^^^^^^^^^^^^^^^
 
 You can specify a custom path to the :code:`node_modules` folder which Waffle
 will use to resolve third party dependencies. Waffle uses :code:`node_modules`
-as the default value for :code:`./npmPath`.
+as the default value for :code:`./nodeModulesDirectory`. The path you provide
+will be resolved relative to the current working directory.
 
 For more information about third party libraries, see :ref:`third-party`.
 
@@ -98,14 +110,14 @@ Example:
 .. code-block:: json
 
   {
-    "npmPath": "./custom/path/to/node_modules"
+    "nodeModulesDirectory": "./custom/path/to/node_modules"
   }
 
 
-.. _compiler:
+.. _compilerType:
 
-compiler
-^^^^^^^^
+compilerType
+^^^^^^^^^^^^
 
 Specifies the compiler to use. For more information see: :ref:`compile-times`.
 Allowed values:
@@ -119,79 +131,55 @@ Example:
 .. code-block:: json
 
   {
-    "compiler": "dockerized-solc"
+    "compilerType": "dockerized-solc"
   }
 
 
-.. _docker-tag:
+.. _compilerVersion:
 
-docker-tag
-^^^^^^^^^^
+compilerVersion
+^^^^^^^^^^^^^^^
 
-Specifies the docker tag. Only use alongside :code:`"compiler": "dockerized-solc"`.
-For more information, see: :ref:`dockerized-solc`.
+Specifies the version of the compiler. Should be a semver string like
+:code:`0.5.9`. You can use it with :code:`"compilerType": "solcjs"` or
+:code:`"compilerType": "dockerized-solc"`.
 
-Example:
+When using :code:`"compilerType": "solcjs"` you can also specify the exact
+commit that will be used or a path to a specific solc module dependency.
+
+To find a specific commit please consult the `list of available solc versions <https://ethereum.github.io/solc-bin/bin/list.json>`__.
+
+Examples:
 
 .. code-block:: json
 
   {
-    "compiler": "dockerized-solc",
-    "docker-tag": "0.4.24"
+    "compilerType": "dockerized-solc",
+    "compilerVersion": "0.4.24"
   }
-
-.. _solcVersion:
-
-solcVersion
-^^^^^^^^^^^
-
-`solc-js <https://github.com/ethereum/solc-js>`__ allows setting the version
-of the solidity compiler on the fly. To change the version of the solidity
-compiler update the value of the :code:`solcVersion` field in your config file:
 
 .. code-block:: json
 
   {
-    "solcVersion": "v0.4.24+commit.e67f0147"
+    "compilerType": "solcjs",
+    "compilerVersion": "v0.4.24+commit.e67f0147"
   }
-
-To find an appropriate version name please consult the `list of available solc versions <https://ethereum.github.io/solc-bin/bin/list.json>`__.
-
-Instead of specifying a version tag you can pass the path to the solc-js package.
 
 .. code-block:: json
 
   {
-    "solcVersion": "./node_modules/solc"
+    "compilerType": "solcjs",
+    "compilerVersion": "./node_modules/solc"
   }
 
+.. _compilerAllowedPaths:
 
-.. _legacyOutput:
-
-legacyOutput
-^^^^^^^^^^^^
-
-Starting with Waffle 2.0, the format of contract output JSON files is the
-solidity standard JSON. This is not compatible with older Waffle versions and
-with Truffle.
-
-You can generate files that are compatible with both current and previous
-versions by setting :code:`"legacyOutput": "true"` in the configuration file:
-
-.. code-block:: json
-
-  {
-    "legacyOutput": "true"
-  }
-
-.. _allowedPaths:
-
-allowedPaths
-^^^^^^^^^^^^
+compilerAllowedPaths
+^^^^^^^^^^^^^^^^^^^^
 
 The :code:`solc` compiler has restrictions on paths it can access for security
-reasons. The value of :code:`allowedPaths` will be passed as a command line
-argument: :code:`solc --allow-paths <VALUE>`.
+reasons. The value of :code:`compilerAllowedPaths` will be passed as a command
+line argument: :code:`solc --allow-paths <VALUE>`.
 
 This is especially useful if you are doing a monorepo setup with Lerna,
 see: :ref:`lerna`.
@@ -201,7 +189,7 @@ Example:
 .. code-block:: json
 
   {
-    "allowedPaths": ["../contracts"]
+    "compilerAllowedPaths": ["../contracts"]
   }
 
 
@@ -268,25 +256,6 @@ For the compiled contracts you will now see the following in the output:
   }
 
 
-.. _ganacheOptions:
-
-ganacheOptions
-^^^^^^^^^^^^^^
-
-Values specified here will be read by :code:`createMockProvider` if passed the
-path to the config file.
-
-Example:
-
-.. code-block:: json
-
-  {
-    "ganacheOptions": {
-      "gasLimit": 50,
-      "gasPrice": 1
-    }
-  }
-
 Other configuration file formats
 --------------------------------
 
@@ -297,7 +266,7 @@ Waffle supports the following configuration file formats:
 .. code-block:: json
 
   {
-    "sourcesPath": "./src/contracts",
+    "sourceDirectory": "./src/contracts",
   }
 
 *JavaScript*:
@@ -305,7 +274,7 @@ Waffle supports the following configuration file formats:
 .. code-block:: js
 
   module.exports = {
-    sourcesPath: './src/contracts'
+    sourceDirectory: './src/contracts'
   }
 
 The configuration can even be a promise
@@ -313,7 +282,7 @@ The configuration can even be a promise
 .. code-block:: js
 
   module.exports = Promise.resolve({
-    sourcesPath: './src/contracts'
+    sourceDirectory: './src/contracts'
   })
 
 .. hint::
@@ -323,17 +292,12 @@ The configuration can even be a promise
 Setting Solidity compiler version
 ---------------------------------
 
-See :ref:`solcVersion`.
+See :ref:`compilerVersion`.
 
 Usage with Truffle
 ------------------
 
-See :ref:`legacyOutput`.
-
-Usage with old Waffle versions
-------------------------------
-
-See :ref:`legacyOutput`.
+Waffle output should be compatible by default with Truffle.
 
 Custom compiler options
 -----------------------
@@ -384,8 +348,7 @@ An example of full KLAB friendly config file:
 .. code-block:: js
 
   module.exports = {
-    compiler: process.env.WAFFLE_COMPILER,
-    legacyOutput: true,
+    compilerType: process.env.WAFFLE_COMPILER,
     outputType: 'all',
     compilerOptions: {
       outputSelection: {
@@ -404,7 +367,7 @@ An example of full KLAB friendly config file:
 
 Monorepo
 --------
-Waffle works well with mono-repositories. It is enough to set up common npmPath in the configuration file to make it work.
+Waffle works well with mono-repositories. It is enough to set up common nodeModulesDirectory in the configuration file to make it work.
 We recommend using `yarn workspaces <https://yarnpkg.com/lang/en/docs/workspaces/>`_ and `wsrun <https://github.com/whoeverest/wsrun>`_ for monorepo management.
 
 .. _lerna:
@@ -440,7 +403,7 @@ Add to waffle configuration in YourProjectDapp:
 .. code-block:: json
 
   {
-    "allowedPaths": ["../YourProjectContracts"]
+    "compilerAllowedPaths": ["../YourProjectContracts"]
   }
 
 

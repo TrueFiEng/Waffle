@@ -49,7 +49,7 @@ const {compileAndSave, compile} = require('@ethereum-waffle/compiler');
 
 main();
 async function main () {
-  const config = { sourcesPath: 'contracts', npmPath: 'node_modules' };
+  const config = { sourceDirectory: 'contracts', nodeModulesDirectory: 'node_modules' };
 
   // compile and save the output
   await compileAndSave(config);
