@@ -5,7 +5,12 @@ import {inputToConfig} from '../../src/config';
 
 const sourceDirectory = './test/projects/example';
 const outputDirectory = './test/compiler/build';
-const config = inputToConfig({sourceDirectory, outputDirectory});
+const compilerVersion = 'v0.5.9+commit.e560f70d';
+const config = inputToConfig({
+  sourceDirectory,
+  outputDirectory,
+  compilerVersion
+});
 
 describe('INTEGRATION: Compiler', () => {
   it('compile just compiles', async () => {
@@ -21,7 +26,7 @@ describe('INTEGRATION: Compiler', () => {
   describe('compileAndSave: invalid input', () => {
     const sourceDirectory = './test/projects/invalidContracts'; // tslint:disable-line
     const outputDirectory = './test/projects/build'; // tslint:disable-line
-    const config = inputToConfig({sourceDirectory, outputDirectory});
+    const config = inputToConfig({sourceDirectory, outputDirectory, compilerVersion});
     const expectedOutput = `${'test/projects/invalidContracts/invalid.sol'}:6:14: ` +
       'DeclarationError: Identifier not found or not unique.\n' +
       '  function f(wrongType arg) public {\n             ^-------^\n';

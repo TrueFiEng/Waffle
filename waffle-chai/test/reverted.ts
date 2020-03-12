@@ -25,7 +25,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('execution error: invalid opcode');
+    await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
   });
 
   it('Revert: success', async () => {
@@ -73,11 +73,11 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('Revert with modification: success', async () => {
-    await expect(matchers.doRevertAndModify()).to.be.revertedWith('execution error: revert');
+    await expect(matchers.doRevertAndModify()).to.be.revertedWith('Revert cause');
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.rejectedWith('execution error: invalid opcode');
+    await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
   });
 
   it('Revert: success', async () => {
@@ -85,7 +85,9 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('Revert: fail when different message was thrown', async () => {
-    await expect(expect(matchers.doRevert()).to.be.revertedWith('Different message')).to.be.eventually.rejected;
+    await expect(
+      expect(matchers.doRevert()).to.be.revertedWith('Different message')
+    ).to.be.eventually.rejected;
   });
 
   it('Revert: fail no exception', async () => {
@@ -99,11 +101,15 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   });
 
   it('Require: fail when no exception was thrown', async () => {
-    await expect(expect(matchers.doRequireSuccess()).to.be.revertedWith('Never to be seen')).to.be.eventually.rejected;
+    await expect(
+      expect(matchers.doRequireSuccess()).to.be.revertedWith('Never to be seen')
+    ).to.be.eventually.rejected;
   });
 
   it('Require: fail when different message', async () => {
-    await expect(expect(matchers.doRequireFail()).to.be.revertedWith('Different message')).to.be.eventually.rejected;
+    await expect(
+      expect(matchers.doRequireFail()).to.be.revertedWith('Different message')
+    ).to.be.eventually.rejected;
   });
 
   it('Not to revert: fail', async () => {

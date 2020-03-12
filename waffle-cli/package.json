@@ -42,10 +42,10 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/provider": "^2.3.2",
     "@ethereum-waffle/chai": "^2.3.0",
     "@ethereum-waffle/compiler": "^2.3.0",
-    "ethers": "^4.0.0"
+    "@ethereum-waffle/provider": "^2.3.2",
+    "ethers": "^4.0.45"
   },
   "devDependencies": {
     "@types/chai": "^4.2.3",
