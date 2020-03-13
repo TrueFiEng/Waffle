@@ -1,0 +1,8 @@
+{
+  "name": "solidity 6, docker",
+  "sourceDirectory": "./test/projects/solidity6/custom_contracts",
+  "outputDirectory": "./test/projects/solidity6/custom_build",
+  "nodeModulesDirectory": "./test/projects/solidity6/custom_node_modules",
+  "compilerType": "dockerized-solc",
+  "compilerVersion": "0.6.2"
+}

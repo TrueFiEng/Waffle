@@ -14,6 +14,7 @@ module.exports = {
         "": [ "ast" ]
       },
     }
-  }
+  },
+  compilerVersion: "v0.5.9+commit.e560f70d"
 };
 

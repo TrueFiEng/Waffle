@@ -5,7 +5,8 @@ const buildExampleContracts = async () => {
   const sourceDirectory = './test/projects/example';
   const outputDirectory = './test/example/build';
   const nodeModulesDirectory = 'node_modules';
-  await compileAndSave({sourceDirectory, outputDirectory, nodeModulesDirectory});
+  const compilerVersion = 'v0.5.9+commit.e560f70d'
+  await compileAndSave({sourceDirectory, outputDirectory, nodeModulesDirectory, compilerVersion});
 };
 
 buildExampleContracts();
