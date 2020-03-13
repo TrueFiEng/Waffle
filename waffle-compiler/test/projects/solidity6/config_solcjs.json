@@ -1,7 +1,7 @@
 {
-  "name": "solidity 6, solcjs",
-  "sourceDirectory": "./test/projects/solidity6/custom_contracts",
-  "outputDirectory": "./test/projects/solidity6/custom_build",
-  "nodeModulesDirectory": "./test/projects/solidity6/custom_node_modules",
-  "compilerVersion": "v0.6.2+commit.bacdbe57"
+  "name": "Solidity 6 - solcjs",
+  "sourceDirectory": "./custom_contracts",
+  "outputDirectory": "./custom_build",
+  "nodeModulesDirectory": "./custom_node_modules",
+  "compilerVersion": "0.6.2"
 }

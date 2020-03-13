@@ -1,6 +1,6 @@
 import fs from 'fs';
 import fsx from 'fs-extra';
-import {join, resolve} from 'path';
+import {join, resolve, dirname, basename} from 'path';
 import {expect} from 'chai';
 import {compileProject} from '../../src/compiler';
 import {loadConfig} from '../../src/loadConfig';
@@ -10,15 +10,19 @@ import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 
 const configurations = [
-  './test/projects/custom/config.js',
-  './test/projects/custom/config_native.json',
-  './test/projects/custom/config_docker.json',
-  './test/projects/custom/config_promise.js',
-  './test/projects/custom_solidity_4/config_solcjs.json',
-  './test/projects/custom_solidity_4/config_docker.json',
-  './test/projects/custom/config_combined.js',
+  './test/projects/solidity4/config_docker.json',
+  './test/projects/solidity4/config_solcjs.json',
+  './test/projects/solidity4/config_solcjs_commit.json',
+  './test/projects/solidity5/config_commonjs.js',
+  './test/projects/solidity5/config_docker.json',
+  './test/projects/solidity5/config_klab.json',
+  './test/projects/solidity5/config_native.json',
+  './test/projects/solidity5/config_promise.js',
+  './test/projects/solidity5/config_solcjs.json',
+  './test/projects/solidity5/config_solcjs_commit.json',
+  './test/projects/solidity6/config_docker.json',
   './test/projects/solidity6/config_solcjs.json',
-  './test/projects/solidity6/config_docker.json'
+  './test/projects/solidity6/config_solcjs_commit.json'
 ];
 
 const artifacts = [
@@ -55,10 +59,20 @@ describe('E2E: Compiler integration', async () => {
     const configuration = await loadConfig(configurationPath) as any;
     const {name, outputDirectory} = configuration;
 
-    describe(name, () => {
+    describe(`E2E: ${name}`, () => {
+      const dir = process.cwd();
+
       before(async () => {
+        process.chdir(dirname(configurationPath));
         fsx.removeSync(outputDirectory);
-        await compileProject(configurationPath);
+      });
+
+      it('compiles without errors', async () => {
+        await compileProject(basename(configurationPath));
+      });
+
+      after(() => {
+        process.chdir(dir);
       });
 
       it('produce output files', async () => {

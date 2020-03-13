@@ -4,5 +4,5 @@
   "outputDirectory": "../build/nested",
   "nodeModulesDirectory": "../modules",
   "compilerType": "dockerized-solc",
-  "compilerVersion": "0.5.15"
+  "compilerVersion": "0.5.9"
 }

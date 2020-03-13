@@ -1,8 +1,0 @@
-{
-  "name": "solidity 4, dokerized solc",
-  "sourceDirectory": "./test/projects/custom_solidity_4/custom_contracts",
-  "outputDirectory": "./test/projects/custom_solidity_4/custom_build",
-  "nodeModulesDirectory": "./test/projects/custom_solidity_4/custom_node_modules",
-  "compilerType": "dockerized-solc",
-  "compilerVersion": "0.4.24"
-}

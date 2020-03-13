@@ -1,7 +1,0 @@
-{
-  "name": "solidity 5, native solc",
-  "sourceDirectory": "./test/projects/custom/custom_contracts",
-  "outputDirectory": "./test/projects/custom/custom_build",
-  "nodeModulesDirectory": "./test/projects/custom/custom_node_modules",
-  "compilerType": "native"
-}

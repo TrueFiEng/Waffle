@@ -1,8 +1,8 @@
 {
-  "name": "Solidity 6 - docker",
+  "name": "Solidity 5 - docker",
   "sourceDirectory": "./custom_contracts",
   "outputDirectory": "./custom_build",
   "nodeModulesDirectory": "./custom_node_modules",
   "compilerType": "dockerized-solc",
-  "compilerVersion": "0.6.2"
+  "compilerVersion": "0.5.9"
 }
