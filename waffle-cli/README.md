@@ -154,9 +154,9 @@ npx waffle config.json
 Example configuration file looks like this (all fields optional):
 ```json
 {
-  "sourcesPath": "./custom_contracts",
-  "targetPath": "./custom_build",
-  "npmPath": "./custom_node_modules"
+  "sourceDirectory": "./custom_contracts",
+  "outputDirectory": "./custom_build",
+  "nodeModulesDirectory": "./custom_node_modules"
 }
 ```
 
