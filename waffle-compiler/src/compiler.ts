@@ -8,6 +8,8 @@ import {saveOutput} from './saveOutput';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
 
+export const solcOutputMaxBuffer = 4 * 1024 * 1024;
+
 export async function compileProject(configPath?: string) {
   await compileAndSave(await loadConfig(configPath));
 }
