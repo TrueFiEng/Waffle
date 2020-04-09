@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {Contract, ContractFactory} from 'ethers';
-import {MATCHERS_ABI, MATCHERS_BYTECODE} from './contracts/Matchers';
+import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const [wallet] = new MockProvider().getWallets();
