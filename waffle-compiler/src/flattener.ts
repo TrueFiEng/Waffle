@@ -21,26 +21,28 @@ export async function flattenAndSave(input: InputConfig) {
   await processOutput(output, config);
 }
 
-export async function flatten(input: InputConfig): Promise<Array<{ url: string; source: string; provider: string }>> {
+export async function flatten(input: InputConfig) {
   return newFlatten(inputToConfig(input));
 }
 
-async function newFlatten(config: Config): Promise<Array<{ url: string; source: string; provider: string }>> {
+async function newFlatten(config: Config) {
   const resolver = ImportsFsEngine().addResolver(
     // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
 
-  const importFiles = await gatherSources(
-    findInputs(config.sourceDirectory),
-    '.',
-    resolver
-  );
+  const allContracts = findInputs(config.sourceDirectory);
 
-  return importFiles.map(contract => {
-    contract.source = contract.source.replace(IMPORT_SOLIDITY_REGEX, '');
-    return contract;
-  });
+  const contractsDependency = await Promise.all(allContracts.map(async contract => {
+    return gatherSources(
+      [contract],
+      '.',
+      resolver
+    );
+  }));
+
+  // return contractsDependency.map(contract => contract.replace(IMPORT_SOLIDITY_REGEX, ''));
+  return contractsDependency;
 }
 
 async function processOutput(output: any, config: Config) {
