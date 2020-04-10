@@ -27,31 +27,40 @@ function encodeEvent(entry: any) {
   return `event ${entry.name}(${encodeInputs(entry.inputs)})`;
 }
 
-function encodeInputs(inputs: any[] | undefined) {
+interface SolidityValue {
+  type: string;
+  name?: string;
+  indexed?: boolean;
+  components?: SolidityValue[];
+}
+
+function encodeInputs(inputs: SolidityValue[] | undefined) {
   if (!inputs || inputs.length === 0) {
     return '';
   }
-  return inputs
-    .map((input) => {
-      if (input.indexed) {
-        return `${input.type} indexed ${input.name}`;
-      }
-      return `${input.type} ${input.name}`;
-    })
-    .join(', ');
+  return inputs.map(encodeSolidityValue).join(', ');
 }
 
-function encodeOutputs(outputs: any[] | undefined) {
+function encodeOutputs(outputs: SolidityValue[] | undefined) {
   if (!outputs || outputs.length === 0) {
     return '';
   }
-  const returns = outputs
-    .map((output) => {
-      if (output.name !== '') {
-        return `${output.type} ${output.name}`;
-      }
-      return output.type;
-    })
-    .join(', ');
+  const returns = outputs.map(encodeSolidityValue).join(', ');
   return ` returns(${returns})`;
+}
+
+function encodeSolidityValue(value: SolidityValue) {
+  let result = value.type;
+  if (result.includes('tuple') && value.components) {
+    const components = value.components.map(encodeSolidityValue).join(', ');
+    result = result.replace('tuple', `tuple(${components})`);
+  }
+  if (value.indexed) {
+    result += ' indexed';
+  }
+  if (value.name) {
+    result += ` ${value.name}`;
+  }
+  console.log(result);
+  return result;
 }

@@ -24,6 +24,8 @@ describe('E2E: humanReadableAbi', () => {
       'constructor(uint256 argOne)',
       'event Bar(bool argOne, uint256 indexed argTwo)',
       'event FooEvent()',
+      // eslint-disable-next-line max-len
+      'function complicated(tuple(string a, tuple(uint256 b) b, bool[] nested)[] items) returns(tuple(string a, tuple(uint256 b) b, bool[] nested))',
       'function noArgs() view returns(uint200)',
       'function oneArg(bool argOne)',
       'function threeArgs(string argOne, bool argTwo, uint256[] argThree) view returns(bool, uint256)',
