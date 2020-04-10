@@ -49,18 +49,17 @@ function encodeOutputs(outputs: SolidityValue[] | undefined) {
   return ` returns(${returns})`;
 }
 
-function encodeSolidityValue(value: SolidityValue) {
-  let result = value.type;
-  if (result.includes('tuple') && value.components) {
-    const components = value.components.map(encodeSolidityValue).join(', ');
-    result = result.replace('tuple', `tuple(${components})`);
+function encodeSolidityValue({type, components, indexed, name}: SolidityValue) {
+  let result = type;
+  if (result.includes('tuple') && components) {
+    const members = components.map(encodeSolidityValue).join(', ');
+    result = result.replace('tuple', `tuple(${members})`);
   }
-  if (value.indexed) {
+  if (indexed) {
     result += ' indexed';
   }
-  if (value.name) {
-    result += ` ${value.name}`;
+  if (name) {
+    result += ` ${name}`;
   }
-  console.log(result);
   return result;
 }
