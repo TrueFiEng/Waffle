@@ -49,7 +49,7 @@ function encodeOutputs(outputs: SolidityValue[] | undefined) {
   return ` returns(${returns})`;
 }
 
-function encodeSolidityValue({type, components, indexed, name}: SolidityValue) {
+export function encodeSolidityValue({type, components, indexed, name}: SolidityValue) {
   let result = type;
   if (result.includes('tuple') && components) {
     const members = components.map(encodeSolidityValue).join(', ');
