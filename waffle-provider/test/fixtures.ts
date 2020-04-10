@@ -5,7 +5,7 @@ import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 
 describe('Integration: Fixtures', () => {
   describe('correctly restores state', () => {
-    async function tokenFixture(provider: MockProvider, [sender, recipient]: Wallet[]) {
+    async function tokenFixture([sender, recipient]: Wallet[], provider: MockProvider) {
       const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, sender);
       return {
         contract: await factory.deploy(1_000),
@@ -46,8 +46,8 @@ describe('Integration: Fixtures', () => {
 
   it('allow for restoring blockchain state', async () => {
     const fixture = async (
-      provider: MockProvider,
-      [wallet, other]: Wallet[]
+      [wallet, other]: Wallet[],
+      provider: MockProvider
     ) => ({wallet, other, provider});
 
     const {wallet, other, provider} = await loadFixture(fixture);
@@ -66,12 +66,12 @@ describe('Integration: Fixtures', () => {
   });
 
   describe('allow for multiple uses of different fixtures', () => {
-    async function sendAB(provider: MockProvider, [a, b]: Wallet[]) {
+    async function sendAB([a, b]: Wallet[], provider: MockProvider) {
       await send(a, b);
       return {a, b};
     }
 
-    async function sendBA(provider: MockProvider, [a, b]: Wallet[]) {
+    async function sendBA([a, b]: Wallet[], provider: MockProvider) {
       await send(b, a);
       return {a, b};
     }
@@ -112,8 +112,8 @@ describe('Integration: Fixtures', () => {
   });
 
   it('run on isolated chains', async () => {
-    const fixtureA = async (provider: MockProvider) => (provider);
-    const fixtureB = async (provider: MockProvider) => (provider);
+    const fixtureA = async (_: Wallet[], provider: MockProvider) => (provider);
+    const fixtureB = async (_: Wallet[], provider: MockProvider) => (provider);
 
     const providerA1 = await loadFixture(fixtureA);
     const providerA2 = await loadFixture(fixtureA);
@@ -132,8 +132,8 @@ describe('Integration: Fixtures', () => {
     let receivedProvider: any;
     let receivedWallets: any;
 
-    const customLoadFixture = createFixtureLoader(customProvider, customWallets);
-    await customLoadFixture(async (provider, wallets) => {
+    const customLoadFixture = createFixtureLoader(customWallets, customProvider);
+    await customLoadFixture(async (wallets, provider) => {
       receivedProvider = provider;
       receivedWallets = wallets;
     });
