@@ -1,8 +1,12 @@
 import {compileProject} from '@ethereum-waffle/compiler';
+import {flattenProject} from '@ethereum-waffle/compiler/src/flattener';
 
 export async function runCli(args: string[]) {
   const options = args.filter((x) => x.startsWith('-'));
   const other = args.filter((x) => !x.startsWith('-'));
+  const isTypeFlatten = args[0] === ('flatten');
+  const isTypeProvided = isTypeFlatten || args[0] === 'compile';
+  const configFile = isTypeProvided ? args[1] : args[0];
 
   if (options.length > 0) {
     for (const option of options) {
@@ -13,10 +17,13 @@ export async function runCli(args: string[]) {
       }
     }
   } else {
-    if (other.length > 1) {
+    if (other.length > 2) {
       exitWithError('Error: Too many arguments!');
     } else {
-      return compileProject(args[0]);
+      if (isTypeFlatten) {
+        return flattenProject(configFile);
+      }
+      return compileProject(configFile);
     }
   }
 }
@@ -30,7 +37,7 @@ function exitWithError(error: string) {
 const USAGE = `
   Usage:
 
-    waffle [config-file] [options]
+    waffle [compile|flatten] [config-file] [options]
 
     Compiles solidity source code
 

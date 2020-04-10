@@ -16,8 +16,8 @@ export function inputToConfig(input: InputConfig) {
         deprecate('sourcesPath', 'Use sourceDirectory instead.');
         set('sourceDirectory', input[key]);
       } else if (key === 'targetPath') {
-        deprecate('targetPath', 'Use outputDirectory instead.');
-        set('outputDirectory', input[key]);
+        deprecate('targetPath', 'Use compileOutputDirectory instead.');
+        set('compileOutputDirectory', input[key]);
       } else if (key === 'npmPath') {
         deprecate('npmPath', 'Use nodeModulesDirectory instead.');
         set('nodeModulesDirectory', input[key]);
@@ -48,7 +48,8 @@ export function inputToConfig(input: InputConfig) {
 function validate(config: any): asserts config is Config {
   const success = (
     checkSourceDirectory(config.sourceDirectory) &&
-    checkOutputDirectory(config.outputDirectory) &&
+    checkCompileOutputDirectory(config.compileOutputDirectory) &&
+    checkFlattenOutputDirectory(config.flattenOutputDirectory) &&
     checkNodeModulesDirectory(config.nodeModulesDirectory) &&
     checkCompilerType(config.compilerType) &&
     checkCompilerVersion(config.compilerVersion) &&
@@ -63,7 +64,8 @@ function validate(config: any): asserts config is Config {
 }
 
 const checkSourceDirectory = checkType('sourceDirectory', 'string');
-const checkOutputDirectory = checkType('outputDirectory', 'string');
+const checkCompileOutputDirectory = checkType('compileOutputDirectory', 'string');
+const checkFlattenOutputDirectory = checkType('flattenOutputDirectory', 'string');
 const checkNodeModulesDirectory = checkType('nodeModulesDirectory', 'string');
 const checkCompilerType = checkEnum('compilerType', ['native', 'dockerized-solc', 'solcjs']);
 const checkCompilerVersion = checkType('compilerVersion', 'string');

@@ -155,7 +155,7 @@ Example configuration file looks like this (all fields optional):
 ```json
 {
   "sourceDirectory": "./custom_contracts",
-  "outputDirectory": "./custom_build",
+  "compileOutputDirectory": "./custom_build",
   "nodeModulesDirectory": "./custom_node_modules"
 }
 ```

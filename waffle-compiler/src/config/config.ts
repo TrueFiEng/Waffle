@@ -2,7 +2,9 @@ export interface Config {
   /** Location of the project sources e.g. ./contracts */
   sourceDirectory: string;
   /** Location of the compilation artifacts e.g. ./dist */
-  outputDirectory: string;
+  compileOutputDirectory: string;
+  /** Location of the compilation artifacts e.g. ./dist */
+  flattenOutputDirectory: string;
   /** Location of the dependencies e.g. ./node_modules */
   nodeModulesDirectory: string;
 
