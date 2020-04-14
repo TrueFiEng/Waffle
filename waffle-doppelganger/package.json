@@ -1,5 +1,5 @@
 {
-  "name": "@ethereum-waffle/dopelganger",
+  "name": "@ethereum-waffle/doppelganger",
   "description": "Mock smart contracts in a smart way.",
   "version": "2.4.1",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -27,7 +27,7 @@
     "test": "export NODE_ENV=test && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
-    "build": "rimraf ./dist && waffle && yarn build:esm && yarn build:cjs",
+    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
     "clean": "rimraf ./dist ./test/example/build"
@@ -36,7 +36,6 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/chai": "^2.4.1",
     "@ethereum-waffle/compiler": "^2.4.1",
     "@ethereum-waffle/provider": "^2.4.1",
     "ethers": "^4.0.45"
