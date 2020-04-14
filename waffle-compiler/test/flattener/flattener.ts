@@ -1,12 +1,9 @@
 import {expect} from 'chai';
-import {flatten, flattenAndSave, IMPORT_SOLIDITY_REGEX} from '../../src/flattener';
-import {inputToConfig} from '../../src/config';
 import fs from 'fs-extra';
-import {gatherSources} from '@resolver-engine/imports';
-import {findInputs} from '../../src/findInputs';
-import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
+import {inputToConfig} from '../../src/config';
+import {flattenAndSave} from '../../src/flattener';
 
-const sourceDirectory = './test/projects/example';
+const sourceDirectory = './test/flattener/testSource';
 const flattenOutputDirectory = './test/flattener/flattenFiles';
 const compilerVersion = 'v0.5.9+commit.e560f70d';
 const config = inputToConfig({
@@ -16,32 +13,22 @@ const config = inputToConfig({
 });
 
 describe('flattening', () => {
-  it('just flat', async () => {
-    const output = await flatten(config);
-    console.log('L:21 | output: ', output[0]);
-    // expect(output.some(contract => IMPORT_SOLIDITY_REGEX.test(contract.source))).to.be.false;
+  after(async () => {
+    await fs.remove(flattenOutputDirectory);
   });
 
-  describe('saving to file', () => {
-    after(async () => {
-      await fs.remove(flattenOutputDirectory);
-    });
+  it('should include the parent if the child file', async () => {
+    await flattenAndSave(config);
+    const file = fs.readFileSync('./test/flattener/flattenFiles/child.sol', 'utf8');
+    expect(file).includes('contract Parent');
+  });
 
-    it('saves to file', async () => {
-      await flattenAndSave(config);
-
-      const resolver = ImportsFsEngine().addResolver(
-        // Backwards compatibility - change node_modules path
-        resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
-      );
-
-      const flatted = await gatherSources(
-        findInputs(flattenOutputDirectory),
-        '.',
-        resolver
-      );
-
-      expect(flatted.some(contract => IMPORT_SOLIDITY_REGEX.test(contract.source))).to.be.false;
-    });
+  it('should leave multiple solidity pragmas', async () => {
+    await flattenAndSave(config);
+    const file = fs.readFileSync('./test/flattener/flattenFiles/child.sol', 'utf8');
+    expect(file)
+      .includes('pragma solidity ^0.5.0')
+      .and.includes('pragma solidity >=0.4.24 <0.6.0')
+      .and.includes('pragma solidity ^0.5.2');
   });
 });

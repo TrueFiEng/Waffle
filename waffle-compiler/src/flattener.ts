@@ -5,9 +5,15 @@ import {gatherSources} from '@resolver-engine/imports';
 import {findInputs} from './findInputs';
 import {isWarningMessage} from './utils';
 import mkdirp from 'mkdirp';
-import fs from 'fs';
-import {join} from 'path';
+import fsx from 'fs-extra';
 import * as path from 'path';
+import {join} from 'path';
+
+export interface GatheredContractInterface {
+  url: string;
+  source: string;
+  provider: string;
+}
 
 export const IMPORT_SOLIDITY_REGEX = /^\s*import(\s+).*$/gm;
 
@@ -17,17 +23,12 @@ export async function flattenProject(configPath?: string) {
 
 export async function flattenAndSave(input: InputConfig) {
   const config = inputToConfig(input);
-  const output = await newFlatten(config);
+  const output = await getContractDependency(config);
   await processOutput(output, config);
 }
 
-export async function flatten(input: InputConfig) {
-  return newFlatten(inputToConfig(input));
-}
-
-async function newFlatten(config: Config) {
+async function getContractDependency(config: Config): Promise<GatheredContractInterface[][]> {
   const resolver = ImportsFsEngine().addResolver(
-    // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
 
@@ -41,8 +42,12 @@ async function newFlatten(config: Config) {
     );
   }));
 
-  // return contractsDependency.map(contract => contract.replace(IMPORT_SOLIDITY_REGEX, ''));
-  return contractsDependency;
+  return contractsDependency.map((contract: Array<GatheredContractInterface>) => {
+    return contract.map((dependency) => {
+      dependency.source = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '');
+      return dependency;
+    });
+  });
 }
 
 async function processOutput(output: any, config: Config) {
@@ -52,7 +57,7 @@ async function processOutput(output: any, config: Config) {
   if (anyNonWarningErrors(output.errors)) {
     throw new Error('Flattening failed');
   } else {
-    await saveToFile(output, config);
+    return saveToFile(output, config);
   }
 }
 
@@ -70,7 +75,7 @@ function toFormattedMessage(error: any) {
 
 const fsOps = {
   createDirectory: mkdirp.sync,
-  writeFile: fs.writeFileSync
+  writeFile: fsx.writeFileSync
 };
 
 function saveToFile(
@@ -80,9 +85,16 @@ function saveToFile(
 ) {
   const outputDirectory = config.flattenOutputDirectory;
   fileSystem.createDirectory(outputDirectory);
-  output.map((contract: { url: string; source: string; provider: string }) => {
-    const fileName = path.parse(contract.url).base;
+  output.map((contract: Array<GatheredContractInterface>) => {
+    const fileName = path.parse(contract[0].url).base;
     const filePath = join(outputDirectory, fileName);
-    fileSystem.writeFile(filePath, contract.source);
+    let dependencies = '';
+    contract.map((dependency) => {
+      if (dependency !== contract[0]) {
+        dependencies += '\n\n' + `// Dependency file: ${dependency.url}`;
+      }
+      dependencies += dependency.source;
+    });
+    fileSystem.writeFile(filePath, dependencies);
   });
 }
