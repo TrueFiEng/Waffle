@@ -55,9 +55,9 @@ function validate(config: any): asserts config is Config {
     checkCompilerAllowedPaths(config.compilerAllowedPaths) || 'compiler allowed paths',
     checkCompilerOptions(config.compilerOptions) || 'compiler options',
     checkOutputHumanReadableAbi(config.outputHumanReadableAbi) || 'output human readable ABI',
-    checkOutputType(config.outputType) || 'output type',
+    checkOutputType(config.outputType) || 'output type'
   ];
-  const firstError = results.find(x => typeof x === 'string')
+  const firstError = results.find(x => typeof x === 'string');
   if (firstError) {
     throw new TypeError(`Invalid config. Check your ${firstError}`);
   }
