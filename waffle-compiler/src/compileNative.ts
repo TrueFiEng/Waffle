@@ -3,12 +3,13 @@ import {execSync} from 'child_process';
 import {Config} from './config';
 import {buildInputObject} from './buildUitls';
 import {ImportFile} from '@resolver-engine/imports';
+import {solcOutputMaxBuffer} from './compiler';
 
 export function compileNative(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
     const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);
-    return JSON.parse(execSync(command, {input}).toString());
+    return JSON.parse(execSync(command, {input, maxBuffer: solcOutputMaxBuffer}).toString());
   };
 }
 

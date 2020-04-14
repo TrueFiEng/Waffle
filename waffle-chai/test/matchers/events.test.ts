@@ -1,7 +1,7 @@
 import {expect, AssertionError} from 'chai';
 import {Contract, utils, ContractFactory} from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
-import {EVENTS_ABI, EVENTS_BYTECODE} from './contracts/Events';
+import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
 
 describe('INTEGRATION: Events', () => {
   const [wallet] = new MockProvider().getWallets();

@@ -1,8 +1,17 @@
-pragma solidity ^0.5.1;
-
-
+pragma solidity ^0.6.0;
+pragma experimental ABIEncoderV2;
 
 contract MyContract {
+  struct Baz {
+    string a;
+    InnerBaz b;
+    bool[] nested;
+  }
+
+  struct InnerBaz {
+    uint b;
+  }
+
   event FooEvent ();
   event Bar (bool argOne, uint indexed argTwo);
 
@@ -11,7 +20,7 @@ contract MyContract {
     boo = uint200(argOne);
   }
 
-  function () external {
+  fallback () external {
   }
 
   function noArgs() public view returns (uint200) {
@@ -34,5 +43,10 @@ contract MyContract {
 
   function bar() private returns (uint200) {
     return boo++;
+  }
+
+  function complicated (Baz[] memory items) public returns (Baz memory) {
+    bar();
+    return items[0];
   }
 }
