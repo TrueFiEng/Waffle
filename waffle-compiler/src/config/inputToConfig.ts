@@ -46,19 +46,20 @@ export function inputToConfig(input: InputConfig) {
 }
 
 function validate(config: any): asserts config is Config {
-  const success = (
-    checkSourceDirectory(config.sourceDirectory) &&
-    checkOutputDirectory(config.outputDirectory) &&
-    checkNodeModulesDirectory(config.nodeModulesDirectory) &&
-    checkCompilerType(config.compilerType) &&
-    checkCompilerVersion(config.compilerVersion) &&
-    checkCompilerAllowedPaths(config.compilerAllowedPaths) &&
-    checkCompilerOptions(config.compilerOptions) &&
-    checkOutputHumanReadableAbi(config.outputHumanReadableAbi) &&
-    checkOutputType(config.outputType)
-  );
-  if (!success) {
-    throw new TypeError('Invalid config');
+  const results = [
+    checkSourceDirectory(config.sourceDirectory) || 'source directory',
+    checkOutputDirectory(config.outputDirectory) || 'output directory',
+    checkNodeModulesDirectory(config.nodeModulesDirectory) || 'node modules directory',
+    checkCompilerType(config.compilerType) || 'compiler type',
+    checkCompilerVersion(config.compilerVersion) || 'compiler version',
+    checkCompilerAllowedPaths(config.compilerAllowedPaths) || 'compiler allowed paths',
+    checkCompilerOptions(config.compilerOptions) || 'compiler options',
+    checkOutputHumanReadableAbi(config.outputHumanReadableAbi) || 'output human readable ABI',
+    checkOutputType(config.outputType) || 'output type',
+  ];
+  const firstError = results.find(x => typeof x === 'string')
+  if (firstError) {
+    throw new TypeError(`Invalid config. Check your ${firstError}`);
   }
 }
 
