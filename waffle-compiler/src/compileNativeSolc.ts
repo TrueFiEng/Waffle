@@ -5,7 +5,7 @@ import {buildInputObject} from './buildUitls';
 import {ImportFile} from '@resolver-engine/imports';
 import {solcOutputMaxBuffer} from './compiler';
 
-export function compileNative(config: Config) {
+export function compileNativeSolc(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
     const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);

@@ -12,7 +12,7 @@ export function findInputs(sourcePath: string) {
       const filePath = path.join(dir, file);
       if (isDirectory(filePath)) {
         stack.push(filePath);
-      } else if (file.endsWith('.sol')) {
+      } else if (file.endsWith('.sol') || file.endsWith('.vy')) {
         inputFiles.push(filePath);
       }
     }

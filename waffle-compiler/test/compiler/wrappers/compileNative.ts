@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {createBuildCommand} from '../../../src/compileNative';
+import {createBuildCommand} from '../../../src/compileNativeSolc';
 import {Config} from '../../../src/config';
 
 const sourceDirectory = './test/projects/custom/custom_contracts';
