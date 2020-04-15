@@ -57,11 +57,7 @@ export class DebugProvider implements providers.AsyncSendable {
       const { programCounter, reason } = getRevertDetails(error)
       const contractAddress = request.params[0].to
       const contractCode = await this.getContractCode(contractAddress)
-      const { offset } = await new SourceMapLoader('build').locateLineByBytecodeAndProgramCounter(contractCode, programCounter)
-
-      const file = 'contracts/TestContract.sol'
-      const source = readFileSync(file, { encoding: 'utf-8' })
-      const line = getLine(source, offset)
+      const { file, line } = await new SourceMapLoader('build').locateLineByBytecodeAndProgramCounter(contractCode, programCounter)
 
       error.message += ` (this revert occurred at ${file}:${line})`
     }
@@ -113,14 +109,21 @@ class SourceMapLoader {
       try {
         const data = JSON.parse(readFileSync(join(this.outputDir, file), { encoding: 'utf-8' }))
         if(data.evm.deployedBytecode.object === bytecode.slice(2)) {
-          contract = data.evm.deployedBytecode
+          contract = data
           break
         }
       } catch {}
     }
-    const sourceMap = parseSourceMap(contract.sourceMap)
-    const instructionIndex = getInstructionIndex(contract.object, programCounter)
-    return sourceMap[instructionIndex]
+    const sourceMap = parseSourceMap(contract.evm.deployedBytecode.sourceMap)
+    const instructionIndex = getInstructionIndex(contract.evm.deployedBytecode.object, programCounter)
+    const location = sourceMap[instructionIndex]
+    const file = (Object.entries(contract.sources).find(([file, x]) => (x as any).id === location.file)![1] as any).uri
+    const source = readFileSync(file, { encoding: 'utf-8' })
+    const line = getLine(source, location.offset)
+    return {
+      file,
+      line,
+    }
   }
 }
 

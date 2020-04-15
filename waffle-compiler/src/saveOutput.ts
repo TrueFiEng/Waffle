@@ -59,7 +59,7 @@ async function saveOutputSingletons(
   for (const [, file] of Object.entries<any>(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries<any>(file)) {
       const filePath = join(config.outputDirectory, `${contractName}.json`);
-      filesystem.writeFile(filePath, getContent(contractJson, config));
+      filesystem.writeFile(filePath, getContent(contractJson, output.sources, config));
     }
   }
 }
@@ -97,11 +97,12 @@ async function saveOutputCombined(
   );
 }
 
-function getContent(contractJson: ContractJson, config: Config) {
+function getContent(contractJson: ContractJson, sources: any, config: Config) {
   contractJson.interface = contractJson.abi;
   contractJson.bytecode = contractJson.evm.bytecode.object;
   if (config.outputHumanReadableAbi) {
     contractJson.humanReadableAbi = getHumanReadableAbi(contractJson.abi);
   }
+  (contractJson as any).sources = sources
   return JSON.stringify(contractJson, null, 2);
 }
