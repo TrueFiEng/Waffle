@@ -19,11 +19,11 @@ describe('Doppelganger - Integration (called by other contract)', () => {
       [mockCounter.address]
     );
 
-    await mockCounter.read.returns(5);
+    await mockCounter.mock.read.returns(5);
     const ret1 = await expect(capContract.read()).to.be.eventually.fulfilled;
     expect(ret1.toNumber()).to.be.equal(5);
 
-    await mockCounter.read.returns(12);
+    await mockCounter.mock.read.returns(12);
     const ret2 = await expect(capContract.read()).to.be.eventually.fulfilled;
     expect(ret2.toNumber()).to.be.equal(10);
   });

@@ -27,22 +27,12 @@ describe('Doppelganger - Tool', () => {
   });
 
   describe('behavior controls', () => {
-    it('are created for all abi defined functions', () => {
-      expect(mockContract.read).to.be.an('object');
-    });
-
-    it('each containing a returns method', () => {
-      expect(mockContract.read.returns).to.be.a('function');
-    });
-
-    describe('setter method', () => {
-      it('calls the mockReturns method of the mock contract', async () => {
-        await expect(mockContract.read.returns(1234)).to.eventually.be.fulfilled;
-        expect(contractStub.mockReturns).to.have.been.calledOnceWith(
-          '0x57de26a4',
-          '0x00000000000000000000000000000000000000000000000000000000000004d2'
-        );
-      });
+    it('`mock.returns` calls the mockReturns method of the mock contract', async () => {
+      await expect(mockContract.mock.read.returns(1234)).to.eventually.be.fulfilled;
+      expect(contractStub.mockReturns).to.have.been.calledOnceWith(
+        '0x57de26a4',
+        '0x00000000000000000000000000000000000000000000000000000000000004d2'
+      );
     });
   });
 });

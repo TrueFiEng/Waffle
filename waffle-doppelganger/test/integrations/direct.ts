@@ -12,10 +12,9 @@ describe('Doppelganger - Integration (called directly)', () => {
 
   it('mocking mechanism works', async () => {
     const mockCounter = await doppelganger(wallet, Counter.interface);
-    await mockCounter.read.returns(45291);
-    const {contract} = mockCounter;
+    await mockCounter.mock.read.returns(45291);
 
-    const ret = await expect(contract.read()).to.be.eventually.fulfilled;
+    const ret = await expect(mockCounter.read()).to.be.eventually.fulfilled;
     expect(ret.toNumber()).to.be.equal(45291);
   });
 });

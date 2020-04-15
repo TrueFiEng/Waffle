@@ -1,7 +1,7 @@
 import {utils, Contract, Wallet, ContractFactory} from 'ethers';
 import {FunctionDescription} from 'ethers/utils/interface';
 import {EventFragment, FunctionFragment, ParamType} from 'ethers/utils/abi-coder';
-import DoppelgangerContract from '../build/Doppelganger.json';
+import DoppelgangerContract from './Doppelganger.json';
 
 type ABI = Array<EventFragment | FunctionFragment | ParamType> | string;
 
@@ -19,25 +19,28 @@ function stub(mockContract: Contract, encoder: utils.AbiCoder, func: FunctionDes
   };
 }
 
-export type Doppelganger = {
-  [key: string]: ReturnType<typeof stub>;
-} & {
-  contract: Contract;
-  address: string;
+export interface Doppelganger extends Contract {
+  mock: {
+    [key: string]: ReturnType<typeof stub>;
+  };
 }
 
 export async function doppelganger(wallet: Wallet, abi: ABI, contractInstance?: Contract):
 Promise<Doppelganger> {
-  const instance = contractInstance ?? await deployDoppelganger(wallet);
+  const doppelgangerInstance = contractInstance ?? await deployDoppelganger(wallet);
 
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
-  return Object.values(functions).reduce((acc, func) => ({
+  const mock = Object.values(functions).reduce((acc, func) => ({
     ...acc,
-    [func.name]: stub(instance, encoder, func)
-  }), {
-    contract: new Contract(instance.address, abi, wallet),
-    address: instance.address
-  } as Doppelganger);
+    [func.name]: stub(doppelgangerInstance, encoder, func)
+  }), {} as Doppelganger['mock']);
+
+  const mockedContract = new Contract(doppelgangerInstance.address, abi, wallet);
+
+  return {
+    ...mockedContract,
+    mock
+  } as Doppelganger;
 }
