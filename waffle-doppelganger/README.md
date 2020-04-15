@@ -89,7 +89,7 @@ describe('Am I Rich Already?', () => {
   let mockERC20; // an instance of doppelganger for the ERC20 token we want to observe
 
   beforeEach(async () => {
-    mockERC20 = new Doppelganger(user, IERC20.interface); // tell doppelganger what it should pretend to be
+    mockERC20 = await doppelganger(user, IERC20.abi); // tell doppelganger what it should pretend to be
     contract = await deployContract(user, AmIRichAlready, [mockERC20.address]); // deploy the contract under test to the chain
   });
 
