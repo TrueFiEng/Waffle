@@ -1,14 +1,10 @@
-import {compileProject} from '@ethereum-waffle/compiler';
-import {flattenProject} from '@ethereum-waffle/compiler/src/flattener';
+import {compileProject, flattenProject} from '@ethereum-waffle/compiler';
 
 export async function runCli(args: string[]) {
   const options = args.filter((x) => x.startsWith('-'));
   const other = args.filter((x) => !x.startsWith('-'));
-  const isTypeFlatten = args[0] === ('flatten');
-  const isTypeProvided = isTypeFlatten || args[0] === 'compile';
-  const configFile = isTypeProvided ? args[1] : args[0];
 
-  if (options.length > 0) {
+  const handleOptions = () => {
     for (const option of options) {
       if (option === '--help' || option === '-h') {
         console.log(USAGE);
@@ -16,14 +12,26 @@ export async function runCli(args: string[]) {
         exitWithError(`Error: Unknown option ${option}`);
       }
     }
+  };
+
+  const handleCommands = () => {
+    const isTypeFlatten = args[0] === ('flatten');
+    const isTypeProvided = isTypeFlatten || args[0] === 'compile';
+    const configFile = isTypeProvided ? args[1] : args[0];
+
+    if (isTypeFlatten) {
+      return flattenProject(configFile);
+    }
+    return compileProject(configFile);
+  };
+
+  if (options.length > 0) {
+    handleOptions();
   } else {
     if (other.length > 2) {
       exitWithError('Error: Too many arguments!');
     } else {
-      if (isTypeFlatten) {
-        return flattenProject(configFile);
-      }
-      return compileProject(configFile);
+      return handleCommands();
     }
   }
 }
@@ -37,9 +45,12 @@ function exitWithError(error: string) {
 const USAGE = `
   Usage:
 
-    waffle [compile|flatten] [config-file] [options]
+    waffle [command] [config-file] [options]
 
-    Compiles solidity source code
+
+  Commands:
+    compile       Compiles solidity source code. (default parameter)
+    flatten       Concat solidity source code with all dependencies.
 
   Config file:
 

@@ -40,7 +40,7 @@ export async function saveOutput(
 ) {
   config.outputType = config.outputType || 'multiple';
 
-  filesystem.createDirectory(config.compileOutputDirectory);
+  filesystem.createDirectory(config.outputDirectory);
 
   if (['multiple', 'all'].includes(config.outputType)) {
     saveOutputSingletons(output, config, filesystem);
@@ -58,7 +58,7 @@ async function saveOutputSingletons(
 ) {
   for (const [, file] of Object.entries<any>(output.contracts)) {
     for (const [contractName, contractJson] of Object.entries<any>(file)) {
-      const filePath = join(config.compileOutputDirectory, `${contractName}.json`);
+      const filePath = join(config.outputDirectory, `${contractName}.json`);
       filesystem.writeFile(filePath, getContent(contractJson, config));
     }
   }
@@ -92,7 +92,7 @@ async function saveOutputCombined(
   output.sourceList = allSources;
 
   filesystem.writeFile(
-    join(config.compileOutputDirectory, 'Combined-Json.json'),
+    join(config.outputDirectory, 'Combined-Json.json'),
     JSON.stringify(output, null, 2)
   );
 }

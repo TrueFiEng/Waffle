@@ -6,11 +6,11 @@ import {Config} from '../../../src/config';
 
 const sourceDirectory = './test/projects/custom/custom_contracts';
 const nodeModulesDirectory = './test/projects/custom/custom_node_modules';
-const compileOutputDirectory = './buildtmp';
+const outputDirectory = './buildtmp';
 const config = {
   sourceDirectory,
   nodeModulesDirectory,
-  compileOutputDirectory
+  outputDirectory
 };
 
 describe('UNIT: saveOutput', () => {

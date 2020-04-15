@@ -98,7 +98,7 @@ describe('UNIT: inputToConfig', () => {
         },
         output: {
           sourceDirectory: './test/projects/custom/custom_contracts',
-          compileOutputDirectory: './test/projects/custom/custom_build',
+          outputDirectory: './test/projects/custom/custom_build',
           nodeModulesDirectory: '../custom_node_modules'
         }
       },
@@ -120,12 +120,12 @@ describe('UNIT: inputToConfig', () => {
         name: 'new config',
         input: {
           sourceDirectory: './test/projects/custom/custom_contracts',
-          compileOutputDirectory: './test/projects/custom/custom_build',
+          outputDirectory: './test/projects/custom/custom_build',
           nodeModulesDirectory: '../custom_node_modules'
         },
         output: {
           sourceDirectory: './test/projects/custom/custom_contracts',
-          compileOutputDirectory: './test/projects/custom/custom_build',
+          outputDirectory: './test/projects/custom/custom_build',
           nodeModulesDirectory: '../custom_node_modules'
         }
       }
@@ -148,8 +148,8 @@ describe('UNIT: inputToConfig', () => {
         sourceDirectory: 2
       },
       {
-        name: 'compileOutputDirectory non-string',
-        compileOutputDirectory: []
+        name: 'outputDirectory non-string',
+        outputDirectory: []
       },
       {
         name: 'nodeModulesDirectory non-string',

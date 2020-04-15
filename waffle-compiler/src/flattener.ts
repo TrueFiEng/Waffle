@@ -3,7 +3,6 @@ import {Config, InputConfig, inputToConfig} from './config';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
 import {findInputs} from './findInputs';
-import {isWarningMessage} from './utils';
 import mkdirp from 'mkdirp';
 import fsx from 'fs-extra';
 import * as path from 'path';
@@ -15,8 +14,6 @@ export interface GatheredContractInterface {
   provider: string;
 }
 
-export const IMPORT_SOLIDITY_REGEX = /^\s*import(\s+).*$/gm;
-
 export async function flattenProject(configPath?: string) {
   await flattenAndSave(await loadConfig(configPath));
 }
@@ -24,7 +21,7 @@ export async function flattenProject(configPath?: string) {
 export async function flattenAndSave(input: InputConfig) {
   const config = inputToConfig(input);
   const output = await getContractDependency(config);
-  await processOutput(output, config);
+  await saveToFile(output, config);
 }
 
 async function getContractDependency(config: Config): Promise<GatheredContractInterface[][]> {
@@ -34,43 +31,11 @@ async function getContractDependency(config: Config): Promise<GatheredContractIn
 
   const allContracts = findInputs(config.sourceDirectory);
 
-  const contractsDependency = await Promise.all(allContracts.map(async contract => {
-    return gatherSources(
-      [contract],
-      '.',
-      resolver
-    );
-  }));
-
-  return contractsDependency.map((contract: Array<GatheredContractInterface>) => {
-    return contract.map((dependency) => {
-      dependency.source = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '');
-      return dependency;
-    });
-  });
-}
-
-async function processOutput(output: any, config: Config) {
-  if (output.errors) {
-    console.error(formatErrors(output.errors));
-  }
-  if (anyNonWarningErrors(output.errors)) {
-    throw new Error('Flattening failed');
-  } else {
-    return saveToFile(output, config);
-  }
-}
-
-function anyNonWarningErrors(errors?: any[]) {
-  return errors && !errors.every(isWarningMessage);
-}
-
-function formatErrors(errors: any[]) {
-  return errors.map(toFormattedMessage).join('\n');
-}
-
-function toFormattedMessage(error: any) {
-  return typeof error === 'string' ? error : error.formattedMessage;
+  return Promise.all(allContracts.map(async contract => gatherSources(
+    [contract],
+    '.',
+    resolver
+  )));
 }
 
 const fsOps = {
@@ -79,22 +44,31 @@ const fsOps = {
 };
 
 function saveToFile(
-  output: any,
+  output: GatheredContractInterface[][],
   config: Config,
   fileSystem = fsOps
 ) {
+  const IMPORT_SOLIDITY_REGEX = /import/gi;
+  const PRAGMA_SOLIDITY_REGEX = /pragma/gi;
   const outputDirectory = config.flattenOutputDirectory;
+
   fileSystem.createDirectory(outputDirectory);
+
   output.map((contract: Array<GatheredContractInterface>) => {
     const fileName = path.parse(contract[0].url).base;
     const filePath = join(outputDirectory, fileName);
-    let dependencies = '';
+    let source = '';
+
     contract.map((dependency) => {
-      if (dependency !== contract[0]) {
-        dependencies += '\n\n' + `// Dependency file: ${dependency.url}`;
+      const sourceWithCommentedImports = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '// import');
+
+      if (dependency === contract[0]) {
+        source = sourceWithCommentedImports;
+      } else {
+        const sourceWithCommentedPragmas = sourceWithCommentedImports.replace(PRAGMA_SOLIDITY_REGEX, '// pragma');
+        source = `// Dependency file: ${dependency.url}\n\n` + sourceWithCommentedPragmas + '\n' + source;
       }
-      dependencies += dependency.source;
     });
-    fileSystem.writeFile(filePath, dependencies);
+    fileSystem.writeFile(filePath, source);
   });
 }

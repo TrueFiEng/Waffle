@@ -1,3 +1,5 @@
+pragma solidity ^0.5.2;
+
 import "./cycle2.sol";
 
 contract Cycle1 {
