@@ -46,20 +46,21 @@ export function inputToConfig(input: InputConfig) {
 }
 
 function validate(config: any): asserts config is Config {
-  const success = (
-    checkSourceDirectory(config.sourceDirectory) &&
-    checkOutputDirectory(config.outputDirectory) &&
-    checkNodeModulesDirectory(config.nodeModulesDirectory) &&
-    checkCompilerType(config.compilerType) &&
-    checkCompilerVersion(config.compilerVersion) &&
-    checkCompilerAllowedPaths(config.compilerAllowedPaths) &&
-    checkCompilerOptions(config.compilerOptions) &&
-    checkOutputHumanReadableAbi(config.outputHumanReadableAbi) &&
-    checkOutputType(config.outputType)
-  );
-  if (!success) {
-    throw new TypeError('Invalid config');
+  function checkConfigProperty(property: string, validator: (value: unknown) => boolean) {
+    if (!validator(config[property])) {
+      throw new TypeError(`Invalid config. Check the value of "${property}"`);
+    }
   }
+
+  checkConfigProperty('sourceDirectory', checkSourceDirectory);
+  checkConfigProperty('outputDirectory', checkOutputDirectory);
+  checkConfigProperty('nodeModulesDirectory', checkNodeModulesDirectory);
+  checkConfigProperty('compilerType', checkCompilerType);
+  checkConfigProperty('compilerVersion', checkCompilerVersion);
+  checkConfigProperty('compilerAllowedPaths', checkCompilerAllowedPaths);
+  checkConfigProperty('compilerOptions', checkCompilerOptions);
+  checkConfigProperty('outputHumanReadableAbi', checkOutputHumanReadableAbi);
+  checkConfigProperty('outputType', checkOutputType);
 }
 
 const checkSourceDirectory = checkType('sourceDirectory', 'string');
