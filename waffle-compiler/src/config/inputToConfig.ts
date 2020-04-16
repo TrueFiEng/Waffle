@@ -54,6 +54,7 @@ function validate(config: any): asserts config is Config {
 
   checkConfigProperty('sourceDirectory', checkSourceDirectory);
   checkConfigProperty('outputDirectory', checkOutputDirectory);
+  checkConfigProperty('flattenOutputDirectory', checkFlattenOutputDirectory);
   checkConfigProperty('nodeModulesDirectory', checkNodeModulesDirectory);
   checkConfigProperty('compilerType', checkCompilerType);
   checkConfigProperty('compilerVersion', checkCompilerVersion);
@@ -65,6 +66,7 @@ function validate(config: any): asserts config is Config {
 
 const checkSourceDirectory = checkType('sourceDirectory', 'string');
 const checkOutputDirectory = checkType('outputDirectory', 'string');
+const checkFlattenOutputDirectory = checkType('flattenOutputDirectory', 'string');
 const checkNodeModulesDirectory = checkType('nodeModulesDirectory', 'string');
 const checkCompilerType = checkEnum('compilerType', ['native', 'dockerized-solc', 'solcjs']);
 const checkCompilerVersion = checkType('compilerVersion', 'string');
