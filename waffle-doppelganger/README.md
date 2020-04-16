@@ -28,11 +28,11 @@ npm install --save-dev @ethereum-waffle/doppelganger
 Create a instance of fake contract providing the ABI/interface of the smart contract you want to mock:
 
 ```js
-import {doppelganger} from '@ethereum-waffle/doppelganger';
+import {deployMockContract} from '@ethereum-waffle/doppelganger';
 
 ...
 
-const mockContract = await doppelganger(wallet, contractAbi);
+const mockContract = await deployMockContract(wallet, contractAbi);
 ```
 
 Doppelganger can now be passed into other contracts by using the `address` attribute.
@@ -40,7 +40,7 @@ Doppelganger can now be passed into other contracts by using the `address` attri
 Return values for mocked functions can be set using:
 
 ```js
-await doppelganger.<nameOfMethod>.returns(<value>)
+await mockContract.mock.<nameOfMethod>.returns(<value>)
 ```
 
 ## Example
@@ -48,7 +48,7 @@ await doppelganger.<nameOfMethod>.returns(<value>)
 Below example illustrates how Doppelganger can be used to test the very simple `AmIRichAlready` contract.
 
 ```Solidity
-pragma solidity ^0.4.24;
+pragma solidity ^0.6.3;
 
 import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 
@@ -62,7 +62,7 @@ contract AmIRichAlready {
         wallet = msg.sender;
     }
 
-    function check() public view returns(bool) {
+    function check() public view returns (bool) {
         uint balance = tokenContract.balanceOf(wallet);
         return balance > RICHNESS;
     }
@@ -75,8 +75,8 @@ We are mostly interested in the `tokenContract.balanceOf` call. Doppelganger wil
 import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ethers from 'ethers';
-import {MockProvider, deployContract} from 'ethereum-waffle';
-import Doppelganger from 'ethereum-doppelganger';
+import {MockProvider} from '@ethereum-waffle/provider';
+import {deployMockContract} from '@ethereum-waffle/doppelganger';
 
 import IERC20 from '../../build/IERC20';
 import AmIRichAlready from '../../build/AmIRichAlready';
@@ -89,24 +89,25 @@ describe('Am I Rich Already?', () => {
   let mockERC20; // an instance of doppelganger for the ERC20 token we want to observe
 
   beforeEach(async () => {
-    mockERC20 = await doppelganger(user, IERC20.abi); // tell doppelganger what it should pretend to be
-    contract = await deployContract(user, AmIRichAlready, [mockERC20.address]); // deploy the contract under test to the chain
+    mockERC20 = await deployMockContract(user, IERC20.abi); // tell doppelganger what it should pretend to be
+    const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender)
+    contract = await contractFactory.deploy(mockERC20.address); // deploy the contract under test to the chain
   });
 
   describe('check method', () => {
     it('returns false if the wallet has less then 1000000 DAI', async () => {
-      await mockERC20.balanceOf.returns(ethers.utils.parseEther('999999')); // configure doppelganger to return 999999 when balanceOf is called
-      await expect(contract.check()).to.eventually.be.fulfilled.and.equal(false);
+      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('999999')); // configure doppelganger to return 999999 when balanceOf is called
+      expect(await contract.check()).to.be.equal(false);
     });
 
     it('returns false if the wallet has exactly 1000000 DAI', async () => {
-      await mockERC20.balanceOf.returns(ethers.utils.parseEther('1000000')); // subsequent calls override the previous config
-      await expect(contract.check()).to.eventually.be.fulfilled.and.equal(false);
+      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000000')); // subsequent calls override the previous config
+      expect(await contract.check()).to.eventually.equal(false);
     });
 
     it('returns true if the wallet has more then 1000000 DAI', async () => {
-      await mockERC20.balanceOf.returns(ethers.utils.parseEther('1000001'));
-      await expect(contract.check()).to.eventually.be.fulfilled.and.equal(true);
+      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000001'));
+      expect(await contract.check()).to.eventually.equal(true);
     });
   });
 });

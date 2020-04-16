@@ -1,30 +1,28 @@
 import {use, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {deployContract, MockProvider} from 'ethereum-waffle';
+import {ContractFactory} from 'ethers';
+import {MockProvider} from '@ethereum-waffle/provider';
+import {waffleChai} from '@ethereum-waffle/chai';
 
-import {doppelganger} from '../../src';
+import {deployMockContract} from '../../src';
 import Counter from '../helpers/interfaces/Counter.json';
 import Cap from '../helpers/interfaces/Cap.json';
 
 use(chaiAsPromised);
+use(waffleChai);
 
 describe('Doppelganger - Integration (called by other contract)', () => {
   const [wallet] = new MockProvider().getWallets();
 
   it('mocking mechanism works', async () => {
-    const mockCounter = await doppelganger(wallet, Counter.interface);
-    const capContract = await deployContract(
-      wallet,
-      Cap,
-      [mockCounter.address]
-    );
+    const mockCounter = await deployMockContract(wallet, Counter.interface);
+    const capFactory = new ContractFactory(Cap.abi, Cap.bytecode, wallet);
+    const capContract = await capFactory.deploy(mockCounter.address);
 
     await mockCounter.mock.read.returns(5);
-    const ret1 = await expect(capContract.read()).to.be.eventually.fulfilled;
-    expect(ret1.toNumber()).to.be.equal(5);
+    expect(await capContract.read()).to.be.equal(5);
 
     await mockCounter.mock.read.returns(12);
-    const ret2 = await expect(capContract.read()).to.be.eventually.fulfilled;
-    expect(ret2.toNumber()).to.be.equal(10);
+    expect(await capContract.read()).to.be.equal(10);
   });
 });

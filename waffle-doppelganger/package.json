@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/doppelganger",
   "description": "Mock smart contracts in a smart way.",
-  "version": "0.0.1",
+  "version": "2.4.1",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -13,7 +13,9 @@
     "testing",
     "javascript",
     "typescript",
-    "library"
+    "library",
+    "mock",
+    "double"
   ],
   "homepage": "https://github.com/EthWorks/Waffle",
   "bugs": {
@@ -24,12 +26,14 @@
   "types": "dist/esm/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn build",
-    "test": "export NODE_ENV=test && mocha",
+    "test": "export NODE_ENV=test && yarn test:build && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
-    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
+    "build": "rimraf ./dist && yarn build:sol && yarn build:esm && yarn build:cjs",
+    "build:sol": "ts-node compile.ts",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
+    "test:build": "ts-node ./test/helpers/buildTestContracts.ts",
     "clean": "rimraf ./dist ./test/example/build"
   },
   "engines": {
@@ -40,6 +44,7 @@
   },
   "devDependencies": {
     "@ethereum-waffle/compiler": "^2.4.1",
+    "@ethereum-waffle/chai": "^2.4.1",
     "@ethereum-waffle/provider": "^2.4.1",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
