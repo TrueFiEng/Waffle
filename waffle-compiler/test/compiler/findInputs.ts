@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import {findInputs} from '../../src/findInputs';
 
 describe('INTEGRATION: findInputs', () => {
-  const extensions: string[] = ['.sol', '.vy']
+  const extensions: string[] = ['.sol', '.vy'];
 
   before(async () => {
     await fs.mkdirp('/tmp/waffle/a');

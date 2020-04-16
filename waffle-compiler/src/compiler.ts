@@ -29,7 +29,7 @@ async function newCompile(config: Config) {
     // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
-  const extensions: string [] = ['.sol', '.vy']
+  const extensions: string [] = ['.sol', '.vy'];
   const sources = await gatherSources(
     findInputs(config.sourceDirectory, extensions),
     '.',
