@@ -48,8 +48,6 @@ function saveToFile(
   config: Config,
   fileSystem = fsOps
 ) {
-  const IMPORT_SOLIDITY_REGEX = /import/gi;
-  const PRAGMA_SOLIDITY_REGEX = /pragma/gi;
   const outputDirectory = config.flattenOutputDirectory;
 
   fileSystem.createDirectory(outputDirectory);
@@ -59,16 +57,27 @@ function saveToFile(
     const filePath = join(outputDirectory, fileName);
     let source = '';
 
-    contract.map((dependency) => {
-      const sourceWithCommentedImports = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '// import');
-
-      if (dependency === contract[0]) {
-        source = sourceWithCommentedImports;
-      } else {
-        const sourceWithCommentedPragmas = sourceWithCommentedImports.replace(PRAGMA_SOLIDITY_REGEX, '// pragma');
-        source = `// Dependency file: ${dependency.url}\n\n` + sourceWithCommentedPragmas + '\n' + source;
-      }
+    contract.map(dependency => {
+      source = modifyDependency(dependency, contract, source);
     });
     fileSystem.writeFile(filePath, source);
   });
+}
+
+function modifyDependency(
+  dependency: GatheredContractInterface,
+  contract: Array<GatheredContractInterface>,
+  source: string
+) {
+  const IMPORT_SOLIDITY_REGEX = /import/gi;
+  const PRAGMA_SOLIDITY_REGEX = /pragma/gi;
+
+  const sourceWithCommentedImports = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '// import');
+
+  if (dependency === contract[0]) {
+    return sourceWithCommentedImports;
+  } else {
+    const sourceWithCommentedPragmas = sourceWithCommentedImports.replace(PRAGMA_SOLIDITY_REGEX, '// pragma');
+    return `// Dependency file: ${dependency.url}\n\n` + sourceWithCommentedPragmas + '\n' + source;
+  }
 }

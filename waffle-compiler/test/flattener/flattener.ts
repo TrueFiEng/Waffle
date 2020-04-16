@@ -22,9 +22,10 @@ describe('flattening', () => {
     await fs.remove(flattenOutputDirectory);
   });
 
-  it('should include the parent in the child file', async () => {
-    const file = await flatAndGetChild();
-    expect(file).includes('contract Parent');
+  it('properly flats source', async () => {
+    const flattenFile = await flatAndGetChild();
+    const expectedFile = fs.readFileSync('./test/flattener/expectedFlattenChild.sol', 'utf8');
+    expect(flattenFile).eq(expectedFile);
   });
 
   it('should comment all solidity pragmas from dependency', async () => {
