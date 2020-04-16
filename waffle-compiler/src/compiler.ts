@@ -30,7 +30,7 @@ async function newCompile(config: Config) {
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
   const sources = await gatherSources(
-    findInputs(config.sourceDirectory),
+    findInputs(config.sourceDirectory, ['.sol', '.vy']),
     '.',
     resolver
   );
