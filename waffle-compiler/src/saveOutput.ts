@@ -103,6 +103,6 @@ function getContent(contractJson: ContractJson, sources: any, config: Config) {
   if (config.outputHumanReadableAbi) {
     contractJson.humanReadableAbi = getHumanReadableAbi(contractJson.abi);
   }
-  (contractJson as any).sources = sources
+  (contractJson as any).sources = sources;
   return JSON.stringify(contractJson, null, 2);
 }

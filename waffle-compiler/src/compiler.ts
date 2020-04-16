@@ -35,10 +35,10 @@ async function newCompile(config: Config) {
     resolver
   );
   const output = await getCompileFunction(config)(sources, findImports(sources));
-  for(const sourceKey in output.sources) {
-    output.sources[sourceKey].uri = await resolver.resolve(sourceKey)
+  for (const sourceKey in output.sources) {
+    output.sources[sourceKey].uri = await resolver.resolve(sourceKey);
   }
-  return output
+  return output;
 }
 
 async function processOutput(output: any, config: Config) {
