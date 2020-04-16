@@ -32,3 +32,6 @@ export const isDirectory = (directoryPath: string) =>
   fs.statSync(relativePathToWorkingDir(directoryPath)).isDirectory();
 
 export const relativePathToWorkingDir = (pathName: string) => path.resolve(pathName);
+
+export const experimentalWarring = () =>
+  console.log('Warring! This is experimental and the api might change without major version change.');

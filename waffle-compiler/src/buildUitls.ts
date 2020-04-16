@@ -8,10 +8,12 @@ export function buildSourcesObject(files: ImportFile[]): Record<string, { conten
   return result;
 }
 
+export type Language = 'Solidity' | 'Vyper';
+
 export function buildInputObject(
   files: ImportFile[],
   overrides: any = {},
-  language: 'Solidity' | 'Vyper' = 'Solidity'
+  language: Language = 'Solidity'
 ) {
   const sources = buildSourcesObject(files);
   return {
