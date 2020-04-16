@@ -58,13 +58,13 @@ function saveToFile(
     let source = '';
 
     contract.map(dependency => {
-      source = modifyDependency(dependency, contract, source);
+      source = replaceDirectivesWithComments(dependency, contract, source);
     });
     fileSystem.writeFile(filePath, source);
   });
 }
 
-function modifyDependency(
+function replaceDirectivesWithComments(
   dependency: GatheredContractInterface,
   contract: Array<GatheredContractInterface>,
   source: string
