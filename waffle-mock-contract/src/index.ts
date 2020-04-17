@@ -1,16 +1,14 @@
 import {Contract, ContractFactory, utils, Wallet} from 'ethers';
-import {FunctionDescription} from 'ethers/utils/interface';
-import {EventFragment, FunctionFragment, ParamType} from 'ethers/utils/abi-coder';
 import DoppelgangerContract from './Doppelganger.json';
 
-type ABI = Array<EventFragment | FunctionFragment | ParamType> | string;
+type ABI = Array<utils.EventFragment | utils.FunctionFragment | utils.ParamType> | string;
 
 async function deploy(wallet: Wallet) {
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
   return factory.deploy();
 }
 
-function stub(mockContract: Contract, encoder: utils.AbiCoder, func: FunctionDescription) {
+function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionDescription) {
   return {
     returns: async (...args: any) => {
       const encoded = encoder.encode(func.outputs, args);
