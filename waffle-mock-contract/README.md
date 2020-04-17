@@ -7,6 +7,9 @@
 
 Library for mocking smart contract dependencies during unit testing.
 
+## Warning
+@ethereum-waffle/mock-contract is an experimental package. Breaking changes will not result in a new major version.
+
 ## Installation
 In the current version of waffle (v2.x.x) you will install this package as a dependency of the main waffle package - `ethereum-waffle`.
 
