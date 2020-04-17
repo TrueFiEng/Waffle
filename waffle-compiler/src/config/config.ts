@@ -3,6 +3,8 @@ export interface Config {
   sourceDirectory: string;
   /** Location of the compilation artifacts e.g. ./dist */
   outputDirectory: string;
+  /** Location of the compilation artifacts e.g. ./dist */
+  flattenOutputDirectory: string;
   /** Location of the dependencies e.g. ./node_modules */
   nodeModulesDirectory: string;
 
