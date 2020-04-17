@@ -1,5 +1,5 @@
 {
-  "name": "@ethereum-waffle/doppelganger",
+  "name": "@ethereum-waffle/mock-contract",
   "description": "Mock smart contracts in a smart way.",
   "version": "2.4.1",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",

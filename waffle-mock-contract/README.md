@@ -1,11 +1,11 @@
 ![Ethereum Waffle](https://raw.githubusercontent.com/EthWorks/Waffle/master/docs/source/logo.png)
 
 [![CircleCI](https://circleci.com/gh/EthWorks/Waffle.svg?style=svg)](https://circleci.com/gh/EthWorks/Waffle)
-[![](https://img.shields.io/npm/v/@ethereum-waffle/doppelganger.svg)](https://www.npmjs.com/package/@ethereum-waffle/doppelganger)
+[![](https://img.shields.io/npm/v/@ethereum-waffle/mock-contract.svg)](https://www.npmjs.com/package/@ethereum-waffle/mock-contract)
 
 _doppelgänger /ˈdɒp(ə)lˌɡaŋə,ˈdɒp(ə)lˌɡɛŋə/ - an apparition or double of a living person_
 
-# @ethereum-waffle/doppelganger
+# @ethereum-waffle/mock-contract
 
 Library for mocking smart contract dependencies during unit testing.
 
@@ -19,8 +19,8 @@ npm install --save-dev ethereum-waffle
 
 If you want to use this package directly please install it via:
 ```
-yarn add --dev @ethereum-waffle/doppelganger
-npm install --save-dev @ethereum-waffle/doppelganger
+yarn add --dev @ethereum-waffle/mock-contract
+npm install --save-dev @ethereum-waffle/mock-contract
 ```
 
 ## Usage
@@ -28,7 +28,7 @@ npm install --save-dev @ethereum-waffle/doppelganger
 Create a instance of fake contract providing the ABI/interface of the smart contract you want to mock:
 
 ```js
-import {deployMockContract} from '@ethereum-waffle/doppelganger';
+import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
 ...
 
@@ -76,7 +76,7 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ethers from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
-import {deployMockContract} from '@ethereum-waffle/doppelganger';
+import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
 import IERC20 from '../../build/IERC20';
 import AmIRichAlready from '../../build/AmIRichAlready';

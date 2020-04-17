@@ -44,7 +44,7 @@
   "dependencies": {
     "@ethereum-waffle/chai": "^2.4.1",
     "@ethereum-waffle/compiler": "^2.4.1",
-    "@ethereum-waffle/doppelganger": "^2.4.1",
+    "@ethereum-waffle/mock-contract": "^2.4.1",
     "@ethereum-waffle/provider": "^2.4.1",
     "ethers": "^4.0.45"
   },
