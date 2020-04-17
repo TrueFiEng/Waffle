@@ -20,7 +20,7 @@ describe('Doppelganger - Contract', () => {
       const pretender = new Contract(contract.address, Counter.interface, wallet);
       const value = '0x1000000000000000000000000000000000000000000000000000000000004234';
 
-      await contract.mockReturns(readSignature, value);
+      await contract.__waffle__mockReturns(readSignature, value);
 
       expect(await pretender.read()).to.equal(value);
     });

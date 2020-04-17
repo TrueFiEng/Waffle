@@ -14,7 +14,7 @@ function stub(mockContract: Contract, encoder: utils.AbiCoder, func: FunctionDes
   return {
     returns: async (...args: any) => {
       const encoded = encoder.encode(func.outputs, args);
-      await mockContract.mockReturns(func.sighash, encoded);
+      await mockContract.__waffle__mockReturns(func.sighash, encoded);
     }
   };
 }
