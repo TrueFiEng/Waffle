@@ -25,6 +25,8 @@ Sweeter, simpler and faster than Truffle.
 * Fixtures that help write fast and maintainable test suites, e.g.:
   * `const {token} = await loadFixture(standardTokenWithBalance);`
 * Customizable compilation options with native solc, dockerized solc and any version of solc-js loaded remotely at compiled time
+* Mocking smart contracts, e.g.:
+  * `const mockToken = await deployMockContract(wallet, IERC20.abi);`
 * Support for promise-based configuration, e.g.:
   * use native solc binary for fast compilation in CI environment
   * use solc-js based on contract versions detected (async)
