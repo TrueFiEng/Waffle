@@ -68,13 +68,6 @@ function parseJumpType(jumpType: string): JumpType {
   }
 }
 
-function getPushSize(byte: number) {
-  if (byte >= 0x60 && byte <= 0x7f) {
-    return byte + 1 - 0x60;
-  }
-  return 0;
-}
-
 function getInstructionIndex(bytecode: string, pc: number) {
   let idx = 0;
   for (let i = 0; i < pc; i++) {
@@ -92,4 +85,11 @@ function getLine(source: string, offset: number) {
     if (source[i] === '\n') line++;
   }
   return line;
+}
+
+function getPushSize(byte: number) {
+  if (byte >= 0x60 && byte <= 0x7f) {
+    return byte + 1 - 0x60;
+  }
+  return 0;
 }
