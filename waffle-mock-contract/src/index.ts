@@ -35,15 +35,12 @@ export interface MockContract extends Contract {
   };
 }
 
-export async function deployMockContract(wallet: Wallet, abi: ABI, contractInstance?: Contract):
-Promise<MockContract> {
-  const mockContractInstance = contractInstance ?? await deploy(wallet);
+export async function deployMockContract(wallet: Wallet, abi: ABI): Promise<MockContract> {
+  const mockContractInstance = await deploy(wallet);
 
   const mock = createMock(abi, mockContractInstance);
-  const mockedContract = new Contract(mockContractInstance.address, abi, wallet);
+  const mockedContract = new Contract(mockContractInstance.address, abi, wallet) as MockContract;
+  mockedContract.mock = mock;
 
-  return {
-    ...mockedContract,
-    mock
-  } as MockContract;
+  return mockedContract;
 }

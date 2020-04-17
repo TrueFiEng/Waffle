@@ -3,8 +3,6 @@
 [![CircleCI](https://circleci.com/gh/EthWorks/Waffle.svg?style=svg)](https://circleci.com/gh/EthWorks/Waffle)
 [![](https://img.shields.io/npm/v/@ethereum-waffle/mock-contract.svg)](https://www.npmjs.com/package/@ethereum-waffle/mock-contract)
 
-_doppelgänger /ˈdɒp(ə)lˌɡaŋə,ˈdɒp(ə)lˌɡɛŋə/ - an apparition or double of a living person_
-
 # @ethereum-waffle/mock-contract
 
 Library for mocking smart contract dependencies during unit testing.
@@ -25,7 +23,7 @@ npm install --save-dev @ethereum-waffle/mock-contract
 
 ## Usage
 
-Create a instance of fake contract providing the ABI/interface of the smart contract you want to mock:
+Create an instance of a mock contract providing the ABI/interface of the smart contract you want to mock:
 
 ```js
 import {deployMockContract} from '@ethereum-waffle/mock-contract';
@@ -35,7 +33,7 @@ import {deployMockContract} from '@ethereum-waffle/mock-contract';
 const mockContract = await deployMockContract(wallet, contractAbi);
 ```
 
-Doppelganger can now be passed into other contracts by using the `address` attribute.
+Mock contract can now be passed into other contracts by using the `address` attribute.
 
 Return values for mocked functions can be set using:
 
@@ -45,7 +43,7 @@ await mockContract.mock.<nameOfMethod>.returns(<value>)
 
 ## Example
 
-Below example illustrates how Doppelganger can be used to test the very simple `AmIRichAlready` contract.
+The example below illustrates how `mock-contract` can be used to test the very simple `AmIRichAlready` contract.
 
 ```Solidity
 pragma solidity ^0.6.3;
@@ -69,7 +67,7 @@ contract AmIRichAlready {
 }
 ```
 
-We are mostly interested in the `tokenContract.balanceOf` call. Doppelganger will be used to mock exactly this call with values that are significant for the return of the `check()` method.
+We are mostly interested in the `tokenContract.balanceOf` call. Mock contract will be used to mock exactly this call with values that are significant for the return of the `check()` method.
 
 ```js
 import chai, {expect} from 'chai';
@@ -86,22 +84,24 @@ chai.use(chaiAsPromised);
 describe('Am I Rich Already?', () => {
   const [user] = new MockProvider().getWallets();
   let contract; // an instance of the AmIRichAlready contract
-  let mockERC20; // an instance of doppelganger for the ERC20 token we want to observe
+  let mockERC20; // an instance of a mock contract for the ERC20 token we want to observe
 
   beforeEach(async () => {
-    mockERC20 = await deployMockContract(user, IERC20.abi); // tell doppelganger what it should pretend to be
+    mockERC20 = await deployMockContract(user, IERC20.abi);
     const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender)
-    contract = await contractFactory.deploy(mockERC20.address); // deploy the contract under test to the chain
+    contract = await contractFactory.deploy(mockERC20.address);
   });
 
   describe('check method', () => {
     it('returns false if the wallet has less then 1000000 DAI', async () => {
-      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('999999')); // configure doppelganger to return 999999 when balanceOf is called
+      // configure mockERC20 to return 999999 when balanceOf is called
+      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('999999'));
       expect(await contract.check()).to.be.equal(false);
     });
 
     it('returns false if the wallet has exactly 1000000 DAI', async () => {
-      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000000')); // subsequent calls override the previous config
+      // subsequent calls override the previous config
+      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000000'));
       expect(await contract.check()).to.eventually.equal(false);
     });
 
@@ -112,3 +112,7 @@ describe('Am I Rich Already?', () => {
   });
 });
 ```
+
+# Special thanks
+
+Special thanks to @spherefoundry for creating the original [Doppelganger](https://github.com/EthWorks/Doppelganger) project. 

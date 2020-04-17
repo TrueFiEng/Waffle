@@ -3,13 +3,13 @@ import chaiAsPromised from 'chai-as-promised';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {waffleChai} from '@ethereum-waffle/chai';
 
-import {deployMockContract} from '../../src';
-import Counter from '../helpers/interfaces/Counter.json';
+import {deployMockContract} from '../src';
+import Counter from './helpers/interfaces/Counter.json';
 
 use(chaiAsPromised);
 use(waffleChai);
 
-describe('Doppelganger - Integration (called directly)', () => {
+describe('Mock Contract - Integration (called directly)', () => {
   const [wallet] = new MockProvider().getWallets();
 
   it('mocking mechanism works', async () => {

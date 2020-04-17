@@ -3,8 +3,8 @@ import chaiAsPromised from 'chai-as-promised';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {Contract, ContractFactory} from 'ethers';
 
-import DoppelgangerContract from '../../src/Doppelganger.json';
-import Counter from '../helpers/interfaces/Counter.json';
+import DoppelgangerContract from '../src/Doppelganger.json';
+import Counter from './helpers/interfaces/Counter.json';
 
 use(chaiAsPromised);
 
