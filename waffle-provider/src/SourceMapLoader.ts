@@ -1,6 +1,18 @@
 import {readdirSync, readFileSync} from 'fs';
 import {join} from 'path';
 
+export type JumpType = 'in' | 'out' | 'normal'
+
+export type SourceMap = SourceMapItem[]
+
+export interface SourceMapItem {
+  offset: number;
+  length: number;
+  file: number;
+  jumpType: JumpType;
+  modifierDepth: number;
+}
+
 export class SourceMapLoader {
   constructor(private readonly outputDir: string) {}
 
@@ -19,7 +31,9 @@ export class SourceMapLoader {
     const sourceMap = parseSourceMap(contract.evm.deployedBytecode.sourceMap);
     const instructionIndex = getInstructionIndex(contract.evm.deployedBytecode.object, programCounter);
     const location = sourceMap[instructionIndex];
-    const file = (Object.entries(contract.sources).find(([file, x]) => (x as any).id === location.file)![1] as any).uri;
+    const file = (
+      Object.entries(contract.sources).find(([file, x]) => (x as any).id === location.file)![1] as any
+    ).uri;
     const source = readFileSync(file, {encoding: 'utf-8'});
     const line = getLine(source, location.offset);
     return {
@@ -29,34 +43,24 @@ export class SourceMapLoader {
   }
 }
 
-export type JumpType = 'in' | 'out' | 'normal'
-
-export interface SourceMapItem {
-  offset: number;
-  length: number;
-  file: number;
-  jumpType: JumpType;
-  modifierDepth: number;
+export function parseItem(prevItem: SourceMapItem, curItem: string) {
+  const [offset, length, file, jumpType, modifierDepth] = curItem.split(':');
+  const item: SourceMapItem = {
+    offset: offset ? parseInt(offset) : prevItem.offset,
+    length: length ? parseInt(length) : prevItem.length,
+    file: file ? parseInt(file) : prevItem.file,
+    jumpType: jumpType ? parseJumpType(jumpType) : prevItem.jumpType,
+    modifierDepth: modifierDepth ? parseInt(modifierDepth) : prevItem?.modifierDepth ?? 0
+  };
+  return item;
 }
 
-export type SourceMap = SourceMapItem[]
-
-function parseSourceMap(sourceMap: string) {
-  const res: SourceMap = [];
-  sourceMap.split(';')
-    .forEach(x => {
-      const [offset, length, file, jumpType, modifierDepth] = x.split(':');
-      const prevItem = res[res.length - 1];
-      const item: SourceMapItem = {
-        offset: offset ? parseInt(offset, 10) : prevItem.offset,
-        length: length ? parseInt(length, 10) : prevItem.length,
-        file: file ? parseInt(file, 10) : prevItem.file,
-        jumpType: jumpType ? parseJumpType(jumpType) : prevItem.jumpType,
-        modifierDepth: modifierDepth ? parseInt(modifierDepth, 10) : prevItem?.modifierDepth ?? 0
-      };
-      res.push(item);
-    });
-  return res;
+export function parseSourceMap(sourceMap: string): SourceMap {
+  return sourceMap.split(';')
+    .reduce((accumulator, currentItem, index) =>
+      [...accumulator, parseItem(accumulator[index - 1], currentItem)],
+    [] as SourceMap
+    );
 }
 
 function parseJumpType(jumpType: string): JumpType {
@@ -87,7 +91,7 @@ function getLine(source: string, offset: number) {
   return line;
 }
 
-function getPushSize(byte: number) {
+export function getPushSize(byte: number) {
   if (byte >= 0x60 && byte <= 0x7f) {
     return byte + 1 - 0x60;
   }

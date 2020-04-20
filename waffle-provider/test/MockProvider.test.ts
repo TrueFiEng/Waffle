@@ -3,6 +3,7 @@ import {utils, ContractFactory, Wallet} from 'ethers';
 import {MockProvider} from '../src';
 import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 import BasicToken from '../build/BasicToken.json';
+import {AddressZero} from 'ethers/constants';
 
 describe('INTEGRATION: MockProvider', () => {
   async function deployToken(wallet: Wallet, totalSupply: number) {
@@ -11,10 +12,11 @@ describe('INTEGRATION: MockProvider', () => {
   }
 
   it('fails on estimate gas', async () => {
-    const [sender] = new MockProvider().getWallets();
+    const provider = new MockProvider();
+    const [sender] = provider.getWallets();
     const factory = new ContractFactory(BasicToken.abi, BasicToken.bytecode, sender);
     const contract = await factory.deploy(10_000);
-    // todo: add expect
+    await expect(contract.transfer(AddressZero, 50)).to.be.rejectedWith(/BasicToken\.sol:30/);
   });
 
   it('can return wallets', async () => {
