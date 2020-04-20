@@ -29,9 +29,8 @@ async function newCompile(config: Config) {
     // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
-  const extensions: string [] = ['.sol', '.vy'];
   const sources = await gatherSources(
-    findInputs(config.sourceDirectory, extensions),
+    findInputs(config.sourceDirectory, getExtensionForCompilerType(config)),
     '.',
     resolver
   );
@@ -47,6 +46,10 @@ async function processOutput(output: any, config: Config) {
   } else {
     await saveOutput(output, config);
   }
+}
+
+function getExtensionForCompilerType(config: Config) {
+  return config.compilerType === 'dockerized-vyper' ? '.vy' : '.sol';
 }
 
 function anyNonWarningErrors(errors?: any[]) {
