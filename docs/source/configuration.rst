@@ -412,8 +412,8 @@ That should solve a problem.
 
 Currently Waffle does not support similar feature for dockerized solc.
 
-Experimental version with using dockerized vyper for compilation.
----------------------------
+*Experimental* Dockerized vyper for compilation
+-----------------------------------------------
 Warring! This is experimental and the api might change without major version change.
 
 This is the option if you have contracts in Vyper. You will need Docker installed.
