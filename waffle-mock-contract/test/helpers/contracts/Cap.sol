@@ -9,11 +9,18 @@ contract Cap {
         counter = _counter;
     }
 
-    function read() public view returns (uint) {
-        uint a = counter.read();
+    function cap(uint a) public pure returns (uint) {
         if (a > 10) {
             return 10;
         }
         return a;
+    }
+
+    function readCapped() public view returns (uint) {
+        return cap(counter.read());
+    }
+
+    function addCapped(uint a) public view returns (uint) {
+        return cap(counter.add(a));
     }
 }
