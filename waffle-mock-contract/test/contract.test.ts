@@ -25,7 +25,7 @@ describe('Doppelganger - Contract', () => {
     it('reverts when trying to call a not initialized method', async () => {
       const {pretender} = await deploy();
 
-      await expect(pretender.read()).to.be.revertedWith('Method not initialized');
+      await expect(pretender.read()).to.be.revertedWith('Mock on the method is not initialized');
     });
 
     it('returns preprogrammed return values for mocked functions without arguments', async () => {
@@ -56,7 +56,7 @@ describe('Doppelganger - Contract', () => {
 
       await contract.__waffle__mockReturns(callData, returnedValue);
 
-      await expect(pretender.add(2)).to.be.revertedWith('Method not initialized');
+      await expect(pretender.add(2)).to.be.revertedWith('Mock on the method is not initialized');
     });
 
     it('calls with function signatures are handled as default mocks', async () => {
@@ -92,11 +92,24 @@ describe('Doppelganger - Contract', () => {
       expect(await pretender.testArgumentTypes(1, false, 'str', '0x123')).to.equal('0x0123');
     });
 
-    it('reverts call with correct message', async () => {
+    it('reverts with correct message', async () => {
       const {contract, pretender} = await deploy();
 
       await contract.__waffle__mockReverts(readSignature);
       await expect(pretender.read()).to.be.revertedWith('Mock revert');
+    });
+
+    it('reverts only with certain arguments', async () => {
+      const {contract, pretender} = await deploy();
+      const addSignature = '0x1003e2d2';
+      const callData = `${addSignature}0000000000000000000000000000000000000000000000000000000000000005`;
+      const returnedValue = '0x1000000000000000000000000000000000000000000000000000000000004234';
+
+      await contract.__waffle__mockReverts(callData);
+      await contract.__waffle__mockReturns(addSignature, returnedValue);
+
+      await expect(pretender.add(5)).to.be.revertedWith('Mock revert');
+      expect(await pretender.add(4)).to.equal(returnedValue);
     });
   });
 });

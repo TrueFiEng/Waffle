@@ -6,7 +6,7 @@ import {waffleChai} from '@ethereum-waffle/chai';
 
 import {deployMockContract} from '../src';
 import Counter from './helpers/interfaces/Counter.json';
-import Cap from './helpers/interfaces/Cap.json';
+import Proxy from './helpers/interfaces/Proxy.json';
 
 use(chaiAsPromised);
 use(waffleChai);
@@ -16,7 +16,7 @@ describe('Mock Contract - Integration (called by other contract)', () => {
 
   const deploy = async () => {
     const mockCounter = await deployMockContract(wallet, Counter.interface);
-    const capFactory = new ContractFactory(Cap.abi, Cap.bytecode, wallet);
+    const capFactory = new ContractFactory(Proxy.abi, Proxy.bytecode, wallet);
     const capContract = await capFactory.deploy(mockCounter.address);
 
     return {mockCounter, capContract};

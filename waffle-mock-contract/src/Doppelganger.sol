@@ -38,13 +38,15 @@ contract Doppelganger {
     function __internal__getMockCall() view private returns (MockCall storage mockCall) {
         mockCall = mockConfig[keccak256(msg.data)];
         if (mockCall.initialized == true) {
+            // Mock method with specified arguments
             return mockCall;
         }
         mockCall = mockConfig[keccak256(abi.encodePacked(msg.sig))];
         if (mockCall.initialized == true) {
+            // Mock method with any arguments
             return mockCall;
         }
-        revert("Method not initialized");
+        revert("Mock on the method is not initialized");
     }
 
     function __internal__mockReturn(bytes memory ret) pure private {

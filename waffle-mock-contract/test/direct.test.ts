@@ -15,15 +15,14 @@ describe('Mock Contract - Integration (called directly)', () => {
   it('throws readable error if mock was not set up for a method', async () => {
     const mockCounter = await deployMockContract(wallet, Counter.interface);
 
-    await expect(mockCounter.read()).to.be.revertedWith('Method not initialized');
+    await expect(mockCounter.read()).to.be.revertedWith('Mock on the method is not initialized');
   });
 
   it('mocking returned values', async () => {
     const mockCounter = await deployMockContract(wallet, Counter.interface);
     await mockCounter.mock.read.returns(45291);
 
-    const ret = await expect(mockCounter.read()).to.be.eventually.fulfilled;
-    expect(ret.toNumber()).to.be.equal(45291);
+    expect(await mockCounter.read()).to.equal(45291);
   });
 
   it('mocking revert', async () => {

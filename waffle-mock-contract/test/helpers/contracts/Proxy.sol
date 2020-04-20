@@ -2,7 +2,7 @@ pragma solidity ^0.6.3;
 
 import "./Counter.sol";
 
-contract Cap {
+contract Proxy {
     Counter private counter;
 
     constructor (Counter _counter) public {

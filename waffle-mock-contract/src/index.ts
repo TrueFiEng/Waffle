@@ -31,9 +31,11 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   }), {} as MockContract['mock']);
 }
 
+export type Stub = ReturnType<typeof stub>;
+
 export interface MockContract extends Contract {
   mock: {
-    [key: string]: ReturnType<typeof stub>;
+    [key: string]: Stub;
   };
 }
 
