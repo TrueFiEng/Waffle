@@ -68,7 +68,7 @@ const checkSourceDirectory = checkType('sourceDirectory', 'string');
 const checkOutputDirectory = checkType('outputDirectory', 'string');
 const checkFlattenOutputDirectory = checkType('flattenOutputDirectory', 'string');
 const checkNodeModulesDirectory = checkType('nodeModulesDirectory', 'string');
-const checkCompilerType = checkEnum('compilerType', ['native', 'dockerized-solc', 'solcjs']);
+const checkCompilerType = checkEnum('compilerType', ['native', 'dockerized-solc', 'solcjs', 'dockerized-vyper']);
 const checkCompilerVersion = checkType('compilerVersion', 'string');
 
 function checkCompilerAllowedPaths(compilerAllowedPaths: unknown) {

@@ -1,0 +1,7 @@
+{
+  "name": "Vyper 0.1.0b15 - docker",
+  "sourceDirectory": "./custom_contracts",
+  "outputDirectory": "./custom_build",
+  "compilerType": "dockerized-vyper",
+  "compilerVersion": "0.1.0b15"
+}

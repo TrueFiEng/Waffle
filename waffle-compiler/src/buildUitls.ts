@@ -8,10 +8,16 @@ export function buildSourcesObject(files: ImportFile[]): Record<string, { conten
   return result;
 }
 
-export function buildInputObject(files: ImportFile[], overrides: any = {}) {
+export type Language = 'Solidity' | 'Vyper';
+
+export function buildInputObject(
+  files: ImportFile[],
+  overrides: any = {},
+  language: Language = 'Solidity'
+) {
   const sources = buildSourcesObject(files);
   return {
-    language: 'Solidity',
+    language,
     sources,
     settings: {
       outputSelection: {'*': {'*': ['abi', 'evm.bytecode', 'evm.deployedBytecode']}},
