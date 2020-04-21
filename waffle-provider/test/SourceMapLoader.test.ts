@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import {
   ContractSources,
-  findContractUri,
+  findContractUri, getInstructionIndex, getLine,
   getPushSize,
   parseItem,
   parseSourceMap,
@@ -86,20 +86,47 @@ const CONTRACT_SOURCES = [
 ] as ContractSources;
 
 describe('INTEGRATION: SourceMapLoader', () => {
-  it('findContractUri', async () => {
+  it('findContractUri', () => {
     expect(findContractUri(CONTRACT_SOURCES, VALID_FILLED_FIRST_ITEM)).to.eq(CONTRACT_SOURCES[1][1].uri);
   });
 
-  it('parseSourceMap', async () => {
+  it('parseSourceMap', () => {
     expect(parseSourceMap(VALID_SOURCE_MAP.input)).to.eql(VALID_SOURCE_MAP.output);
   });
 
+  describe('getInstructionIndex', () => {
+    it('returns instruction index for proper bytecode', async () => {
+      const bytecode = '60806040523480';
+      expect(getInstructionIndex(bytecode, 6)).to.eq(3);
+    });
+    it('returns 0 for empty bytecode', async () => {
+      const bytecodeEmpty = '';
+      expect(getInstructionIndex(bytecodeEmpty, 6)).to.eq(0);
+    });
+  });
+
+  describe('getLine', () => {
+    const source = 'pragma solidity ^0.5.0;\nlibrary SafeMath';
+
+    it('returns line number for offset eq to 0', () => {
+      expect(getLine(source, 0)).to.eq(1);
+    });
+
+    it('returns next line number', () => {
+      expect(getLine(source, 28)).to.eq(2);
+    });
+
+    it('returns line number for offset grater then source length', () => {
+      expect(getLine(source, source.length + 1)).to.eq(2);
+    });
+  });
+
   describe('getPushSize', () => {
-    it('returns 0 for number lower than 96 or bigger than 127', () => {
+    it('returns 0 for byte lower than 0x60 or bigger than 0x7f', () => {
       expect(getPushSize(0x40)).to.eq(0);
     });
 
-    it('returns calculated size for number bigger than 96 and lower than 127', () => {
+    it('returns calculated size for byte bigger than 0x60 and lower than 0x7f', () => {
       expect(getPushSize(0x70)).to.eq(17);
     });
   });

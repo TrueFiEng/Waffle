@@ -39,11 +39,11 @@ export class SourceMapLoader {
     const instructionIndex = getInstructionIndex(contract.evm.deployedBytecode.object, programCounter);
     const location = sourceMap[instructionIndex];
     const contractSources = Object.entries(contract.sources) as ContractSources;
-    const fileUri = findContractUri(contractSources, location);
-    const source = readFileSync(fileUri, {encoding: 'utf-8'});
-    const line = getLine(source, location.offset);
+    const contractUri = findContractUri(contractSources, location);
+    const contractSource = readFileSync(contractUri, {encoding: 'utf-8'});
+    const line = getLine(contractSource, location.offset);
     return {
-      file: fileUri,
+      file: contractUri,
       line
     };
   }
@@ -57,14 +57,13 @@ export function findContractUri(contractSources: ContractSources, location: Sour
 
 export function parseItem(prevItem: SourceMapItem, curItem: string): SourceMapItem {
   const [offset, length, file, jumpType, modifierDepth] = curItem.split(':');
-  const item: SourceMapItem = {
+  return {
     offset: offset ? parseInt(offset) : prevItem.offset,
     length: length ? parseInt(length) : prevItem.length,
     file: file ? parseInt(file) : prevItem.file,
     jumpType: jumpType ? parseJumpType(jumpType) : prevItem.jumpType,
     modifierDepth: modifierDepth ? parseInt(modifierDepth) : prevItem?.modifierDepth ?? 0
   };
-  return item;
 }
 
 export function parseSourceMap(sourceMap: string): SourceMap {
@@ -84,9 +83,10 @@ function parseJumpType(jumpType: string): JumpType {
   }
 }
 
-function getInstructionIndex(bytecode: string, pc: number) {
+export function getInstructionIndex(bytecode: string, programCounter: number): number {
+  if (bytecode.length === 0) return 0;
   let idx = 0;
-  for (let i = 0; i < pc; i++) {
+  for (let i = 0; i < programCounter; i++) {
     const byte = parseInt(bytecode.slice(i * 2, i * 2 + 2), 16);
     const pushSize = getPushSize(byte);
     idx++;
@@ -95,7 +95,7 @@ function getInstructionIndex(bytecode: string, pc: number) {
   return idx - 1;
 }
 
-function getLine(source: string, offset: number) {
+export function getLine(source: string, offset: number): number {
   let line = 1;
   for (let i = 0; i < offset; i++) {
     if (source[i] === '\n') line++;
