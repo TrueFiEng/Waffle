@@ -7,6 +7,7 @@ import mkdirp from 'mkdirp';
 import fsx from 'fs-extra';
 import * as path from 'path';
 import {join} from 'path';
+import {getExtensionForCompilerType} from './utils';
 
 export interface GatheredContractInterface {
   url: string;
@@ -29,7 +30,7 @@ async function getContractDependency(config: Config): Promise<GatheredContractIn
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
 
-  const allContracts = findInputs(config.sourceDirectory);
+  const allContracts = findInputs(config.sourceDirectory, getExtensionForCompilerType(config));
 
   return Promise.all(allContracts.map(async contract => gatherSources(
     [contract],

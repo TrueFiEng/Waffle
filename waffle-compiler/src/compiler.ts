@@ -1,5 +1,5 @@
 import {InputConfig, inputToConfig, Config} from './config';
-import {isWarningMessage} from './utils';
+import {getExtensionForCompilerType, isWarningMessage} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
 import {findImports} from './findImports';
@@ -46,10 +46,6 @@ async function processOutput(output: any, config: Config) {
   } else {
     await saveOutput(output, config);
   }
-}
-
-function getExtensionForCompilerType(config: Config) {
-  return config.compilerType === 'dockerized-vyper' ? '.vy' : '.sol';
 }
 
 function anyNonWarningErrors(errors?: any[]) {
