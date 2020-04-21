@@ -9,4 +9,4 @@ const compile = async () => {
   });
 };
 
-compile();
+compile().catch(console.error);

@@ -8,9 +8,14 @@ contract Doppelganger {
         bytes returnValue;
     }
 
+    address constant LOG_ADDRESS = address(0);
+
     mapping(bytes32 => MockCall) mockConfig;
 
     fallback() external payable {
+        bytes memory b = msg.data;
+        LOG_ADDRESS.staticcall(b);
+
         MockCall storage mockCall = __internal__getMockCall();
         if (mockCall.reverts == true) {
             __internal__mockRevert();

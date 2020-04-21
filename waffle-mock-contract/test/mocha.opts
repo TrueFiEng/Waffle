@@ -2,3 +2,4 @@
 --timeout 50000
 --no-warnings
 test/**/*.test.{js,ts}
+--exit
