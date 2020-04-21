@@ -10,4 +10,12 @@ contract Counter {
     function read() public view returns (uint) {
         return value;
     }
+
+    function add(uint a) public view returns (uint) {
+        return value + a;
+    }
+
+    function testArgumentTypes(uint a, bool b, string memory s, bytes memory bs) public pure returns (bytes memory ret) {
+        ret = abi.encodePacked(a, b, s, bs);
+    }
 }

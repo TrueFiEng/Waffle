@@ -42,6 +42,14 @@ Return values for mocked functions can be set using:
 
 ```js
 await mockContract.mock.<nameOfMethod>.returns(<value>)
+await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).returns(<value>)
+```
+
+Methods can also be set up to be reverted using:
+
+```js
+await mockContract.mock.<nameOfMethod>.reverts()
+await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).reverts()
 ```
 
 ## Example
@@ -55,16 +63,14 @@ import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 
 contract AmIRichAlready {
     IERC20 private tokenContract;
-    address private wallet;
     uint private constant RICHNESS = 1000000 * 10 ** 18;
 
     constructor (IERC20 _tokenContract) public {
         tokenContract = _tokenContract;
-        wallet = msg.sender;
     }
 
     function check() public view returns (bool) {
-        uint balance = tokenContract.balanceOf(wallet);
+        uint balance = tokenContract.balanceOf(msg.sender);
         return balance > RICHNESS;
     }
 }
@@ -77,15 +83,17 @@ import chai, {expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ethers from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
+import {waffleChai} from '@ethereum-waffle/chai';
 import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
 import IERC20 from '../../build/IERC20';
 import AmIRichAlready from '../../build/AmIRichAlready';
 
 chai.use(chaiAsPromised);
+chai.use(waffleChai);
 
 describe('Am I Rich Already?', () => {
-  const [user] = new MockProvider().getWallets();
+  const [user, stranger] = new MockProvider().getWallets();
   let contract; // an instance of the AmIRichAlready contract
   let mockERC20; // an instance of a mock contract for the ERC20 token we want to observe
 
@@ -105,13 +113,27 @@ describe('Am I Rich Already?', () => {
     it('returns false if the wallet has exactly 1000000 DAI', async () => {
       // subsequent calls override the previous config
       await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000000'));
-      expect(await contract.check()).to.eventually.equal(false);
+      expect(await contract.check()).to.equal(false);
     });
 
     it('returns true if the wallet has more then 1000000 DAI', async () => {
       await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000001'));
-      expect(await contract.check()).to.eventually.equal(true);
+      expect(await contract.check()).to.equal(true);
     });
+
+    it('reverts for some reason', async () => {
+      await mockERC20.mock.balanceOf.reverts();
+      await expect(contract.check()).to.be.revertedWith('Mock revert');
+    });
+
+    it('returns 1000001 DAI for my address and 0 otherwise', async () => {
+        await mockERC20.mock.balanceOf.withArgs(user.address).returns(ethers.utils.parseEther('1000001'));
+        // mock without any arguments will be triggered by default
+        await mockERC20.mock.balanceOf.returns('0');
+
+        expect(await contract.check()).to.equal(true);
+        expect(await contract.attach(stranger).check()).to.equal(false);
+    }); 
   });
 });
 ```
