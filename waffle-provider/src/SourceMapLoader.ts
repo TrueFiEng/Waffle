@@ -5,6 +5,13 @@ export type JumpType = 'in' | 'out' | 'normal'
 
 export type SourceMap = SourceMapItem[]
 
+interface ContractSourceInfo {
+  id: number;
+  uri: string;
+}
+
+export type ContractSources = Array<[string, ContractSourceInfo]>;
+
 export interface SourceMapItem {
   offset: number;
   length: number;
@@ -31,19 +38,24 @@ export class SourceMapLoader {
     const sourceMap = parseSourceMap(contract.evm.deployedBytecode.sourceMap);
     const instructionIndex = getInstructionIndex(contract.evm.deployedBytecode.object, programCounter);
     const location = sourceMap[instructionIndex];
-    const file = (
-      Object.entries(contract.sources).find(([file, x]) => (x as any).id === location.file)![1] as any
-    ).uri;
-    const source = readFileSync(file, {encoding: 'utf-8'});
+    const contractSources = Object.entries(contract.sources) as ContractSources;
+    const fileUri = findContractUri(contractSources, location);
+    const source = readFileSync(fileUri, {encoding: 'utf-8'});
     const line = getLine(source, location.offset);
     return {
-      file,
+      file: fileUri,
       line
     };
   }
 }
 
-export function parseItem(prevItem: SourceMapItem, curItem: string) {
+export function findContractUri(contractSources: ContractSources, location: SourceMapItem): string {
+  const obj = contractSources.find(contractSource => contractSource[1].id === location.file);
+  if (!obj) return '';
+  return obj[1].uri;
+}
+
+export function parseItem(prevItem: SourceMapItem, curItem: string): SourceMapItem {
   const [offset, length, file, jumpType, modifierDepth] = curItem.split(':');
   const item: SourceMapItem = {
     offset: offset ? parseInt(offset) : prevItem.offset,
@@ -91,7 +103,7 @@ function getLine(source: string, offset: number) {
   return line;
 }
 
-export function getPushSize(byte: number) {
+export function getPushSize(byte: number): number {
   if (byte >= 0x60 && byte <= 0x7f) {
     return byte + 1 - 0x60;
   }

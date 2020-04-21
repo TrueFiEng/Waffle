@@ -1,12 +1,20 @@
 import {expect} from 'chai';
-import {getPushSize, parseItem, parseSourceMap, SourceMap, SourceMapItem} from '../src/SourceMapLoader';
-
-const UNDEFINED_ITEM = undefined as unknown as SourceMapItem;
+import {
+  ContractSources,
+  findContractUri,
+  getPushSize,
+  parseItem,
+  parseSourceMap,
+  SourceMap,
+  SourceMapItem
+} from '../src/SourceMapLoader';
 
 interface ValidSourceMapInterface {
   input: string;
   output: SourceMap;
 }
+
+const UNDEFINED_ITEM = undefined as unknown as SourceMapItem;
 
 const VALID_SOURCE_MAP: ValidSourceMapInterface = {
   input: '315:757:2:-;;;;8:9:-1;5:2',
@@ -58,7 +66,30 @@ const VALID_SOURCE_MAP: ValidSourceMapInterface = {
 
 const VALID_FILLED_FIRST_ITEM = VALID_SOURCE_MAP.output[0];
 
+const CONTRACT_SOURCES = [
+  [
+    '@openzeppelin/contracts/GSN/Context.sol',
+    {
+      id: 1,
+      uri:
+        '/Users/jozwiak/WebstormProjects/waffle-stack-traces/node_modules/@openzeppelin/contracts/GSN/Context.sol'
+    }
+  ],
+  [
+    '@openzeppelin/contracts/ownership/Ownable.sol',
+    {
+      id: 2,
+      uri: '/Users' +
+        '/jozwiak/WebstormProjects/waffle-stack-traces/node_modules/@openzeppelin/contracts/ownership/Ownable.sol'
+    }
+  ]
+] as ContractSources;
+
 describe('INTEGRATION: SourceMapLoader', () => {
+  it('findContractUri', async () => {
+    expect(findContractUri(CONTRACT_SOURCES, VALID_FILLED_FIRST_ITEM)).to.eq(CONTRACT_SOURCES[1][1].uri);
+  });
+
   it('parseSourceMap', async () => {
     expect(parseSourceMap(VALID_SOURCE_MAP.input)).to.eql(VALID_SOURCE_MAP.output);
   });
