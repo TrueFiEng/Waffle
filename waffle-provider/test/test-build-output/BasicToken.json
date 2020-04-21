@@ -219,23 +219,23 @@
   "sources": {
     "@openzeppelin/contracts/GSN/Context.sol": {
       "id": 0,
-      "uri": "/Users/jozwiak/WebstormProjects/waffle-stack-traces/node_modules/@openzeppelin/contracts/GSN/Context.sol"
+      "uri": "node_modules/@openzeppelin/contracts/GSN/Context.sol"
     },
     "@openzeppelin/contracts/ownership/Ownable.sol": {
       "id": 1,
-      "uri": "/Users/jozwiak/WebstormProjects/waffle-stack-traces/node_modules/@openzeppelin/contracts/ownership/Ownable.sol"
+      "uri": "node_modules/@openzeppelin/contracts/ownership/Ownable.sol"
     },
     "contracts/BasicToken.sol": {
       "id": 2,
-      "uri": "/Users/jozwiak/WebstormProjects/waffle-stack-traces/contracts/BasicToken.sol"
+      "uri": "test/test-sources/BasicToken.sol"
     },
     "contracts/HelloContract.sol": {
       "id": 3,
-      "uri": "/Users/jozwiak/WebstormProjects/waffle-stack-traces/contracts/HelloContract.sol"
+      "uri": "test/test-sources/HelloContract.sol"
     },
     "contracts/TestContract.sol": {
       "id": 4,
-      "uri": "/Users/jozwiak/WebstormProjects/waffle-stack-traces/contracts/TestContract.sol"
+      "uri": "test/test-sources/TestContract.sol"
     }
   }
 }
