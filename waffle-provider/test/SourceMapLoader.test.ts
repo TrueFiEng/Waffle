@@ -72,7 +72,7 @@ const CONTRACT_SOURCES = [
     {
       id: 1,
       uri:
-        '/Users/jozwiak/WebstormProjects/waffle-stack-traces/node_modules/@openzeppelin/contracts/GSN/Context.sol'
+        '/node_modules/@openzeppelin/contracts/GSN/Context.sol'
     }
   ],
   [
@@ -80,14 +80,14 @@ const CONTRACT_SOURCES = [
     {
       id: 2,
       uri: '/Users' +
-        '/jozwiak/WebstormProjects/waffle-stack-traces/node_modules/@openzeppelin/contracts/ownership/Ownable.sol'
+        '/node_modules/@openzeppelin/contracts/ownership/Ownable.sol'
     }
   ]
 ] as ContractSources;
 
 describe('INTEGRATION: SourceMapLoader', () => {
   it('findContractUri', () => {
-    expect(findContractUri(CONTRACT_SOURCES, VALID_FILLED_FIRST_ITEM)).to.eq(CONTRACT_SOURCES[1][1].uri);
+    expect(findContractUri(CONTRACT_SOURCES, {file: 2} as SourceMapItem)).to.eq(CONTRACT_SOURCES[1][1].uri);
   });
 
   it('parseSourceMap', () => {
@@ -100,8 +100,8 @@ describe('INTEGRATION: SourceMapLoader', () => {
       expect(getInstructionIndex(bytecode, 6)).to.eq(3);
     });
     it('returns 0 for empty bytecode', async () => {
-      const bytecodeEmpty = '';
-      expect(getInstructionIndex(bytecodeEmpty, 6)).to.eq(0);
+      const emptyBytecode = '';
+      expect(getInstructionIndex(emptyBytecode, 6)).to.eq(0);
     });
   });
 
@@ -116,7 +116,7 @@ describe('INTEGRATION: SourceMapLoader', () => {
       expect(getLine(source, 28)).to.eq(2);
     });
 
-    it('returns line number for offset grater then source length', () => {
+    it('returns line number for offset greater then source length', () => {
       expect(getLine(source, source.length + 1)).to.eq(2);
     });
   });
@@ -144,7 +144,17 @@ describe('INTEGRATION: SourceMapLoader', () => {
     });
 
     it('parses partially filled item', () => {
-      const item = parseItem(VALID_FILLED_FIRST_ITEM, '191:120::o');
+      const item = parseItem(
+        {
+          offset: 315,
+          length: 757,
+          file: 2,
+          jumpType: 'normal',
+          modifierDepth: 0
+        },
+        '191:120::o'
+      );
+
       expect(item).eql({
         offset: 191,
         length: 120,

@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {utils, ContractFactory, Wallet} from 'ethers';
 import {MockProvider} from '../src';
 import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
-import BasicToken from '../build/BasicToken.json';
+import BasicToken from './test-build-output/BasicToken.json';
 import {AddressZero} from 'ethers/constants';
 
 describe('INTEGRATION: MockProvider', () => {
@@ -13,7 +13,7 @@ describe('INTEGRATION: MockProvider', () => {
 
   it('fails on estimate gas', async () => {
     const provider = new MockProvider();
-    provider.buildDir = 'build';
+    provider.buildDir = 'test/test-build-output';
     const [sender] = provider.getWallets();
     const factory = new ContractFactory(BasicToken.abi, BasicToken.bytecode, sender);
     const contract = await factory.deploy(10_000);
