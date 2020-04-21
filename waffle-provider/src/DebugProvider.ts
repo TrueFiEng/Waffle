@@ -2,7 +2,13 @@ import {providers} from 'ethers';
 import {SourceMapLoader} from './SourceMapLoader';
 
 export class DebugProvider implements providers.AsyncSendable {
+  private _buildDir?: string = undefined;
+
   constructor(private readonly upstream: providers.AsyncSendable) {
+  }
+
+  set buildDir(value: string) {
+    this._buildDir = value;
   }
 
   get isMetaMask() {
@@ -45,12 +51,15 @@ export class DebugProvider implements providers.AsyncSendable {
     };
   }
 
-  private async rpcMiddleware(request: any, error: any, response: any): Promise<[string, any]> {
-    if (isValidEthEstimateGasRevert(request, error)) {
+  private async rpcMiddleware(request: any, error: any, response: any): Promise<[any, any]> {
+    if (!this._buildDir) {
+      return [error, response];
+    }
+    if (DebugProvider.isValidEthEstimateGasRevert(request, error)) {
       const {programCounter} = getRevertDetails(error);
       const contractAddress = request.params[0].to;
       const contractCode = await this.getContractCode(contractAddress);
-      const {file, line} = await new SourceMapLoader('build')
+      const {file, line} = await new SourceMapLoader(this._buildDir)
         .locateLineByBytecodeAndProgramCounter(contractCode, programCounter);
 
       error.message += ` (this revert occurred at ${file}:${line})`;
@@ -58,7 +67,7 @@ export class DebugProvider implements providers.AsyncSendable {
     return [error, response];
   }
 
-  private async getContractCode(address: string) {
+  private async getContractCode(address: string): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       this.upstreamSend(
         {method: 'eth_getCode', params: [address, 'latest']},
@@ -81,21 +90,22 @@ export class DebugProvider implements providers.AsyncSendable {
       this.upstream.send(request, cb);
     }
   }
-}
 
-const isValidEthEstimateGasRevert = (request: any, error: any) => {
-  if (
-    request.method === 'eth_estimateGas' &&
-    error &&
-    error.message.startsWith('VM Exception while processing transaction: revert') &&
-    typeof error.results === 'object' &&
-    error.results !== null &&
-    Object.keys(error.results).length > 0
-  ) {
-    const result = error.results[Object.keys(error.results)[0]];
-    return result.error === 'revert';
-  }
-};
+  private static isValidEthEstimateGasRevert(request: any, error: any): boolean {
+    if (
+      request.method === 'eth_estimateGas' &&
+      error &&
+      error.message.startsWith('VM Exception while processing transaction: revert') &&
+      typeof error.results === 'object' &&
+      error.results !== null &&
+      Object.keys(error.results).length > 0
+    ) {
+      const result = error.results[Object.keys(error.results)[0]];
+      return result.error === 'revert';
+    }
+    return false;
+  };
+}
 
 const getRevertDetails = (error: any) => {
   const result = error.results[Object.keys(error.results)[0]];

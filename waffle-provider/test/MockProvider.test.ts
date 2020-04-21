@@ -13,6 +13,7 @@ describe('INTEGRATION: MockProvider', () => {
 
   it('fails on estimate gas', async () => {
     const provider = new MockProvider();
+    provider.buildDir = 'build';
     const [sender] = provider.getWallets();
     const factory = new ContractFactory(BasicToken.abi, BasicToken.bytecode, sender);
     const contract = await factory.deploy(10_000);

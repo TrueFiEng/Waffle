@@ -20,4 +20,8 @@ export class MockProvider extends providers.Web3Provider {
   createEmptyWallet() {
     return Wallet.createRandom().connect(this);
   }
+
+  set buildDir(value: string) {
+    (this._web3Provider as DebugProvider).buildDir = value;
+  }
 }
