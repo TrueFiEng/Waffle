@@ -1,3 +1,10 @@
+import {Wallet, ContractFactory} from 'ethers';
+
+export async function deployToken(wallet: Wallet, totalSupply: number) {
+  const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, wallet);
+  return factory.deploy(totalSupply);
+}
+
 export const TOKEN_SOURCE = `
   pragma solidity ^0.6.0;
 

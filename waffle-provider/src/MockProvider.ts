@@ -1,12 +1,36 @@
-import {providers, Wallet} from 'ethers';
+import {providers, Wallet, utils} from 'ethers';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
 
 const defaults = {accounts: defaultAccounts};
 
+export interface RecordedCall {
+  readonly address: string;
+  readonly data: string;
+}
+
 export class MockProvider extends providers.Web3Provider {
+  private callHistory: RecordedCall[] = []
+
   constructor(private options?: Ganache.IProviderOptions) {
     super(Ganache.provider({...defaults, ...options}) as any);
+    this.recordCallHistory();
+  }
+
+  private recordCallHistory() {
+    const onMessage = (message: any) => {
+      this.callHistory.push({
+        address: message.to && utils.getAddress(utils.hexlify(message.to)),
+        data: message.data && utils.hexlify(message.data)
+      });
+    };
+    const {blockchain} = (this._web3Provider as any).engine.manager.state;
+    const createVMFromStateTrie = blockchain.createVMFromStateTrie;
+    blockchain.createVMFromStateTrie = function (...args: any[]) {
+      const vm = createVMFromStateTrie.apply(this, args);
+      vm.on('beforeMessage', onMessage);
+      return vm;
+    };
   }
 
   getWallets() {
@@ -16,5 +40,13 @@ export class MockProvider extends providers.Web3Provider {
 
   createEmptyWallet() {
     return Wallet.createRandom().connect(this);
+  }
+
+  clearCallHistory() {
+    this.callHistory = [];
+  }
+
+  getCallHistory(): readonly RecordedCall[] {
+    return this.callHistory;
   }
 }
