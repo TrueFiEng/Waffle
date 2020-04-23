@@ -1,14 +1,9 @@
 import {expect} from 'chai';
-import {utils, ContractFactory, Wallet} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
-import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
+import {deployToken} from './BasicToken';
 
 describe('INTEGRATION: MockProvider', () => {
-  async function deployToken(wallet: Wallet, totalSupply: number) {
-    const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, wallet);
-    return factory.deploy(totalSupply);
-  }
-
   it('can return wallets', async () => {
     const provider = new MockProvider();
     const wallets = provider.getWallets();
