@@ -12,50 +12,93 @@ async function setup() {
 }
 
 describe('INTEGRATION: ethCalled', () => {
-  it('checks that contract was called', async () => {
-    const {contract} = await setup();
+  describe('types check', () => {
+    it('throws type error when the argument is not a contract', async () => {
+      expect(
+        () => expect('not a contract').to.be.ethCalled
+      ).to.throw(TypeError, 'ethCalled: argument must be a contract');
+    });
 
-    await contract.emitOne();
+    it('throws type error when the argument is not a provider', async () => {
+      const contract = new Contract(
+        constants.AddressZero,
+        [],
+        getDefaultProvider()
+      );
 
-    expect(contract).to.be.ethCalled;
+      expect(
+        () => expect(contract).to.be.ethCalled
+      ).to.throw(TypeError, 'ethCalled: contract.provider must be a MockProvider');
+    });
+
+    it('throws type error when the provided function is not a string', async () => {
+      const {contract} = await setup();
+
+      expect(
+        () => expect([contract, 12]).to.be.ethCalled
+      ).to.throw(TypeError, 'ethCalled: function name must be a string');
+    });
   });
 
-  it('throws assertion error when contract was not called', async () => {
-    const {contract} = await setup();
+  describe('match just contract', () => {
+    it('checks that contract was called', async () => {
+      const {contract} = await setup();
 
-    expect(
-      () => expect(contract).to.be.ethCalled
-    ).to.throw(AssertionError, 'Expected contract to be called');
+      await contract.emitOne();
+
+      expect(contract).to.be.ethCalled;
+    });
+
+    it('throws assertion error when contract was not called', async () => {
+      const {contract} = await setup();
+
+      expect(
+        () => expect(contract).to.be.ethCalled
+      ).to.throw(AssertionError, 'Expected contract to be called');
+    });
+
+    it('checks that contract was not called', async () => {
+      const {contract} = await setup();
+      expect(contract).not.to.be.ethCalled;
+    });
+
+    it('throws assertion error when contract was called', async () => {
+      const {contract} = await setup();
+      await contract.emitOne();
+      expect(
+        () => expect(contract).not.to.be.ethCalled
+      ).to.throw(AssertionError, 'Expected contract NOT to be called');
+    });
   });
 
-  it('checks that contract was not called', async () => {
-    const {contract} = await setup();
-    expect(contract).not.to.be.ethCalled;
-  });
+  describe('match contract with function', () => {
+    it('checks that contract function was called', async () => {
+      const {contract} = await setup();
 
-  it('throws assertion error when contract was called', async () => {
-    const {contract} = await setup();
-    await contract.emitOne();
-    expect(
-      () => expect(contract).not.to.be.ethCalled
-    ).to.throw(AssertionError, 'Expected contract NOT to be called');
-  });
+      await contract.emitOne();
 
-  it('throws type error when the argument is not a contract', async () => {
-    expect(
-      () => expect('not a contract').to.be.ethCalled
-    ).to.throw(TypeError, 'ethCalled: argument must be a contract');
-  });
+      expect([contract, 'emitOne']).to.be.ethCalled;
+    });
 
-  it('throws type error when the argument is not a provider', async () => {
-    const contract = new Contract(
-      constants.AddressZero,
-      [],
-      getDefaultProvider()
-    );
+    it('throws assertion error when contract function was not called', async () => {
+      const {contract} = await setup();
 
-    expect(
-      () => expect(contract).to.be.ethCalled
-    ).to.throw(TypeError, 'ethCalled: contract.provider must be a MockProvider');
+      expect(
+        () => expect([contract, 'emitOne']).to.be.ethCalled
+      ).to.throw(AssertionError, 'Expected contract function to be called');
+    });
+
+    it('checks that contract function was not called', async () => {
+      const {contract} = await setup();
+      expect([contract, 'emitOne']).not.to.be.ethCalled;
+    });
+
+    it('throws assertion error when contract function was called', async () => {
+      const {contract} = await setup();
+      await contract.emitOne();
+      expect(
+        () => expect([contract, 'emitOne']).not.to.be.ethCalled
+      ).to.throw(AssertionError, 'Expected contract function NOT to be called');
+    });
   });
 });

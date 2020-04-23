@@ -9,6 +9,7 @@ import {supportProperHex} from './matchers/properHex';
 import {supportChangeBalance} from './matchers/changeBalance';
 import {supportChangeBalances} from './matchers/changeBalances';
 import {supportEthCalled} from './matchers/ethCalled';
+import {supportEthCalledWith} from './matchers/ethCalledWith';
 
 export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportBigNumber(chai.Assertion, utils);
@@ -21,4 +22,5 @@ export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportChangeBalance(chai.Assertion);
   supportChangeBalances(chai.Assertion);
   supportEthCalled(chai.Assertion);
+  supportEthCalledWith(chai.Assertion);
 }
