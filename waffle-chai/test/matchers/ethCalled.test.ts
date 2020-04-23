@@ -1,6 +1,6 @@
 import {expect, AssertionError} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
-import {ContractFactory} from 'ethers';
+import {Contract, ContractFactory, constants, getDefaultProvider} from 'ethers';
 import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
 
 async function setup() {
@@ -39,5 +39,23 @@ describe('INTEGRATION: ethCalled', () => {
     expect(
       () => expect(contract).not.to.be.ethCalled
     ).to.throw(AssertionError, 'Expected contract NOT to be called');
+  });
+
+  it('throws type error when the argument is not a contract', async () => {
+    expect(
+      () => expect('not a contract').to.be.ethCalled
+    ).to.throw(TypeError, 'ethCalled: argument must be a contract');
+  });
+
+  it('throws type error when the argument is not a provider', async () => {
+    const contract = new Contract(
+      constants.AddressZero,
+      [],
+      getDefaultProvider()
+    );
+
+    expect(
+      () => expect(contract).to.be.ethCalled
+    ).to.throw(TypeError, 'ethCalled: contract.provider must be a MockProvider');
   });
 });

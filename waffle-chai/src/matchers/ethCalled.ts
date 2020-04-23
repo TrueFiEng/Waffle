@@ -3,8 +3,14 @@ import {MockProvider} from '@ethereum-waffle/provider';
 
 export function supportEthCalled(Assertion: Chai.AssertionStatic) {
   Assertion.addProperty('ethCalled', function () {
-    const contract = this._obj as Contract;
-    const provider = contract.provider as MockProvider;
+    const contract = this._obj;
+    if (!(contract instanceof Contract)) {
+      throw new TypeError('ethCalled: argument must be a contract');
+    }
+    const provider = contract.provider;
+    if (!(provider instanceof MockProvider)) {
+      throw new TypeError('ethCalled: contract.provider must be a MockProvider');
+    }
 
     const callHistory = provider.callHistory;
 
