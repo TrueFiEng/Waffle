@@ -13,6 +13,7 @@ declare namespace Chai {
     changeBalance(wallet: any, balance: any): AsyncAssertion;
     changeBalances(wallets: any[], balances: any[]): AsyncAssertion;
     ethCalled: void;
+    ethCalledWith(parameters: any[]): void;
   }
 
   interface NumberComparer {
