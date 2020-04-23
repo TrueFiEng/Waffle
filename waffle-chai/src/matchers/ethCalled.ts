@@ -1,11 +1,21 @@
+import {Contract} from 'ethers';
+import {MockProvider} from '@ethereum-waffle/provider';
+
 export function supportEthCalled(Assertion: Chai.AssertionStatic) {
-  Assertion.addMethod('ethCalled', function () {
-    // const subject = this._obj;
-    // const regexp = new RegExp(`^0x[0-9-a-fA-F]{${length}}$`);
-    // this.assert(regexp.test(subject),
-    //   `Expected "${subject}" to be a proper hex of length ${length}`,
-    //   `Expected "${subject}" not to be a proper hex of length ${length}, but it was`,
-    //   'proper address (eg.: 0x1234567890123456789012345678901234567890)',
-    //   subject);
+  Assertion.addProperty('ethCalled', function () {
+    const contract = this._obj as Contract;
+    const provider = contract.provider as MockProvider;
+
+    const callHistory = provider.callHistory;
+
+    const wasCalled = callHistory
+      .some(el => el.address === contract.address);
+
+    this.assert(
+      wasCalled,
+      'Expected contract to be called',
+      'Expected contract NOT to be called',
+      undefined
+    );
   });
 }
