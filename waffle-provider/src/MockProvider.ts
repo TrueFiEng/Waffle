@@ -10,7 +10,7 @@ export interface RecordedCall {
 }
 
 export class MockProvider extends providers.Web3Provider {
-  private callHistory: RecordedCall[] = []
+  private _callHistory: RecordedCall[] = []
 
   constructor(private options?: Ganache.IProviderOptions) {
     super(Ganache.provider({...defaults, ...options}) as any);
@@ -19,7 +19,7 @@ export class MockProvider extends providers.Web3Provider {
 
   private recordCallHistory() {
     const onMessage = (message: any) => {
-      this.callHistory.push({
+      this._callHistory.push({
         address: message.to && utils.getAddress(utils.hexlify(message.to)),
         data: message.data && utils.hexlify(message.data)
       });
@@ -43,10 +43,10 @@ export class MockProvider extends providers.Web3Provider {
   }
 
   clearCallHistory() {
-    this.callHistory = [];
+    this._callHistory = [];
   }
 
-  getCallHistory(): readonly RecordedCall[] {
-    return this.callHistory;
+  get callHistory(): readonly RecordedCall[] {
+    return this._callHistory;
   }
 }
