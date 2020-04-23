@@ -1,40 +1,21 @@
-import {providers, Wallet, utils} from 'ethers';
+import {providers, Wallet} from 'ethers';
+import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
 
-const defaults = {accounts: defaultAccounts};
-
-export interface RecordedCall {
-  readonly address: string;
-  readonly data: string;
-}
+export {RecordedCall};
 
 export class MockProvider extends providers.Web3Provider {
-  private _callHistory: RecordedCall[] = []
+  private _callHistory: CallHistory
 
   constructor(private options?: Ganache.IProviderOptions) {
-    super(Ganache.provider({...defaults, ...options}) as any);
-    this.recordCallHistory();
-  }
-
-  private recordCallHistory() {
-    const onMessage = (message: any) => {
-      this._callHistory.push({
-        address: message.to && utils.getAddress(utils.hexlify(message.to)),
-        data: message.data && utils.hexlify(message.data)
-      });
-    };
-    const {blockchain} = (this._web3Provider as any).engine.manager.state;
-    const createVMFromStateTrie = blockchain.createVMFromStateTrie;
-    blockchain.createVMFromStateTrie = function (...args: any[]) {
-      const vm = createVMFromStateTrie.apply(this, args);
-      vm.on('beforeMessage', onMessage);
-      return vm;
-    };
+    super(Ganache.provider({accounts: defaultAccounts, ...options}) as any);
+    this._callHistory = new CallHistory();
+    this._callHistory.record(this);
   }
 
   getWallets() {
-    const items = this.options?.accounts ?? defaults.accounts;
+    const items = this.options?.accounts ?? defaultAccounts;
     return items.map((x: any) => new Wallet(x.secretKey, this));
   }
 
@@ -43,10 +24,10 @@ export class MockProvider extends providers.Web3Provider {
   }
 
   clearCallHistory() {
-    this._callHistory = [];
+    this._callHistory.clear();
   }
 
   get callHistory(): readonly RecordedCall[] {
-    return this._callHistory;
+    return this._callHistory.getCalls();
   }
 }
