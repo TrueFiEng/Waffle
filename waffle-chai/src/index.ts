@@ -8,8 +8,8 @@ import {supportProperPrivateKey} from './matchers/properPrivateKey';
 import {supportProperHex} from './matchers/properHex';
 import {supportChangeBalance} from './matchers/changeBalance';
 import {supportChangeBalances} from './matchers/changeBalances';
-import {supportEthCalled} from './matchers/ethCalled/ethCalled';
-import {supportEthCalledWith} from './matchers/ethCalled/ethCalledWith';
+import {supportCalledOnContract} from './matchers/ethCalled/calledOnContract';
+import {supportCalledOnContractWith} from './matchers/ethCalled/calledOnContractWith';
 
 export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportBigNumber(chai.Assertion, utils);
@@ -21,6 +21,6 @@ export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportProperHex(chai.Assertion);
   supportChangeBalance(chai.Assertion);
   supportChangeBalances(chai.Assertion);
-  supportEthCalled(chai.Assertion);
-  supportEthCalledWith(chai.Assertion);
+  supportCalledOnContract(chai.Assertion);
+  supportCalledOnContractWith(chai.Assertion);
 }

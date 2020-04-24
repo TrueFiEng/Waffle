@@ -1,10 +1,9 @@
-import {validateExpectArguments, validateFnName} from './ethCalledValidators';
+import {validateExpectArguments, validateFnName} from './calledOnContractValidators';
 import {RecordedCall} from '@ethereum-waffle/provider';
 
-export function supportEthCalled(Assertion: Chai.AssertionStatic) {
-  Assertion.addProperty('ethCalled', function () {
-    const arg = this._obj;
-    const [contract, fnName] = Array.isArray(arg) ? arg : [arg];
+export function supportCalledOnContract(Assertion: Chai.AssertionStatic) {
+  Assertion.addMethod('calledOnContract', function (this: any, contract: any) {
+    const fnName = this._obj;
 
     validateExpectArguments(contract);
     if (fnName !== undefined) {

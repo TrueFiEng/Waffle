@@ -11,13 +11,13 @@ async function setup() {
   return {contract: await factory.deploy()};
 }
 
-describe('INTEGRATION: ethCalledWith', () => {
+describe('INTEGRATION: calledOnContractWith', () => {
   it('checks that contract function with provided parameter was called', async () => {
     const {contract} = await setup();
 
     await contract.callWithParameter(1);
 
-    expect([contract, 'callWithParameter']).to.be.ethCalledWith([1]);
+    expect('callWithParameter').to.be.calledOnContractWith(contract, [1]);
   });
 
   it('checks that contract function with provided multiple parameters was called', async () => {
@@ -25,14 +25,14 @@ describe('INTEGRATION: ethCalledWith', () => {
 
     await contract.callWithParameters(2, 3);
 
-    expect([contract, 'callWithParameters']).to.be.ethCalledWith([2, 3]);
+    expect('callWithParameters').to.be.calledOnContractWith(contract, [2, 3]);
   });
 
   it('throws assertion error when contract function with parameter was not called', async () => {
     const {contract} = await setup();
 
     expect(
-      () => expect([contract, 'callWithParameter']).to.be.ethCalledWith([1])
+      () => expect('callWithParameter').to.be.calledOnContractWith(contract, [1])
     ).to.throw(AssertionError, 'Expected contract function with parameters to be called');
   });
 
@@ -41,7 +41,7 @@ describe('INTEGRATION: ethCalledWith', () => {
 
     await contract.callWithParameter(2);
 
-    expect([contract, 'callWithParameter']).not.to.be.to.be.ethCalledWith([1]);
+    expect('callWithParameter').not.to.be.to.be.calledOnContractWith(contract, [1]);
   });
 
   it('checks that contract function with parameters was not called', async () => {
@@ -49,7 +49,7 @@ describe('INTEGRATION: ethCalledWith', () => {
 
     await contract.callWithParameters(1, 2);
 
-    expect([contract, 'callWithParameters']).not.to.be.to.be.ethCalledWith([1, 3]);
+    expect('callWithParameters').not.to.be.to.be.calledOnContractWith(contract,[1, 3]);
   });
 
   it('throws assertion error when contract function with parameter was called', async () => {
@@ -57,7 +57,7 @@ describe('INTEGRATION: ethCalledWith', () => {
     await contract.callWithParameter(2);
 
     expect(
-      () => expect([contract, 'callWithParameter']).not.to.be.ethCalledWith([2])
+      () => expect('callWithParameter').not.to.be.calledOnContractWith(contract,[2])
     ).to.throw(AssertionError, 'Expected contract function with parameters NOT to be called');
   });
 });

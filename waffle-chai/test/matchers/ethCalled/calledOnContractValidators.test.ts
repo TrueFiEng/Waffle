@@ -15,7 +15,7 @@ async function setup() {
 describe('INTEGRATION: ethCalledValidators', () => {
   it('throws type error when the argument is not a contract', async () => {
     expect(
-      () => expect('not a contract').to.be.ethCalled
+      () => expect('calledFunction').to.be.calledOnContract('invalidContract')
     ).to.throw(TypeError, 'ethCalled: argument must be a contract');
   });
 
@@ -27,7 +27,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
     );
 
     expect(
-      () => expect(contract).to.be.ethCalled
+      () => expect('calledFunction').to.be.calledOnContract(contract)
     ).to.throw(TypeError, 'ethCalled: contract.provider must be a MockProvider');
   });
 
@@ -35,7 +35,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
     const {contract} = await setup();
 
     expect(
-      () => expect([contract, 12]).to.be.ethCalled
+      () => expect(12).to.be.calledOnContract(contract)
     ).to.throw(TypeError, 'ethCalled: function name must be a string');
   });
 
@@ -43,7 +43,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
     const {contract} = await setup();
 
     expect(
-      () => expect([contract, 'notExistingFunction']).to.be.ethCalled
+      () => expect('notExistingFunction').to.be.calledOnContract(contract)
     ).to.throw(TypeError, 'ethCalled: function must exist in provided contract');
   });
 
@@ -51,12 +51,13 @@ describe('INTEGRATION: ethCalledValidators', () => {
     const provider = new MockProvider();
     const [deployer] = provider.getWallets();
     const factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, deployer);
-    const contract = await factory.deploy();
+    const anotherContract = await factory.deploy();
+    await anotherContract.emitOne();
 
-    await contract.emitOne();
+    const {contract} = await setup();
 
     expect(
-      () => expect([contract, 'notExistingFunction']).to.be.ethCalled
+      () => expect('notExistingFunction').to.be.calledOnContract(contract)
     ).to.throw(TypeError, 'ethCalled: function must exist in provided contract');
   });
 });
