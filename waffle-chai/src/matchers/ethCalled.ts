@@ -1,13 +1,5 @@
 import {Contract} from 'ethers';
-import {MockProvider, RecordedCall} from '@ethereum-waffle/provider';
-
-interface AssertionResultInterface {
-  wasCalled: boolean;
-  errorMessage: string;
-  negatedErrorMessage: string;
-}
-
-type IsInCallHistory = (call: RecordedCall) => boolean
+import {MockProvider} from '@ethereum-waffle/provider';
 
 export function supportEthCalled(Assertion: Chai.AssertionStatic) {
   Assertion.addProperty('ethCalled', function () {
@@ -21,36 +13,37 @@ export function supportEthCalled(Assertion: Chai.AssertionStatic) {
     if (!(provider instanceof MockProvider)) {
       throw new TypeError('ethCalled: contract.provider must be a MockProvider');
     }
-    if (fnName !== undefined && typeof fnName !== 'string') {
-      throw new TypeError('ethCalled: function name must be a string');
+    if (fnName !== undefined) {
+      if (typeof fnName !== 'string') {
+        throw new TypeError('ethCalled: function name must be a string');
+      }
+      if (!(fnName in contract.interface.functions)) {
+        throw new TypeError('ethCalled: function must exist in provided contract');
+      }
     }
 
     const fnSighash = fnName && contract.interface.functions[fnName].sighash;
+    const callHistory = provider.callHistory;
 
-    const isInCallHistory = (cb: IsInCallHistory): boolean => provider.callHistory.some(cb);
-
-    const getAssertionResult = (): AssertionResultInterface => {
-      if (fnSighash) {
-        return {
-          wasCalled: isInCallHistory(call => call.data === fnSighash),
-          errorMessage: 'Expected contract function to be called',
-          negatedErrorMessage: 'Expected contract function NOT to be called'
-        };
-      }
-      return {
-        wasCalled: isInCallHistory(call => call.address === contract.address),
-        errorMessage: 'Expected contract to be called',
-        negatedErrorMessage: 'Expected contract NOT to be called'
-      };
-    };
-
-    const {wasCalled, errorMessage, negatedErrorMessage} = getAssertionResult();
-
-    this.assert(
-      wasCalled,
-      errorMessage,
-      negatedErrorMessage,
-      undefined
-    );
+    if (fnSighash) {
+      this.assert(
+        callHistory.some(call => {
+          return (
+            call.address === contract.address &&
+            call.data.startsWith(fnSighash)
+          );
+        }),
+        'Expected contract function to be called',
+        'Expected contract function NOT to be called',
+        undefined
+      );
+    } else {
+      this.assert(
+        callHistory.some(call => call.address === contract.address),
+        'Expected contract to be called',
+        'Expected contract NOT to be called',
+        undefined
+      );
+    }
   });
 }

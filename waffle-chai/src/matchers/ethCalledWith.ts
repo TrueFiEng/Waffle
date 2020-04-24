@@ -1,7 +1,5 @@
 import {Contract} from 'ethers';
-import {MockProvider, RecordedCall} from '@ethereum-waffle/provider';
-
-type IsInCallHistory = (call: RecordedCall) => boolean
+import {MockProvider} from '@ethereum-waffle/provider';
 
 export function supportEthCalledWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('ethCalledWith', function (this: any, parameters: Array<any>) {
@@ -14,18 +12,25 @@ export function supportEthCalledWith(Assertion: Chai.AssertionStatic) {
     if (!(provider instanceof MockProvider)) {
       throw new TypeError('ethCalled: contract.provider must be a MockProvider');
     }
-    if (fnName !== undefined && typeof fnName !== 'string') {
+
+    if (typeof fnName !== 'string') {
       throw new TypeError('ethCalled: function name must be a string');
     }
+    if (!(fnName in contract.interface.functions)) {
+      throw new TypeError('ethCalled: function must exist in provided contract');
+    }
 
-    const fnSighash = contract.interface.functions[fnName].encode(parameters);
-
-    const isInCallHistory = (cb: IsInCallHistory): boolean => provider.callHistory.some(cb);
+    const funCallData = contract.interface.functions[fnName].encode(parameters);
 
     this.assert(
-      isInCallHistory(call => call.data === fnSighash),
-      'Expected contract function to be called',
-      'Expected contract function NOT to be called',
+      provider.callHistory.some(call => {
+        return (
+          call.address === contract.address &&
+          call.data === funCallData
+        );
+      }),
+      'Expected contract function with parameters to be called',
+      'Expected contract function with parameters NOT to be called',
       undefined
     );
   });
