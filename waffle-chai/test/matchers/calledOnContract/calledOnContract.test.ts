@@ -41,4 +41,16 @@ describe('INTEGRATION: calledOnContract', () => {
       () => expect('callWithoutParameter').not.to.be.calledOnContract(contract)
     ).to.throw(AssertionError, 'Expected contract function NOT to be called');
   });
+
+  it(
+    'checks that contract function was called on provided contract and not called on another deploy of this contract',
+    async () => {
+      const {contract} = await setup();
+      const {contract: secondDeployContract} = await setup();
+      await contract.callWithoutParameter();
+
+      expect('callWithoutParameter').to.be.calledOnContract(contract);
+      expect('callWithoutParameter').not.to.be.calledOnContract(secondDeployContract);
+    }
+  );
 });

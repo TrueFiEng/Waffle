@@ -60,4 +60,27 @@ describe('INTEGRATION: calledOnContractWith', () => {
       () => expect('callWithParameter').not.to.be.calledOnContractWith(contract, [2])
     ).to.throw(AssertionError, 'Expected contract function with parameters NOT to be called');
   });
+
+  it(
+    'checks that contract function was called on provided contract and not called on another deploy of this contract',
+    async () => {
+      const {contract} = await setup();
+      const {contract: secondDeployContract} = await setup();
+      await contract.callWithParameter(2);
+
+      expect('callWithParameter').to.be.calledOnContractWith(contract, [2]);
+      expect('callWithParameter').not.to.be.calledOnContractWith(secondDeployContract, [2]);
+    }
+  );
+
+  it(
+    'checks that contract function which was called twice with different args, lets possibility to find desirable call',
+    async () => {
+      const {contract} = await setup();
+
+      await contract.callWithParameters(2, 3);
+      await contract.callWithParameters(4, 5);
+
+      expect('callWithParameters').to.be.calledOnContractWith(contract, [2, 3]);
+    });
 });
