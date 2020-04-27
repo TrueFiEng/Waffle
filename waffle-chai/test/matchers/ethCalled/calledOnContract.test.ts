@@ -12,35 +12,33 @@ async function setup() {
 }
 
 describe('INTEGRATION: calledOnContract', () => {
-  describe('match contract with function', () => {
-    it('checks that contract function was called', async () => {
-      const {contract} = await setup();
-      await contract.callWithoutParameter();
+  it('checks that contract function was called', async () => {
+    const {contract} = await setup();
+    await contract.callWithoutParameter();
 
-      expect('callWithoutParameter').to.be.calledOnContract(contract);
-    });
+    expect('callWithoutParameter').to.be.calledOnContract(contract);
+  });
 
-    it('throws assertion error when contract function was not called', async () => {
-      const {contract} = await setup();
+  it('throws assertion error when contract function was not called', async () => {
+    const {contract} = await setup();
 
-      expect(
-        () => expect('callWithoutParameter').to.be.calledOnContract(contract)
-      ).to.throw(AssertionError, 'Expected contract function to be called');
-    });
+    expect(
+      () => expect('callWithoutParameter').to.be.calledOnContract(contract)
+    ).to.throw(AssertionError, 'Expected contract function to be called');
+  });
 
-    it('checks that contract function was not called', async () => {
-      const {contract} = await setup();
+  it('checks that contract function was not called', async () => {
+    const {contract} = await setup();
 
-      expect('callWithoutParameter').not.to.be.calledOnContract(contract);
-    });
+    expect('callWithoutParameter').not.to.be.calledOnContract(contract);
+  });
 
-    it('throws assertion error when contract function was called', async () => {
-      const {contract} = await setup();
-      await contract.callWithoutParameter();
+  it('throws assertion error when contract function was called', async () => {
+    const {contract} = await setup();
+    await contract.callWithoutParameter();
 
-      expect(
-        () => expect('callWithoutParameter').not.to.be.calledOnContract(contract)
-      ).to.throw(AssertionError, 'Expected contract function NOT to be called');
-    });
+    expect(
+      () => expect('callWithoutParameter').not.to.be.calledOnContract(contract)
+    ).to.throw(AssertionError, 'Expected contract function NOT to be called');
   });
 });
