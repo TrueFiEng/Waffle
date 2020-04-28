@@ -1,7 +1,7 @@
 import {MockProvider} from '../src';
 import {ContractFactory} from 'ethers';
 import BasicToken from './test-build-output/BasicToken.json';
-import {expect} from "chai";
+import {expect} from 'chai';
 import {AddressZero} from 'ethers/constants';
 
 describe('Integration: RevertLocalizer', () => {
