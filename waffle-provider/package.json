@@ -42,7 +42,6 @@
     "web3": "1.2.4"
   },
   "devDependencies": {
-    "@ethereum-waffle/compiler": "^2.4.1",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/mocha": "^5.2.7",
@@ -54,7 +53,6 @@
     "mocha": "^6.2.1",
     "rimraf": "^3.0.0",
     "ts-node": "^8.4.1",
-    "typescript": "^3.7.2",
-    "@openzeppelin/contracts": "^2.5.0"
+    "typescript": "^3.7.2"
   }
 }
