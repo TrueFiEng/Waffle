@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import {Config} from './config';
 
 export const readFileContent = (path: string): string =>
   fs.readFileSync(path).toString();
@@ -32,3 +33,10 @@ export const isDirectory = (directoryPath: string) =>
   fs.statSync(relativePathToWorkingDir(directoryPath)).isDirectory();
 
 export const relativePathToWorkingDir = (pathName: string) => path.resolve(pathName);
+
+export const experimentalWarring = () =>
+  console.log('Warring! This is experimental and the api might change without major version change.');
+
+export const getExtensionForCompilerType = (config: Config) => {
+  return config.compilerType === 'dockerized-vyper' ? '.vy' : '.sol';
+};

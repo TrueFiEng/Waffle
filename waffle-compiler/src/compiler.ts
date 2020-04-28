@@ -1,5 +1,5 @@
 import {InputConfig, inputToConfig, Config} from './config';
-import {isWarningMessage} from './utils';
+import {getExtensionForCompilerType, isWarningMessage} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
 import {findImports} from './findImports';
@@ -30,7 +30,7 @@ async function newCompile(config: Config) {
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
   const sources = await gatherSources(
-    findInputs(config.sourceDirectory),
+    findInputs(config.sourceDirectory, getExtensionForCompilerType(config)),
     '.',
     resolver
   );
