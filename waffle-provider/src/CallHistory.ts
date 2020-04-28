@@ -28,8 +28,7 @@ function addVmListener(
   event: string,
   handler: (value: any) => void
 ) {
-  // FIXME: this is bad (remove .upstream)
-  const {blockchain} = (provider._web3Provider as any).upstream.engine.manager.state;
+  const {blockchain} = (provider._web3Provider as any).engine.manager.state;
   const createVMFromStateTrie = blockchain.createVMFromStateTrie;
   blockchain.createVMFromStateTrie = function (...args: any[]) {
     const vm = createVMFromStateTrie.apply(this, args);

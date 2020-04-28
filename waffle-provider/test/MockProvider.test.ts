@@ -1,20 +1,9 @@
 import {expect} from 'chai';
-import {utils, ContractFactory, Wallet} from 'ethers';
+import {utils, Wallet} from 'ethers';
 import {MockProvider} from '../src';
 import {deployToken} from './BasicToken';
-import BasicToken from './test-build-output/BasicToken.json';
-import {AddressZero} from 'ethers/constants';
 
 describe('INTEGRATION: MockProvider', () => {
-  it('fails on estimate gas', async () => {
-    const provider = new MockProvider();
-    provider.buildDir = 'test/test-build-output';
-    const [sender] = provider.getWallets();
-    const factory = new ContractFactory(BasicToken.abi, BasicToken.bytecode, sender);
-    const contract = await factory.deploy(10_000);
-    await expect(contract.transfer(AddressZero, 50)).to.be.rejectedWith(/BasicToken\.sol:30/);
-  });
-
   it('can return wallets', async () => {
     const provider = new MockProvider();
     const wallets = provider.getWallets();
