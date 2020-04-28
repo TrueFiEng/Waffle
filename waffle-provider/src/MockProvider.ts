@@ -4,11 +4,10 @@ import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
 import {DebugProvider} from './DebugProvider';
 
-export {RecordedCall
-};
+export {RecordedCall};
 
 export class MockProvider extends providers.Web3Provider {
-  private _callHistory: CallHistory
+  private _callHistory: CallHistory;
 
   constructor(private options?: Ganache.IProviderOptions) {
     super(new DebugProvider(Ganache.provider({accounts: defaultAccounts, ...options}) as any));

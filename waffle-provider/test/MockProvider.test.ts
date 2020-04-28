@@ -6,7 +6,6 @@ import BasicToken from './test-build-output/BasicToken.json';
 import {AddressZero} from 'ethers/constants';
 
 describe('INTEGRATION: MockProvider', () => {
-
   it('fails on estimate gas', async () => {
     const provider = new MockProvider();
     provider.buildDir = 'test/test-build-output';
