@@ -1,6 +1,7 @@
 import solc from 'solc';
+import path from 'path';
 import {promisify} from 'util';
-import {readFileContent, isDirectory, relativePathToWorkingDir} from './utils';
+import {readFileContent, isDirectory} from './utils';
 import {Config} from './config';
 import {buildInputObject} from './buildUitls';
 import {ImportFile} from '@resolver-engine/imports';
@@ -12,7 +13,7 @@ const semverRegex = /^\d+\.\d+\.\d+$/;
 export async function loadCompiler(config: Config) {
   if (config.compilerVersion !== 'default') {
     if (isDirectory(config.compilerVersion)) {
-      return require(relativePathToWorkingDir(config.compilerVersion));
+      return require(path.resolve(config.compilerVersion));
     } else if (semverRegex.test(config.compilerVersion)) {
       try {
         const version = await resolveSemverVersion(config.compilerVersion);

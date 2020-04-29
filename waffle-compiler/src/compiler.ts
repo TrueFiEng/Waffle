@@ -1,5 +1,5 @@
 import {InputConfig, inputToConfig, Config} from './config';
-import {getExtensionForCompilerType, isWarningMessage} from './utils';
+import {getExtensionForCompilerType} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
 import {findImports} from './findImports';
@@ -49,7 +49,7 @@ async function processOutput(output: any, config: Config) {
 }
 
 function anyNonWarningErrors(errors?: any[]) {
-  return errors && !errors.every(isWarningMessage);
+  return errors && !errors.every(error => error.severity === 'warning');
 }
 
 function formatErrors(errors: any[]) {
