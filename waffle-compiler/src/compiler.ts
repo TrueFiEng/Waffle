@@ -1,8 +1,7 @@
-import {InputConfig, inputToConfig, Config} from './config';
+import {InputConfig, inputToConfig, Config, loadConfig} from './config';
 import {getExtensionForCompilerType} from './utils';
 import {getCompileFunction} from './getCompileFunction';
 import {findInputs} from './findInputs';
-import {loadConfig} from './loadConfig';
 import {saveOutput} from './saveOutput';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';

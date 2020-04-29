@@ -3,7 +3,7 @@ import fsx from 'fs-extra';
 import {join, dirname, basename} from 'path';
 import {expect} from 'chai';
 import {compileProject} from '../../src/compiler';
-import {loadConfig} from '../../src/loadConfig';
+import {loadConfig} from '../../src/config';
 import {readFileContent, isFile} from '../../src/utils';
 
 const configurations = [
