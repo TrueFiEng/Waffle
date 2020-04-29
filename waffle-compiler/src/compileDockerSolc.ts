@@ -1,7 +1,7 @@
 import {join} from 'path';
 import {Config} from './config';
 import {execSync} from 'child_process';
-import {buildInputObject} from './buildUitls';
+import {getCompilerInput} from './compilerInput';
 import {ImportFile} from '@resolver-engine/imports';
 import {solcOutputMaxBuffer} from './compiler';
 
@@ -11,7 +11,7 @@ const NPM_PATH = '/home/npm';
 export function compileDockerSolc(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
-    const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);
+    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
     return JSON.parse(execSync(command, {input, maxBuffer: solcOutputMaxBuffer}).toString());
   };
 }

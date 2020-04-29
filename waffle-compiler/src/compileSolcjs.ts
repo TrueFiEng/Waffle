@@ -3,7 +3,7 @@ import path from 'path';
 import {promisify} from 'util';
 import {readFileContent, isDirectory} from './utils';
 import {Config} from './config';
-import {buildInputObject} from './buildUitls';
+import {getCompilerInput} from './compilerInput';
 import {ImportFile} from '@resolver-engine/imports';
 import fetch from 'node-fetch';
 
@@ -47,8 +47,8 @@ async function fetchReleases() {
 export function compileSolcjs(config: Config) {
   return async function compile(sources: ImportFile[], findImports: (file: string) => any) {
     const solc = await loadCompiler(config);
-    const input = buildInputObject(sources, config.compilerOptions);
-    const output = solc.compile(JSON.stringify(input), {imports: findImports});
+    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
+    const output = solc.compile(input, {imports: findImports});
     return JSON.parse(output);
   };
 }
