@@ -3,7 +3,7 @@ import path from 'path';
 import {promisify} from 'util';
 import fetch from 'node-fetch';
 import {ImportFile} from '@resolver-engine/imports';
-import {readFileContent, isDirectory} from './utils';
+import {isDirectory} from './utils';
 import {Config} from './config';
 import {getCompilerInput} from './compilerInput';
 import {findImports} from './findImports';
@@ -53,10 +53,4 @@ export function compileSolcjs(config: Config) {
     const output = solc.compile(input, {imports});
     return JSON.parse(output);
   };
-}
-
-export function findInputs(files: string[]) {
-  return Object.assign({}, ...files.map((file) => ({
-    [file]: readFileContent(file)
-  })));
 }
