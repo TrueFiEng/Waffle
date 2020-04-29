@@ -1,11 +1,12 @@
 import solc from 'solc';
 import path from 'path';
 import {promisify} from 'util';
+import fetch from 'node-fetch';
+import {ImportFile} from '@resolver-engine/imports';
 import {readFileContent, isDirectory} from './utils';
 import {Config} from './config';
 import {getCompilerInput} from './compilerInput';
-import {ImportFile} from '@resolver-engine/imports';
-import fetch from 'node-fetch';
+import {findImports} from './findImports';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 const semverRegex = /^\d+\.\d+\.\d+$/;
@@ -45,10 +46,11 @@ async function fetchReleases() {
 }
 
 export function compileSolcjs(config: Config) {
-  return async function compile(sources: ImportFile[], findImports: (file: string) => any) {
+  return async function compile(sources: ImportFile[]) {
     const solc = await loadCompiler(config);
     const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
-    const output = solc.compile(input, {imports: findImports});
+    const imports = findImports(sources);
+    const output = solc.compile(input, {imports});
     return JSON.parse(output);
   };
 }
