@@ -1,5 +1,5 @@
 import path from 'path';
-import {InputConfig} from '.';
+import {InputConfig} from './config';
 
 export async function loadConfig(configPath?: string): Promise<InputConfig> {
   if (configPath) {
