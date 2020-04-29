@@ -1,12 +1,11 @@
+import fs from 'fs';
+import path from 'path';
+import mkdirp from 'mkdirp';
 import {loadConfig} from './loadConfig';
 import {Config, InputConfig, inputToConfig} from './config';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
 import {findInputs} from './findInputs';
-import mkdirp from 'mkdirp';
-import fsx from 'fs-extra';
-import * as path from 'path';
-import {join} from 'path';
 import {getExtensionForCompilerType} from './utils';
 
 export interface GatheredContractInterface {
@@ -41,7 +40,7 @@ async function getContractDependency(config: Config): Promise<GatheredContractIn
 
 const fsOps = {
   createDirectory: mkdirp.sync,
-  writeFile: fsx.writeFileSync
+  writeFile: fs.writeFileSync
 };
 
 function saveToFile(
@@ -55,7 +54,7 @@ function saveToFile(
 
   output.map((contract: Array<GatheredContractInterface>) => {
     const fileName = path.parse(contract[0].url).base;
-    const filePath = join(outputDirectory, fileName);
+    const filePath = path.join(outputDirectory, fileName);
     let source = '';
 
     contract.map(dependency => {
