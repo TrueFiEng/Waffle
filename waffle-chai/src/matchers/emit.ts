@@ -2,7 +2,7 @@ import {Contract} from 'ethers';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
   const filterLogsWithTopics = (logs: any[], topic: any, contractAddress: string) =>
-    logs.filter((log) => log.topics.includes(topic))
+    logs.filter((log) => log.values.includes(topic))
       .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
@@ -29,7 +29,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         );
       }
 
-      const {topic} = eventDescription;
+      const topic = eventDescription.name;
       this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
       this.assert(this.logs.length > 0,
         `Expected event "${eventName}" to be emitted, but it wasn't`,

@@ -21,11 +21,11 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
       },
       {
         address: contract.address,
-        data: contract.interface.functions.transfer.encode([recipient.address, 3_141])
+        data: contract.interface.encodeFunctionData('transfer', [recipient.address, 3_141])
       },
       {
         address: contract.address,
-        data: contract.interface.functions.balanceOf.encode([recipient.address])
+        data: contract.interface.encodeFunctionData('balanceOf', [recipient.address])
       }
     ]);
   });
@@ -47,11 +47,11 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
     });
     expect(provider.callHistory).to.not.deep.include({
       address: contract.address,
-      data: contract.interface.functions.transfer.encode([recipient.address, 3_141])
+      data: contract.interface.encodeFunctionData('transfer', [recipient.address, 3_141])
     });
     expect(provider.callHistory).to.deep.include({
       address: contract.address,
-      data: contract.interface.functions.balanceOf.encode([recipient.address])
+      data: contract.interface.encodeFunctionData('balanceOf', [recipient.address])
     });
   });
 
@@ -69,7 +69,7 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
 
     expect(provider.callHistory).to.deep.include({
       address: called.address,
-      data: called.interface.functions.foo.encode([1, 2])
+      data: called.interface.encodeFunctionData('foo', [1, 2])
     });
   });
 
@@ -84,7 +84,7 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
 
     expect(provider.callHistory).to.deep.include({
       address: token.address,
-      data: token.interface.functions.transfer.encode([wallet.address, 20])
+      data: token.interface.encodeFunctionData('transfer', [wallet.address, 20])
     });
   });
 });

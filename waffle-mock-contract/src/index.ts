@@ -8,11 +8,12 @@ async function deploy(wallet: Wallet) {
   return factory.deploy();
 }
 
-function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionDescription, params?: any[]) {
-  const callData = params ? func.encode(params) : func.sighash;
+function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionFragment, params?: any[]) {
+  const callData = params ? mockContract.interface.encodeFunctionData(func.name, params) : mockContract.interface.getSighash(func.name);
 
   return {
     returns: async (...args: any) => {
+      if (!func.outputs) return;
       const encoded = encoder.encode(func.outputs, args);
       await mockContract.__waffle__mockReturns(callData, encoded);
     },

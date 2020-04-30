@@ -10,7 +10,7 @@ export function supportCalledOnContract(Assertion: Chai.AssertionStatic) {
       validateFnName(fnName, contract);
     }
 
-    const fnSighash = contract.interface.functions[fnName].sighash;
+    const fnSighash = contract.interface.getSighash(fnName);
 
     this.assert(
       contract.provider.callHistory.some(
