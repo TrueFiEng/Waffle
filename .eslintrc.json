@@ -159,12 +159,15 @@
       "error",
       "^(err|error)$"
     ],
+    "import/default": "off",
+    "import/named": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
         "devDependencies": false
       }
     ],
+    "import/no-unresolved": "off",
     "indent": "off",
     "key-spacing": [
       "error",
