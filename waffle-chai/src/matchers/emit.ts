@@ -1,18 +1,18 @@
-import {Contract} from 'ethers';
+import {Contract, providers} from 'ethers';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
-  const filterLogsWithTopics = (logs: any[], topic: any, contractAddress: string) =>
-    logs.filter((log) => log.values.includes(topic))
+  const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
+    logs.filter((log) => log.topics.includes(topic))
       .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     const promise = this._obj;
     const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
-    ).then((receipt: any) => {
-      const eventDescription = contract.interface.events[eventName];
+    ).then((receipt: providers.TransactionReceipt) => {
+      const eventFragment = contract.interface.events[eventName];
 
-      if (eventDescription === undefined) {
+      if (eventFragment === undefined) {
         const isNegated = this.__flags.negate === true;
 
         this.assert(
@@ -29,7 +29,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         );
       }
 
-      const topic = eventDescription.name;
+      const topic = contract.interface.getEventTopic(eventFragment);
       this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
       this.assert(this.logs.length > 0,
         `Expected event "${eventName}" to be emitted, but it wasn't`,
