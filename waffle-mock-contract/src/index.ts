@@ -9,7 +9,9 @@ async function deploy(wallet: Wallet) {
 }
 
 function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionFragment, params?: any[]) {
-  const callData = params ? mockContract.interface.encodeFunctionData(func.name, params) : mockContract.interface.getSighash(func.name);
+  const callData = params
+    ? mockContract.interface.encodeFunctionData(func.name, params)
+    : mockContract.interface.getSighash(func.name);
 
   return {
     returns: async (...args: any) => {

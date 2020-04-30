@@ -6,6 +6,7 @@ export function findInputs(sourcePath: string, extension: string) {
   const stack = [sourcePath];
   const inputFiles: string[] = [];
   while (stack.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const dir = stack.pop()!;
     const files = fs.readdirSync(dir);
     for (const file of files) {
