@@ -1,11 +1,14 @@
 import {expect} from 'chai';
-import {utils, Wallet, ContractFactory} from 'ethers';
+import {BigNumber, utils, Wallet, ContractFactory} from 'ethers';
 import {MockProvider, loadFixture, createFixtureLoader} from '../src';
 import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 
 describe('Integration: Fixtures', () => {
   describe('correctly restores state', () => {
-    async function tokenFixture(provider: MockProvider, [sender, recipient]: Wallet[]) {
+    async function tokenFixture(
+      provider: MockProvider,
+      [sender, recipient]: Wallet[]
+    ) {
       const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, sender);
       return {
         contract: await factory.deploy(1_000),
@@ -16,12 +19,12 @@ describe('Integration: Fixtures', () => {
 
     async function test() {
       const {contract, sender, recipient} = await loadFixture(tokenFixture);
-      const balanceBefore: utils.BigNumber = await contract.balanceOf(sender.address);
+      const balanceBefore: BigNumber = await contract.balanceOf(sender.address);
       expect(balanceBefore.eq(1_000)).to.equal(true);
 
       await contract.transfer(recipient.address, 50);
 
-      const balanceAfter: utils.BigNumber = await contract.balanceOf(sender.address);
+      const balanceAfter: BigNumber = await contract.balanceOf(sender.address);
       expect(balanceAfter.eq(950)).to.equal(true);
     }
 
@@ -54,7 +57,8 @@ describe('Integration: Fixtures', () => {
     const balance1 = await provider.getBalance(wallet.address);
 
     await wallet.sendTransaction({
-      to: other.address, value: utils.parseEther('1')
+      to: other.address,
+      value: utils.parseEther('1')
     });
     const balance2 = await provider.getBalance(wallet.address);
 
@@ -80,8 +84,8 @@ describe('Integration: Fixtures', () => {
       await from.sendTransaction({
         value: utils.parseEther('1'),
         to: to.address,
-        gasLimit: utils.bigNumberify(21000),
-        gasPrice: utils.bigNumberify(1)
+        gasLimit: BigNumber.from(21000),
+        gasPrice: BigNumber.from(1)
       });
     }
 
@@ -112,8 +116,8 @@ describe('Integration: Fixtures', () => {
   });
 
   it('run on isolated chains', async () => {
-    const fixtureA = async (provider: MockProvider) => (provider);
-    const fixtureB = async (provider: MockProvider) => (provider);
+    const fixtureA = async (provider: MockProvider) => provider;
+    const fixtureB = async (provider: MockProvider) => provider;
 
     const providerA1 = await loadFixture(fixtureA);
     const providerA2 = await loadFixture(fixtureA);
@@ -132,7 +136,10 @@ describe('Integration: Fixtures', () => {
     let receivedProvider: any;
     let receivedWallets: any;
 
-    const customLoadFixture = createFixtureLoader(customProvider, customWallets);
+    const customLoadFixture = createFixtureLoader(
+      customProvider,
+      customWallets
+    );
     await customLoadFixture(async (provider, wallets) => {
       receivedProvider = provider;
       receivedWallets = wallets;
