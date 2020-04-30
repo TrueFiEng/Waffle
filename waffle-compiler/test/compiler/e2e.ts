@@ -127,13 +127,13 @@ describe('E2E: Compiler integration', async () => {
         }
       });
 
+      const deepCopy = (x: any) => JSON.parse(JSON.stringify(x));
+
       it('links library', async () => {
         const [wallet] = new MockProvider().getWallets();
-        const libraryPath = resolve(join(configuration.outputDirectory, 'MyLibrary.json'));
+        const libraryPath = resolve(configuration.outputDirectory, 'MyLibrary.json');
         const MyLibrary = require(libraryPath);
-        const LibraryConsumer = JSON.parse(JSON.stringify(
-          require(resolve(join(configuration.outputDirectory, 'Two.json')))
-        ));
+        const LibraryConsumer = deepCopy(require(resolve(configuration.outputDirectory, 'Two.json')));
 
         const libraryFactory = new ContractFactory(MyLibrary.abi, MyLibrary.evm.bytecode.object, wallet);
         const myLibrary = await libraryFactory.deploy();
