@@ -16,9 +16,8 @@ export function supportReverted(Assertion: Chai.AssertionStatic) {
       console.log('message', message);
       const isReverted = message.search('revert') >= 0;
       const isThrown = message.search('invalid opcode') >= 0;
-      const isError = message.search('code=') >= 0;
       this.assert(
-        isReverted || isThrown || isError,
+        isReverted || isThrown,
         `Expected transaction to be reverted, but other exception was thrown: ${error}`,
         'Expected transaction NOT to be reverted',
         'Transaction reverted.',
