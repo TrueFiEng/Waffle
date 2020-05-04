@@ -39,6 +39,7 @@
     "@resolver-engine/imports-fs": "^0.3.3",
     "@types/mkdirp": "^0.5.2",
     "@types/node-fetch": "^2.5.5",
+    "ethers": "^4.0.45",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.6.0",
     "solc": "^0.6.3"
@@ -53,19 +54,20 @@
     "@types/mocha": "^5.2.7",
     "@types/sinon": "^7.5.0",
     "@types/sinon-chai": "^3.2.3",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-string": "^1.5.0",
-    "eslint": "^6.5.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
     "fs-extra": "^8.1.0",
-    "mocha": "^6.2.1",
+    "mocha": "^7.1.2",
     "openzeppelin-solidity": "^2.1.1",
     "rimraf": "^3.0.0",
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.2"
+    "ts-node": "^8.9.1",
+    "typescript": "^3.8.3"
   }
 }

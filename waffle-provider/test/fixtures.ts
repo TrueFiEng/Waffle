@@ -131,7 +131,7 @@ describe('Integration: Fixtures', () => {
   });
 
   it('loadFixture can be made to use custom provider and wallets', async () => {
-    const customProvider = {send: () => {}} as any;
+    const customProvider = {send: () => {}} as any; // eslint-disable-line @typescript-eslint/no-empty-function
     const customWallets: Wallet[] = [];
     let receivedProvider: any;
     let receivedWallets: any;
