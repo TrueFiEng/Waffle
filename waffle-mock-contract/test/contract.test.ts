@@ -89,7 +89,7 @@ describe('Doppelganger - Contract', () => {
 
       await contract.__waffle__mockReturns(callData, returnedValue);
 
-      expect(await pretender.testArgumentTypes(1, false, 'str', '0x123')).to.equal('0x0123');
+      expect(await pretender.testArgumentTypes(1, false, 'str', '0x0123')).to.equal('0x0123');
     });
 
     it('reverts with correct message', async () => {
