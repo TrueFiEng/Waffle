@@ -1,8 +1,7 @@
 export function supportReverted(Assertion: Chai.AssertionStatic) {
   Assertion.addProperty('reverted', function (this: any) {
     const promise = this._obj;
-    const derivedPromise = promise.then((value: any) => {
-      console.log('[onSuccess]', 'value', value);
+    const onSuccess = (value: any) => {
       this.assert(
         false,
         'Expected transaction to be reverted',
@@ -11,20 +10,23 @@ export function supportReverted(Assertion: Chai.AssertionStatic) {
         'Transaction NOT reverted.'
       );
       return value;
-    }).catch((reason: any) => {
-      console.log('[onError]', 'reason', reason);
-      const message = (reason instanceof Object && 'message' in reason) ? reason.message : reason.toString();
+    };
+    const onError = (error: any) => {
+      const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
+      console.log('message', message);
       const isReverted = message.search('revert') >= 0;
       const isThrown = message.search('invalid opcode') >= 0;
+      const isError = message.search('code=') >= 0;
       this.assert(
-        isReverted || isThrown,
-        `Expected transaction to be reverted, but other exception was thrown: ${reason}`,
+        isReverted || isThrown || isError,
+        `Expected transaction to be reverted, but other exception was thrown: ${error}`,
         'Expected transaction NOT to be reverted',
         'Transaction reverted.',
-        reason
+        error
       );
-      return reason;
-    });
+      return error;
+    };
+    const derivedPromise = promise.then(onSuccess, onError);
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
     return this;

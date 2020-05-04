@@ -1,30 +1,32 @@
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
     const promise = this._obj;
-    const derivedPromise = promise.then(
-      (value: any) => {
-        this.assert(
-          false,
-          'Expected transaction to be reverted',
-          'Expected transaction NOT to be reverted',
-          'Transaction reverted.',
-          'Transaction NOT reverted.'
-        );
-        return value;
-      }
-    ).catch((reason: any) => {
-      const message = (reason instanceof Object && 'message' in reason) ? reason.message : reason.toString();
+    const onSuccess = (value: any) => {
+      this.assert(
+        false,
+        'Expected transaction to be reverted',
+        'Expected transaction NOT to be reverted',
+        'Transaction reverted.',
+        'Transaction NOT reverted.'
+      );
+      return value;
+    };
+    const onError = (error: any) => {
+      const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
+      console.log('message', message);
       const isReverted = message.search('revert') >= 0 && message.search(revertReason) >= 0;
       const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
+      const isError = message.search('code=') >= 0;
       this.assert(
-        isReverted || isThrown,
-        `Expected transaction to be reverted with ${revertReason}, but other exception was thrown: ${reason}`,
+        isReverted || isThrown || isError,
+        `Expected transaction to be reverted with ${revertReason}, but other exception was thrown: ${error}`,
         `Expected transaction NOT to be reverted with ${revertReason}`,
         `Transaction reverted with ${revertReason}.`,
-        reason
+        error
       );
-      return reason;
-    });
+      return error;
+    };
+    const derivedPromise = promise.then(onSuccess, onError);
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
     return this;
