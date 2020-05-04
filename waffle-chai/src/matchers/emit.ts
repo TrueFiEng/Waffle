@@ -12,7 +12,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     ).then((receipt: providers.TransactionReceipt) => {
       let eventFragment: utils.EventFragment | undefined;
       try {
-        eventFragment = contract.interface.getEvent(eventName)
+        eventFragment = contract.interface.getEvent(eventName);
       } catch (e) {
         // ignore error
       }
@@ -32,6 +32,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           eventName,
           ''
         );
+        return;
       }
 
       const topic = contract.interface.getEventTopic(eventFragment);
