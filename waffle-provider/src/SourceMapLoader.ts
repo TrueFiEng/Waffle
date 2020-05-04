@@ -38,6 +38,9 @@ export class SourceMapLoader {
     const sourceMap = parseSourceMap(contract.evm.deployedBytecode.sourceMap);
     const instructionIndex = getInstructionIndex(contract.evm.deployedBytecode.object, programCounter);
     const location = sourceMap[instructionIndex];
+    if (location.file === -1) {
+      return null;
+    }
     const contractSources = Object.entries(contract.sources) as ContractSources;
     const contractUri = findContractUri(contractSources, location);
     const contractSource = readFileSync(contractUri, {encoding: 'utf-8'});

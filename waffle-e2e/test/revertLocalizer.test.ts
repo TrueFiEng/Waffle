@@ -15,12 +15,12 @@ describe('Integration: RevertLocalizer', () => {
     await expect(contract.transfer(AddressZero, 50)).to.be.rejectedWith(/BasicToken\.sol:30/);
   });
 
-  it('finds source location in dependency contract', async () => {
+  it('does not find a revert location for contracts called by the called contract', async () => {
     const provider = new MockProvider();
     provider.buildDir = './dist';
     const [sender] = provider.getWallets();
     const factory = new ContractFactory(HelloContract.abi, HelloContract.bytecode, sender);
     const contract = await factory.deploy();
-    await expect(contract.doRevert()).to.be.rejectedWith(/TestContract\.sol:14/);
+    await expect(contract.doRevert()).to.be.rejectedWith('VM Exception while processing transaction: revert bar');
   });
 });

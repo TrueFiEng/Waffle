@@ -2,8 +2,7 @@ import {Web3Provider} from 'ethers/providers';
 import {SourceMapLoader} from './SourceMapLoader';
 
 export class RevertLocalizer {
-  // todo make it as a default
-  private _buildDir?: string;
+  private _buildDir?: string = './build';
 
   set buildDir(value: string) {
     this._buildDir = value;
@@ -27,10 +26,14 @@ export class RevertLocalizer {
     if (this._buildDir && isValidEthEstimateGasRevert(request, error)) {
       const {programCounter} = getRevertDetails(error);
       const contractCode = await provider.getCode(request.params[0].to);
-      const {file, line} = await new SourceMapLoader(this._buildDir)
+      const sourceMap = await new SourceMapLoader(this._buildDir)
         .locateLineByBytecodeAndProgramCounter(contractCode, programCounter);
 
-      error.message += ` (this revert occurred at ${file}:${line})`;
+      if (!sourceMap) {
+        return null;
+      }
+
+      error.message += ` (this revert occurred at ${sourceMap.file}:${sourceMap.line})`;
     }
   }
 }
