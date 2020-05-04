@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import mkdirp from 'mkdirp';
-import {loadConfig} from './loadConfig';
-import {Config, InputConfig, inputToConfig} from './config';
+import {Config, InputConfig, inputToConfig, loadConfig} from './config';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
 import {findInputs} from './findInputs';
