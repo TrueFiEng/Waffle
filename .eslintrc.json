@@ -342,15 +342,6 @@
     "no-unreachable": "error",
     "no-unsafe-finally": "error",
     "no-unsafe-negation": "error",
-    "no-restricted-imports": [
-      "error",
-      {
-        "patterns": [
-          "original-works-core/src",
-          "original-works-core/dist"
-        ]
-      }
-    ],
     "no-use-before-define": [
       "error",
       {
