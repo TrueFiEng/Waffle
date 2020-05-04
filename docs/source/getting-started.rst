@@ -21,7 +21,7 @@ Below is example contract written in Solidity. Save it as :code:`Counter.sol`
 inside the :code:`contracts` directory of your project.
 ::
 
-  pragma solidity ^0.5.0;
+  pragma solidity ^0.6.0;
 
   contract Counter {
     event Increment (uint256 by);

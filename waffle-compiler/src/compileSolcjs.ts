@@ -1,10 +1,12 @@
 import solc from 'solc';
+import path from 'path';
 import {promisify} from 'util';
-import {readFileContent, isDirectory, relativePathToWorkingDir} from './utils';
-import {Config} from './config';
-import {buildInputObject} from './buildUitls';
-import {ImportFile} from '@resolver-engine/imports';
 import fetch from 'node-fetch';
+import {ImportFile} from '@resolver-engine/imports';
+import {isDirectory} from './utils';
+import {Config} from './config';
+import {getCompilerInput} from './compilerInput';
+import {findImports} from './findImports';
 
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 const semverRegex = /^\d+\.\d+\.\d+$/;
@@ -12,7 +14,7 @@ const semverRegex = /^\d+\.\d+\.\d+$/;
 export async function loadCompiler(config: Config) {
   if (config.compilerVersion !== 'default') {
     if (isDirectory(config.compilerVersion)) {
-      return require(relativePathToWorkingDir(config.compilerVersion));
+      return require(path.resolve(config.compilerVersion));
     } else if (semverRegex.test(config.compilerVersion)) {
       try {
         const version = await resolveSemverVersion(config.compilerVersion);
@@ -44,16 +46,11 @@ async function fetchReleases() {
 }
 
 export function compileSolcjs(config: Config) {
-  return async function compile(sources: ImportFile[], findImports: (file: string) => any) {
+  return async function compile(sources: ImportFile[]) {
     const solc = await loadCompiler(config);
-    const input = buildInputObject(sources, config.compilerOptions);
-    const output = solc.compile(JSON.stringify(input), {imports: findImports});
+    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
+    const imports = findImports(sources);
+    const output = solc.compile(input, {imports});
     return JSON.parse(output);
   };
-}
-
-export function findInputs(files: string[]) {
-  return Object.assign({}, ...files.map((file) => ({
-    [file]: readFileContent(file)
-  })));
 }
