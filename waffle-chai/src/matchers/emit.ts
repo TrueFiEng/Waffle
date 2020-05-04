@@ -10,7 +10,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
     ).then((receipt: providers.TransactionReceipt) => {
-      const eventFragment = contract.interface.events[eventName];
+      const eventFragment = contract.interface.getEvent(eventName);
 
       if (eventFragment === undefined) {
         const isNegated = this.__flags.negate === true;
