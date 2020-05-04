@@ -20,8 +20,15 @@ export function validateFnName(fnName: any, contract: Contract): asserts fnName 
     typeof fnName === 'string',
     'function name must be a string'
   );
+  function isFunction(name: string) {
+    try {
+      return !!contract.interface.getFunction(name);
+    } catch (e) {
+      return false;
+    }
+  }
   validateCondition(
-    !!contract.interface.getFunction(fnName),
+    isFunction(fnName),
     'function must exist in provided contract'
   );
 }
