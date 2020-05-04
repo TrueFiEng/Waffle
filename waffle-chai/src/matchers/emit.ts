@@ -1,4 +1,4 @@
-import {Contract, providers} from 'ethers';
+import {Contract, providers, utils} from 'ethers';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
   const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
@@ -45,7 +45,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   });
 
   const assertArgsArraysEqual = (context: any, expectedArgs: any[], log: any) => {
-    const actualArgs = context.contract.interface.parseLog(log).values;
+    const actualArgs = (context.contract.interface as utils.Interface).parseLog(log).args;
     context.assert(
       actualArgs.length === expectedArgs.length,
       `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
