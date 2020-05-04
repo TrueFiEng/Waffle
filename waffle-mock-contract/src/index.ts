@@ -1,7 +1,9 @@
 import {Contract, ContractFactory, utils, Wallet} from 'ethers';
+import {Fragment, JsonFragment} from '@ethersproject/abi';
+
 import DoppelgangerContract from './Doppelganger.json';
 
-type ABI = Array<utils.EventFragment | utils.FunctionFragment | utils.ParamType> | string;
+type ABI = string | Array<Fragment | JsonFragment | string>
 
 async function deploy(wallet: Wallet) {
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
