@@ -15,13 +15,13 @@ export function validateMockProvider(provider: any): asserts provider is MockPro
   );
 }
 
-export function validateFnName(fnName: any, contract: any): asserts fnName is string {
+export function validateFnName(fnName: any, contract: Contract): asserts fnName is string {
   validateCondition(
     typeof fnName === 'string',
     'function name must be a string'
   );
   validateCondition(
-    fnName in contract.interface.functions,
+    !!contract.interface.getFunction(fnName),
     'function must exist in provided contract'
   );
 }
