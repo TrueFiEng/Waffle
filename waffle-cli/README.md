@@ -112,7 +112,7 @@ describe('BasicToken', () => {
     await expect(token.transfer(walletTo.address, 7))
       .to.emit(token, 'Transfer')
       .withArgs(wallet.address, walletTo.address, 7);
-    });
+  });
 
   it('Can not transfer above the amount', async () => {
     await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
