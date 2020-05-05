@@ -21,7 +21,7 @@ export class ENSBuilder {
   wallet: Wallet;
   ens: Contract;
   resolver: Contract;
-  registrars: Record<string, Contract>;
+  registrars: Record<string, Contract> = {};
 
   constructor(wallet: Wallet, ens: Contract, resolver: Contract) {
     this.wallet = wallet;
