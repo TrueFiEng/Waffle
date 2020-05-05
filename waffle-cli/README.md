@@ -50,6 +50,19 @@ npm install --save-dev ethereum-waffle
 
 ## Step by step guide
 
+### Add external dependency:
+To add an external library install it using npm:
+
+```sh
+npm i openzeppelin-solidity -D
+```
+
+or with yarn:
+
+```sh
+yarn add openzeppelin-solidity -D
+```
+
 ### Example contract
 Below is an example contract written in Solidity. Place it in `contracts/BasicToken.sol` file of your project:
 
@@ -57,69 +70,13 @@ Below is an example contract written in Solidity. Place it in `contracts/BasicTo
 // contracts/BasicToken.sol
 pragma solidity ^0.5.1;
 
-interface IERC20 {
-    function balanceOf(address account) external view returns (uint256);
-
-    function transfer(address recipient, uint256 amount) external returns (bool);
-
-    function totalSupply() external view returns (uint256);
-
-    event Transfer(address indexed from, address indexed to, uint256 value);
-}
-
-library SafeMath {
-    function add(uint256 a, uint256 b) internal pure returns (uint256) {
-        uint256 c = a + b;
-        require(c >= a, "SafeMath: addition overflow");
-
-        return c;
-    }
-
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        require(b <= a, "SafeMath: subtraction overflow");
-        uint256 c = a - b;
-
-        return c;
-    }
-}
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 
 // Example class - a mock class using delivering from ERC20
-contract BasicToken is IERC20 {
-    using SafeMath for uint256;
-
-    mapping (address => uint256) private _balances;
-
-    uint256 private _totalSupply;
-
-    constructor(address initialAccount, uint256 initialBalance) public {
-        _mint(initialAccount, initialBalance);
-    }
-
-    function totalSupply() public view returns (uint256) {
-        return _totalSupply;
-    }
-
-    function _mint(address account, uint256 amount) internal {
-        require(account != address(0), "ERC20: mint to the zero address");
-
-        _totalSupply = _totalSupply.add(amount);
-        _balances[account] = _balances[account].add(amount);
-        emit Transfer(address(0), account, amount);
-    }
-
-    function balanceOf(address account) public view returns (uint256) {
-        return _balances[account];
-    }
-
-    function transfer(address recipient, uint256 amount) public returns (bool) {
-        require(msg.sender != address(0), "ERC20: transfer from the zero address");
-        require(recipient != address(0), "ERC20: transfer to the zero address");
-
-        _balances[msg.sender] = _balances[msg.sender].sub(amount);
-        _balances[recipient] = _balances[recipient].add(amount);
-        emit Transfer(msg.sender, recipient, amount);
-        return true;
-    }
+contract BasicToken is ERC20 {
+  constructor(address initialAccount, uint256 initialBalance) public {
+    super._mint(initialAccount, initialBalance);
+  }
 }
 ```
 
@@ -135,48 +92,47 @@ const BasicToken = require('../build/BasicToken');
 use(solidity);
 
 describe('BasicToken', () => {
-	const [wallet, walletTo] = new MockProvider().getWallets();
-	let token;
+    const [wallet, walletTo] = new MockProvider().getWallets();
+    let token;
 
-	beforeEach(async () => {
-		token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);
-	});
+    beforeEach(async () => {
+        token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);
+    });
 
-	it('Assigns initial balance', async () => {
-		expect(await token.balanceOf(wallet.address)).to.equal(1000);
-	});
+    it('Assigns initial balance', async () => {
+        expect(await token.balanceOf(wallet.address)).to.equal(1000);
+    });
 
-	it('Transfer adds amount to destination account', async () => {
-		await token.transfer(walletTo.address, 7);
-		expect(await token.balanceOf(walletTo.address)).to.equal(7);
-	});
+    it('Transfer adds amount to destination account', async () => {
+        await token.transfer(walletTo.address, 7);
+        expect(await token.balanceOf(walletTo.address)).to.equal(7);
+    });
 
-	it('Transfer emits event', async () => {
-		await expect(token.transfer(walletTo.address, 7))
-			.to.emit(token, 'Transfer')
-			.withArgs(wallet.address, walletTo.address, 7);
-	});
+    it('Transfer emits event', async () => {
+        await expect(token.transfer(walletTo.address, 7))
+            .to.emit(token, 'Transfer')
+            .withArgs(wallet.address, walletTo.address, 7);
+    });
 
-	it('Can not transfer above the amount', async () => {
-		await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
-	});
+    it('Can not transfer above the amount', async () => {
+        await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
+    });
 
-	it('Can not transfer from empty account', async () => {
-		const tokenFromOtherWallet = token.connect(walletTo);
-		await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
-			.to.be.reverted;
-	});
+    it('Can not transfer from empty account', async () => {
+        const tokenFromOtherWallet = token.connect(walletTo);
+        await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
+            .to.be.reverted;
+    });
 
-	it('Calls totalSupply on BasicToken contract', async () => {
-		await token.totalSupply();
-		expect('totalSupply').to.be.calledOnContract(token);
-	});
+    it('Calls totalSupply on BasicToken contract', async () => {
+        await token.totalSupply();
+        expect('totalSupply').to.be.calledOnContract(token);
+    });
 
-	it('Calls balanceOf with sender address on BasicToken contract', async () => {
-		await token.balanceOf(wallet.address);
-		expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
-	});
-
+    it('Calls balanceOf with sender address on BasicToken contract', async () => {
+        await token.balanceOf(wallet.address);
+        expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
+    });
 });
 ```
 
