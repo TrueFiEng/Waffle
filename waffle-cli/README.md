@@ -110,8 +110,8 @@ describe('BasicToken', () => {
 
   it('Transfer emits event', async () => {
     await expect(token.transfer(walletTo.address, 7))
-        .to.emit(token, 'Transfer')
-        .withArgs(wallet.address, walletTo.address, 7);
+      .to.emit(token, 'Transfer')
+      .withArgs(wallet.address, walletTo.address, 7);
     });
 
   it('Can not transfer above the amount', async () => {
@@ -121,7 +121,7 @@ describe('BasicToken', () => {
   it('Can not transfer from empty account', async () => {
     const tokenFromOtherWallet = token.connect(walletTo);
     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
-        .to.be.reverted;
+      .to.be.reverted;
   });
 
   it('Calls totalSupply on BasicToken contract', async () => {
