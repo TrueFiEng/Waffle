@@ -225,7 +225,7 @@ describe('INTEGRATION: Events', () => {
     ).to.be.eventually.rejectedWith(
       AssertionError,
       // eslint-disable-next-line no-useless-escape
-      'Expected "0" ' + 'to be equal 1'
+      'Expected "0" to be equal 1'
     );
   });
 
