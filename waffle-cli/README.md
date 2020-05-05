@@ -96,7 +96,7 @@ describe('BasicToken', () => {
   let token;
 
   beforeEach(async () => {
-    token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
+    token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);
   });
 
   it('Assigns initial balance', async () => {
@@ -122,6 +122,16 @@ describe('BasicToken', () => {
     const tokenFromOtherWallet = token.connect(walletTo);
     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
       .to.be.reverted;
+  });
+
+  it('Calls totalSupply on BasicToken contract', async () => {
+    await token.totalSupply();
+    expect('totalSupply').to.be.calledOnContract(token);
+  });
+
+  it('Calls balanceOf with sender address on BasicToken contract', async () => {
+    await token.balanceOf(wallet.address);
+    expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
   });
 });
 ```
