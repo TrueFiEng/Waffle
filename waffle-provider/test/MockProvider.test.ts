@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {utils, Wallet} from 'ethers';
+import {BigNumber, utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
 
@@ -47,7 +47,7 @@ describe('INTEGRATION: MockProvider', () => {
     const [wallet] = new MockProvider().getWallets();
     const contract = await deployToken(wallet, 10_000);
 
-    const totalSupply: utils.BigNumber = await contract.totalSupply();
+    const totalSupply: BigNumber = await contract.totalSupply();
     expect(totalSupply.eq(10_000)).to.equal(true);
   });
 

@@ -13,27 +13,27 @@ describe('Mock Contract - Integration (called directly)', () => {
   const [wallet] = new MockProvider().getWallets();
 
   it('throws readable error if mock was not set up for a method', async () => {
-    const mockCounter = await deployMockContract(wallet, Counter.interface);
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
 
     await expect(mockCounter.read()).to.be.revertedWith('Mock on the method is not initialized');
   });
 
   it('mocking returned values', async () => {
-    const mockCounter = await deployMockContract(wallet, Counter.interface);
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
     await mockCounter.mock.read.returns(45291);
 
     expect(await mockCounter.read()).to.equal(45291);
   });
 
   it('mocking revert', async () => {
-    const mockCounter = await deployMockContract(wallet, Counter.interface);
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
     await mockCounter.mock.read.reverts();
 
     await expect(mockCounter.read()).to.be.revertedWith('Mock revert');
   });
 
   it('mock with call arguments', async () => {
-    const mockCounter = await deployMockContract(wallet, Counter.interface);
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
     await mockCounter.mock.add.returns(1);
     await mockCounter.mock.add.withArgs(1).returns(2);
     await mockCounter.mock.add.withArgs(2).reverts();

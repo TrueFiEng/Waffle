@@ -46,7 +46,7 @@
     "@ethereum-waffle/compiler": "^2.5.0",
     "@ethereum-waffle/mock-contract": "^2.5.0",
     "@ethereum-waffle/provider": "^2.5.0",
-    "ethers": "^4.0.45"
+    "ethers": "^5.0.0-beta.184"
   },
   "devDependencies": {
     "@types/chai": "^4.2.3",

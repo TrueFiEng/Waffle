@@ -39,7 +39,7 @@
     "@resolver-engine/imports-fs": "^0.3.3",
     "@types/mkdirp": "^0.5.2",
     "@types/node-fetch": "^2.5.5",
-    "ethers": "^4.0.45",
+    "ethers": "^5.0.0-beta.184",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.6.0",
     "solc": "^0.6.3"

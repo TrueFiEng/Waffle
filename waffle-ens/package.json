@@ -41,7 +41,7 @@
     "@ethereum-waffle/provider": "^2.5.0"
   },
   "dependencies": {
-    "ethers": "^4.0.47",
+    "ethers": "^5.0.0-beta.184",
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4"
   }
