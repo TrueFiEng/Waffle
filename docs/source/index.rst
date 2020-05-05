@@ -41,4 +41,4 @@ Versions and ethers compatibility
    fixtures.rst
    configuration.rst
    mock-contract.rst
-
+   ens.rst
