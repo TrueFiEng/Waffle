@@ -29,7 +29,7 @@ npm install --save-dev @ethereum-waffle/mock-contract
 Create an instance of a mock contract providing the ABI/interface of the smart contract you want to mock:
 
 ```js
-import {deployMockContract} from '@ethereum-waffle/mock-contract';
+const {deployMockContract} = require('@ethereum-waffle/mock-contract');
 
 ...
 
@@ -79,65 +79,55 @@ contract AmIRichAlready {
 We are mostly interested in the `tokenContract.balanceOf` call. Mock contract will be used to mock exactly this call with values that are significant for the return of the `check()` method.
 
 ```js
-import chai, {expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import ethers from 'ethers';
-import {MockProvider} from '@ethereum-waffle/provider';
-import {waffleChai} from '@ethereum-waffle/chai';
-import {deployMockContract} from '@ethereum-waffle/mock-contract';
+const {use, expect} = require('chai');
+const {ContractFactory, utils} = require('ethers');
+const {MockProvider} = require('@ethereum-waffle/provider');
+const {waffleChai} = require('@ethereum-waffle/chai');
+const {deployMockContract} = require('@ethereum-waffle/mock-contract');
 
-import IERC20 from '../../build/IERC20';
-import AmIRichAlready from '../../build/AmIRichAlready';
+const IERC20 = require('../build/IERC20');
+const AmIRichAlready = require('../build/AmIRichAlready');
 
-chai.use(chaiAsPromised);
-chai.use(waffleChai);
+use(waffleChai);
 
-describe('Am I Rich Already?', () => {
-  const [user, stranger] = new MockProvider().getWallets();
-  let contract; // an instance of the AmIRichAlready contract
-  let mockERC20; // an instance of a mock contract for the ERC20 token we want to observe
+describe('Am I Rich Already', () => {
+  async function setup() {
+    const [sender, receiver] = new MockProvider().getWallets();
+    const mockERC20 = await deployMockContract(sender, IERC20.abi);
+    const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
+    const contract = await contractFactory.deploy(mockERC20.address);
+    return {sender, receiver, contract, mockERC20};
+  }
 
-  beforeEach(async () => {
-    mockERC20 = await deployMockContract(user, IERC20.abi);
-    const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender)
-    contract = await contractFactory.deploy(mockERC20.address);
+  it('returns false if the wallet has less then 1000000 coins', async () => {
+    const {contract, mockERC20} = await setup();
+    await mockERC20.mock.balanceOf.returns(utils.parseEther('999999'));
+    expect(await contract.check()).to.be.equal(false);
   });
 
-  describe('check method', () => {
-    it('returns false if the wallet has less then 1000000 DAI', async () => {
-      // configure mockERC20 to return 999999 when balanceOf is called
-      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('999999'));
-      expect(await contract.check()).to.be.equal(false);
-    });
+  it('returns true if the wallet has at least 1000000 coins', async () => {
+    const {contract, mockERC20} = await setup();
+    await mockERC20.mock.balanceOf.returns(utils.parseEther('1000001'));
+    expect(await contract.check()).to.equal(true);
+  });
 
-    it('returns false if the wallet has exactly 1000000 DAI', async () => {
-      // subsequent calls override the previous config
-      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000000'));
-      expect(await contract.check()).to.equal(false);
-    });
+  it('reverts if the ERC20 reverts', async () => {
+    const {contract, mockERC20} = await setup();
+    await mockERC20.mock.balanceOf.reverts();
+    await expect(contract.check()).to.be.revertedWith('Mock revert');
+  });
 
-    it('returns true if the wallet has more then 1000000 DAI', async () => {
-      await mockERC20.mock.balanceOf.returns(ethers.utils.parseEther('1000001'));
-      expect(await contract.check()).to.equal(true);
-    });
+  it('returns 1000001 coins for my address and 0 otherwise', async () => {
+    const {contract, mockERC20, sender, receiver} = await setup();
+    await mockERC20.mock.balanceOf.returns('0');
+    await mockERC20.mock.balanceOf.withArgs(sender.address).returns(utils.parseEther('1000001'));
 
-    it('reverts for some reason', async () => {
-      await mockERC20.mock.balanceOf.reverts();
-      await expect(contract.check()).to.be.revertedWith('Mock revert');
-    });
-
-    it('returns 1000001 DAI for my address and 0 otherwise', async () => {
-        await mockERC20.mock.balanceOf.withArgs(user.address).returns(ethers.utils.parseEther('1000001'));
-        // mock without any arguments will be triggered by default
-        await mockERC20.mock.balanceOf.returns('0');
-
-        expect(await contract.check()).to.equal(true);
-        expect(await contract.attach(stranger).check()).to.equal(false);
-    }); 
+    expect(await contract.check()).to.equal(true);
+    expect(await contract.connect(receiver.address).check()).to.equal(false);
   });
 });
 ```
 
 # Special thanks
 
-Special thanks to @spherefoundry for creating the original [Doppelganger](https://github.com/EthWorks/Doppelganger) project. 
+Special thanks to @spherefoundry for creating the original [Doppelganger](https://github.com/EthWorks/Doppelganger) project.
