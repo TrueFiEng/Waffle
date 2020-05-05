@@ -13,7 +13,7 @@ export async function createENSBuilder(wallet: Wallet) {
   const resolverLabel = utils.id('resolver');
   await ens.setSubnodeOwner(HashZero, resolverLabel, wallet.address);
   await ens.setResolver(resolverNode, resolver.address);
-  await resolver.setAddr(resolverNode, COIN_TYPE_ETH, resolver.address);
+  await resolver['setAddr(bytes32,uint256,bytes)'](resolverNode, COIN_TYPE_ETH, resolver.address);
   return new ENSBuilder(wallet, ens, resolver);
 }
 
@@ -59,6 +59,6 @@ export class ENSBuilder {
     const registrar = await this.findRegistrar(rootNode);
     await registrar.register(label, this.wallet.address);
     await this.ens.setResolver(node, this.resolver.address);
-    await this.resolver.setAddr(node, COIN_TYPE_ETH, address);
+    await this.resolver['setAddr(bytes32,uint256,bytes)'](node, COIN_TYPE_ETH, address);
   }
 }
