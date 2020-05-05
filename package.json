@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
-    "test": "wsrun -c test"
+    "test": "wsrun -c test",
+    "build-docs": "cd docs && make html"
   },
   "devDependencies": {
     "wsrun": "^5.2.0"

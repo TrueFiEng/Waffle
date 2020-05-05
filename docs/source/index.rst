@@ -40,4 +40,5 @@ Versions and ethers compatibility
    matchers.rst
    fixtures.rst
    configuration.rst
+   experimental.rst
 
