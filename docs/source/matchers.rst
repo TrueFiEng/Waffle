@@ -23,6 +23,25 @@ Testing what events were emitted with what arguments:
     .to.emit(token, 'Transfer')
     .withArgs(wallet.address, walletTo.address, 7);
 
+Called on contract
+------------------
+
+Testing if function was called on provided contract:
+::
+
+  await token.balanceOf(wallet.address)
+
+  expect('balanceOf').to.be.calledOnContract(token);
+
+Called on contract with arguments
+---------------------------------
+
+Testing if function with certain arguments was called on provided contract:
+::
+
+  await token.balanceOf(wallet.address)
+
+  expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
 
 Revert
 ------
