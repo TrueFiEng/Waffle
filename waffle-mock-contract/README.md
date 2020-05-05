@@ -57,9 +57,11 @@ await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).reverts()
 The example below illustrates how `mock-contract` can be used to test the very simple `AmIRichAlready` contract.
 
 ```Solidity
-pragma solidity ^0.6.3;
+pragma solidity ^0.6.0;
 
-import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
+interface IERC20 {
+    function balanceOf(address account) external view returns (uint256);
+}
 
 contract AmIRichAlready {
     IERC20 private tokenContract;
