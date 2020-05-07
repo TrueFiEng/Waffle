@@ -68,7 +68,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install dependencies
-          command: yarn install
+          command: cd examples && cd mock-contracts && yarn install
       - setup_solc
       - run:
           name: yarn lint
