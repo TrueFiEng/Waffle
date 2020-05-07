@@ -16,16 +16,36 @@ interface ENSDomainInfo {
   label: string;
   node: string;
   rootNode: string;
+  decodedRootNode: string;
 }
 
 export const getDomainInfo = (domain: string): ENSDomainInfo => {
   const chunks = domain.split('.');
+
+  if (chunks.length === 1 && chunks[0].length > 0) {
+    throw new Error(
+      'Invalid domain. Please, enter no top level domain.'
+    );
+  } else if (chunks.includes('')) {
+    throw new Error(
+      `Invalid domain: '${domain}'`
+    );
+  }
+  try {
+    namehash(domain);
+  } catch (e) {
+    throw new Error(
+      `Invalid domain: '${domain}'`
+    );
+  }
+
   return {
     chunks,
     tld: chunks[chunks.length - 1],
     rawLabel: chunks[0],
     label: utils.id(chunks[0]),
     node: namehash(domain),
-    rootNode: domain.replace(chunks[0] + '.', '')
+    rootNode: namehash(domain.replace(chunks[0] + '.', '')),
+    decodedRootNode: domain.replace(chunks[0] + '.', '')
   };
 };
