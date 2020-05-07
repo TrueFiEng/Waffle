@@ -30,24 +30,31 @@ export class ENSBuilder {
   }
 
   async createTopLevelDomain(domain: string) {
-    const {node, label} = getDomainInfo(domain);
+    const node = namehash(domain);
     this.registrars = {
       ...this.registrars,
       [domain]: await deployContract(this.wallet, FIFSRegistrar, [this.ens.address, node])
     };
-    await this.ens.setSubnodeOwner(HashZero, label, this.registrars[domain].address);
+    await this.ens.setSubnodeOwner(HashZero, utils.id(domain), this.registrars[domain].address);
   }
 
   async createSubDomain(domain: string) {
-    const {tld, label, node} = getDomainInfo(domain);
-    await this.registrars[tld].register(label, this.wallet.address);
-    await this.ens.setResolver(node, this.resolver.address);
-    const registrar: Contract = await deployContract(this.wallet, FIFSRegistrar, [this.ens.address, node]);
-    await this.ens.setOwner(node, registrar.address);
-    this.registrars = {
-      ...this.registrars,
-      [domain]: registrar
-    };
+    const {label, node, decodedRootNode} = getDomainInfo(domain);
+    try {
+      await this.registrars[decodedRootNode].register(label, this.wallet.address);
+      await this.registrars[decodedRootNode].register(label, this.wallet.address);
+      await this.ens.setResolver(node, this.resolver.address);
+      const registrar: Contract = await deployContract(this.wallet, FIFSRegistrar, [this.ens.address, node]);
+      await this.ens.setOwner(node, registrar.address);
+      this.registrars = {
+        ...this.registrars,
+        [domain]: registrar
+      };
+    } catch (e) {
+      throw new Error(
+        `Up level domain ${decodedRootNode} doesn't exist.`
+      );
+    }
   }
 
   async findRegistrar(rootNode: string) {
@@ -55,8 +62,8 @@ export class ENSBuilder {
   }
 
   async setAddress(domain: string, address: string) {
-    const {node, label, rootNode} = getDomainInfo(domain);
-    const registrar = await this.findRegistrar(rootNode);
+    const {node, label, decodedRootNode} = getDomainInfo(domain);
+    const registrar = await this.findRegistrar(decodedRootNode);
     await registrar.register(label, this.wallet.address);
     await this.ens.setResolver(node, this.resolver.address);
     await this.resolver.setAddr(node, COIN_TYPE_ETH, address);

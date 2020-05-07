@@ -36,13 +36,14 @@
     "node": ">=10.0"
   },
   "devDependencies": {
+    "@ethereum-waffle/provider": "^2.5.0",
     "chai": "^4.2.0",
-    "mocha": "^6.2.1",
-    "@ethereum-waffle/provider": "^2.5.0"
+    "mocha": "^6.2.1"
   },
   "dependencies": {
-    "ethers": "^4.0.47",
     "@ensdomains/ens": "^0.4.4",
-    "@ensdomains/resolver": "^0.2.4"
+    "@ensdomains/resolver": "^0.2.4",
+    "chai-as-promised": "^7.1.1",
+    "ethers": "^4.0.47"
   }
 }
