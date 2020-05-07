@@ -8,7 +8,7 @@ export function supportCalledOnContractWith(Assertion: Chai.AssertionStatic) {
     validateMockProvider(contract.provider);
     validateFnName(fnName, contract);
 
-    const funCallData = contract.interface.functions[fnName].encode(parameters);
+    const funCallData = contract.interface.encodeFunctionData(fnName, parameters);
 
     this.assert(
       contract.provider.callHistory.some(

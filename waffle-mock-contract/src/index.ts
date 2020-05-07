@@ -1,18 +1,23 @@
 import {Contract, ContractFactory, utils, Wallet} from 'ethers';
+import {Fragment, JsonFragment} from '@ethersproject/abi';
+
 import DoppelgangerContract from './Doppelganger.json';
 
-type ABI = Array<utils.EventFragment | utils.FunctionFragment | utils.ParamType> | string;
+type ABI = string | Array<Fragment | JsonFragment | string>
 
 async function deploy(wallet: Wallet) {
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
   return factory.deploy();
 }
 
-function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionDescription, params?: any[]) {
-  const callData = params ? func.encode(params) : func.sighash;
+function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionFragment, params?: any[]) {
+  const callData = params
+    ? mockContract.interface.encodeFunctionData(func, params)
+    : mockContract.interface.getSighash(func);
 
   return {
     returns: async (...args: any) => {
+      if (!func.outputs) return;
       const encoded = encoder.encode(func.outputs, args);
       await mockContract.__waffle__mockReturns(callData, encoded);
     },

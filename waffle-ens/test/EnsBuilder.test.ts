@@ -27,7 +27,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
   it('PublicResolver deployed and setup', async () => {
     expect(await ensBuilder.ens.resolver(namehash('resolver'))).to.eq(ensBuilder.resolver.address);
     expect(await ensBuilder.ens.owner(namehash('resolver'))).to.eq(wallet.address);
-    expect(await ensBuilder.resolver.addr(namehash('resolver'))).to.eq(ensBuilder.resolver.address);
+    expect(await ensBuilder.resolver['addr(bytes32)'](namehash('resolver'))).to.eq(ensBuilder.resolver.address);
   });
 
   it('Create top level domain', async () => {
