@@ -1,6 +1,6 @@
 {
   "name": "@ethereum-waffle/ens",
-  "version": "2.5.0",
+  "version": "3.0.0-beta.1",
   "description": "A mock ens implementation for testing.",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -36,7 +36,7 @@
     "node": ">=10.0"
   },
   "devDependencies": {
-    "@ethereum-waffle/provider": "^2.5.0",
+    "@ethereum-waffle/provider": "^3.0.0-beta.1",
     "chai": "^4.2.0",
     "mocha": "^6.2.1"
   },
@@ -44,6 +44,6 @@
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4",
     "chai-as-promised": "^7.1.1",
-    "ethers": "^4.0.47"
+    "ethers": "^5.0.0-beta.184"
   }
 }
