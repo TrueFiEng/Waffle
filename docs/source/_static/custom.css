@@ -82,19 +82,6 @@ html {
   border-radius: 4px;
 }
 
-:root {
-  --code-grey: #75715E;
-  --code-white: #E8E8E3;
-  --code-purple: #ae81ff;
-  --code-yellow: #E6DB74;
-  --code-aqua: #66d9ef;
-  --code-green: #A6E22D;
-  --code-pink: #F92772;
-  --code-orange: #FD9720;
-  --code-red: #e73c50;
-}
-
-
 .highlight {
   background: #272822;
   color: #E8E8E3;
