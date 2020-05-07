@@ -66,8 +66,9 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - install_dependencies:
-          key: 11
+      - run:
+          name: Install dependencies
+          command: yarn install
       - setup_solc
       - run:
           name: yarn lint
