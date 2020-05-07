@@ -28,7 +28,7 @@ function addVmListener(
   event: string,
   handler: (value: any) => void
 ) {
-  const {blockchain} = (provider._web3Provider as any).engine.manager.state;
+  const {blockchain} = (provider.provider as any).engine.manager.state;
   const createVMFromStateTrie = blockchain.createVMFromStateTrie;
   blockchain.createVMFromStateTrie = function (...args: any[]) {
     const vm = createVMFromStateTrie.apply(this, args);

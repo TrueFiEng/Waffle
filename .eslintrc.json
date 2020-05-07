@@ -3,7 +3,10 @@
     "es6": true
   },
   "extends": [
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -156,6 +159,15 @@
       "error",
       "^(err|error)$"
     ],
+    "import/default": "off",
+    "import/named": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": false
+      }
+    ],
+    "import/no-unresolved": "off",
     "indent": "off",
     "key-spacing": [
       "error",
@@ -330,9 +342,6 @@
     "no-unreachable": "error",
     "no-unsafe-finally": "error",
     "no-unsafe-negation": "error",
-    "no-restricted-imports": ["error", {
-      "patterns": ["original-works-core/src", "original-works-core/dist"]
-    }],
     "no-use-before-define": [
       "error",
       {
@@ -417,11 +426,14 @@
       "error",
       "always"
     ],
-    "space-before-function-paren": ["error", {
-      "anonymous": "always",
-      "named": "never",
-      "asyncArrow": "always"
-    }],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
     "space-in-parens": [
       "error",
       "never"
@@ -501,13 +513,21 @@
   },
   "overrides": [
     {
-      "files": ["test/**/*.ts"],
+      "files": [
+        "test/**/*.ts"
+      ],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-var-requires": "off",
         "no-unused-expressions": "off",
-        "prefer-promise-reject-errors": "off"
+        "prefer-promise-reject-errors": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ]
       }
     }
   ]

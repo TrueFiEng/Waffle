@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/mock-contract",
   "description": "Mock smart contracts in a smart way.",
-  "version": "2.4.1",
+  "version": "3.0.0-beta.1",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -40,23 +40,25 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "ethers": "^4.0.45"
+    "@ethersproject/abi": "^5.0.0-beta.137",
+    "ethers": "^5.0.0-beta.184"
   },
   "devDependencies": {
-    "@ethereum-waffle/compiler": "^2.4.1",
-    "@ethereum-waffle/chai": "^2.4.1",
-    "@ethereum-waffle/provider": "^2.4.1",
+    "@ethereum-waffle/chai": "^3.0.0-beta.1",
+    "@ethereum-waffle/compiler": "^3.0.0-beta.1",
+    "@ethereum-waffle/provider": "^3.0.0-beta.1",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/mocha": "^5.2.7",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^6.5.1",
-    "mocha": "^6.2.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
+    "mocha": "^7.1.2",
     "rimraf": "^3.0.0",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.2"
+    "ts-node": "^8.9.1",
+    "typescript": "^3.8.3"
   }
 }

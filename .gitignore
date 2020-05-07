@@ -4,3 +4,4 @@ yarn-error.log
 /docs/build
 /docs/env
 .idea
+out
