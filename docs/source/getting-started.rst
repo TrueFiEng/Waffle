@@ -5,12 +5,14 @@ Installation
 ------------
 
 To get started install :code:`ethereum-waffle` with yarn:
-::
+
+.. code-block:: text
 
   yarn add --dev ethereum-waffle
 
 Or if you prefer using npm:
-::
+
+.. code-block:: text
 
   npm install --save-dev ethereum-waffle
 
@@ -19,7 +21,8 @@ Writing a contract
 
 Below is example contract written in Solidity. Save it as :code:`Counter.sol`
 inside the :code:`contracts` directory of your project.
-::
+
+.. code-block:: solidity
 
   pragma solidity ^0.6.0;
 
@@ -52,12 +55,15 @@ In the :code:`package.json` file of your project add the following entry:
     }
   }
 
-Then run the following command:::
+Then run the following command
+
+.. code-block:: text
 
   yarn build
 
 Or if you prefer npm:
-::
+
+.. code-block:: text
 
   npm run build
 
@@ -94,12 +100,14 @@ Tests in waffle are written using `Mocha <https://mochajs.org/>`__ alongide with
 but Waffle matchers only work with :code:`chai`.
 
 Run:
-::
+
+.. code-block:: text
 
   yarn add --dev mocha chai
 
 Or:
-::
+
+.. code-block:: text
 
   npm install --save-dev mocha chai
 
@@ -163,17 +171,20 @@ Update your :code:`package.json` file to include:
   }
 
 And run:
-::
+
+.. code-block:: text
 
   yarn test
 
 Or:
-::
+
+.. code-block:: text
 
   npm test
 
 You should see the following output:
-::
+
+.. code-block:: text
 
   Counter smart contract
     ✓ sets initial value in the constructor (140ms)
