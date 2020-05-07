@@ -60,9 +60,30 @@ jobs:
       - run: yarn build
       - run: yarn test
 
+  example_mock_contracts:
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout
+      - setup_remote_docker
+      - install_dependencies:
+          key: 11
+      - setup_solc
+      - run:
+          name: yarn lint
+          command: cd examples && cd mock-contracts && yarn lint
+      - run:
+          name: yarn build
+          command: cd examples && cd mock-contracts && yarn build
+      - run:
+          name: yarn test
+          command: cd examples && cd mock-contracts && yarn test
+
+
 workflows:
   waffle_all:
     jobs:
       - lint
       - test_node_10
       - test_node_11
+      - example_mock_contracts
