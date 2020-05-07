@@ -2723,7 +2723,7 @@ ethereum-common@^0.0.18:
   resolved "https://registry.yarnpkg.com/ethereum-common/-/ethereum-common-0.0.18.tgz#2fdc3576f232903358976eb39da783213ff9523f"
   integrity sha1-L9w1dvIykDNYl26znaeDIT/5Uj8=
 
-ethereum-waffle@^2.5.0:
+ethereum-waffle@2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/ethereum-waffle/-/ethereum-waffle-2.5.0.tgz#41f88a523abacb6c82c7e51798047c7cdf4b94e5"
   integrity sha512-i+CMYD5f9O+e8jL46ZRy29M7eZklWq1GdjPJvZZo6qqSP5oVBG8UxuXESihQOhYGh533wQPXiW+8GdjR3yXzAg==
