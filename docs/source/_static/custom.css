@@ -1,0 +1,195 @@
+html {
+  background-color: #efefef;
+}
+
+/* Center the page on wide displays for better readability */
+@media only screen and (min-width: 769px) {
+  .wy-body-for-nav {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .wy-nav-side {
+    left: inherit;
+  }
+
+  .rst-versions {
+    left: inherit;
+  }
+}
+
+.wy-nav-content-wrap {
+  background: transparent !important;
+}
+
+.wy-side-nav-search {
+  background-color: #fcc062;
+}
+
+.wy-side-nav-search input[type=text] {
+  border-color: #f5af42;
+}
+
+.wy-menu-vertical header, .wy-menu-vertical p.caption {
+  color: #f5af42;
+}
+
+.wy-menu-vertical a:active {
+  background-color: #f5af42;
+}
+
+/* RESET PYGMENTS CSS */
+
+.highlight .c,
+.highlight .ch,
+.highlight .cm,
+.highlight .cpf,
+.highlight .c1,
+.highlight .cs,
+.highlight .sd,
+.highlight .k,
+.highlight .gh,
+.highlight .gp,
+.highlight .gu,
+.highlight .kc,
+.highlight .kd,
+.highlight .kn,
+.highlight .kr,
+.highlight .nc,
+.highlight .ni,
+.highlight .ne,
+.highlight .nn,
+.highlight .nt,
+.highlight .ow,
+.highlight .se,
+.highlight .si {
+  font-style: normal;
+  font-weight: normal;
+}
+
+/* CUSTOM SYNTAX HIGHLIGHTING */
+
+.rst-content div[class^='highlight'] {
+  border: none;
+  border-radius: 4px;
+}
+
+:root {
+  --code-grey: #75715E;
+  --code-white: #E8E8E3;
+  --code-purple: #ae81ff;
+  --code-yellow: #E6DB74;
+  --code-aqua: #66d9ef;
+  --code-green: #A6E22D;
+  --code-pink: #F92772;
+  --code-orange: #FD9720;
+  --code-red: #e73c50;
+}
+
+
+.highlight {
+  background: #272822;
+  color: #E8E8E3;
+}
+
+.highlight .hll {
+  background-color: #211F1C;
+}
+
+/* comment */ .highlight .c,
+/* comment.multiline */ .highlight .cm,
+/* comment.preproc */ .highlight .cp,
+/* comment.single */ .highlight .c1,
+/* comment.special */ .highlight .cs {
+  color: #75715E;
+  font-style: italic;
+}
+
+/* punctuation */ .highlight .p {
+  color: #d8d8d3;
+}
+
+/* error */ .highlight .err {
+  border: 1px solid #e73c50;
+}
+
+/* generic.error */ .highlight .gr,
+/* literal.string.other */ .highlight .sx,
+/* literal.string.regex */ .highlight .sr,
+/* literal.string.symbol */ .highlight .ss {
+  color: #e73c50;
+}
+
+/* name.constant */ .highlight .no,
+/* literal.number */ .highlight .m,
+/* literal.number.float */ .highlight .mf,
+/* literal.number.hex */ .highlight .mh,
+/* literal.number.integer */ .highlight .mi,
+/* literal.number.oct */ .highlight .mo,
+/* literal.number.integer.long */ .highlight .il,
+/* keyword.constant */ .highlight .kc {
+  color: #ae81ff;
+}
+
+/* literal.string */ .highlight .s,
+/* literal.string.backtick */ .highlight .sb,
+/* literal.string.char */ .highlight .sc,
+/* literal.string.double */ .highlight .s2,
+/* literal.string.heredoc */ .highlight .sh,
+/* literal.string.single */ .highlight .s1,
+/* literal.string.doc */ .highlight .sd,
+/* literal.string.escape */ .highlight .se {
+  color: #E6DB74;
+}
+
+/* keyword.type */ .highlight .kt,
+/* name.class */ .highlight .nc,
+/* name.variable.class */ .highlight .vc,
+/* literal.string.interpol */ .highlight .si,
+/* name.exception */ .highlight .ne,
+/* name.attribute */ .highlight .na,
+/* name.builtin */ .highlight .nb,
+/* name.entity */ .highlight .ni,
+/* name.label */ .highlight .nl,
+/* name.namespace */ .highlight .nn,
+/* name.variable */ .highlight .nv {
+  color: #66d9ef;
+}
+
+/* name.function */ .highlight .nf,
+/* name.decorator */ .highlight .nd {
+  color: #A6E22D;
+}
+
+
+/* keyword */ .highlight .k,
+/* keyword.declaration */ .highlight .kd,
+/* keyword.namespace */ .highlight .kn,
+/* keyword.pseudo */ .highlight .kp,
+/* keyword.reserved */ .highlight .kr,
+/* name.tag */ .highlight .nt {
+  color: #F92772;
+  font-weight: bold;
+}
+
+/* operator */ .highlight .o,
+/* operator.word */ .highlight .ow {
+  color: #F92772;
+}
+
+/* generic.emph */ .highlight .ge { font-style: italic }
+/* generic.strong */ .highlight .gs { font-weight: bold }
+
+/* generic.deleted */ .highlight .gd,
+/* generic.heading */ .highlight .gh,
+/* generic.inserted */ .highlight .gi,
+/* generic.output */ .highlight .go,
+/* generic.prompt */ .highlight .gp,
+/* generic.subheading */ .highlight .gu,
+/* generic.traceback */ .highlight .gt,
+/* text.whitespace */ .highlight .w,
+/* name.builtin.pseudo */ .highlight .bp,
+/* name.variable.global */ .highlight .vg,
+/* name.variable.instance */ .highlight .vi {
+  color: #E8E8E3;
+}
