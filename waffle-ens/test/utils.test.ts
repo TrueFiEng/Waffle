@@ -30,14 +30,17 @@ describe('UNIT: getDomainInfo', async () => {
   });
 
   it('top level domain', () => {
-    expect(() => getDomainInfo('test')).to.throw('Invalid domain. Please, enter no top level domain.');
+    expect(() => getDomainInfo('test'))
+      .to.throw('Invalid domain. Please, enter no top level domain.');
   });
 
   it('empty domain', () => {
-    expect(() => getDomainInfo('')).to.throw('Invalid domain: \'\'');
+    expect(() => getDomainInfo(''))
+      .to.throw('Invalid domain: \'\'');
   });
 
   it('invalid domain', () => {
-    expect(() => getDomainInfo('vlad..ethworks.test')).to.throw('Invalid domain: \'vlad..ethworks.test\'');
+    expect(() => getDomainInfo('vlad..ethworks.test'))
+      .to.throw('Invalid domain: \'vlad..ethworks.test\'');
   });
 });

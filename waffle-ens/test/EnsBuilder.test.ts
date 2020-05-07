@@ -55,9 +55,9 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
   it('Set address', async () => {
     await ensBuilder.setAddress('vlad.dev.ethworks.test', ensBuilder.wallet.address);
-    expect(await ensBuilder.ens.owner(namehash('vlad.dev.ethworks.test'))).to.eq(ensBuilder.wallet.address);
-    expect(await ensBuilder.resolver['addr(bytes32)'](namehash('vlad.dev.ethworks.test')))
-      .to.eq(ensBuilder.wallet.address);
-    expect(await ensBuilder.ens.resolver(namehash('vlad.dev.ethworks.test'))).to.eq(ensBuilder.resolver.address);
+    const node = namehash('vlad.dev.ethworks.test');
+    expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
+    expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
+    expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
   });
 });

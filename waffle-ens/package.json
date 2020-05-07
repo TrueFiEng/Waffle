@@ -37,14 +37,13 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
     "mocha": "^6.2.1",
     "@ethereum-waffle/provider": "^3.0.0-beta.1"
   },
   "dependencies": {
     "ethers": "^5.0.0-beta.184",
-    "mocha": "^6.2.1",
     "@ensdomains/ens": "^0.4.4",
-    "@ensdomains/resolver": "^0.2.4",
-    "chai-as-promised": "^7.1.1"
+    "@ensdomains/resolver": "^0.2.4"
   }
 }
