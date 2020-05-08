@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {compileAndSave} from '@ethereum-waffle/compiler';
 
 compileAndSave({
