@@ -1,15 +1,9 @@
-pragma solidity ^0.5.0;
-
-import { TestContract } from "./TestContract.sol";
+pragma solidity ^0.5.15;
 
 contract HelloContract {
-  event LogHello(uint param);
+  event LogHello();
 
-  function doRevert() external {
-    new TestContract().method(0);
-  }
-
-  function method(uint param) external {
-    emit LogHello(param);
+  function sayHello() external {
+    emit LogHello();
   }
 }
