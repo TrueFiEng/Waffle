@@ -1,31 +1,30 @@
-import {Web3Provider} from 'ethers/providers';
+import {providers} from 'ethers';
 import {SourceMapLoader} from './SourceMapLoader';
+import {GanacheWrapper} from './GanacheWrapper';
 
 export class RevertLocalizer {
   private _buildDir?: string = './build';
+
+  constructor(private provider: providers.Provider) {}
 
   set buildDir(value: string) {
     this._buildDir = value;
   }
 
-  interceptCalls(provider: Web3Provider) {
-    type SendAsync = (request: any, callback: (error: any, response: any) => void) => void
-    const interceptSendAsync = (sendAsync: SendAsync): SendAsync =>
-      (request, cb) => sendAsync(request, async (error, response) => {
-        try {
-          await this._preprocessCallResult(provider, request, error);
-        } catch (e) {
-          console.error('e: ', e);
-        }
-        cb(error, response);
-      });
-    provider['_sendAsync'] = interceptSendAsync(provider['_sendAsync']);
+  interceptCalls(wrapper: GanacheWrapper) {
+    wrapper.preprocessCallback = async (request: any, error: any) => {
+      try {
+        await this._preprocessCallResult(request, error);
+      } catch (e) {
+        // Silent fail. Log errors here to debug
+      }
+    };
   }
 
-  private async _preprocessCallResult(provider: Web3Provider, request: any, error: any) {
+  private async _preprocessCallResult(request: any, error: any) {
     if (this._buildDir && isValidEthEstimateGasRevert(request, error)) {
       const {programCounter} = getRevertDetails(error);
-      const contractCode = await provider.getCode(request.params[0].to);
+      const contractCode = await this.provider.getCode(request.params[0].to);
       const sourceMap = await new SourceMapLoader(this._buildDir)
         .locateLineByBytecodeAndProgramCounter(contractCode, programCounter);
 

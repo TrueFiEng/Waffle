@@ -1,4 +1,5 @@
-import {providers, utils} from 'ethers';
+import {utils} from 'ethers';
+import {GanacheWrapper} from './GanacheWrapper';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -16,19 +17,19 @@ export class CallHistory {
     return this.recordedCalls;
   }
 
-  record(provider: providers.Web3Provider) {
-    addVmListener(provider, 'beforeMessage', (message) => {
+  record(wrapper: GanacheWrapper) {
+    addVmListener(wrapper, 'beforeMessage', (message) => {
       this.recordedCalls.push(toRecordedCall(message));
     });
   }
 }
 
 function addVmListener(
-  provider: providers.Web3Provider,
+  wrapper: GanacheWrapper,
   event: string,
   handler: (value: any) => void
 ) {
-  const {blockchain} = (provider.provider as any).engine.manager.state;
+  const {blockchain} = wrapper.provider.engine.manager.state;
   const createVMFromStateTrie = blockchain.createVMFromStateTrie;
   blockchain.createVMFromStateTrie = function (...args: any[]) {
     const vm = createVMFromStateTrie.apply(this, args);

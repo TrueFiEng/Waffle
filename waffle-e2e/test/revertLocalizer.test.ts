@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
-import {ContractFactory} from 'ethers';
-import {AddressZero} from 'ethers/constants';
+import {ContractFactory, constants} from 'ethers';
 import BasicToken from '../dist/BasicToken.json';
 import HelloContract from '../dist/HelloContract.json';
 
@@ -12,7 +11,7 @@ describe('Integration: RevertLocalizer', () => {
     const [sender] = provider.getWallets();
     const factory = new ContractFactory(BasicToken.abi, BasicToken.bytecode, sender);
     const contract = await factory.deploy(10_000);
-    await expect(contract.transfer(AddressZero, 50)).to.be.rejectedWith(/BasicToken\.sol:30/);
+    await expect(contract.transfer(constants.AddressZero, 50)).to.be.rejectedWith(/BasicToken\.sol:30/);
   });
 
   it('does not find a revert location for contracts called by the called contract', async () => {

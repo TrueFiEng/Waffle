@@ -3,6 +3,7 @@ import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
 import {RevertLocalizer} from './RevertLocalizer';
+import {GanacheWrapper} from './GanacheWrapper';
 
 export {RecordedCall};
 
@@ -11,11 +12,12 @@ export class MockProvider extends providers.Web3Provider {
   private _revertLocalizer: RevertLocalizer;
 
   constructor(private options?: Ganache.IProviderOptions) {
-    super(Ganache.provider({accounts: defaultAccounts, ...options}) as any);
+    super(new GanacheWrapper({accounts: defaultAccounts, ...options}));
+    const wrapper = this.provider as GanacheWrapper;
     this._callHistory = new CallHistory();
-    this._callHistory.record(this);
-    this._revertLocalizer = new RevertLocalizer();
-    this._revertLocalizer.interceptCalls(this);
+    this._callHistory.record(wrapper);
+    this._revertLocalizer = new RevertLocalizer(this);
+    this._revertLocalizer.interceptCalls(wrapper);
   }
 
   getWallets() {
