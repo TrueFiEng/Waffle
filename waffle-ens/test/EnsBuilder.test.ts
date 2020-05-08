@@ -50,7 +50,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
   it('Create third level domain for nonexistent second level domain', async () => {
     await expect(ensBuilder.createSubDomain('ens.waffle.test'))
-      .to.be.rejectedWith('Up level domain waffle.test doesn\'t exist.');
+      .to.be.rejectedWith('Top level domain waffle.test doesn\'t exist.');
   });
 
   it('Set address', async () => {
