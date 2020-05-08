@@ -1,7 +1,11 @@
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
 import {constants, utils} from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {createENSBuilder, ENSBuilder} from '../src/index';
+
+import chaiAsPromised from 'chai-as-promised';
+
+chai.use(chaiAsPromised);
 
 const {AddressZero} = constants;
 const {namehash} = utils;
@@ -37,10 +41,23 @@ describe('INTEGRATION: Deploy Ens', async () => {
     expect(await ensBuilder.ens.resolver(namehash('ethworks.test'))).to.eq(ensBuilder.resolver.address);
   });
 
+  it('Create third level domain', async () => {
+    await ensBuilder.createSubDomain('dev.ethworks.test');
+    expect(await ensBuilder.ens.owner(namehash('dev.ethworks.test')))
+      .to.eq(ensBuilder.registrars['dev.ethworks.test'].address);
+    expect(await ensBuilder.ens.resolver(namehash('dev.ethworks.test'))).to.eq(ensBuilder.resolver.address);
+  });
+
+  it('Create third level domain for nonexistent second level domain', async () => {
+    await expect(ensBuilder.createSubDomain('ens.waffle.test'))
+      .to.be.rejectedWith('Top level domain waffle.test doesn\'t exist.');
+  });
+
   it('Set address', async () => {
-    await ensBuilder.setAddress('vlad.ethworks.test', ensBuilder.wallet.address);
-    expect(await ensBuilder.ens.owner(namehash('vlad.ethworks.test'))).to.eq(ensBuilder.wallet.address);
-    expect(await ensBuilder.resolver['addr(bytes32)'](namehash('vlad.ethworks.test'))).to.eq(ensBuilder.wallet.address);
-    expect(await ensBuilder.ens.resolver(namehash('vlad.ethworks.test'))).to.eq(ensBuilder.resolver.address);
+    await ensBuilder.setAddress('vlad.dev.ethworks.test', ensBuilder.wallet.address);
+    const node = namehash('vlad.dev.ethworks.test');
+    expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
+    expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
+    expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
   });
 });
