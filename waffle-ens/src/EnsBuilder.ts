@@ -42,7 +42,6 @@ export class ENSBuilder {
     const {label, node, decodedRootNode} = getDomainInfo(domain);
     try {
       await this.registrars[decodedRootNode].register(label, this.wallet.address);
-      await this.registrars[decodedRootNode].register(label, this.wallet.address);
       await this.ens.setResolver(node, this.resolver.address);
       const registrar: Contract = await deployContract(this.wallet, FIFSRegistrar, [this.ens.address, node]);
       await this.ens.setOwner(node, registrar.address);
@@ -52,7 +51,7 @@ export class ENSBuilder {
       };
     } catch (e) {
       throw new Error(
-        `Up level domain ${decodedRootNode} doesn't exist.`
+        `Top level domain ${decodedRootNode} doesn't exist.`
       );
     }
   }
