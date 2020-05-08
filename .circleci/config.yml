@@ -61,6 +61,7 @@ jobs:
       - run: yarn test
 
   example_mock_contracts:
+    working_directory: ~/project/examples/mock-contracts
     docker:
       - image: circleci/node:11.15
     steps:
@@ -68,18 +69,11 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install dependencies
-          command: cd examples && cd mock-contracts && yarn install
+          command: yarn install
       - setup_solc
-      - run:
-          name: yarn lint
-          command: cd examples && cd mock-contracts && yarn lint
-      - run:
-          name: yarn build
-          command: cd examples && cd mock-contracts && yarn build
-      - run:
-          name: yarn test
-          command: cd examples && cd mock-contracts && yarn test
-
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn test
 
 workflows:
   waffle_all:

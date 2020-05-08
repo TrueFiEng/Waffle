@@ -9,10 +9,8 @@
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'"
   },
-  "dependencies": {
-    "ethers": "4.0.47"
-  },
   "devDependencies": {
+    "ethers": "4.0.47",
     "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
