@@ -65,9 +65,8 @@ jobs:
     docker:
       - image: circleci/node:11.15
     steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project/examples/mock-contracts
+      - checkout:
+          path: ~/project
       - setup_remote_docker
       - run:
           name: Install dependencies
