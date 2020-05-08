@@ -6,6 +6,10 @@ import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
 const {namehash} = utils;
 const {HashZero} = constants;
 
+interface DomainRegistrationOptions {
+  recursive?: boolean;
+}
+
 export async function createENSBuilder(wallet: Wallet) {
   const ens = await deployContract(wallet, ENSRegistry, []);
   const resolver = await deployContract(wallet, PublicResolver, [ens.address]);
@@ -30,17 +34,17 @@ export class ENSBuilder {
   }
 
   async createTopLevelDomain(domain: string) {
-    const {node, label} = getDomainInfo(domain);
+    const node = namehash(domain);
     this.registrars = {
       ...this.registrars,
       [domain]: await deployContract(this.wallet, FIFSRegistrar, [this.ens.address, node])
     };
-    await this.ens.setSubnodeOwner(HashZero, label, this.registrars[domain].address);
+    await this.ens.setSubnodeOwner(HashZero, utils.id(domain), this.registrars[domain].address);
   }
 
-  async createSubDomain(domain: string) {
-    const {tld, label, node} = getDomainInfo(domain);
-    await this.registrars[tld].register(label, this.wallet.address);
+  async createSubDomainNotRecursive(domain: string) {
+    const {label, node, decodedRootNode} = getDomainInfo(domain);
+    await this.registrars[decodedRootNode].register(label, this.wallet.address);
     await this.ens.setResolver(node, this.resolver.address);
     const registrar: Contract = await deployContract(this.wallet, FIFSRegistrar, [this.ens.address, node]);
     await this.ens.setOwner(node, registrar.address);
@@ -50,15 +54,44 @@ export class ENSBuilder {
     };
   }
 
-  async findRegistrar(rootNode: string) {
-    return this.registrars[rootNode];
+  async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
+    const recursive = options?.recursive || false;
+    const {decodedRootNode, chunks} = getDomainInfo(domain);
+    const isNoTopDomain = (chunks.length > 1);
+    if (!this.registrars[decodedRootNode]) {
+      if (recursive && isNoTopDomain) {
+        await this.createSubDomain(decodedRootNode, options);
+      } else if (recursive && !isNoTopDomain) {
+        await this.createTopLevelDomain(decodedRootNode);
+      } else {
+        throw new Error(
+          `Top level domain ${decodedRootNode} doesn't exist.`
+        );
+      }
+    }
+    await this.createSubDomainNotRecursive(domain);
   }
 
-  async setAddress(domain: string, address: string) {
-    const {node, label, rootNode} = getDomainInfo(domain);
-    const registrar = await this.findRegistrar(rootNode);
+  async setAddressNotRecursive(domain: string, address: string) {
+    const {node, label, decodedRootNode} = getDomainInfo(domain);
+    const registrar = this.registrars[decodedRootNode];
     await registrar.register(label, this.wallet.address);
     await this.ens.setResolver(node, this.resolver.address);
     await this.resolver['setAddr(bytes32,uint256,bytes)'](node, COIN_TYPE_ETH, address);
+  }
+
+  async setAddress(domain: string, address: string, options?: DomainRegistrationOptions) {
+    const recursive = options?.recursive || false;
+    const {decodedRootNode} = getDomainInfo(domain);
+    if (!this.registrars[decodedRootNode]) {
+      if (recursive) {
+        await this.createSubDomain(decodedRootNode);
+      } else {
+        throw new Error(
+          `Domain ${decodedRootNode} doesn't exist.`
+        );
+      }
+    }
+    await this.setAddressNotRecursive(domain, address);
   }
 }
