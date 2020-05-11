@@ -4,12 +4,6 @@ export class MissingDomain extends Error {
   }
 }
 
-export class MissingTopLevelDomain extends Error {
-  constructor(domain: string) {
-    super(`Top level domain ${domain} doesn't exist.`);
-  }
-}
-
 export class InvalidDomain extends Error {
   constructor(domain: string) {
     super(`Invalid domain: '${domain}'`);

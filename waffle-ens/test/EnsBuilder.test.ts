@@ -30,6 +30,11 @@ describe('INTEGRATION: Deploy Ens', async () => {
     expect(await ensBuilder.resolver['addr(bytes32)'](namehash('resolver'))).to.eq(ensBuilder.resolver.address);
   });
 
+  it('ReverseRegistrar deployed and setup', async () => {
+    expect(await ensBuilder.ens.owner(namehash('reverse'))).to.eq(wallet.address);
+    expect(await ensBuilder.ens.owner(namehash('addr.reverse'))).to.eq(ensBuilder.reverseRegistrar.address);
+  });
+
   describe('INTEGRATION: Create domain', async () => {
     describe('INTEGRATION: Non recursive', async () => {
       it('top level domain', async () => {
@@ -64,7 +69,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
     describe('INTEGRATION: Fail', async () => {
       it('third level domain for nonexistent second level domain', async () => {
         await expect(ensBuilder.createSubDomain('ens.waffle.test'))
-          .to.be.rejectedWith('Top level domain waffle.test doesn\'t exist.');
+          .to.be.rejectedWith('Domain waffle.test doesn\'t exist.');
       });
     });
   });

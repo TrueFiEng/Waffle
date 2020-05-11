@@ -1,25 +1,39 @@
-import {ENSRegistry, FIFSRegistrar} from '@ensdomains/ens';
+import {ENSRegistry, FIFSRegistrar, ReverseRegistrar} from '@ensdomains/ens';
 import {PublicResolver} from '@ensdomains/resolver';
 import {constants, Contract, utils, Wallet} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
-import {MissingDomain, MissingTopLevelDomain} from './errors';
+import {MissingDomain} from './errors';
 
 const {namehash} = utils;
 const {HashZero} = constants;
 
 interface DomainRegistrationOptions {
   recursive?: boolean;
+  reverse?: boolean;
 }
 
-export async function createENSBuilder(wallet: Wallet) {
-  const ens = await deployContract(wallet, ENSRegistry, []);
+export async function createResolver(wallet: Wallet, ens: Contract) {
   const resolver = await deployContract(wallet, PublicResolver, [ens.address]);
   const resolverNode = namehash('resolver');
   const resolverLabel = utils.id('resolver');
   await ens.setSubnodeOwner(HashZero, resolverLabel, wallet.address);
   await ens.setResolver(resolverNode, resolver.address);
   await resolver['setAddr(bytes32,uint256,bytes)'](resolverNode, COIN_TYPE_ETH, resolver.address);
-  return new ENSBuilder(wallet, ens, resolver);
+  return resolver;
+}
+
+export async function createReverseRegistrar(wallet: Wallet, ens: Contract, resolver: Contract) {
+  const reverseRegistrar = await deployContract(wallet, ReverseRegistrar, [ens.address, resolver.address]);
+  await ens.setSubnodeOwner(HashZero, utils.id('reverse'), wallet.address);
+  await ens.setSubnodeOwner(namehash('reverse'), utils.id('addr'), reverseRegistrar.address);
+  return reverseRegistrar;
+}
+
+export async function createENSBuilder(wallet: Wallet) {
+  const ens = await deployContract(wallet, ENSRegistry, []);
+  const resolver = await createResolver(wallet, ens);
+  const reverseRegistrar = await createReverseRegistrar(wallet, ens, resolver);
+  return new ENSBuilder(wallet, ens, resolver, reverseRegistrar);
 }
 
 export class ENSBuilder {
@@ -27,11 +41,13 @@ export class ENSBuilder {
   ens: Contract;
   resolver: Contract;
   registrars: Record<string, Contract> = {};
+  reverseRegistrar: Contract;
 
-  constructor(wallet: Wallet, ens: Contract, resolver: Contract) {
+  constructor(wallet: Wallet, ens: Contract, resolver: Contract, reverseRegistrar: Contract) {
     this.wallet = wallet;
     this.ens = ens;
     this.resolver = resolver;
+    this.reverseRegistrar = reverseRegistrar;
   }
 
   async createTopLevelDomain(domain: string) {
@@ -65,16 +81,20 @@ export class ENSBuilder {
     }
   }
 
-  async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
+  async checkTopDomain(domain: string, options?: DomainRegistrationOptions) {
     const recursive = options?.recursive || false;
-    const {decodedRootNode} = getDomainInfo(domain);
-    if (!this.registrars[decodedRootNode]) {
+    if (!this.registrars[domain]) {
       if (recursive) {
-        await this.createDomain(decodedRootNode, options);
+        await this.createDomain(domain, options);
       } else {
-        throw new MissingTopLevelDomain(decodedRootNode);
+        throw new MissingDomain(domain);
       }
     }
+  }
+
+  async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
+    const {decodedRootNode} = getDomainInfo(domain);
+    await this.checkTopDomain(decodedRootNode, options);
     await this.createSubDomainNonRecursive(domain);
   }
 
@@ -87,15 +107,8 @@ export class ENSBuilder {
   }
 
   async setAddress(domain: string, address: string, options?: DomainRegistrationOptions) {
-    const recursive = options?.recursive || false;
     const {decodedRootNode} = getDomainInfo(domain);
-    if (!this.registrars[decodedRootNode]) {
-      if (recursive) {
-        await this.createDomain(decodedRootNode);
-      } else {
-        throw new MissingDomain(decodedRootNode);
-      }
-    }
+    await this.checkTopDomain(decodedRootNode, options);
     await this.setAddressNonRecursive(domain, address);
   }
 }
