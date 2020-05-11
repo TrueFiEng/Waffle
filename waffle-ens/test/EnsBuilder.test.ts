@@ -31,7 +31,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
   });
 
   describe('INTEGRATION: Create domain', async () => {
-    describe('INTEGRATION: Not recursive', async () => {
+    describe('INTEGRATION: Non recursive', async () => {
       it('top level domain', async () => {
         await ensBuilder.createTopLevelDomain('test');
         expect(await ensBuilder.ens.owner(namehash('test'))).to.eq(ensBuilder.registrars['test'].address);
@@ -70,7 +70,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
   });
 
   describe('INTEGRATION: Set address', async () => {
-    describe('INTEGRATION: Not recursive', async () => {
+    describe('INTEGRATION: Non recursive', async () => {
       it('existing domain', async () => {
         const node = namehash('vlad.dev.ethworks.test');
         await ensBuilder.setAddress('vlad.dev.ethworks.test', ensBuilder.wallet.address);

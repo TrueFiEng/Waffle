@@ -2,6 +2,7 @@ import {ENSRegistry, FIFSRegistrar} from '@ensdomains/ens';
 import {PublicResolver} from '@ensdomains/resolver';
 import {constants, Contract, utils, Wallet} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
+import {MissingDomain, MissingTopLevelDomain} from './errors';
 
 const {namehash} = utils;
 const {HashZero} = constants;
@@ -42,7 +43,7 @@ export class ENSBuilder {
     await this.ens.setSubnodeOwner(HashZero, utils.id(domain), this.registrars[domain].address);
   }
 
-  async createSubDomainNotRecursive(domain: string) {
+  async createSubDomainNonRecursive(domain: string) {
     const {label, node, decodedRootNode} = getDomainInfo(domain);
     await this.registrars[decodedRootNode].register(label, this.wallet.address);
     await this.ens.setResolver(node, this.resolver.address);
@@ -54,25 +55,30 @@ export class ENSBuilder {
     };
   }
 
-  async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
-    const recursive = options?.recursive || false;
-    const {decodedRootNode, chunks} = getDomainInfo(domain);
+  async createDomain(domain: string, options?: DomainRegistrationOptions) {
+    const {chunks} = getDomainInfo(domain);
     const isNoTopDomain = (chunks.length > 1);
-    if (!this.registrars[decodedRootNode]) {
-      if (recursive && isNoTopDomain) {
-        await this.createSubDomain(decodedRootNode, options);
-      } else if (recursive && !isNoTopDomain) {
-        await this.createTopLevelDomain(decodedRootNode);
-      } else {
-        throw new Error(
-          `Top level domain ${decodedRootNode} doesn't exist.`
-        );
-      }
+    if (isNoTopDomain) {
+      await this.createSubDomain(domain, options);
+    } else {
+      await this.createTopLevelDomain(domain);
     }
-    await this.createSubDomainNotRecursive(domain);
   }
 
-  async setAddressNotRecursive(domain: string, address: string) {
+  async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
+    const recursive = options?.recursive || false;
+    const {decodedRootNode} = getDomainInfo(domain);
+    if (!this.registrars[decodedRootNode]) {
+      if (recursive) {
+        await this.createDomain(decodedRootNode, options);
+      } else {
+        throw new MissingTopLevelDomain(decodedRootNode);
+      }
+    }
+    await this.createSubDomainNonRecursive(domain);
+  }
+
+  async setAddressNonRecursive(domain: string, address: string) {
     const {node, label, decodedRootNode} = getDomainInfo(domain);
     const registrar = this.registrars[decodedRootNode];
     await registrar.register(label, this.wallet.address);
@@ -85,13 +91,11 @@ export class ENSBuilder {
     const {decodedRootNode} = getDomainInfo(domain);
     if (!this.registrars[decodedRootNode]) {
       if (recursive) {
-        await this.createSubDomain(decodedRootNode);
+        await this.createDomain(decodedRootNode);
       } else {
-        throw new Error(
-          `Domain ${decodedRootNode} doesn't exist.`
-        );
+        throw new MissingDomain(decodedRootNode);
       }
     }
-    await this.setAddressNotRecursive(domain, address);
+    await this.setAddressNonRecursive(domain, address);
   }
 }
