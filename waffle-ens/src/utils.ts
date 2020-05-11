@@ -21,12 +21,14 @@ interface ENSDomainInfo {
 
 export const getDomainInfo = (domain: string): ENSDomainInfo => {
   const chunks = domain.split('.');
+  const isTopLevelDomain = (chunks.length === 1 && chunks[0].length > 0);
+  const isEmptyDomain = (domain === '');
 
-  if (chunks.length === 1 && chunks[0].length > 0) {
+  if (isTopLevelDomain) {
     throw new Error(
       'Invalid domain. Please, enter no top level domain.'
     );
-  } else if (chunks.includes('')) {
+  } else if (isEmptyDomain) {
     throw new Error(
       `Invalid domain: '${domain}'`
     );
