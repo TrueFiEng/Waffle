@@ -1,10 +1,12 @@
 import chai, {expect} from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import {waffleChai} from '@ethereum-waffle/chai';
 
 import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 import HelloContract from '../build/HelloContract.json';
 
+chai.use(chaiAsPromised);
 chai.use(waffleChai);
 
 it('deploys contract and emit simple event', async () => {
