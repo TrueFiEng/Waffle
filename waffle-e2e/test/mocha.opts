@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 -r ts-node/register/transpile-only
 --timeout 50000
 --no-warnings
 test/**/*.{js,ts}
+=======
+-r ts-node/register/transpile-only
+--timeout 50000
+--no-warnings
+test/**/*.{js,ts}
+>>>>>>> 6509df661491f79f4648caa0f8110e5a9e5a13e3

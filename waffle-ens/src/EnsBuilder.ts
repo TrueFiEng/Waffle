@@ -90,6 +90,7 @@ export class ENSBuilder {
         throw new MissingDomain(domain);
       }
     }
+<<<<<<< HEAD
   }
 
   async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
@@ -98,6 +99,16 @@ export class ENSBuilder {
     await this.createSubDomainNonRecursive(domain);
   }
 
+=======
+  }
+
+  async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
+    const {decodedRootNode} = getDomainInfo(domain);
+    await this.checkTopDomain(decodedRootNode, options);
+    await this.createSubDomainNonRecursive(domain);
+  }
+
+>>>>>>> 6509df661491f79f4648caa0f8110e5a9e5a13e3
   async setAddressNonRecursive(domain: string, address: string) {
     const {node, label, decodedRootNode} = getDomainInfo(domain);
     const registrar = this.registrars[decodedRootNode];
@@ -107,6 +118,7 @@ export class ENSBuilder {
   }
 
   async setAddress(domain: string, address: string, options?: DomainRegistrationOptions) {
+<<<<<<< HEAD
     const reverse = options?.reverse || false;
     const {decodedRootNode} = getDomainInfo(domain);
     if (reverse) {
@@ -115,5 +127,10 @@ export class ENSBuilder {
       await this.checkTopDomain(decodedRootNode, options);
       await this.setAddressNonRecursive(domain, address);
     }
+=======
+    const {decodedRootNode} = getDomainInfo(domain);
+    await this.checkTopDomain(decodedRootNode, options);
+    await this.setAddressNonRecursive(domain, address);
+>>>>>>> 6509df661491f79f4648caa0f8110e5a9e5a13e3
   }
 }

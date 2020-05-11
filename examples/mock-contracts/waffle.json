@@ -1,6 +1,15 @@
+<<<<<<< HEAD
 {
   "compilerType": "dockerized-solc",
   "compilerVersion": "0.5.15",
   "sourceDirectory": "./src",
   "outputDirectory": "./build"
 }
+=======
+{
+  "compilerType": "dockerized-solc",
+  "compilerVersion": "0.5.15",
+  "sourceDirectory": "./src",
+  "outputDirectory": "./build"
+}
+>>>>>>> 6509df661491f79f4648caa0f8110e5a9e5a13e3
