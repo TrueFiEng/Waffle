@@ -1,6 +1,0 @@
-{
-  "ganacheOptions": {
-    "gasLimit": 50,
-    "gasPrice": 1
-  }
-}
