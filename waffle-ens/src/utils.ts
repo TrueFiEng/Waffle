@@ -1,4 +1,5 @@
 import {ContractFactory, utils, Wallet} from 'ethers';
+import {ExpectedTopLevelDomain, InvalidDomain} from './errors';
 
 const {namehash} = utils;
 
@@ -21,22 +22,18 @@ interface ENSDomainInfo {
 
 export const getDomainInfo = (domain: string): ENSDomainInfo => {
   const chunks = domain.split('.');
+  const isTopLevelDomain = (chunks.length === 1 && chunks[0].length > 0);
+  const isEmptyDomain = (domain === '');
 
-  if (chunks.length === 1 && chunks[0].length > 0) {
-    throw new Error(
-      'Invalid domain. Please, enter no top level domain.'
-    );
-  } else if (chunks.includes('')) {
-    throw new Error(
-      `Invalid domain: '${domain}'`
-    );
+  if (isTopLevelDomain) {
+    throw new ExpectedTopLevelDomain();
+  } else if (isEmptyDomain) {
+    throw new InvalidDomain(domain);
   }
   try {
     namehash(domain);
   } catch (e) {
-    throw new Error(
-      `Invalid domain: '${domain}'`
-    );
+    throw new InvalidDomain(domain);
   }
 
   return {
