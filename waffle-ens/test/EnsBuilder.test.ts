@@ -30,34 +30,71 @@ describe('INTEGRATION: Deploy Ens', async () => {
     expect(await ensBuilder.resolver['addr(bytes32)'](namehash('resolver'))).to.eq(ensBuilder.resolver.address);
   });
 
-  it('Create top level domain', async () => {
-    await ensBuilder.createTopLevelDomain('test');
-    expect(await ensBuilder.ens.owner(namehash('test'))).to.eq(ensBuilder.registrars['test'].address);
+  describe('INTEGRATION: Create domain', async () => {
+    describe('INTEGRATION: Non recursive', async () => {
+      it('top level domain', async () => {
+        await ensBuilder.createTopLevelDomain('test');
+        expect(await ensBuilder.ens.owner(namehash('test'))).to.eq(ensBuilder.registrars['test'].address);
+      });
+
+      it('sub domain', async () => {
+        await ensBuilder.createSubDomain('ethworks.test');
+        expect(await ensBuilder.ens.owner(namehash('ethworks.test')))
+          .to.eq(ensBuilder.registrars['ethworks.test'].address);
+        expect(await ensBuilder.ens.resolver(namehash('ethworks.test'))).to.eq(ensBuilder.resolver.address);
+      });
+
+      it('third level domain', async () => {
+        await ensBuilder.createSubDomain('dev.ethworks.test');
+        expect(await ensBuilder.ens.owner(namehash('dev.ethworks.test')))
+          .to.eq(ensBuilder.registrars['dev.ethworks.test'].address);
+        expect(await ensBuilder.ens.resolver(namehash('dev.ethworks.test'))).to.eq(ensBuilder.resolver.address);
+      });
+    });
+
+    describe('INTEGRATION: Recursive', async () => {
+      it('third level domain', async () => {
+        await ensBuilder.createSubDomain('waffle.projects.test', {recursive: true});
+        expect(await ensBuilder.ens.owner(namehash('waffle.projects.test')))
+          .to.eq(ensBuilder.registrars['waffle.projects.test'].address);
+        expect(await ensBuilder.ens.resolver(namehash('waffle.projects.test'))).to.eq(ensBuilder.resolver.address);
+      });
+    });
+
+    describe('INTEGRATION: Fail', async () => {
+      it('third level domain for nonexistent second level domain', async () => {
+        await expect(ensBuilder.createSubDomain('ens.waffle.test'))
+          .to.be.rejectedWith('Domain waffle.test doesn\'t exist.');
+      });
+    });
   });
 
-  it('Create sub domain', async () => {
-    await ensBuilder.createSubDomain('ethworks.test');
-    expect(await ensBuilder.ens.owner(namehash('ethworks.test'))).to.eq(ensBuilder.registrars['ethworks.test'].address);
-    expect(await ensBuilder.ens.resolver(namehash('ethworks.test'))).to.eq(ensBuilder.resolver.address);
-  });
+  describe('INTEGRATION: Set address', async () => {
+    describe('INTEGRATION: Non recursive', async () => {
+      it('existing domain', async () => {
+        const node = namehash('vlad.dev.ethworks.test');
+        await ensBuilder.setAddress('vlad.dev.ethworks.test', ensBuilder.wallet.address);
+        expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
+        expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
+        expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
+      });
+    });
 
-  it('Create third level domain', async () => {
-    await ensBuilder.createSubDomain('dev.ethworks.test');
-    expect(await ensBuilder.ens.owner(namehash('dev.ethworks.test')))
-      .to.eq(ensBuilder.registrars['dev.ethworks.test'].address);
-    expect(await ensBuilder.ens.resolver(namehash('dev.ethworks.test'))).to.eq(ensBuilder.resolver.address);
-  });
+    describe('INTEGRATION: Recursive', async () => {
+      it('nonexistent domain', async () => {
+        const node = namehash('vlad.test.test');
+        await ensBuilder.setAddress('vlad.test.test', ensBuilder.wallet.address, {recursive: true});
+        expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
+        expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
+        expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
+      });
+    });
 
-  it('Create third level domain for nonexistent second level domain', async () => {
-    await expect(ensBuilder.createSubDomain('ens.waffle.test'))
-      .to.be.rejectedWith('Top level domain waffle.test doesn\'t exist.');
-  });
-
-  it('Set address', async () => {
-    await ensBuilder.setAddress('vlad.dev.ethworks.test', ensBuilder.wallet.address);
-    const node = namehash('vlad.dev.ethworks.test');
-    expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
-    expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
-    expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
+    describe('INTEGRATION: Fail', async () => {
+      it('nonexistent domain', async () => {
+        await expect(ensBuilder.setAddress('vlad.nonexistent.test', ensBuilder.wallet.address))
+          .to.be.rejectedWith('Domain nonexistent.test doesn\'t exist.');
+      });
+    });
   });
 });
