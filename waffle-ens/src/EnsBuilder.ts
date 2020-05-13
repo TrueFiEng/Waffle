@@ -32,6 +32,7 @@ export async function createENSBuilder(wallet: Wallet) {
   const ens = await deployContract(wallet, ENSRegistry, []);
   const resolver = await createResolver(wallet, ens);
   const reverseRegistrar = await createReverseRegistrar(wallet, ens, resolver);
+  (await wallet.provider.getNetwork()).ensAddress = ens.address;
   return new ENSBuilder(wallet, ens, resolver, reverseRegistrar);
 }
 
@@ -71,11 +72,10 @@ export class ENSBuilder {
   }
 
   async createDomain(domain: string, options?: DomainRegistrationOptions) {
-    const {chunks} = getDomainInfo(domain);
-    const isSubdomain = (chunks.length > 1);
-    if (isSubdomain) {
+    try {
+      getDomainInfo(domain);
       await this.createSubDomain(domain, options);
-    } else {
+    } catch (e) {
       await this.createTopLevelDomain(domain);
     }
   }
