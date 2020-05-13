@@ -1,4 +1,4 @@
-import {ENSRegistry, FIFSRegistrar} from '@ensdomains/ens';
+import {ENSRegistry, FIFSRegistrar, ReverseRegistrar} from '@ensdomains/ens';
 import {PublicResolver} from '@ensdomains/resolver';
 import {constants, Contract, utils, Wallet} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
@@ -21,10 +21,18 @@ export async function createResolver(wallet: Wallet, ens: Contract) {
   return resolver;
 }
 
+export async function createReverseRegistrar(wallet: Wallet, ens: Contract, resolver: Contract) {
+  const reverseRegistrar = await deployContract(wallet, ReverseRegistrar, [ens.address, resolver.address]);
+  await ens.setSubnodeOwner(HashZero, utils.id('reverse'), wallet.address);
+  await ens.setSubnodeOwner(namehash('reverse'), utils.id('addr'), reverseRegistrar.address);
+  return reverseRegistrar;
+}
+
 export async function createENSBuilder(wallet: Wallet) {
   const ens = await deployContract(wallet, ENSRegistry, []);
   const resolver = await createResolver(wallet, ens);
-  return new ENSBuilder(wallet, ens, resolver);
+  const reverseRegistrar = await createReverseRegistrar(wallet, ens, resolver);
+  return new ENSBuilder(wallet, ens, resolver, reverseRegistrar);
 }
 
 export class ENSBuilder {
@@ -32,11 +40,13 @@ export class ENSBuilder {
   ens: Contract;
   resolver: Contract;
   registrars: Record<string, Contract> = {};
+  reverseRegistrar: Contract;
 
-  constructor(wallet: Wallet, ens: Contract, resolver: Contract) {
+  constructor(wallet: Wallet, ens: Contract, resolver: Contract, reverseRegistrar: Contract) {
     this.wallet = wallet;
     this.ens = ens;
     this.resolver = resolver;
+    this.reverseRegistrar = reverseRegistrar;
   }
 
   async createTopLevelDomain(domain: string) {
