@@ -62,15 +62,15 @@ export class ENSBuilder {
 
   async createDomain(domain: string, options?: DomainRegistrationOptions) {
     const {chunks} = getDomainInfo(domain);
-    const isNoTopDomain = (chunks.length > 1);
-    if (isNoTopDomain) {
+    const isSubdomain = (chunks.length > 1);
+    if (isSubdomain) {
       await this.createSubDomain(domain, options);
     } else {
       await this.createTopLevelDomain(domain);
     }
   }
 
-  async checkTopDomain(domain: string, options?: DomainRegistrationOptions) {
+  async ensureDomainExist(domain: string, options?: DomainRegistrationOptions) {
     const recursive = options?.recursive || false;
     if (!this.registrars[domain]) {
       if (recursive) {
@@ -83,7 +83,7 @@ export class ENSBuilder {
 
   async createSubDomain(domain: string, options?: DomainRegistrationOptions) {
     const {decodedRootNode} = getDomainInfo(domain);
-    await this.checkTopDomain(decodedRootNode, options);
+    await this.ensureDomainExist(decodedRootNode, options);
     await this.createSubDomainNonRecursive(domain);
   }
 
@@ -97,7 +97,7 @@ export class ENSBuilder {
 
   async setAddress(domain: string, address: string, options?: DomainRegistrationOptions) {
     const {decodedRootNode} = getDomainInfo(domain);
-    await this.checkTopDomain(decodedRootNode, options);
+    await this.ensureDomainExist(decodedRootNode, options);
     await this.setAddressNonRecursive(domain, address);
   }
 }
