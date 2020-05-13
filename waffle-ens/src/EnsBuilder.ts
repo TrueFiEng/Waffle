@@ -110,4 +110,8 @@ export class ENSBuilder {
     await this.ensureDomainExist(decodedRootNode, options);
     await this.setAddressNonRecursive(domain, address);
   }
+
+  async setReverseAddress(address: string) {
+    await this.reverseRegistrar.setName(address);
+  }
 }
