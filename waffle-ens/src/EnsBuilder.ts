@@ -111,7 +111,7 @@ export class ENSBuilder {
     await this.setAddressNonRecursive(domain, address);
   }
 
-  async setReverseAddress(address: string) {
-    await this.reverseRegistrar.setName(address);
+  async setReverseAddress(name: string) {
+    await this.reverseRegistrar.setName(name);
   }
 }
