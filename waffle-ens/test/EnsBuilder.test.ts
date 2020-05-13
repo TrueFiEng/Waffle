@@ -87,7 +87,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
     describe('Reverse', async () => {
       it('reverse registrar', async () => {
-        await ensBuilder.setReverseAddress(wallet.address);
+        await ensBuilder.setName(wallet.address);
         const node = namehash(wallet.address.slice(2) + '.addr.reverse');
         expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.reverseRegistrar.address);
         expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
