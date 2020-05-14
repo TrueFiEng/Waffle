@@ -13,5 +13,6 @@ export class InvalidDomain extends Error {
 export class ExpectedTopLevelDomain extends Error {
   constructor() {
     super('Invalid domain. Please, enter no top level domain.');
+    Object.setPrototypeOf(this, ExpectedTopLevelDomain.prototype);
   }
 }

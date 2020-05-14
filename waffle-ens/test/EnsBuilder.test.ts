@@ -35,13 +35,6 @@ describe('INTEGRATION: Deploy Ens', async () => {
     expect(await ensBuilder.ens.owner(namehash('addr.reverse'))).to.eq(ensBuilder.reverseRegistrar.address);
   });
 
-  it('Provider ENS address', async () => {
-    await ensBuilder.setName(wallet.address);
-    expect(provider.network.ensAddress).to.eq(ensBuilder.ens.address);
-    expect(await provider.resolveName(wallet.address.slice(2))).to.eq(wallet.address);
-    expect(await provider.lookupAddress(wallet.address)).to.eq(wallet.address);
-  });
-
   describe('Create domain', async () => {
     describe('Non recursive', async () => {
       it('top level domain', async () => {

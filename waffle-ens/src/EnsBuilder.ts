@@ -2,7 +2,7 @@ import {ENSRegistry, FIFSRegistrar, ReverseRegistrar} from '@ensdomains/ens';
 import {PublicResolver} from '@ensdomains/resolver';
 import {constants, Contract, utils, Wallet} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
-import {MissingDomain} from './errors';
+import {ExpectedTopLevelDomain, MissingDomain} from './errors';
 
 const {namehash} = utils;
 const {HashZero} = constants;
@@ -32,7 +32,6 @@ export async function createENSBuilder(wallet: Wallet) {
   const ens = await deployContract(wallet, ENSRegistry, []);
   const resolver = await createResolver(wallet, ens);
   const reverseRegistrar = await createReverseRegistrar(wallet, ens, resolver);
-  (await wallet.provider.getNetwork()).ensAddress = ens.address;
   return new ENSBuilder(wallet, ens, resolver, reverseRegistrar);
 }
 
@@ -75,8 +74,12 @@ export class ENSBuilder {
     try {
       getDomainInfo(domain);
       await this.createSubDomain(domain, options);
-    } catch (e) {
-      await this.createTopLevelDomain(domain);
+    } catch (err) {
+      if (err instanceof ExpectedTopLevelDomain) {
+        await this.createTopLevelDomain(domain);
+      } else {
+        throw err;
+      }
     }
   }
 
