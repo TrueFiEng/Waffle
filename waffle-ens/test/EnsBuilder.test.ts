@@ -18,6 +18,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
   beforeEach(async () => {
     ensBuilder = await createENSBuilder(wallet);
+    await ensBuilder.createTopLevelDomain('test');
   });
 
   it('ENS deployed', async () => {
@@ -38,41 +39,40 @@ describe('INTEGRATION: Deploy Ens', async () => {
   describe('Create domain', async () => {
     describe('Non recursive', async () => {
       it('top level domain', async () => {
-        await ensBuilder.createTopLevelDomain('test');
-        expect(await ensBuilder.ens.owner(namehash('test'))).to.eq(ensBuilder.registrars['test'].address);
+        const node = namehash('tld');
+        await ensBuilder.createTopLevelDomain('tld');
+        expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.registrars['tld'].address);
       });
 
       it('sub domain', async () => {
-        await ensBuilder.createTopLevelDomain('test');
+        const node = namehash('ethworks.test');
         await ensBuilder.createSubDomain('ethworks.test');
-        expect(await ensBuilder.ens.owner(namehash('ethworks.test')))
-          .to.eq(ensBuilder.registrars['ethworks.test'].address);
-        expect(await ensBuilder.ens.resolver(namehash('ethworks.test'))).to.eq(ensBuilder.resolver.address);
+        expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.registrars['ethworks.test'].address);
+        expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
       });
 
       it('third level domain', async () => {
-        await ensBuilder.createTopLevelDomain('test');
         await ensBuilder.createSubDomain('ethworks.test');
+        const node = namehash('dev.ethworks.test');
         await ensBuilder.createSubDomain('dev.ethworks.test');
-        expect(await ensBuilder.ens.owner(namehash('dev.ethworks.test')))
-          .to.eq(ensBuilder.registrars['dev.ethworks.test'].address);
-        expect(await ensBuilder.ens.resolver(namehash('dev.ethworks.test'))).to.eq(ensBuilder.resolver.address);
+        expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.registrars['dev.ethworks.test'].address);
+        expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
       });
     });
 
     describe('Recursive', async () => {
       it('third level domain', async () => {
-        await ensBuilder.createSubDomain('waffle.projects.test', {recursive: true});
-        expect(await ensBuilder.ens.owner(namehash('waffle.projects.test')))
-          .to.eq(ensBuilder.registrars['waffle.projects.test'].address);
-        expect(await ensBuilder.ens.resolver(namehash('waffle.projects.test'))).to.eq(ensBuilder.resolver.address);
+        const node = namehash('waffle.projects.tld');
+        await ensBuilder.createSubDomain('waffle.projects.tld', {recursive: true});
+        expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.registrars['waffle.projects.tld'].address);
+        expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
       });
     });
 
     describe('Fail', async () => {
       it('third level domain for nonexistent second level domain', async () => {
-        await expect(ensBuilder.createSubDomain('ens.waffle.test'))
-          .to.be.rejectedWith('Domain waffle.test doesn\'t exist.');
+        await expect(ensBuilder.createSubDomain('ens.nonexistent.test'))
+          .to.be.rejectedWith('Domain nonexistent.test doesn\'t exist.');
       });
     });
   });
@@ -81,7 +81,6 @@ describe('INTEGRATION: Deploy Ens', async () => {
     describe('Non recursive', async () => {
       it('existing domain', async () => {
         const node = namehash('vlad.ethworks.test');
-        await ensBuilder.createTopLevelDomain('test');
         await ensBuilder.createSubDomain('ethworks.test');
         await ensBuilder.setAddress('vlad.ethworks.test', ensBuilder.wallet.address);
         expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
@@ -92,7 +91,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
     describe('Reverse', async () => {
       it('reverse registrar', async () => {
-        await ensBuilder.setReverseName(wallet, wallet.address);
+        await ensBuilder.setReverseName(wallet, 'vlad');
         const node = namehash(wallet.address.slice(2) + '.addr.reverse');
         expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.reverseRegistrar.address);
         expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
@@ -101,8 +100,8 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
     describe('Recursive', async () => {
       it('nonexistent domain', async () => {
-        const node = namehash('vlad.test.test');
-        await ensBuilder.setAddress('vlad.test.test', ensBuilder.wallet.address, {recursive: true});
+        const node = namehash('vlad.test.tld');
+        await ensBuilder.setAddress('vlad.test.tld', ensBuilder.wallet.address, {recursive: true});
         expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
         expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
         expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
