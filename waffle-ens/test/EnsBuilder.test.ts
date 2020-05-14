@@ -36,7 +36,10 @@ describe('INTEGRATION: Deploy Ens', async () => {
   });
 
   it('Provider ENS address', async () => {
+    await ensBuilder.setName(wallet.address);
     expect(provider.network.ensAddress).to.eq(ensBuilder.ens.address);
+    expect(await provider.resolveName(wallet.address.slice(2))).to.eq(wallet.address);
+    expect(await provider.lookupAddress(wallet.address)).to.eq(wallet.address);
   });
 
   describe('Create domain', async () => {
