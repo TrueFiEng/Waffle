@@ -16,7 +16,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
   const [wallet] = provider.getWallets();
   let ensBuilder: ENSBuilder;
 
-  before(async () => {
+  beforeEach(async () => {
     ensBuilder = await createENSBuilder(wallet);
   });
 
@@ -43,6 +43,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
       });
 
       it('sub domain', async () => {
+        await ensBuilder.createTopLevelDomain('test');
         await ensBuilder.createSubDomain('ethworks.test');
         expect(await ensBuilder.ens.owner(namehash('ethworks.test')))
           .to.eq(ensBuilder.registrars['ethworks.test'].address);
@@ -50,6 +51,8 @@ describe('INTEGRATION: Deploy Ens', async () => {
       });
 
       it('third level domain', async () => {
+        await ensBuilder.createTopLevelDomain('test');
+        await ensBuilder.createSubDomain('ethworks.test');
         await ensBuilder.createSubDomain('dev.ethworks.test');
         expect(await ensBuilder.ens.owner(namehash('dev.ethworks.test')))
           .to.eq(ensBuilder.registrars['dev.ethworks.test'].address);
@@ -77,8 +80,10 @@ describe('INTEGRATION: Deploy Ens', async () => {
   describe('Set address', async () => {
     describe('Non recursive', async () => {
       it('existing domain', async () => {
-        const node = namehash('vlad.dev.ethworks.test');
-        await ensBuilder.setAddress('vlad.dev.ethworks.test', ensBuilder.wallet.address);
+        const node = namehash('vlad.ethworks.test');
+        await ensBuilder.createTopLevelDomain('test');
+        await ensBuilder.createSubDomain('ethworks.test');
+        await ensBuilder.setAddress('vlad.ethworks.test', ensBuilder.wallet.address);
         expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.wallet.address);
         expect(await ensBuilder.resolver['addr(bytes32)'](node)).to.eq(ensBuilder.wallet.address);
         expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
@@ -87,7 +92,7 @@ describe('INTEGRATION: Deploy Ens', async () => {
 
     describe('Reverse', async () => {
       it('reverse registrar', async () => {
-        await ensBuilder.setName(wallet.address);
+        await ensBuilder.setReverseName(wallet, wallet.address);
         const node = namehash(wallet.address.slice(2) + '.addr.reverse');
         expect(await ensBuilder.ens.owner(node)).to.eq(ensBuilder.reverseRegistrar.address);
         expect(await ensBuilder.ens.resolver(node)).to.eq(ensBuilder.resolver.address);
