@@ -28,14 +28,14 @@ export async function createReverseRegistrar(wallet: Wallet, ens: Contract, reso
   return reverseRegistrar;
 }
 
-export async function createENSBuilder(wallet: Wallet) {
+export async function deployENS(wallet: Wallet) {
   const ens = await deployContract(wallet, ENSRegistry, []);
   const resolver = await createResolver(wallet, ens);
   const reverseRegistrar = await createReverseRegistrar(wallet, ens, resolver);
-  return new ENSBuilder(wallet, ens, resolver, reverseRegistrar);
+  return new ENS(wallet, ens, resolver, reverseRegistrar);
 }
 
-export class ENSBuilder {
+export class ENS {
   wallet: Wallet;
   ens: Contract;
   resolver: Contract;

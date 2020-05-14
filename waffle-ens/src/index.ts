@@ -1,1 +1,1 @@
-export * from './EnsBuilder';
+export * from './ENS';
