@@ -2,7 +2,7 @@ import {ENSRegistry, FIFSRegistrar, ReverseRegistrar} from '@ensdomains/ens';
 import {PublicResolver} from '@ensdomains/resolver';
 import {constants, Contract, utils, Wallet} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
-import {MissingDomain} from './errors';
+import {ExpectedTopLevelDomain, MissingDomain} from './errors';
 
 const {namehash} = utils;
 const {HashZero} = constants;
@@ -71,12 +71,15 @@ export class ENSBuilder {
   }
 
   async createDomain(domain: string, options?: DomainRegistrationOptions) {
-    const {chunks} = getDomainInfo(domain);
-    const isSubdomain = (chunks.length > 1);
-    if (isSubdomain) {
+    try {
+      getDomainInfo(domain);
       await this.createSubDomain(domain, options);
-    } else {
-      await this.createTopLevelDomain(domain);
+    } catch (err) {
+      if (err instanceof ExpectedTopLevelDomain) {
+        await this.createTopLevelDomain(domain);
+      } else {
+        throw err;
+      }
     }
   }
 
