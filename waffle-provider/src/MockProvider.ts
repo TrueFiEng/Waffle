@@ -2,6 +2,7 @@ import {providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
+import {deployENS} from '@ethereum-waffle/ens';
 
 export {RecordedCall};
 
@@ -29,5 +30,14 @@ export class MockProvider extends providers.Web3Provider {
 
   get callHistory(): readonly RecordedCall[] {
     return this._callHistory.getCalls();
+  }
+
+  async setupENS(wallet?: Wallet) {
+    if (!wallet) {
+      const wallets = this.getWallets();
+      wallet = wallets[wallets.length - 1];
+    }
+    const ens = await deployENS(wallet);
+    return ens;
   }
 }
