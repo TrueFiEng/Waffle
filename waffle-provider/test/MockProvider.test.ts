@@ -6,7 +6,7 @@ import {ENS} from '@ethereum-waffle/ens';
 
 const {AddressZero} = constants;
 const {namehash} = utils;
-const noExistingNode = '0x0000000000000000000000000000000000000000000000000000000000000001';
+const nonExistingNode = '0x0000000000000000000000000000000000000000000000000000000000000001';
 
 describe('INTEGRATION: MockProvider', () => {
   it('can return wallets', async () => {
@@ -77,7 +77,7 @@ describe('INTEGRATION: MockProvider', () => {
     });
 
     it('ENS deployed', async () => {
-      expect(await ens.ens.owner(noExistingNode)).to.equal(AddressZero);
+      expect(await ens.ens.owner(nonExistingNode)).to.equal(AddressZero);
     });
 
     it('PublicResolver deployed and setup', async () => {
@@ -90,6 +90,7 @@ describe('INTEGRATION: MockProvider', () => {
       expect(await ens.ens.owner(namehash('reverse'))).to.eq(wallet.address);
       expect(await ens.ens.owner(namehash('addr.reverse'))).to.eq(ens.reverseRegistrar.address);
     });
+
     describe('Create domain', async () => {
       describe('Non recursive', async () => {
         it('top level domain', async () => {
