@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
 import {constants, utils} from 'ethers';
-import {getWallets} from './utils';
+import {getWallet} from './utils';
 import {deployENS, ENS} from '../src/index';
 
 import chaiAsPromised from 'chai-as-promised';
@@ -12,7 +12,7 @@ const {namehash} = utils;
 const nonExistingNode = '0x0000000000000000000000000000000000000000000000000000000000000001';
 
 describe('Deploy Ens', async () => {
-  const [wallet] = getWallets();
+  const wallet = getWallet();
   let ens: ENS;
 
   beforeEach(async () => {
