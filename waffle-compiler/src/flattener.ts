@@ -64,11 +64,13 @@ function saveToFile(
 
 function replaceDirectivesWithComments(contract: GatheredContractInterface) {
   const IMPORT_SOLIDITY_REGEX = /import/gi;
+  const IMPORT_NODE_MODULES_REGEX = /(import.*").*node_modules\/(.*\n)/gi;
   const PRAGMA_SOLIDITY_REGEX = /pragma solidity/gi;
   const NODE_MODULES_REGEX = /^.*\/node_modules\//gi;
 
   return (dependency: GatheredContractInterface) => {
-    const sourceWithCommentedImports = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '// import');
+    const sourceWithImportsWithRelativeImports = dependency.source.replace(IMPORT_NODE_MODULES_REGEX, '$1$2');
+    const sourceWithCommentedImports = sourceWithImportsWithRelativeImports.replace(IMPORT_SOLIDITY_REGEX, '// import');
     const filePath = dependency.url.replace(NODE_MODULES_REGEX, '');
 
     if (dependency === contract) {

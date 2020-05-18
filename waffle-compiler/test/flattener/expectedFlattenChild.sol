@@ -65,7 +65,7 @@ contract Cycle2 {
 // pragma solidity ^0.5.2;
 pragma experimental ABIEncoderV2;
 
-// import "/Users/ivan/WebstormProjects/Waffle/node_modules/openzeppelin-solidity/contracts/access/Roles.sol";
+// import "openzeppelin-solidity/contracts/access/Roles.sol";
 // import "test/flattener/testSource/cycle2.sol";
 
 contract Parent {
@@ -85,7 +85,7 @@ contract Parent {
 
 // pragma solidity ^0.5.0;
 
-// import "/Users/ivan/WebstormProjects/Waffle/node_modules/openzeppelin-solidity/contracts/access/Roles.sol";
+// import "openzeppelin-solidity/contracts/access/Roles.sol";
 
 contract PauserRole {
     using Roles for Roles.Role;
@@ -132,9 +132,9 @@ contract PauserRole {
 
 pragma solidity >=0.4.24 <0.6.0;
 
-// import "/Users/ivan/WebstormProjects/Waffle/node_modules/openzeppelin-solidity/contracts/access/Roles.sol";
+// import "openzeppelin-solidity/contracts/access/Roles.sol";
 // import "test/flattener/testSource/parent.sol";
-// import "/Users/ivan/WebstormProjects/Waffle/node_modules/openzeppelin-solidity/contracts/access/roles/PauserRole.sol";
+// import "openzeppelin-solidity/contracts/access/roles/PauserRole.sol";
 
 contract Child {
   mapping(address => uint256) balances;
