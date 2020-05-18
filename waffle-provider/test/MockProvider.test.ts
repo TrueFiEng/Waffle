@@ -60,4 +60,10 @@ describe('INTEGRATION: MockProvider', () => {
 
     expect(balance.eq(3_141)).to.equal(true);
   });
+
+  it('can setup ENS without arguments', async () => {
+    const provider = new MockProvider();
+    const wallets = provider.getWallets();
+    expect((await provider.setupENS()).wallet.address).to.eq(wallets[wallets.length - 1].address);
+  });
 });
