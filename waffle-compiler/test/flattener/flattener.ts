@@ -37,6 +37,11 @@ describe('flattening', () => {
 
   it('leaves source pragma uncommented', async () => {
     const file = await flatAndGetChild();
-    expect(file).includes('pragma solidity >=0.4.24 <0.6.0;');
+    expect(file).to.include('\npragma solidity >=0.4.24 <0.6.0;');
+  });
+
+  it('leaves other pragmas uncommented', async () => {
+    const file = await flatAndGetChild();
+    expect(file).to.include('\npragma experimental ABIEncoderV2;');
   });
 });
