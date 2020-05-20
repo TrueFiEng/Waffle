@@ -54,15 +54,18 @@ function saveToFile(
   fileSystem.createDirectory(outputDirectory);
 
   output.map((contract: Array<GatheredContractInterface>) => {
-    const fileName = path.parse(contract[contract.length - 1].url).base;
+    const rootContract = contract[contract.length - 1];
+    const fileName = path.parse(rootContract.url).base;
     const filePath = path.join(outputDirectory, fileName);
-    const source = ''.concat(...unique(contract.map(replaceDirectivesWithComments(contract[contract.length - 1]))));
+
+    const contractsWithCommentedDirectives = contract.map(replaceDirectivesWithComments(rootContract));
+    const source = ''.concat(...unique(contractsWithCommentedDirectives));
 
     fileSystem.writeFile(filePath, source);
   });
 }
 
-function replaceDirectivesWithComments(contract: GatheredContractInterface) {
+function replaceDirectivesWithComments(rootContract: GatheredContractInterface) {
   const IMPORT_SOLIDITY_REGEX = /import/gi;
   const IMPORT_NODE_MODULES_REGEX = /(import.*").*node_modules\/(.*\n)/gi;
   const PRAGMA_SOLIDITY_REGEX = /pragma solidity/gi;
@@ -73,7 +76,7 @@ function replaceDirectivesWithComments(contract: GatheredContractInterface) {
     const sourceWithCommentedImports = sourceWithImportsWithRelativeImports.replace(IMPORT_SOLIDITY_REGEX, '// import');
     const filePath = dependency.url.replace(NODE_MODULES_REGEX, '');
 
-    if (dependency === contract) {
+    if (dependency === rootContract) {
       return `// Root file: ${filePath}\n\n` + sourceWithCommentedImports;
     }
 
