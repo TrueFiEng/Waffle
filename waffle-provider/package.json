@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/provider",
   "description": "A mock provider for your blockchain testing needs.",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
