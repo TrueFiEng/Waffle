@@ -55,6 +55,24 @@ You can also get an empty random wallet by calling:
 .. note::
   Prior to Waffle :code:`2.3.0` wallets were obtained using :code:`getWallets(provider)`.
 
+Setup ENS
+---------
+
+To setup basic ENS use provider's function `setupENS()`.
+
+.. code-block:: ts
+
+  import {MockProvider} from '@ethereum-waffle/provider';
+
+  const provider = new MockProvider();
+  const ens = provider.setupENS();
+
+By default this method use last `wallet` from provider's wallets, but you can pass your own `wallet` as argument for `setupENS(wallet)`.
+
+Also `setupENS()` method sets ENS address to provider's networks.
+
+Read `more about ENS functions here <https://ethereum-waffle.readthedocs.io/en/latest/ens.html#ens>`__.
+
 Deploying contracts
 -------------------
 
