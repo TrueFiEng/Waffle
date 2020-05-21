@@ -71,7 +71,7 @@ By default this method use last `wallet` from provider's wallets, but you can pa
 
 Also `setupENS()` method sets ENS address to provider's networks.
 
-Read `more about ENS functions here <https://ethereum-waffle.readthedocs.io/en/latest/ens.html#ens>`__.
+Read more about ENS functions here :ref:`ens`.
 
 Deploying contracts
 -------------------
