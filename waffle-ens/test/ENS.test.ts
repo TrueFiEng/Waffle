@@ -90,10 +90,11 @@ describe('Deploy Ens', async () => {
 
     describe('Reverse', async () => {
       it('reverse registrar', async () => {
-        await ens.setReverseName(wallet, 'vlad');
+        await ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
         const node = namehash(wallet.address.slice(2) + '.addr.reverse');
         expect(await ens.ens.owner(node)).to.eq(ens.reverseRegistrar.address);
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
+        expect(await ens.resolver.name(node)).to.eq('vlad.ethworks.test');
       });
     });
 

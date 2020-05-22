@@ -38,6 +38,7 @@ export class MockProvider extends providers.Web3Provider {
       wallet = wallets[wallets.length - 1];
     }
     const ens = await deployENS(wallet);
+    this.network.ensAddress = ens.ens.address;
     return ens;
   }
 }
