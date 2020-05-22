@@ -60,8 +60,8 @@ import {MockProvider} from '@ethereum-waffle/provider';
 describe('waffle tests', async () => {
   it('setup ens', async () => {
     const provider = new MockProvider();
-    const ens = await provider.setupENS();
-    expect(provider.network.ensAddress).to.eq(ens.ens.address);
+    await provider.setupENS();
+    expect(provider.network.ensAddress).to.eq(provider.ens.ens.address);
   });
 });
 ```

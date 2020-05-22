@@ -57,3 +57,9 @@ Also, it's possible to set address for domain recursively, if domain doesn't exi
 .. code-block:: ts
 
 await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
+
+Use :code:`setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if domain doesn't exist:
+
+.. code-block:: ts
+
+await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});

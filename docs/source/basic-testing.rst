@@ -65,7 +65,7 @@ To setup basic ENS use provider's function `setupENS()`.
   import {MockProvider} from '@ethereum-waffle/provider';
 
   const provider = new MockProvider();
-  const ens = provider.setupENS();
+  await provider.setupENS();
 
 By default this method use last `wallet` from provider's wallets, but you can pass your own `wallet` as argument for `setupENS(wallet)`.
 

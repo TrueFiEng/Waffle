@@ -114,7 +114,7 @@ export class ENS {
     await this.setAddressNonRecursive(domain, address);
   }
 
-  async setReverseName(wallet: Wallet, domain: string, options?: DomainRegistrationOptions) {
+  async setAddressWithReverse(domain: string, wallet: Wallet, options?: DomainRegistrationOptions) {
     await this.setAddress(domain, wallet.address, options);
     await this.reverseRegistrar.connect(wallet).setName(domain);
   }
