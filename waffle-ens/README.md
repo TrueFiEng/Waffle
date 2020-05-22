@@ -26,25 +26,25 @@ npm install --save-dev @ethereum-waffle/ens
 
 **NOTE**: You do not need to use this package directly. You can install it through the main package (`ethereum-waffle`) and use it instead.
 
-### ENSBuilder
+### ENS
 
-The `ENSBuilder` class allows to create ENS domains for testing.
+The `ENS` class allows to create ENS domains for testing.
 
 It will deploy ENS smart contracts system to your test node.
 
-To create `ENSBuilder`, you should submit your `wallet`, available in `MockProvider` class in package `@ethereum-waffle/provider`.
+To create `ENS`, you should submit your `wallet`, available in `MockProvider` class in package `@ethereum-waffle/provider`.
 
 You can read more about ENS [in the ENS's documentation](https://docs.ens.domains/).
 
 ### Examples:
-Creating of ENSBuilder:
+Creating of ENS:
 ```ts
 import {MockProvider} from '@ethereum-waffle/provider';
-import {createENSBuilder, ENSBuilder} from '@ethereum-waffle/ens';
+import {deployENS, ENS} from '@ethereum-waffle/ens';
 
 const provider = new MockProvider();
 const [wallet] = provider.getWallets();
-const ensBuilder: ENSBuilder = await createENSBuilder(wallet);
+const ens: ENS = await deployENS(wallet);
 ```
 
 ### Usage
@@ -52,17 +52,28 @@ const ensBuilder: ENSBuilder = await createENSBuilder(wallet);
 Use `createTopLevelDomain` function to creating top level domain:
 
 ```ts
-await ensBuilder.createTopLevelDomain('test');
+await ens.createTopLevelDomain('test');
 ```
 
-Use `createSubDomain` function to creating sub domain for exiting domain:
+Use `createSubDomain` function to creating sub domain:
 
 ```ts
-await ensBuilder.createSubDomain('ethworks.test');
+await ens.createSubDomain('ethworks.test');
 ```
 
-And use `setAddress` function for setting address for existing domain:
+Also, it's possible to create sub domain recursively, if top domain doesn't exist, by specifying the appropriate option:
 
 ```ts
-await ensBuilder.setAddress('vlad.ethworks.test', '0x001...03');
+await ens.createSubDomain('waffle.ethworks.tld', {recursive: true});
+```
+
+Use `setAddress` function for setting address for domain:
+
+```ts
+await ens.setAddress('vlad.ethworks.test', '0x001...03');
+```
+Also, it's possible to set address for domain recursively, if domain doesn't exist, by specifying the appropriate option:
+
+```ts
+await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
 ```
