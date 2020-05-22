@@ -9,6 +9,7 @@ const {HashZero} = constants;
 
 interface DomainRegistrationOptions {
   recursive?: boolean;
+  reverse?: boolean;
 }
 
 export async function createResolver(wallet: Wallet, ens: Contract) {
@@ -108,14 +109,12 @@ export class ENS {
     await this.resolver['setAddr(bytes32,uint256,bytes)'](node, COIN_TYPE_ETH, address);
   }
 
-  async setAddress(domain: string, address: string, options?: DomainRegistrationOptions) {
+  async setAddress(domain: string, wallet: Wallet, options?: DomainRegistrationOptions) {
     const {decodedRootNode} = getDomainInfo(domain);
     await this.ensureDomainExist(decodedRootNode, options);
-    await this.setAddressNonRecursive(domain, address);
-  }
-
-  async setReverseName(wallet: Wallet, domain: string, options?: DomainRegistrationOptions) {
-    await this.setAddress(domain, wallet.address, options);
-    await this.reverseRegistrar.connect(wallet).setName(domain);
+    await this.setAddressNonRecursive(domain, wallet.address);
+    if (options?.reverse) {
+      await this.reverseRegistrar.connect(wallet).setName(domain);
+    }
   }
 }
