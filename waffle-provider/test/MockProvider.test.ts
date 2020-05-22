@@ -2,16 +2,16 @@ import {expect} from 'chai';
 import {BigNumber, utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
+import {ENS} from '@ethereum-waffle/ens';
 
 describe('INTEGRATION: MockProvider', () => {
-  it('can return wallets', async () => {
-    const provider = new MockProvider();
-    const wallets = provider.getWallets();
+  const provider = new MockProvider();
 
+  it('returns wallets', async () => {
+    const wallets = provider.getWallets();
     expect(wallets.length).to.equal(10);
     for (const wallet of wallets) {
       const balance = await wallet.getBalance();
-
       expect(balance.gt(0)).to.equal(true);
       expect(wallet.provider).to.equal(provider);
     }
@@ -28,42 +28,56 @@ describe('INTEGRATION: MockProvider', () => {
   });
 
   it('can send simple transactions', async () => {
-    const provider = new MockProvider();
     const [sender] = provider.getWallets();
     const recipient = provider.createEmptyWallet();
-
     const value = utils.parseEther('3.1415');
-
     await sender.sendTransaction({
       to: recipient.address,
       value
     });
-
     const balance = await recipient.getBalance();
     expect(balance.eq(value)).to.equal(true);
   });
 
   it('can query a contract', async () => {
-    const [wallet] = new MockProvider().getWallets();
+    const [wallet] = provider.getWallets();
     const contract = await deployToken(wallet, 10_000);
-
     const totalSupply: BigNumber = await contract.totalSupply();
     expect(totalSupply.eq(10_000)).to.equal(true);
   });
 
   it('can send a contract transaction', async () => {
-    const [sender, recipient] = new MockProvider().getWallets();
+    const [sender, recipient] = provider.getWallets();
     const contract = await deployToken(sender, 10_000);
-
     await contract.transfer(recipient.address, 3_141);
     const balance = await contract.balanceOf(recipient.address);
-
     expect(balance.eq(3_141)).to.equal(true);
   });
 
-  it('can setup ENS without arguments', async () => {
-    const provider = new MockProvider();
-    const wallets = provider.getWallets();
-    expect((await provider.setupENS()).wallet.address).to.eq(wallets[wallets.length - 1].address);
+  describe('ENS', () => {
+    let ens: ENS;
+
+    before(async () => {
+      ens = await provider.setupENS();
+    });
+
+    it('setups ENS', async () => {
+      const wallets = provider.getWallets();
+      const wallet = wallets[wallets.length - 1];
+      expect(provider.network.ensAddress).to.eq(ens.ens.address);
+      expect(ens.wallet.address).to.eq(wallet.address);
+    });
+
+    it('resolveName', async () => {
+      const [wallet] = provider.getWallets();
+      await ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
+      expect(await provider.resolveName('vlad.ethworks.test')).to.eq(wallet.address);
+    });
+
+    it('lookupAddress', async () => {
+      const [wallet] = provider.getWallets();
+      await ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
+      expect(await provider.lookupAddress(wallet.address)).to.eq('vlad.ethworks.test');
+    });
   });
 });
