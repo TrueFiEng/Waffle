@@ -2,7 +2,6 @@ import {expect} from 'chai';
 import {BigNumber, utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
-import {ENS} from '@ethereum-waffle/ens';
 
 describe('INTEGRATION: MockProvider', () => {
   const provider = new MockProvider();
@@ -55,28 +54,26 @@ describe('INTEGRATION: MockProvider', () => {
   });
 
   describe('ENS', () => {
-    let ens: ENS;
-
     before(async () => {
-      ens = await provider.setupENS();
+      await provider.setupENS();
     });
 
     it('setups ENS', async () => {
       const wallets = provider.getWallets();
       const wallet = wallets[wallets.length - 1];
-      expect(provider.network.ensAddress).to.eq(ens.ens.address);
-      expect(ens.wallet.address).to.eq(wallet.address);
+      expect(provider.network.ensAddress).to.eq(provider.ens.ens.address);
+      expect(provider.ens.wallet.address).to.eq(wallet.address);
     });
 
     it('resolveName', async () => {
       const [wallet] = provider.getWallets();
-      await ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
+      await provider.ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
       expect(await provider.resolveName('vlad.ethworks.test')).to.eq(wallet.address);
     });
 
     it('lookupAddress', async () => {
       const [wallet] = provider.getWallets();
-      await ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
+      await provider.ens.setReverseName(wallet, 'vlad.ethworks.test', {recursive: true});
       expect(await provider.lookupAddress(wallet.address)).to.eq('vlad.ethworks.test');
     });
   });
