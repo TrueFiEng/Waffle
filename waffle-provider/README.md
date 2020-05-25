@@ -51,8 +51,8 @@ describe('waffle tests', async () => {
 })
 ```
 
-Use `setupENS` function to set up your `ens` and setting ens address to provider's networks. The function accepts
-the `wallet` as an argument, and if you call it without an argument, it will use last `wallet` from `MockProvider`.
+Use `setupENS` function to set up your `ens` and setting ens address to the provider's networks. The function accepts
+the `wallet` as an argument, and if you call it without an argument, it will use the last `wallet` from `MockProvider`.
 
 ```ts
 import {expect} from 'chai';

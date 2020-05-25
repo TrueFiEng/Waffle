@@ -5,7 +5,7 @@
 
 # @ethereum-waffle/ens
 
-A simple ens builder for testing with ENS.
+A simple `ENS` for testing.
 
 ## Installation
 
@@ -16,7 +16,7 @@ yarn add --dev ethereum-waffle
 npm install --save-dev ethereum-waffle
 ```
 
-If you want to use this package directly please install it via:
+If you want to use this package directly, please install it via:
 ```
 yarn add --dev @ethereum-waffle/ens
 npm install --save-dev @ethereum-waffle/ens
@@ -37,7 +37,7 @@ To create `ENS`, you should submit your `wallet`, available in `MockProvider` cl
 You can read more about ENS [in the ENS's documentation](https://docs.ens.domains/).
 
 ### Examples:
-Creating of ENS:
+Creating ENS:
 ```ts
 import {MockProvider} from '@ethereum-waffle/provider';
 import {deployENS, ENS} from '@ethereum-waffle/ens';
@@ -49,19 +49,19 @@ const ens: ENS = await deployENS(wallet);
 
 ### Usage
 
-Use `createTopLevelDomain` function to creating top level domain:
+Use `createTopLevelDomain` function to create a top level domain:
 
 ```ts
 await ens.createTopLevelDomain('test');
 ```
 
-Use `createSubDomain` function to creating sub domain:
+Use `createSubDomain` function for creating a sub domain:
 
 ```ts
 await ens.createSubDomain('ethworks.test');
 ```
 
-Also, it's possible to create sub domain recursively, if top domain doesn't exist, by specifying the appropriate option:
+Also, it's possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
 
 ```ts
 await ens.createSubDomain('ethworks.tld', {recursive: true});
@@ -72,13 +72,13 @@ Use `setAddress` function for setting address for the domain:
 ```ts
 await ens.setAddress('vlad.ethworks.test', '0x001...03');
 ```
-Also, it's possible to set address for the domain recursively, if domain doesn't exist, by specifying the appropriate option:
+Also, it's possible to set an address for the domain recursively, if the domain doesn't exist, by specifying the appropriate option:
 
 ```ts
 await ens.setAddress('vlad.ethworks.tld', '0x001...03', {recursive: true});
 ```
 
-Use `setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if domain doesn't exist:
+Use `setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if the domain doesn't exist:
 
 ```ts
 await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});

@@ -58,7 +58,7 @@ You can also get an empty random wallet by calling:
 Setup ENS
 ---------
 
-To setup basic ENS use provider's function `setupENS()`.
+To setup basic ENS use the provider's function :code:`setupENS()`.
 
 .. code-block:: ts
 
@@ -67,9 +67,9 @@ To setup basic ENS use provider's function `setupENS()`.
   const provider = new MockProvider();
   await provider.setupENS();
 
-By default this method use last `wallet` from provider's wallets, but you can pass your own `wallet` as argument for `setupENS(wallet)`.
+This method employs the last of the provider's :code:`wallets` by default, but you can pass your own :code:`wallet` as an argument for :code:`setupENS(wallet)`.
 
-Also `setupENS()` method sets ENS address to provider's networks.
+Also :code:`setupENS()` method saves ENS address in the provider's networks.
 
 Read more about ENS functions here :ref:`ens`.
 
