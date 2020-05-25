@@ -64,16 +64,22 @@ await ens.createSubDomain('ethworks.test');
 Also, it's possible to create sub domain recursively, if top domain doesn't exist, by specifying the appropriate option:
 
 ```ts
-await ens.createSubDomain('waffle.ethworks.tld', {recursive: true});
+await ens.createSubDomain('ethworks.tld', {recursive: true});
 ```
 
-Use `setAddress` function for setting address for domain:
+Use `setAddress` function for setting address for the domain:
 
 ```ts
 await ens.setAddress('vlad.ethworks.test', '0x001...03');
 ```
-Also, it's possible to set address for domain recursively, if domain doesn't exist, by specifying the appropriate option:
+Also, it's possible to set address for the domain recursively, if domain doesn't exist, by specifying the appropriate option:
 
 ```ts
-await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
+await ens.setAddress('vlad.ethworks.tld', '0x001...03', {recursive: true});
+```
+
+Use `setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if domain doesn't exist:
+
+```ts
+await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});
 ```
