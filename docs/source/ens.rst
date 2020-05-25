@@ -1,3 +1,5 @@
+.. _ens:
+
 ENS
 ===
 
@@ -22,7 +24,7 @@ Also, if you use :code:`MockProvider`, you can use :code:`setupENS()` function i
 Creating top level domain
 -------------------------
 
-Use :code:`createTopLevelDomain` function to creating top level domain:
+Use :code:`createTopLevelDomain` function to create a top level domain:
 
 .. code-block:: ts
 
@@ -31,35 +33,35 @@ Use :code:`createTopLevelDomain` function to creating top level domain:
 Creating sub domain
 -------------------
 
-Use :code:`createSubDomain` function to creating sub domain:
+Use :code:`createSubDomain` function for creating a sub domain:
 
 .. code-block:: ts
 
   await ensBuilder.createSubDomain('ethworks.test');
 
-Also, it's possible to create sub domain recursively, if top domain doesn't exist, by specifying the appropriate option:
+Also, it's possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
 
 .. code-block:: ts
 
-await ens.createSubDomain('waffle.ethworks.tld', {recursive: true});
+  await ens.createSubDomain('waffle.ethworks.tld', {recursive: true});
 
 Setting address
 ---------------
 
-Use :code:`setAddress` function for setting address for domain:
+Use :code:`setAddress` function for setting address for the domain:
 
 .. code-block:: ts
 
-await ensBuilder.setAddress('vlad.ethworks.test', '0x001...03');
+  await ensBuilder.setAddress('vlad.ethworks.test', '0x001...03');
 
-Also, it's possible to set address for domain recursively, if domain doesn't exist, by specifying the appropriate option:
-
-.. code-block:: ts
-
-await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
-
-Use :code:`setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if domain doesn't exist:
+Also, it's possible to set an address for domain recursively, if the domain doesn't exist, by specifying the appropriate option:
 
 .. code-block:: ts
 
-await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});
+  await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
+
+Use :code:`setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if the domain doesn't exist:
+
+.. code-block:: ts
+
+  await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});
