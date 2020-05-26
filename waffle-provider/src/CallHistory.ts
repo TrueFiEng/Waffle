@@ -23,7 +23,7 @@ export class CallHistory {
   }
 }
 
-function addVmListener(
+export function addVmListener(
   provider: providers.Web3Provider,
   event: string,
   handler: (value: any) => void
