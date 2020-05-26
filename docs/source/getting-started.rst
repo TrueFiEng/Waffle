@@ -66,6 +66,23 @@ output inside the :code:`build` directory.
 
 If you want to know more about how to configure Waffle, see :ref:`configuration`.
 
+Flattener
+---------
+
+To flat your smart contracts run:
+::
+
+  npx waffle flatten
+
+In configuration file you can add optional field with path to flatten files:
+
+.. code-block:: json
+
+  {
+    "flattenOutputDirectory": "./custom_flatten"
+  }
+
+
 Writing tests
 -------------
 
