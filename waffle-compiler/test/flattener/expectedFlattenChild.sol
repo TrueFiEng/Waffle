@@ -1,23 +1,3 @@
-// Dependency file: test/flattener/testSource/cycle1.sol
-
-// pragma solidity ^0.5.2;
-
-// import "./cycle2.sol";
-
-contract Cycle1 {
-  mapping(address => uint256) balances;
-}
-
-// Dependency file: test/flattener/testSource/cycle2.sol
-
-// pragma solidity ^0.5.2;
-
-// import "./cycle1.sol";
-
-contract Cycle2 {
-  mapping(address => uint256) balances;
-}
-
 // Dependency file: openzeppelin-solidity/contracts/access/Roles.sol
 
 // pragma solidity ^0.5.0;
@@ -57,11 +37,55 @@ library Roles {
     }
 }
 
+
+// Dependency file: test/flattener/testSource/cycle1.sol
+
+// pragma solidity ^0.5.2;
+
+// import "test/flattener/testSource/cycle2.sol";
+
+contract Cycle1 {
+  mapping(address => uint256) balances;
+}
+
+
+// Dependency file: test/flattener/testSource/cycle2.sol
+
+// pragma solidity ^0.5.2;
+
+// import "test/flattener/testSource/cycle1.sol";
+
+contract Cycle2 {
+  mapping(address => uint256) balances;
+}
+
+
+// Dependency file: test/flattener/testSource/parent.sol
+
+// pragma solidity ^0.5.2;
+pragma experimental ABIEncoderV2;
+
+// import "openzeppelin-solidity/contracts/access/Roles.sol";
+// import "test/flattener/testSource/cycle2.sol";
+
+contract Parent {
+  uint public x;
+
+  constructor () public {
+    x = 1;
+  }
+
+  function change() public {
+    x += 1;
+  }
+}
+
+
 // Dependency file: openzeppelin-solidity/contracts/access/roles/PauserRole.sol
 
 // pragma solidity ^0.5.0;
 
-// import "../Roles.sol";
+// import "openzeppelin-solidity/contracts/access/Roles.sol";
 
 contract PauserRole {
     using Roles for Roles.Role;
@@ -103,28 +127,13 @@ contract PauserRole {
     }
 }
 
-// Dependency file: test/flattener/testSource/parent.sol
 
-// pragma solidity ^0.5.2;
-
-// import "openzeppelin-solidity/contracts/access/Roles.sol";
-// import "./cycle2.sol";
-
-contract Parent {
-  uint public x;
-
-  constructor () public {
-    x = 1;
-  }
-
-  function change() public {
-    x += 1;
-  }
-}
+// Root file: test/flattener/testSource/child.sol
 
 pragma solidity >=0.4.24 <0.6.0;
 
-// import "./parent.sol";
+// import "openzeppelin-solidity/contracts/access/Roles.sol";
+// import "test/flattener/testSource/parent.sol";
 // import "openzeppelin-solidity/contracts/access/roles/PauserRole.sol";
 
 contract Child {
