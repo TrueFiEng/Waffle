@@ -3,31 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "repository": "git@github.com:EthWorks/Waffle.git",
-  "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
-  "private": false,
-  "keywords": [
-    "ethereum",
-    "smart-contracts",
-    "solidity",
-    "testing",
-    "javascript",
-    "typescript",
-    "library",
-    "ens"
-  ],
-  "homepage": "https://github.com/EthWorks/Waffle",
   "scripts": {
     "test": "export NODE_ENV=test && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
-    "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
-    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
-    "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false"
-
-  },
-  "engines": {
-    "node": ">=10.0"
+    "lint:fix": "eslint --fix '{src,test}/**/*.ts'"
   },
   "devDependencies": {
     "ethers": "4.0.47",
@@ -38,7 +17,6 @@
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
-    "@ethereum-waffle/ens": "^3.0.0-beta.2",
     "@ethereum-waffle/provider": "^3.0.0-beta.2",
     "mocha": "^7.1.2",
     "ts-node": "^8.9.1",
