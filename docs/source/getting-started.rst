@@ -4,22 +4,29 @@ Getting Started
 Installation
 ------------
 
-To get started install :code:`ethereum-waffle` with yarn:
-::
+To get started install :code:`ethereum-waffle`:
 
-  yarn add --dev ethereum-waffle
+.. tabs::
 
-Or if you prefer using npm:
-::
+  .. group-tab:: Yarn
 
-  npm install --save-dev ethereum-waffle
+    .. code-block:: text
+
+      yarn add --dev ethereum-waffle
+
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install --save-dev ethereum-waffle
 
 Writing a contract
 ------------------
 
 Below is example contract written in Solidity. Save it as :code:`Counter.sol`
 inside the :code:`contracts` directory of your project.
-::
+
+.. code-block:: solidity
 
   pragma solidity ^0.6.0;
 
@@ -52,14 +59,21 @@ In the :code:`package.json` file of your project add the following entry:
     }
   }
 
-Then run the following command:::
+Then run the following command
 
-  yarn build
+.. tabs::
 
-Or if you prefer npm:
-::
+  .. group-tab:: Yarn
 
-  npm run build
+    .. code-block:: text
+
+      yarn build
+
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm run build
 
 You should see that Waffle compiled your contract and placed the resulting JSON
 output inside the :code:`build` directory.
@@ -94,14 +108,20 @@ Tests in waffle are written using `Mocha <https://mochajs.org/>`__ alongide with
 but Waffle matchers only work with :code:`chai`.
 
 Run:
-::
 
-  yarn add --dev mocha chai
+.. tabs::
 
-Or:
-::
+  .. group-tab:: Yarn
 
-  npm install --save-dev mocha chai
+    .. code-block:: text
+
+      yarn add --dev mocha chai
+
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install --save-dev mocha chai
 
 Belows is an example test file for the contract above written with Waffle. You
 can save the file as :code:`Counter.test.js` in the :code:`test` directory of
@@ -163,17 +183,24 @@ Update your :code:`package.json` file to include:
   }
 
 And run:
-::
 
-  yarn test
+.. tabs::
 
-Or:
-::
+  .. group-tab:: Yarn
 
-  npm test
+    .. code-block:: text
+
+      yarn test
+
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm test
 
 You should see the following output:
-::
+
+.. code-block:: text
 
   Counter smart contract
     ✓ sets initial value in the constructor (140ms)

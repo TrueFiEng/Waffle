@@ -11,17 +11,20 @@ libraries when writing your smart contracts. All you need to do is install the
 library from :code:`npm`.
 
 For example you can install the popular :code:`@openzeppelin/contracts` package:
-::
+
+.. code-block:: text
 
   yarn add @openzeppelin/contracts
 
 Or if you prefer npm:
-::
+
+.. code-block:: text
 
   npm install @openzeppelin/contracts
 
 After installing a library you can import it in your Solidity code:
-::
+
+.. code-block:: solidity
 
   pragma solidity ^0.5.0;
 
@@ -98,7 +101,8 @@ to learn how to install it.
 After you've installed docker you can install the Solidity compiler. Pull the
 docker container tagged with the version you are interested in, for example for
 version 0.4.24:
-::
+
+.. code-block:: text
 
   docker pull ethereum/solc:0.4.24
 
@@ -128,7 +132,8 @@ to learn how to do it.
 
 To install dockerized Vyper pull the docker container tagged with the version you are interested in, for example for
 version 0.1.0:
-::
+
+.. code-block:: text
 
   docker pull vyperlang/vyper:0.1.0
 
