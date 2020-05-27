@@ -132,7 +132,8 @@ to learn how to do it.
 
 To install dockerized Vyper pull the docker container tagged with the version you are interested in, for example for
 version 0.1.0:
-::
+
+.. code-block:: text
 
   docker pull vyperlang/vyper:0.1.0
 
