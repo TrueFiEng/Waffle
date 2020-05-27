@@ -48,6 +48,17 @@ describe('Doppelganger - Contract', () => {
       expect(await pretender.add(5)).to.equal(returnedValue);
     });
 
+    it('allows function to be looked up by signature', async () => {
+      const {contract, pretender} = await deploy();
+      const addSignature = '0x1003e2d2';
+      const callData = `${addSignature}0000000000000000000000000000000000000000000000000000000000000005`;
+      const returnedValue = '0x1000000000000000000000000000000000000000000000000000000000004234';
+
+      await contract.__waffle__mockReturns(callData, returnedValue);
+
+      expect(await pretender['add(uint256)'](5)).to.equal(returnedValue);
+    });
+
     it('reverts if mock was set up for call with some argument and method was called with another', async () => {
       const {contract, pretender} = await deploy();
       const addSignature = '0x1003e2d2';

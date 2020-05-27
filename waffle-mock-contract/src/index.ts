@@ -32,7 +32,8 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
 
   return Object.values(functions).reduce((acc, func) => ({
     ...acc,
-    [func.name]: stub(mockContractInstance, encoder, func)
+    [func.name]: stub(mockContractInstance, encoder, func),
+    [func.format()]: stub(mockContractInstance, encoder, func)
   }), {} as MockContract['mock']);
 }
 
