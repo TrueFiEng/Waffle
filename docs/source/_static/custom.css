@@ -188,3 +188,56 @@ html {
 /* name.variable.instance */ .highlight .vi {
   color: #E8E8E3;
 }
+
+/* SPHINX-TABS */
+
+.sphinx-tabs .sphinx-tab.tab.segment {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.sphinx-tabs .sphinx-menu.menu {
+  border: none;
+  display: flex;
+  min-height: unset;
+}
+
+.sphinx-tabs .sphinx-menu.menu .item {
+  border: none;
+  padding: 8px 24px;
+  background-color: #44463a;
+  color: #e8e8e4 !important;
+  border-radius: 0 !important;
+}
+
+.sphinx-tabs .sphinx-menu.menu .item.active,
+.sphinx-tabs .sphinx-menu.menu .item:hover {
+  background-color: #272823;
+  border-radius: 0 !important;
+  margin: 0;
+}
+
+.sphinx-tabs .sphinx-menu.menu .item:first-child,
+.sphinx-tabs .sphinx-menu.menu .item.active:first-child,
+.sphinx-tabs .sphinx-menu.menu .item:hover:first-child {
+  border-top-left-radius: 4px !important;
+  border-right: 1px solid;
+  border-color: black !important;
+}
+
+.sphinx-tabs .sphinx-menu.menu .item:last-child,
+.sphinx-tabs .sphinx-menu.menu .item.active:last-child,
+.sphinx-tabs .sphinx-menu.menu .item:hover:last-child {
+  border-top-right-radius: 4px !important;
+  border-right: 2px none;
+}
+
+.sphinx-tabs .sphinx-menu.menu::after {
+  display: none;
+}
+
+.rst-content .sphinx-tabs .sphinx-tab.tab.segment div[class^='highlight'] {
+  margin-top: 0;
+  border-top-left-radius: 0;
+}

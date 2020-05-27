@@ -4,17 +4,21 @@ Getting Started
 Installation
 ------------
 
-To get started install :code:`ethereum-waffle` with yarn:
+To get started install :code:`ethereum-waffle`:
 
-.. code-block:: text
+.. tabs::
 
-  yarn add --dev ethereum-waffle
+  .. group-tab:: Yarn
 
-Or if you prefer using npm:
+    .. code-block:: text
 
-.. code-block:: text
+      yarn add --dev ethereum-waffle
 
-  npm install --save-dev ethereum-waffle
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install --save-dev ethereum-waffle
 
 Writing a contract
 ------------------
@@ -57,15 +61,19 @@ In the :code:`package.json` file of your project add the following entry:
 
 Then run the following command
 
-.. code-block:: text
+.. tabs::
 
-  yarn build
+  .. group-tab:: Yarn
 
-Or if you prefer npm:
+    .. code-block:: text
 
-.. code-block:: text
+      yarn build
 
-  npm run build
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm run build
 
 You should see that Waffle compiled your contract and placed the resulting JSON
 output inside the :code:`build` directory.
@@ -101,15 +109,19 @@ but Waffle matchers only work with :code:`chai`.
 
 Run:
 
-.. code-block:: text
+.. tabs::
 
-  yarn add --dev mocha chai
+  .. group-tab:: Yarn
 
-Or:
+    .. code-block:: text
 
-.. code-block:: text
+      yarn add --dev mocha chai
 
-  npm install --save-dev mocha chai
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install --save-dev mocha chai
 
 Belows is an example test file for the contract above written with Waffle. You
 can save the file as :code:`Counter.test.js` in the :code:`test` directory of
@@ -172,15 +184,19 @@ Update your :code:`package.json` file to include:
 
 And run:
 
-.. code-block:: text
+.. tabs::
 
-  yarn test
+  .. group-tab:: Yarn
 
-Or:
+    .. code-block:: text
 
-.. code-block:: text
+      yarn test
 
-  npm test
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm test
 
 You should see the following output:
 
