@@ -1,4 +1,5 @@
 pragma solidity ^0.5.2;
+pragma experimental ABIEncoderV2;
 
 import "openzeppelin-solidity/contracts/access/Roles.sol";
 import "./cycle2.sol";
