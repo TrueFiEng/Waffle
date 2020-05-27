@@ -1,12 +1,13 @@
 html {
-  background-color: #efefef;
+  background-color: white;
 }
 
 /* Center the page on wide displays for better readability */
 @media only screen and (min-width: 769px) {
   .wy-body-for-nav {
-    max-width: 1100px;
+    max-width: 100%;
     margin: 0 auto;
+    background-color: white;
   }
 
   .wy-nav-side {
@@ -36,6 +37,7 @@ html {
 
 .wy-nav-content {
   background-color: white;
+  margin: 0 auto;
 }
 
 .wy-menu-vertical header, .wy-menu-vertical p.caption {
@@ -44,6 +46,12 @@ html {
 
 .wy-menu-vertical a:active {
   background-color: #f5af42;
+}
+
+/* NO VERSION */
+
+.wy-side-nav-search > div.version {
+  display: none;
 }
 
 /* RESET PYGMENTS CSS */
