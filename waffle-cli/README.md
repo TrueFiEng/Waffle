@@ -66,7 +66,7 @@ yarn add openzeppelin-solidity -D
 
 ###Note
 
-Find this example in `exapmles/basic` and use it.
+Find this example in `examples/basic` and use it.
 
 ### Example contract
 Below is an example contract written in Solidity. Place it in `contracts/BasicToken.sol` file of your project:
@@ -86,7 +86,7 @@ contract BasicToken is ERC20 {
 ```
 
 ### Example test
-Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.test.ts` file of your project:
+Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.test.ts` file in your project directory:
 
 ```ts
 // contracts/BasicToken.test.ts
