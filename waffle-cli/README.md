@@ -245,7 +245,7 @@ To run linter type:
 yarn lint
 ```
 
-###Building documentation
+### Building documentation
 
 [Install Sphinx](https://www.sphinx-doc.org/en/master/usage/installation.html) to build documentation:
 
