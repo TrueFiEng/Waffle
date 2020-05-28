@@ -30,11 +30,14 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
-  return Object.values(functions).reduce((acc, func) => ({
-    ...acc,
-    [func.name]: stub(mockContractInstance, encoder, func),
-    [func.format()]: stub(mockContractInstance, encoder, func)
-  }), {} as MockContract['mock']);
+  return Object.values(functions).reduce((acc, func) => {
+    let stubbed = stub(mockContractInstance, encoder, func);
+    return {
+      ...acc,
+      [func.name]: stubbed,
+      [func.format()]: stubbed
+    }
+  }, {} as MockContract['mock']);
 }
 
 export type Stub = ReturnType<typeof stub>;
