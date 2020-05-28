@@ -9,11 +9,11 @@ describe('UNIT: inputToConfig', () => {
       compilerOptions: {},
       foo: 'bar',
       boo: 123
-    }
+    };
     const output = {
       compilerType: 'native',
-      compilerOptions: {},
-    }
+      compilerOptions: {}
+    };
 
     expect(inputToConfig(input as any)).to.deep.equal({
       ...defaultConfig,

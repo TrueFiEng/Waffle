@@ -7,9 +7,9 @@ export function inputToConfig(input: InputConfig) {
   for (const key in input) {
     if ((input as any)[key] !== undefined) {
       if (key in defaultConfig) {
-        (result as any)[key] = (input as any)[key]
+        (result as any)[key] = (input as any)[key];
       } else if (key !== 'name') {
-        console.warn(`Warning: Config key "${key}" not supported.`)
+        console.warn(`Warning: Config key "${key}" not supported.`);
       }
     }
   }
