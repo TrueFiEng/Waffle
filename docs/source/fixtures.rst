@@ -14,7 +14,7 @@ Example:
   import BasicTokenMock from './build/BasicTokenMock';
 
   describe('Fixtures', () => {
-    async function fixture(provider, [wallet, other]) {
+    async function fixture([wallet, other], provider) {
       const token = await deployContract(wallet, BasicTokenMock, [
         wallet.address, 1000
       ]);
@@ -34,16 +34,16 @@ Example:
   });
 
 
-Fixtures receive a provider and an array of wallets as an argument. By default, the provider is obtained by calling `createMockProvider` and the wallets by `getWallets`. You can, however, override those by using a custom fixture loader.
+Fixtures receive a provider and an array of wallets as an argument. By default, the wallets are obtained by calling `getWallets` and the provider by `createMockProvider`. You can, however, override those by using a custom fixture loader.
 
 .. code-block:: ts
 
   import {createFixtureLoader} from 'ethereum-waffle';
 
-  const loadFixture = createFixtureLoader(myProvider, myWallets);
+  const loadFixture = createFixtureLoader(myWallets, myProvider);
 
   // later in tests
-  await loadFixture((myProvider, myWallets) => {
+  await loadFixture((myWallets, myProvider) => {
     // fixture implementation
   });
 

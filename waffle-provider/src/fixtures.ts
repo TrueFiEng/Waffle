@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
 import {MockProvider} from './MockProvider';
 
-type Fixture<T> = (provider: MockProvider, wallets: Wallet[]) => Promise<T>;
+type Fixture<T> = (wallets: Wallet[], provider: MockProvider) => Promise<T>;
 interface Snapshot<T> {
   fixture: Fixture<T>;
   data: T;
@@ -12,7 +12,7 @@ interface Snapshot<T> {
 
 export const loadFixture = createFixtureLoader();
 
-export function createFixtureLoader(overrideProvider?: MockProvider, overrideWallets?: Wallet[]) {
+export function createFixtureLoader(overrideWallets?: Wallet[], overrideProvider?: MockProvider) {
   const snapshots: Snapshot<any>[] = [];
 
   return async function load<T>(fixture: Fixture<T>): Promise<T> {
@@ -25,7 +25,7 @@ export function createFixtureLoader(overrideProvider?: MockProvider, overrideWal
       const provider = overrideProvider ?? new MockProvider();
       const wallets = overrideWallets ?? provider.getWallets();
 
-      const data = await fixture(provider, wallets);
+      const data = await fixture(wallets, provider);
       const id = await provider.send('evm_snapshot', []);
 
       snapshots.push({fixture, data, id, provider, wallets});

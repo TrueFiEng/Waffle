@@ -4,7 +4,7 @@ import {Wallet} from 'ethers';
 import BasicTokenMock from './build/BasicTokenMock.json';
 
 describe('INTEGRATION: Fixtures example', () => {
-  async function fixture(provider: MockProvider, [wallet, other]: Wallet[]) {
+  async function fixture([wallet, other]: Wallet[], provider: MockProvider) {
     const token = await deployContract(wallet, BasicTokenMock, [
       wallet.address, 1000
     ]);
