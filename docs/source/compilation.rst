@@ -11,17 +11,20 @@ libraries when writing your smart contracts. All you need to do is install the
 library from :code:`npm`.
 
 For example you can install the popular :code:`@openzeppelin/contracts` package:
-::
+
+.. code-block:: text
 
   yarn add @openzeppelin/contracts
 
 Or if you prefer npm:
-::
+
+.. code-block:: text
 
   npm install @openzeppelin/contracts
 
 After installing a library you can import it in your Solidity code:
-::
+
+.. code-block:: solidity
 
   pragma solidity ^0.5.0;
 
@@ -98,7 +101,8 @@ to learn how to install it.
 After you've installed docker you can install the Solidity compiler. Pull the
 docker container tagged with the version you are interested in, for example for
 version 0.4.24:
-::
+
+.. code-block:: text
 
   docker pull ethereum/solc:0.4.24
 
@@ -109,6 +113,37 @@ Then, change the :code:`compilerType` setting in your :code:`.waffle.json` file:
   {
     "compilerType": "dockerized-solc",
     "compilerVersion": "0.4.24"
+  }
+
+If no :code:`compilerVersion` is specified the docker tag pulled defaults to
+:code:`latest`. To read more about configuring Waffle, see :ref:`configuration`.
+
+When compiling your smart contracts Waffle will now use the docker image you
+pulled.
+
+*Experimental* Using dockerized vyper
+-------------------------------------
+Warring! This is experimental and the api might change without major version change.
+
+This is the option if you have contracts in Vyper. You will need Docker installed.
+
+To install docker visit the `Docker documentation <https://www.docker.com/get-started>`__
+to learn how to do it.
+
+To install dockerized Vyper pull the docker container tagged with the version you are interested in, for example for
+version 0.1.0:
+
+.. code-block:: text
+
+  docker pull vyperlang/vyper:0.1.0
+
+Then, change the :code:`compilerType` setting in your :code:`.waffle.json` file:
+
+.. code-block:: json
+
+  {
+    "compilerType": "dockerized-vyper",
+    "compilerVersion": "0.1.0"
   }
 
 If no :code:`compilerVersion` is specified the docker tag pulled defaults to

@@ -1,15 +1,15 @@
 import {resolve} from 'path';
-import {execSync} from 'child_process';
 import {Config} from './config';
-import {buildInputObject} from './buildUitls';
+import {getCompilerInput} from './compilerInput';
 import {ImportFile} from '@resolver-engine/imports';
-import {solcOutputMaxBuffer} from './compiler';
+import {executeCommand} from './executeCommand';
 
-export function compileNative(config: Config) {
+export function compileNativeSolc(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
-    const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);
-    return JSON.parse(execSync(command, {input, maxBuffer: solcOutputMaxBuffer}).toString());
+    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
+    const output = await executeCommand(command, input);
+    return JSON.parse(output);
   };
 }
 

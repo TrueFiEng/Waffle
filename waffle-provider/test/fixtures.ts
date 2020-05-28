@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {utils, Wallet, ContractFactory} from 'ethers';
+import {BigNumber, utils, Wallet, ContractFactory} from 'ethers';
 import {MockProvider, loadFixture, createFixtureLoader} from '../src';
 import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 
@@ -16,12 +16,12 @@ describe('Integration: Fixtures', () => {
 
     async function test() {
       const {contract, sender, recipient} = await loadFixture(tokenFixture);
-      const balanceBefore: utils.BigNumber = await contract.balanceOf(sender.address);
+      const balanceBefore: BigNumber = await contract.balanceOf(sender.address);
       expect(balanceBefore.eq(1_000)).to.equal(true);
 
       await contract.transfer(recipient.address, 50);
 
-      const balanceAfter: utils.BigNumber = await contract.balanceOf(sender.address);
+      const balanceAfter: BigNumber = await contract.balanceOf(sender.address);
       expect(balanceAfter.eq(950)).to.equal(true);
     }
 
@@ -54,7 +54,8 @@ describe('Integration: Fixtures', () => {
     const balance1 = await provider.getBalance(wallet.address);
 
     await wallet.sendTransaction({
-      to: other.address, value: utils.parseEther('1')
+      to: other.address,
+      value: utils.parseEther('1')
     });
     const balance2 = await provider.getBalance(wallet.address);
 
@@ -80,8 +81,8 @@ describe('Integration: Fixtures', () => {
       await from.sendTransaction({
         value: utils.parseEther('1'),
         to: to.address,
-        gasLimit: utils.bigNumberify(21000),
-        gasPrice: utils.bigNumberify(1)
+        gasLimit: BigNumber.from(21000),
+        gasPrice: BigNumber.from(1)
       });
     }
 
@@ -127,7 +128,7 @@ describe('Integration: Fixtures', () => {
   });
 
   it('loadFixture can be made to use custom provider and wallets', async () => {
-    const customProvider = {send: () => {}} as any;
+    const customProvider = {send: () => {}} as any; // eslint-disable-line @typescript-eslint/no-empty-function
     const customWallets: Wallet[] = [];
     let receivedProvider: any;
     let receivedWallets: any;

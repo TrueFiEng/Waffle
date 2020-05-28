@@ -3,6 +3,7 @@ import {Config} from './config';
 export const defaultConfig: Config = {
   sourceDirectory: './contracts',
   outputDirectory: './build',
+  flattenOutputDirectory: './flatten',
   nodeModulesDirectory: './node_modules',
   compilerType: 'solcjs',
   compilerVersion: 'default',

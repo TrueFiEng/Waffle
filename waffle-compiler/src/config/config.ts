@@ -3,6 +3,8 @@ export interface Config {
   sourceDirectory: string;
   /** Location of the compilation artifacts e.g. ./dist */
   outputDirectory: string;
+  /** Location of the compilation artifacts e.g. ./dist */
+  flattenOutputDirectory: string;
   /** Location of the dependencies e.g. ./node_modules */
   nodeModulesDirectory: string;
 
@@ -12,7 +14,7 @@ export interface Config {
    * - dockerized-solc - uses solc from a docker image
    * - solcjs - uses solc from the solcjs npm package
    */
-  compilerType: 'native' | 'dockerized-solc' | 'solcjs';
+  compilerType: 'native' | 'dockerized-solc' | 'solcjs' | 'dockerized-vyper';
   /** Version of the solidity compiler e.g. "0.5.1" or "default" */
   compilerVersion: string;
   /**
@@ -38,7 +40,7 @@ export interface LegacyConfig {
   sourcesPath?: string;
   targetPath?: string;
   npmPath?: string;
-  compiler?: 'native' | 'dockerized-solc' | 'solcjs';
+  compiler?: 'native' | 'dockerized-solc' | 'solcjs' | 'dockerized-vyper';
   'docker-tag'?: string;
   solcVersion?: string;
   legacyOutput?: string;

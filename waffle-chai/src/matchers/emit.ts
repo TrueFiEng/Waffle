@@ -1,7 +1,7 @@
-import {Contract} from 'ethers';
+import {Contract, providers, utils} from 'ethers';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
-  const filterLogsWithTopics = (logs: any[], topic: any, contractAddress: string) =>
+  const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
     logs.filter((log) => log.topics.includes(topic))
       .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
 
@@ -9,10 +9,15 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     const promise = this._obj;
     const derivedPromise = promise.then((tx: any) =>
       contract.provider.getTransactionReceipt(tx.hash)
-    ).then((receipt: any) => {
-      const eventDescription = contract.interface.events[eventName];
+    ).then((receipt: providers.TransactionReceipt) => {
+      let eventFragment: utils.EventFragment | undefined;
+      try {
+        eventFragment = contract.interface.getEvent(eventName);
+      } catch (e) {
+        // ignore error
+      }
 
-      if (eventDescription === undefined) {
+      if (eventFragment === undefined) {
         const isNegated = this.__flags.negate === true;
 
         this.assert(
@@ -27,9 +32,10 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           eventName,
           ''
         );
+        return;
       }
 
-      const {topic} = eventDescription;
+      const topic = contract.interface.getEventTopic(eventFragment);
       this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
       this.assert(this.logs.length > 0,
         `Expected event "${eventName}" to be emitted, but it wasn't`,
@@ -45,7 +51,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   });
 
   const assertArgsArraysEqual = (context: any, expectedArgs: any[], log: any) => {
-    const actualArgs = context.contract.interface.parseLog(log).values;
+    const actualArgs = (context.contract.interface as utils.Interface).parseLog(log).args;
     context.assert(
       actualArgs.length === expectedArgs.length,
       `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +

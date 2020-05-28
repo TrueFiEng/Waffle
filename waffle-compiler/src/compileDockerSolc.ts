@@ -1,27 +1,26 @@
 import {join} from 'path';
 import {Config} from './config';
-import {execSync} from 'child_process';
-import {buildInputObject} from './buildUitls';
+import {getCompilerInput} from './compilerInput';
 import {ImportFile} from '@resolver-engine/imports';
-import {solcOutputMaxBuffer} from './compiler';
+import {executeCommand} from './executeCommand';
 
 const CONTAINER_PATH = '/home/project';
 const NPM_PATH = '/home/npm';
 
-export function compileDocker(config: Config) {
+export function compileDockerSolc(config: Config) {
   return async function compile(sources: ImportFile[]) {
     const command = createBuildCommand(config);
-    const input = JSON.stringify(buildInputObject(sources, config.compilerOptions), null, 2);
-    return JSON.parse(execSync(command, {input, maxBuffer: solcOutputMaxBuffer}).toString());
+    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
+    const output = await executeCommand(command, input);
+    return JSON.parse(output);
   };
 }
 
 export function createBuildCommand(config: Config) {
-  const configTag = config.compilerVersion;
-  const tag = configTag ? `:${configTag}` : ':stable';
+  const tag = config.compilerVersion || 'stable';
   const allowedPaths = `"${CONTAINER_PATH},${NPM_PATH}"`;
   return `docker run ${getVolumes(config)} -i -a stdin -a stdout ` +
-    `ethereum/solc${tag} solc --standard-json --allow-paths ${allowedPaths}`;
+    `ethereum/solc:${tag} solc --standard-json --allow-paths ${allowedPaths}`;
 }
 
 export function getVolumes(config: Config) {

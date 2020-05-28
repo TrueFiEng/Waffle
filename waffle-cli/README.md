@@ -25,6 +25,8 @@ Sweeter, simpler and faster than Truffle.
 * Fixtures that help write fast and maintainable test suites, e.g.:
   * `const {token} = await loadFixture(standardTokenWithBalance);`
 * Customizable compilation options with native solc, dockerized solc and any version of solc-js loaded remotely at compiled time
+* Mocking smart contracts, e.g.:
+  * `const mockToken = await deployMockContract(wallet, IERC20.abi);`
 * Support for promise-based configuration, e.g.:
   * use native solc binary for fast compilation in CI environment
   * use solc-js based on contract versions detected (async)
@@ -61,6 +63,11 @@ or with yarn:
 yarn add openzeppelin-solidity -D
 ```
 
+
+###Note
+
+Find this example in `examples/basic` and use it.
+
 ### Example contract
 Below is an example contract written in Solidity. Place it in `contracts/BasicToken.sol` file of your project:
 
@@ -79,22 +86,23 @@ contract BasicToken is ERC20 {
 ```
 
 ### Example test
-Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.js` file of your project:
+Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.test.ts` file in your project directory:
 
-```js
-// test/BasicToken.js
-const {use, expect} = require('chai');
-const {MockProvider, deployContract, solidity} = require('ethereum-waffle');
-const BasicToken = require('../build/BasicToken');
+```ts
+// contracts/BasicToken.test.ts
+import {expect, use} from 'chai';
+import {Contract} from 'ethers';
+import {deployContract, MockProvider, solidity} from 'ethereum-waffle';
+import BasicToken from '../build/BasicToken.json';
 
 use(solidity);
 
 describe('BasicToken', () => {
   const [wallet, walletTo] = new MockProvider().getWallets();
-  let token;
+  let token: Contract;
 
   beforeEach(async () => {
-    token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
+    token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);
   });
 
   it('Assigns initial balance', async () => {
@@ -120,6 +128,16 @@ describe('BasicToken', () => {
     const tokenFromOtherWallet = token.connect(walletTo);
     await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
       .to.be.reverted;
+  });
+
+  it('Calls totalSupply on BasicToken contract', async () => {
+    await token.totalSupply();
+    expect('totalSupply').to.be.calledOnContract(token);
+  });
+
+  it('Calls balanceOf with sender address on BasicToken contract', async () => {
+    await token.balanceOf(wallet.address);
+    expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
   });
 });
 ```
@@ -159,6 +177,22 @@ Example configuration file looks like this (all fields optional):
   "nodeModulesDirectory": "./custom_node_modules"
 }
 ```
+
+### Flattener
+To flat your smart contracts run:
+
+```sh
+npx waffle flatten
+```
+
+In configuration file you can add optional field with path to flatten files:
+```json
+{
+  "flattenOutputDirectory": "./custom_flatten"
+}
+```
+
+
 
 ### Running tests
 To run the tests run the following command:

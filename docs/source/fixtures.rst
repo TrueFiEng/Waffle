@@ -7,7 +7,7 @@ The repeated deployment of contracts might slow down the test significantly. Thi
 
 Example:
 
-.. code-block:: js
+.. code-block:: ts
 
   import {expect} from 'chai';
   import {loadFixture, deployContract} from 'ethereum-waffle';
@@ -36,7 +36,7 @@ Example:
 
 Fixtures receive a provider and an array of wallets as an argument. By default, the wallets are obtained by calling `getWallets` and the provider by `createMockProvider`. You can, however, override those by using a custom fixture loader.
 
-.. code-block:: js
+.. code-block:: ts
 
   import {createFixtureLoader} from 'ethereum-waffle';
 
@@ -46,4 +46,5 @@ Fixtures receive a provider and an array of wallets as an argument. By default, 
   await loadFixture((myWallets, myProvider) => {
     // fixture implementation
   });
+
 

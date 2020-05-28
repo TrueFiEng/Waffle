@@ -34,13 +34,15 @@ It wraps `ganache-core` in an `ethers` provider and extends it with useful funct
 
 You can learn more about it [in the documentation](https://ethereum-waffle.readthedocs.io/en/latest/basic-testing.html).
 
-Examples:
-```ts
-const {MockProvider} = require('@ethereum-waffle/provider');
-const {expect} = require('chai');
+###Usage
 
-describe('waffle tests', () => {
-  it('wallets have non-zero balance', () => {
+Examples of creating `MockProvider` and usage `getWallets` function:
+```ts
+import {expect} from 'chai';
+import {MockProvider} from '@ethereum-waffle/provider';
+
+describe('waffle tests', async () => {
+  it('wallets have non-zero balance', async () => {
     const provider = new MockProvider();
     const wallets = provider.getWallets();
     const balance = await wallets[0].getBalance();
@@ -48,6 +50,22 @@ describe('waffle tests', () => {
   })
 })
 ```
+
+Use `setupENS` function to set up your `ens` and setting ens address to the provider's networks. The function accepts
+the `wallet` as an argument, and if you call it without an argument, it will use the last `wallet` from `MockProvider`.
+
+```ts
+import {expect} from 'chai';
+import {MockProvider} from '@ethereum-waffle/provider';
+describe('waffle tests', async () => {
+  it('setup ens', async () => {
+    const provider = new MockProvider();
+    await provider.setupENS();
+    expect(provider.network.ensAddress).to.eq(provider.ens.ens.address);
+  });
+});
+```
+
 
 ### Fixtures
 

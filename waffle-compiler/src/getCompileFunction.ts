@@ -1,21 +1,15 @@
 import {Config} from './config';
 import {compileSolcjs} from './compileSolcjs';
-import {compileNative} from './compileNative';
-import {compileDocker} from './compileDocker';
-import {ImportFile} from '@resolver-engine/imports';
+import {compileNativeSolc} from './compileNativeSolc';
+import {compileDockerSolc} from './compileDockerSolc';
+import {compileDockerVyper} from './compileDockerVyper';
 
-export type CompileFunction = (
-  sources: ImportFile[],
-  findImports: (file: string) => any
-) => any;
-
-export function getCompileFunction(config: Config): CompileFunction {
-  if (config.compilerType === 'native') {
-    return compileNative(config);
-  } else if (config.compilerType === 'dockerized-solc') {
-    return compileDocker(config);
-  } else if (config.compilerType === 'solcjs') {
-    return compileSolcjs(config);
+export function getCompileFunction(config: Config) {
+  switch (config.compilerType) {
+    case 'solcjs': return compileSolcjs(config);
+    case 'native': return compileNativeSolc(config);
+    case 'dockerized-solc': return compileDockerSolc(config);
+    case 'dockerized-vyper': return compileDockerVyper(config);
+    default: throw new Error(`Unknown compiler ${config.compilerType}`);
   }
-  throw new Error(`Unknown compiler ${config.compilerType}`);
 }

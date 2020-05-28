@@ -1,21 +1,21 @@
 import {expect, AssertionError} from 'chai';
-import {utils} from 'ethers';
+import {BigNumber} from 'ethers';
 
 describe('UNIT: BigNumber matchers', () => {
   function checkAll(
     actual: number,
     expected: number,
     test: (
-      actual: number | string | utils.BigNumber,
-      expected: number | string | utils.BigNumber,
+      actual: number | string | BigNumber,
+      expected: number | string | BigNumber
     ) => void
   ) {
     test(actual, expected);
-    test(utils.bigNumberify(actual), expected);
-    test(utils.bigNumberify(actual), expected.toString());
-    test(utils.bigNumberify(actual), utils.bigNumberify(expected));
-    test(actual, utils.bigNumberify(expected));
-    test(actual.toString(), utils.bigNumberify(expected));
+    test(BigNumber.from(actual), expected);
+    test(BigNumber.from(actual), expected.toString());
+    test(BigNumber.from(actual), BigNumber.from(expected));
+    test(actual, BigNumber.from(expected));
+    test(actual.toString(), BigNumber.from(expected));
   }
 
   describe('equal', () => {
@@ -36,9 +36,10 @@ describe('UNIT: BigNumber matchers', () => {
     });
 
     it('throws proper message on error', () => {
-      expect(
-        () => expect(utils.bigNumberify(10)).to.equal(11)
-      ).to.throw(AssertionError, 'Expected "10" to be equal 11');
+      expect(() => expect(BigNumber.from(10)).to.equal(11)).to.throw(
+        AssertionError,
+        'Expected "10" to be equal 11'
+      );
     });
   });
 

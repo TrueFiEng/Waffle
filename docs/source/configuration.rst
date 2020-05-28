@@ -125,6 +125,7 @@ Allowed values:
   - :code:`solcjs` (default)
   - :code:`native`
   - :code:`dockerized-solc`
+  - :code:`dockerized-vyper` (experimental version)
 
 Example:
 
@@ -271,7 +272,7 @@ Waffle supports the following configuration file formats:
 
 *JavaScript*:
 
-.. code-block:: js
+.. code-block:: ts
 
   module.exports = {
     sourceDirectory: './src/contracts'
@@ -279,7 +280,7 @@ Waffle supports the following configuration file formats:
 
 The configuration can even be a promise
 
-.. code-block:: js
+.. code-block:: ts
 
   module.exports = Promise.resolve({
     sourceDirectory: './src/contracts'
@@ -314,7 +315,7 @@ The default compilation process is not compatible with KLAB
 
 1. Set appropriate compiler options, i.e.:
 
-.. code-block:: js
+.. code-block:: ts
 
   compilerOptions: {
     outputSelection: {
@@ -334,18 +335,21 @@ and second (KLAB friendly) generates one file (Combined-Json.json) combining all
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
 To choice of the output is set in config file, i.e.:
 
-::
+.. code-block:: json
 
-  outputType: 'combined'
+  {
+    "outputType": "combined"
+  }
 
 Possible options are:
+
 - `'multiple'`: single file for each contract;
 - `'combined'`: one KLAB friendly file;
 -  `'all'`: generates both above outputs.
 
 An example of full KLAB friendly config file:
 
-.. code-block:: js
+.. code-block:: ts
 
   module.exports = {
     compilerType: process.env.WAFFLE_COMPILER,
@@ -381,7 +385,8 @@ That leads to sources files located beyond allowed paths. This process breaks co
 
 
 If you see a message like below in your monorepo setup:
-::
+
+.. code-block:: text
 
   contracts/Contract.sol:4:1: ParserError: Source ".../monorepo/node_modules/YourProjectContracts/contracts/Contract.sol" not found: File outside of allowed directories.
   import "YourProjectContracts/contracts/Contract.sol";
@@ -390,7 +395,8 @@ If you see a message like below in your monorepo setup:
 you probably need to add allowedPath to your waffle configuration.
 
 Assuming you have the following setup:
-::
+
+.. code-block:: text
 
   /monorepo
     /YourProjectContracts

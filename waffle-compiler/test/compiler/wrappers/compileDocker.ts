@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {getVolumes, createBuildCommand} from '../../../src/compileDocker';
+import {getVolumes, createBuildCommand} from '../../../src/compileDockerSolc';
 import {join} from 'path';
 import {Config} from '../../../src/config';
 

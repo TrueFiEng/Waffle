@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {compile, compileAndSave} from '../../src/compiler';
+import {compile, compileAndSave} from '../../src';
 import {inputToConfig} from '../../src/config';
 
 const sourceDirectory = './test/projects/example';
