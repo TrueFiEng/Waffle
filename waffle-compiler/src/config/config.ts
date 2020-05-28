@@ -36,19 +36,4 @@ export interface Config {
   outputType: 'multiple' | 'combined' | 'all';
 }
 
-export interface LegacyConfig {
-  sourcesPath?: string;
-  targetPath?: string;
-  npmPath?: string;
-  compiler?: 'native' | 'dockerized-solc' | 'solcjs' | 'dockerized-vyper';
-  'docker-tag'?: string;
-  solcVersion?: string;
-  legacyOutput?: string;
-  allowedPaths?: string[];
-  compilerOptions?: Record<string, any>;
-  outputType?: 'multiple' | 'combined' | 'all';
-  outputHumanReadableAbi?: boolean;
-  ganacheOptions?: Record<string, any>;
-}
-
-export type InputConfig = Partial<Config> & LegacyConfig
+export type InputConfig = Partial<Config>

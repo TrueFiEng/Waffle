@@ -1,42 +1,15 @@
 import {Config, InputConfig} from './config';
 import {defaultConfig} from './defaultConfig';
-import {deprecate} from '../deprecate';
 
 export function inputToConfig(input: InputConfig) {
-  const result: any = {...defaultConfig};
-  function set(key: string, value: any) {
-    result[key] = value;
-  }
+  const result: Config = {...defaultConfig};
 
   for (const key in input) {
-    if ((input as any)[key] != null) {
+    if ((input as any)[key] !== undefined) {
       if (key in defaultConfig) {
-        set(key, (input as any)[key]);
-      } else if (key === 'sourcesPath') {
-        deprecate('sourcesPath', 'Use sourceDirectory instead.');
-        set('sourceDirectory', input[key]);
-      } else if (key === 'targetPath') {
-        deprecate('targetPath', 'Use outputDirectory instead.');
-        set('outputDirectory', input[key]);
-      } else if (key === 'npmPath') {
-        deprecate('npmPath', 'Use nodeModulesDirectory instead.');
-        set('nodeModulesDirectory', input[key]);
-      } else if (key === 'compiler') {
-        deprecate('compiler', 'Use compilerType instead.');
-        set('compilerType', input[key]);
-      } else if (key === 'docker-tag') {
-        deprecate('docker-tag', 'Use compilerVersion instead.');
-        set('compilerVersion', input[key]);
-      } else if (key === 'solcVersion') {
-        deprecate('solcVersion', 'Use compilerVersion instead.');
-        set('compilerVersion', input[key]);
-      } else if (key === 'allowedPaths') {
-        deprecate('allowedPaths', 'Use compilerAllowedPaths instead.');
-        set('compilerAllowedPaths', input[key]);
-      } else if (key === 'legacyOutput') {
-        deprecate('legacyOutput', 'It was always enabled anyway.');
-      } else if (key === 'ganacheOptions') {
-        deprecate('ganacheOptions', 'It has no effect on the compiler.');
+        (result as any)[key] = (input as any)[key]
+      } else if (key !== 'name') {
+        console.warn(`Warning: Config key "${key}" not supported.`)
       }
     }
   }
