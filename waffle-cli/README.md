@@ -54,13 +54,13 @@ npm install --save-dev ethereum-waffle
 To add an external library install it using npm:
 
 ```sh
-npm i openzeppelin-solidity -D
+npm install @openzeppelin/contracts -D
 ```
 
 or with yarn:
 
 ```sh
-yarn add openzeppelin-solidity -D
+yarn add @openzeppelin/contracts -D
 ```
 
 
@@ -72,24 +72,23 @@ Find this example in `examples/basic` and use it.
 Below is an example contract written in Solidity. Place it in `contracts/BasicToken.sol` file of your project:
 
 ```solidity
-// contracts/BasicToken.sol
-pragma solidity ^0.5.1;
+pragma solidity ^0.6.0;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // Example class - a mock class using delivering from ERC20
 contract BasicToken is ERC20 {
-  constructor(address initialAccount, uint256 initialBalance) public {
-    super._mint(initialAccount, initialBalance);
-  }
+    constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
+        _mint(msg.sender, initialBalance);
+    }
 }
+
 ```
 
 ### Example test
 Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.test.ts` file in your project directory:
 
 ```ts
-// contracts/BasicToken.test.ts
 import {expect, use} from 'chai';
 import {Contract} from 'ethers';
 import {deployContract, MockProvider, solidity} from 'ethereum-waffle';
@@ -102,7 +101,7 @@ describe('BasicToken', () => {
   let token: Contract;
 
   beforeEach(async () => {
-    token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);
+    token = await deployContract(wallet, BasicToken, [1000]);
   });
 
   it('Assigns initial balance', async () => {
@@ -246,7 +245,10 @@ To run linter type:
 yarn lint
 ```
 
-Building documentation (requires Sphinx):
+###Building documentation
+
+[Install Sphinx](https://www.sphinx-doc.org/en/master/usage/installation.html) to build documentation:
+
 ```sh
 cd docs
 make html
