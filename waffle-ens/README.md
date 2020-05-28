@@ -5,7 +5,7 @@
 
 # @ethereum-waffle/ens
 
-A simple ens builder for testing with ENS.
+A simple `ENS` for testing.
 
 ## Installation
 
@@ -16,7 +16,7 @@ yarn add --dev ethereum-waffle
 npm install --save-dev ethereum-waffle
 ```
 
-If you want to use this package directly please install it via:
+If you want to use this package directly, please install it via:
 ```
 yarn add --dev @ethereum-waffle/ens
 npm install --save-dev @ethereum-waffle/ens
@@ -26,43 +26,60 @@ npm install --save-dev @ethereum-waffle/ens
 
 **NOTE**: You do not need to use this package directly. You can install it through the main package (`ethereum-waffle`) and use it instead.
 
-### ENSBuilder
+### ENS
 
-The `ENSBuilder` class allows to create ENS domains for testing.
+The `ENS` class allows to create ENS domains for testing.
 
 It will deploy ENS smart contracts system to your test node.
 
-To create `ENSBuilder`, you should submit your `wallet`, available in `MockProvider` class in package `@ethereum-waffle/provider`.
+To create `ENS`, you should submit your `wallet`, available in `MockProvider` class in package `@ethereum-waffle/provider`.
 
 You can read more about ENS [in the ENS's documentation](https://docs.ens.domains/).
 
 ### Examples:
-Creating of ENSBuilder:
+Creating ENS:
 ```ts
 import {MockProvider} from '@ethereum-waffle/provider';
-import {createENSBuilder, ENSBuilder} from '@ethereum-waffle/ens';
+import {deployENS, ENS} from '@ethereum-waffle/ens';
 
 const provider = new MockProvider();
 const [wallet] = provider.getWallets();
-const ensBuilder: ENSBuilder = await createENSBuilder(wallet);
+const ens: ENS = await deployENS(wallet);
 ```
 
 ### Usage
 
-Use `createTopLevelDomain` function to creating top level domain:
+Use `createTopLevelDomain` function to create a top level domain:
 
 ```ts
-await ensBuilder.createTopLevelDomain('test');
+await ens.createTopLevelDomain('test');
 ```
 
-Use `createSubDomain` function to creating sub domain for exiting domain:
+Use `createSubDomain` function for creating a sub domain:
 
 ```ts
-await ensBuilder.createSubDomain('ethworks.test');
+await ens.createSubDomain('ethworks.test');
 ```
 
-And use `setAddress` function for setting address for existing domain:
+Also, it's possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
 
 ```ts
-await ensBuilder.setAddress('vlad.ethworks.test', '0x001...03');
+await ens.createSubDomain('ethworks.tld', {recursive: true});
+```
+
+Use `setAddress` function for setting address for the domain:
+
+```ts
+await ens.setAddress('vlad.ethworks.test', '0x001...03');
+```
+Also, it's possible to set an address for the domain recursively, if the domain doesn't exist, by specifying the appropriate option:
+
+```ts
+await ens.setAddress('vlad.ethworks.tld', '0x001...03', {recursive: true});
+```
+
+Use `setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if the domain doesn't exist:
+
+```ts
+await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@ethereum-waffle/ens",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "A mock ens implementation for testing.",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -29,8 +29,8 @@
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
     "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
-    "build:esm": "tsc -p ../waffle-provider/tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p ../waffle-provider/tsconfig.build.json --outDir dist/cjs --declaration false"
+    "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false"
   },
   "engines": {
     "node": ">=10.0"
@@ -39,7 +39,7 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "mocha": "^6.2.1",
-    "@ethereum-waffle/provider": "^3.0.0-beta.1"
+    "ganache-core": "^2.10.2"
   },
   "dependencies": {
     "ethers": "^5.0.0-beta.184",

@@ -3,7 +3,7 @@ import path from 'path';
 import mkdirp from 'mkdirp';
 import {Config, InputConfig, inputToConfig, loadConfig} from './config';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
-import {gatherSources} from '@resolver-engine/imports';
+import {gatherSourcesAndCanonizeImports} from '@resolver-engine/imports';
 import {findInputs} from './findInputs';
 import {getExtensionForCompilerType} from './utils';
 
@@ -30,7 +30,7 @@ async function getContractDependency(config: Config): Promise<GatheredContractIn
 
   const allContracts = findInputs(config.sourceDirectory, getExtensionForCompilerType(config));
 
-  return Promise.all(allContracts.map(async contract => gatherSources(
+  return Promise.all(allContracts.map(async contract => gatherSourcesAndCanonizeImports(
     [contract],
     '.',
     resolver
@@ -42,6 +42,8 @@ const fsOps = {
   writeFile: fs.writeFileSync
 };
 
+const unique = <T>(arr: T[]) => [...new Set(arr)];
+
 function saveToFile(
   output: GatheredContractInterface[][],
   config: Config,
@@ -52,31 +54,33 @@ function saveToFile(
   fileSystem.createDirectory(outputDirectory);
 
   output.map((contract: Array<GatheredContractInterface>) => {
-    const fileName = path.parse(contract[0].url).base;
+    const rootContract = contract[contract.length - 1];
+    const fileName = path.parse(rootContract.url).base;
     const filePath = path.join(outputDirectory, fileName);
-    let source = '';
 
-    contract.map(dependency => {
-      source = replaceDirectivesWithComments(dependency, contract, source);
-    });
+    const contractsWithCommentedDirectives = contract.map(replaceDirectivesWithComments(rootContract));
+    const source = ''.concat(...unique(contractsWithCommentedDirectives));
+
     fileSystem.writeFile(filePath, source);
   });
 }
 
-function replaceDirectivesWithComments(
-  dependency: GatheredContractInterface,
-  contract: Array<GatheredContractInterface>,
-  source: string
-) {
+function replaceDirectivesWithComments(rootContract: GatheredContractInterface) {
   const IMPORT_SOLIDITY_REGEX = /import/gi;
-  const PRAGMA_SOLIDITY_REGEX = /pragma/gi;
+  const IMPORT_NODE_MODULES_REGEX = /(import.*").*node_modules\/(.*\n)/gi;
+  const PRAGMA_SOLIDITY_REGEX = /pragma solidity/gi;
+  const NODE_MODULES_REGEX = /^.*\/node_modules\//gi;
 
-  const sourceWithCommentedImports = dependency.source.replace(IMPORT_SOLIDITY_REGEX, '// import');
+  return (dependency: GatheredContractInterface) => {
+    const sourceWithImportsWithRelativeImports = dependency.source.replace(IMPORT_NODE_MODULES_REGEX, '$1$2');
+    const sourceWithCommentedImports = sourceWithImportsWithRelativeImports.replace(IMPORT_SOLIDITY_REGEX, '// import');
+    const filePath = dependency.url.replace(NODE_MODULES_REGEX, '');
 
-  if (dependency === contract[0]) {
-    return sourceWithCommentedImports;
-  } else {
-    const sourceWithCommentedPragmas = sourceWithCommentedImports.replace(PRAGMA_SOLIDITY_REGEX, '// pragma');
-    return `// Dependency file: ${dependency.url}\n\n` + sourceWithCommentedPragmas + '\n' + source;
-  }
+    if (dependency === rootContract) {
+      return `// Root file: ${filePath}\n\n` + sourceWithCommentedImports;
+    }
+
+    const sourceWithCommentedPragmas = sourceWithCommentedImports.replace(PRAGMA_SOLIDITY_REGEX, '// pragma solidity');
+    return `// Dependency file: ${filePath}\n\n` + sourceWithCommentedPragmas + '\n\n';
+  };
 }

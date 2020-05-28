@@ -8,7 +8,7 @@ Creating a provider
 
 Creating a mock provider for your tests is super simple.
 
-.. code-block:: js
+.. code-block:: ts
 
   import { MockProvider } from 'ethereum-waffle';
   const provider = new MockProvider();
@@ -23,7 +23,7 @@ Getting wallets
 
 To obtain wallets that have been prefunded with eth use the provider
 
-.. code-block:: js
+.. code-block:: ts
 
   import { MockProvider } from 'ethereum-waffle';
 
@@ -36,7 +36,7 @@ To obtain wallets that have been prefunded with eth use the provider
 
 By default this method returns 10 wallets. You can modify the returned wallets, by changing MockProvider configuration.
 
-.. code-block:: js
+.. code-block:: ts
 
   import { MockProvider } from 'ethereum-waffle';
   const provider = new MockProvider({
@@ -46,7 +46,7 @@ By default this method returns 10 wallets. You can modify the returned wallets, 
 
 You can also get an empty random wallet by calling:
 
-.. code-block:: js
+.. code-block:: ts
 
   import { MockProvider } from 'ethereum-waffle';
   const provider = new MockProvider();
@@ -54,6 +54,24 @@ You can also get an empty random wallet by calling:
 
 .. note::
   Prior to Waffle :code:`2.3.0` wallets were obtained using :code:`getWallets(provider)`.
+
+Setup ENS
+---------
+
+To setup basic ENS use the provider's function :code:`setupENS()`.
+
+.. code-block:: ts
+
+  import {MockProvider} from '@ethereum-waffle/provider';
+
+  const provider = new MockProvider();
+  await provider.setupENS();
+
+This method employs the last of the provider's :code:`wallets` by default, but you can pass your own :code:`wallet` as an argument for :code:`setupENS(wallet)`.
+
+Also :code:`setupENS()` method saves ENS address in the provider's networks.
+
+Read more about ENS functions here :ref:`ens`.
 
 Deploying contracts
 -------------------
@@ -64,14 +82,16 @@ Once you compile your contracts using waffle you can deploy them in your javascr
   - contract constructor arguments
 
 Deploy a contract:
-::
+
+.. code-block:: ts
 
   import BasicTokenMock from "build/BasicTokenMock.json";
 
   token = await deployContract(wallet, BasicTokenMock, [wallet.address, 1000]);
 
 The contract information can be one of the following formats:
-::
+
+.. code-block:: ts
 
   interface StandardContractJSON {
     abi: any;
@@ -87,7 +107,8 @@ Linking
 -------
 
 Link a library:
-::
+
+.. code-block:: ts
 
   myLibrary = await deployContract(wallet, MyLibrary, []);
   link(LibraryConsumer, 'contracts/MyLibrary.sol:MyLibrary', myLibrary.address);

@@ -63,6 +63,11 @@ or with yarn:
 yarn add openzeppelin-solidity -D
 ```
 
+
+###Note
+
+Find this example in `examples/basic` and use it.
+
 ### Example contract
 Below is an example contract written in Solidity. Place it in `contracts/BasicToken.sol` file of your project:
 
@@ -81,19 +86,20 @@ contract BasicToken is ERC20 {
 ```
 
 ### Example test
-Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.js` file of your project:
+Below is an example test written for the contract above compiled with Waffle. Place it under `test/BasicToken.test.ts` file in your project directory:
 
-```js
-// test/BasicToken.js
-const {use, expect} = require('chai');
-const {MockProvider, deployContract, solidity} = require('ethereum-waffle');
-const BasicToken = require('../build/BasicToken');
+```ts
+// contracts/BasicToken.test.ts
+import {expect, use} from 'chai';
+import {Contract} from 'ethers';
+import {deployContract, MockProvider, solidity} from 'ethereum-waffle';
+import BasicToken from '../build/BasicToken.json';
 
 use(solidity);
 
 describe('BasicToken', () => {
   const [wallet, walletTo] = new MockProvider().getWallets();
-  let token;
+  let token: Contract;
 
   beforeEach(async () => {
     token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);

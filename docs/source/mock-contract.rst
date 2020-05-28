@@ -3,7 +3,7 @@ Mock contract
 
 Mocking your smart contract dependencies.
 
-.. Note::
+.. note::
   Breaking changes will not result in a new major version.
 
 Usage
@@ -11,7 +11,7 @@ Usage
 
 Create an instance of a mock contract providing the ABI/interface of the smart contract you want to mock:
 
-.. code-block:: js
+.. code-block:: ts
 
   import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
@@ -22,14 +22,14 @@ Create an instance of a mock contract providing the ABI/interface of the smart c
 Mock contract can now be passed into other contracts by using the :code:`address` attribute.
 Return values for mocked functions can be set using:
 
-.. code-block:: js
+.. code-block:: ts
 
   await mockContract.mock.<nameOfMethod>.returns(<value>)
   await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).returns(<value>)
 
 Methods can also be set up to be reverted using:
 
-.. code-block:: js
+.. code-block:: ts
 
   await mockContract.mock.<nameOfMethod>.reverts()
   await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).reverts()
@@ -65,7 +65,7 @@ The example below illustrates how :code:`mock-contract` can be used to test the 
 We are mostly interested in the :code:`tokenContract.balanceOf` call.
 Mock contract will be used to mock exactly this call with values that are significant for the return of the :code:`check()` method.
 
-.. code-block:: js
+.. code-block:: ts
 
   const {use, expect} = require('chai');
   const {ContractFactory, utils} = require('ethers');
