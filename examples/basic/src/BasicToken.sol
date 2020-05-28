@@ -1,10 +1,10 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.6.0;
 
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // Example class - a mock class using delivering from ERC20
 contract BasicToken is ERC20 {
-  constructor(address initialAccount, uint256 initialBalance) public {
-    super._mint(initialAccount, initialBalance);
+  constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
+    _mint(msg.sender, initialBalance);
   }
 }

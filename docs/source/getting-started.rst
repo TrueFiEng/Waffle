@@ -20,29 +20,40 @@ To get started install :code:`ethereum-waffle`:
 
       npm install --save-dev ethereum-waffle
 
+Add external dependency
+-----------------------
+
+To add an external library install it using npm:
+
+.. tabs::
+
+  .. group-tab:: Yarn
+
+    .. code-block:: text
+
+      yarn add @openzeppelin/contracts -D
+
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install @openzeppelin/contracts -D
+
 Writing a contract
 ------------------
 
-Below is example contract written in Solidity. Save it as :code:`Counter.sol`
-inside the :code:`contracts` directory of your project.
+Below is example contract written in Solidity. Place it in :code:`contracts/BasicToken.sol` file of your project:
 
 .. code-block:: solidity
 
   pragma solidity ^0.6.0;
 
-  contract Counter {
-    event Increment (uint256 by);
+  import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-    uint256 public value;
-
-    constructor (uint256 initialValue) public {
-      value = initialValue;
-    }
-
-    function increment (uint256 by) public {
-      // NOTE: You should use SafeMath in production code
-      value += by;
-      emit Increment(by);
+  // Example class - a mock class using delivering from ERC20
+  contract BasicToken is ERC20 {
+    constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
+        _mint(msg.sender, initialBalance);
     }
   }
 
@@ -55,11 +66,23 @@ In the :code:`package.json` file of your project add the following entry:
 
   {
     "scripts": {
-      "build": "waffle"
+      "build": "waffle waffle.json",
     }
   }
 
-Then run the following command
+In the :code:`waffle.json` file of your project add the following entry:
+
+.. code-block:: json
+
+  {
+    "compilerType": "solcjs",
+    "compilerVersion": "0.6.2",
+    "sourceDirectory": "./src",
+    "outputDirectory": "./build"
+  }
+
+Then run the following command:
+::
 
 .. tabs::
 
@@ -123,47 +146,58 @@ Run:
 
       npm install --save-dev mocha chai
 
-Belows is an example test file for the contract above written with Waffle. You
-can save the file as :code:`Counter.test.js` in the :code:`test` directory of
-your project.
+Belows is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
-.. code-block:: javascript
+.. code-block:: ts
 
-  const {use, expect} = require('chai');
-  const {solidity, MockProvider, getWallets, deployContract} = require('ethereum-waffle');
-  const Counter = require('../build/Counter.json');
+  import {expect, use} from 'chai';
+  import {Contract} from 'ethers';
+  import {deployContract, MockProvider, solidity} from 'ethereum-waffle';
+  import BasicToken from '../build/BasicToken.json';
 
   use(solidity);
 
-  describe('Counter smart contract', () => {
-    const provider = new MockProvider();
-    const [wallet] = provider.getWallets();
+  describe('BasicToken', () => {
+    const [wallet, walletTo] = new MockProvider().getWallets();
+    let token: Contract;
 
-    async function deployCounter (initialValue) {
-      const counter = await deployContract(
-        wallet, // a wallet to sign transactions
-        Counter, // the compiled output
-        [initialValue], // arguments to the smart contract constructor
-      );
-      return counter; // an ethers 'Contract' class instance
-    }
-
-    it('sets initial value in the constructor', async () => {
-      const counter = await deployCounter(200);
-      expect(await counter.value()).to.equal(200);
+    beforeEach(async () => {
+      token = await deployContract(wallet, BasicToken, [1000]);
     });
 
-    it('can increment the value', async () => {
-      const counter = await deployCounter(200);
-      await counter.increment(42);
-      expect(await counter.value()).to.equal(242);
+    it('Assigns initial balance', async () => {
+      expect(await token.balanceOf(wallet.address)).to.equal(1000);
     });
 
-    it('emits the Increment event', async () => {
-      const counter = await deployCounter(200);
-      await expect(counter.increment(42))
-        .to.emit(counter, 'Increment')
-        .withArgs(42);
+    it('Transfer adds amount to destination account', async () => {
+      await token.transfer(walletTo.address, 7);
+      expect(await token.balanceOf(walletTo.address)).to.equal(7);
+    });
+
+    it('Transfer emits event', async () => {
+      await expect(token.transfer(walletTo.address, 7))
+        .to.emit(token, 'Transfer')
+        .withArgs(wallet.address, walletTo.address, 7);
+    });
+
+    it('Can not transfer above the amount', async () => {
+      await expect(token.transfer(walletTo.address, 1007)).to.be.reverted;
+    });
+
+    it('Can not transfer from empty account', async () => {
+      const tokenFromOtherWallet = token.connect(walletTo);
+      await expect(tokenFromOtherWallet.transfer(wallet.address, 1))
+        .to.be.reverted;
+    });
+
+    it('Calls totalSupply on BasicToken contract', async () => {
+      await token.totalSupply();
+      expect('totalSupply').to.be.calledOnContract(token);
+    });
+
+    it('Calls balanceOf with sender address on BasicToken contract', async () => {
+      await token.balanceOf(wallet.address);
+      expect('balanceOf').to.be.calledOnContractWith(token, [wallet.address]);
     });
   });
 
@@ -178,7 +212,7 @@ Update your :code:`package.json` file to include:
   {
     "scripts": {
       "build": "waffle",
-      "test": "mocha"
+      "test": "export NODE_ENV=test && mocha",
     }
   }
 
@@ -202,11 +236,16 @@ You should see the following output:
 
 .. code-block:: text
 
-  Counter smart contract
-    ✓ sets initial value in the constructor (140ms)
-    ✓ can increment the value (142ms)
-    ✓ emits the Increment event (114ms)
+  BasicToken
+    ✓ Assigns initial balance (67ms)
+    ✓ Transfer adds amount to destination account (524ms)
+    ✓ Transfer emits event (309ms)
+    ✓ Can not transfer above the amount (44ms)
+    ✓ Can not transfer from empty account (78ms)
+    ✓ Calls totalSupply on BasicToken contract (43ms)
+    ✓ Calls balanceOf with sender address on BasicToken contract (45ms)
 
-  3 passing (426ms)
+
+  7 passing (5s)
 
 If you want to know more about testing with Waffle, see :ref:`testing`.

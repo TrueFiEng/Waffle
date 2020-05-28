@@ -10,7 +10,7 @@ describe('BasicToken', () => {
   let token: Contract;
 
   beforeEach(async () => {
-    token = await deployContract(wallet, BasicToken, [wallet.address, 1000]);
+    token = await deployContract(wallet, BasicToken, [1000]);
   });
 
   it('Assigns initial balance', async () => {
