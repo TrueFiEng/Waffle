@@ -31,7 +31,7 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   const encoder = new utils.AbiCoder();
 
   return Object.values(functions).reduce((acc, func) => {
-    let stubbed = stub(mockContractInstance, encoder, func);
+    const stubbed = stub(mockContractInstance, encoder, func);
     return {
       ...acc,
       [func.name]: stubbed,
