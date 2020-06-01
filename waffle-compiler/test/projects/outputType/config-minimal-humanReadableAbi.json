@@ -1,0 +1,8 @@
+{
+  "compilerType": "solcjs",
+  "compilerVersion": "0.5.15",
+  "sourceDirectory": "./contracts",
+  "outputDirectory": "./build",
+  "outputType": "minimal",
+  "outputHumanReadableAbi": true
+}

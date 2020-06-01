@@ -57,7 +57,7 @@ function checkCompilerAllowedPaths(compilerAllowedPaths: unknown) {
 
 const checkCompilerOptions = checkType('compilerOptions', 'object');
 const checkOutputHumanReadableAbi = checkType('outputHumanReadableAbi', 'boolean');
-const checkOutputType = checkEnum('outputType', ['multiple', 'combined', 'all']);
+const checkOutputType = checkEnum('outputType', ['multiple', 'combined', 'all', 'minimal']);
 
 function checkType(key: string, type: 'string' | 'boolean' | 'object') {
   return function (value: unknown) {

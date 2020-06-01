@@ -49,6 +49,27 @@ export async function saveOutput(
   if (['combined', 'all'].includes(config.outputType)) {
     saveOutputCombined(output, config, filesystem);
   }
+
+  if (['minimal'].includes(config.outputType)) {
+    saveOutputMinimal(output, config, filesystem);
+  }
+}
+
+async function saveOutputMinimal(output: any, config: Config, filesystem = fsOps) {
+  for (const [, file] of Object.entries<any>(output.contracts)) {
+    for (const [contractName, contractJson] of Object.entries<any>(file)) {
+      const filePath = join(config.outputDirectory, `${contractName}.json`);
+      filesystem.writeFile(filePath, getMinimalContent(contractJson, config));
+    }
+  }
+}
+
+function getMinimalContent(contractJson: ContractJson, config: Config) {
+  const content = getContent(contractJson, config);
+  const parsedContent: ContractJson = JSON.parse(content);
+  delete parsedContent['evm'];
+  delete parsedContent['interface'];
+  return JSON.stringify(parsedContent, null, 2);
 }
 
 async function saveOutputSingletons(

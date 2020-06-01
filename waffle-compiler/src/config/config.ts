@@ -32,8 +32,9 @@ export interface Config {
    * - multiple - single file for each contract
    * - combined - single file for all contracts
    * - all - both of the above
+   * - minimal - output just ABI and Bytecode
    */
-  outputType: 'multiple' | 'combined' | 'all';
+  outputType: 'multiple' | 'combined' | 'all' | 'minimal';
 }
 
 export type InputConfig = Partial<Config>
