@@ -89,6 +89,50 @@ jobs:
       - run: yarn lint
       - run: yarn test
 
+  example_basic:
+    working_directory: ~/project/examples/basic
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn test
+
+  example_called_on_contract:
+    working_directory: ~/project/examples/called-on-contract
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run: yarn lint
+      - run: yarn build
+      - run: yarn test
+
+  example_ens:
+    working_directory: ~/project/examples/ens
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run: yarn lint
+      - run: yarn test
+
 workflows:
   waffle_all:
     jobs:
@@ -97,3 +141,6 @@ workflows:
       - test_node_11
       - example_mock_contracts
       - example_change_balance
+      - example_basic
+      - example_called_on_contract
+      - example_ens
