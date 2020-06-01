@@ -75,6 +75,20 @@ jobs:
       - run: yarn build
       - run: yarn test
 
+  example_change_balance:
+    working_directory: ~/project/examples/change-balance
+    docker:
+      - image: circleci/node:11.15
+    steps:
+      - checkout:
+          path: ~/project
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - run: yarn lint
+      - run: yarn test
+
 workflows:
   waffle_all:
     jobs:
@@ -82,3 +96,4 @@ workflows:
       - test_node_10
       - test_node_11
       - example_mock_contracts
+      - example_change_balance

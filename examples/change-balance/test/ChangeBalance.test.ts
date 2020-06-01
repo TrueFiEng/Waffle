@@ -25,4 +25,14 @@ describe('BasicToken', () => {
       })
     ).to.changeBalances([walletFrom, walletTo], [-200, 200]);
   });
+
+  it('Change balance of receiver and sander wallets including the gas price', async () => {
+    await expect(() =>
+      walletFrom.sendTransaction({
+        to: walletTo.address,
+        gasPrice: 1,
+        value: 200
+      })
+    ).to.changeBalances([walletFrom, walletTo], [-21200, 200]);
+  });
 });
