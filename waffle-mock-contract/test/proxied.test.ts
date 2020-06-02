@@ -15,7 +15,7 @@ describe('Mock Contract - Integration (called by other contract)', () => {
   const [wallet] = new MockProvider().getWallets();
 
   const deploy = async () => {
-    const mockCounter = await deployMockContract(wallet, Counter.interface);
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
     const capFactory = new ContractFactory(Proxy.abi, Proxy.bytecode, wallet);
     const capContract = await capFactory.deploy(mockCounter.address);
 

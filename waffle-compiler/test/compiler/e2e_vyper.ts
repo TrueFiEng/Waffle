@@ -58,7 +58,6 @@ describe('E2E: Vyper Compiler integration', async () => {
           const filePath = join(outputDirectory, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.bytecode).to.deep.eq(content.evm.bytecode.object);
-          expect(content.interface).to.deep.eq(content.abi);
         }
       });
 
