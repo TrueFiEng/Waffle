@@ -65,12 +65,11 @@ async function saveOutputMinimal(output: any, config: Config, filesystem = fsOps
 }
 
 function getMinimalContent(contractJson: ContractJson, config: Config) {
-  contractJson.bytecode = contractJson.evm.bytecode.object;
-  if (config.outputHumanReadableAbi) {
-    contractJson.abi = getHumanReadableAbi(contractJson.abi);
-  }
-  delete contractJson['evm'];
-  return JSON.stringify(contractJson, null, 2);
+  const abi = config.outputHumanReadableAbi
+    ? getHumanReadableAbi(contractJson.abi)
+    : contractJson.abi;
+  const bytecode = contractJson.evm.bytecode.object;
+  return JSON.stringify({abi, bytecode}, null, 2);
 }
 
 async function saveOutputSingletons(
