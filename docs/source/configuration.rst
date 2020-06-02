@@ -345,7 +345,8 @@ Possible options are:
 
 - `'multiple'`: single file for each contract;
 - `'combined'`: one KLAB friendly file;
--  `'all'`: generates both above outputs.
+-  `'all'`: generates both above outputs;
+- `'minimal'`: single file for each contract with minimal information (just abi and bytecode).
 
 An example of full KLAB friendly config file:
 
