@@ -17,7 +17,7 @@ describe('Doppelganger - Contract', () => {
     const deploy = async () => {
       const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
       const contract = await factory.deploy();
-      const pretender = new Contract(contract.address, Counter.interface, wallet);
+      const pretender = new Contract(contract.address, Counter.abi, wallet);
 
       return {contract, pretender};
     };
