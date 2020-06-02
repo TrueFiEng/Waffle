@@ -51,7 +51,7 @@ describe('E2E: outputType', () => {
 
     expect(actualOutput).to.deep.equal({
       ...expectedMinimalOutput,
-      humanReadableAbi: [
+      abi: [
         'function constantinople() pure returns(uint8)'
       ]
     });

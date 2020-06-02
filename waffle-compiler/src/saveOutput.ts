@@ -21,8 +21,8 @@ export interface ContractJson {
   srcmap?: string;
   bin?: string;
   'bin-runtime'?: string;
-  interface?: object[];
-  abi: object[];
+  interface?: any[];
+  abi: object[] | string[];
   bytecode?: string;
   humanReadableAbi?: string[];
   evm: EvmJson;
@@ -65,11 +65,12 @@ async function saveOutputMinimal(output: any, config: Config, filesystem = fsOps
 }
 
 function getMinimalContent(contractJson: ContractJson, config: Config) {
-  const content = getContent(contractJson, config);
-  const parsedContent: ContractJson = JSON.parse(content);
-  delete parsedContent['evm'];
-  delete parsedContent['interface'];
-  return JSON.stringify(parsedContent, null, 2);
+  contractJson.bytecode = contractJson.evm.bytecode.object;
+  if (config.outputHumanReadableAbi) {
+    contractJson.abi = getHumanReadableAbi(contractJson.abi);
+  }
+  delete contractJson['evm'];
+  return JSON.stringify(contractJson, null, 2);
 }
 
 async function saveOutputSingletons(
