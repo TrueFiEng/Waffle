@@ -82,7 +82,6 @@ In the :code:`waffle.json` file of your project add the following entry:
   }
 
 Then run the following command:
-::
 
 .. tabs::
 
