@@ -121,9 +121,8 @@ If no :code:`compilerVersion` is specified the docker tag pulled defaults to
 When compiling your smart contracts Waffle will now use the docker image you
 pulled.
 
-*Experimental* Using dockerized vyper
--------------------------------------
-Warring! This is experimental and the api might change without major version change.
+Using dockerized vyper
+----------------------
 
 This is the option if you have contracts in Vyper. You will need Docker installed.
 
