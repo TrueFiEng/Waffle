@@ -125,7 +125,7 @@ Allowed values:
   - :code:`solcjs` (default)
   - :code:`native`
   - :code:`dockerized-solc`
-  - :code:`dockerized-vyper` (experimental version)
+  - :code:`dockerized-vyper`
 
 Example:
 
