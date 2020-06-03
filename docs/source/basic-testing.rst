@@ -13,7 +13,7 @@ Creating a mock provider for your tests is super simple.
   import { MockProvider } from 'ethereum-waffle';
   const provider = new MockProvider();
 
-This class takes an optional options parameter in the constructor. The options are then passed to the underlying ganache-core implementation. You can read more `about the options here <https://github.com/trufflesuite/ganache-core#options>`__.
+This class takes an optional :code:`MockProviderOptions` parameter in the constructor. Then the :code:`ganacheOptions` from :code:`MockProviderOptions` are passed to the underlying ganache-core implementation. You can read more `about the options here <https://github.com/trufflesuite/ganache-core#options>`__.
 
 .. note::
   Prior to Waffle :code:`2.3.0` provider was created using :code:`createMockProvider(options?)`. It behaved exactly like :code:`new MockProvider` but it returned :code:`providers.Web3Provider`, which is the parent class of :code:`MockProvider`.
@@ -40,7 +40,9 @@ By default this method returns 10 wallets. You can modify the returned wallets, 
 
   import { MockProvider } from 'ethereum-waffle';
   const provider = new MockProvider({
-    accounts: [{balance: 'BALANCE IN WEI', secretKey: 'PRIVATE KEY'}]
+      ganacheOptions: {
+        accounts: [{balance: 'BALANCE IN WEI', secretKey: 'PRIVATE KEY'}]
+      }
   });
   const wallets = provider.getWallets();
 
