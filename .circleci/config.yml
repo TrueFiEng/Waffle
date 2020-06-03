@@ -67,7 +67,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - setup_remote_docker
       - run:
           name: Install dependencies
           command: yarn install
@@ -82,7 +81,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - setup_remote_docker
       - run:
           name: Install dependencies
           command: yarn install
@@ -96,7 +94,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - setup_remote_docker
       - run:
           name: Install dependencies
           command: yarn install
@@ -111,7 +108,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - setup_remote_docker
       - run:
           name: Install dependencies
           command: yarn install
@@ -126,7 +122,6 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - setup_remote_docker
       - run:
           name: Install dependencies
           command: yarn install
