@@ -7,7 +7,6 @@ const CONTAINER_PATH = '/project';
 
 export function compileDockerVyper(config: Config) {
   return async function compile(sources: ImportFile[]) {
-    console.log('Warning! This is experimental and the api might change without major version change.');
     const command = createBuildCommand(config);
     const input = getCompilerInput(sources, config.compilerOptions, 'Vyper');
     const output = await executeCommand(command, input);
