@@ -128,6 +128,22 @@ jobs:
       - run: yarn lint
       - run: yarn test
 
+  docs:
+    working_directory: ~/project/docs
+    docker:
+      - image: circleci/python:latest
+    steps:
+      - checkout:
+          path: ~/project
+      - run:
+          name: Install dependencies
+          command:
+            pip install -r requirements.txt
+      - run:
+          name: Make html
+          command:
+            make html
+
 workflows:
   waffle_all:
     jobs:
@@ -139,3 +155,4 @@ workflows:
       - example_basic
       - example_called_on_contract
       - example_ens
+      - docs
