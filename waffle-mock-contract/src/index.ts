@@ -36,7 +36,7 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
       ...acc,
       [func.name]: stubbed,
       [func.format()]: stubbed
-    }
+    };
   }, {} as MockContract['mock']);
 }
 
