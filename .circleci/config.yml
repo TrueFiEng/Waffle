@@ -129,20 +129,19 @@ jobs:
       - run: yarn test
 
   docs:
+    working_directory: ~/project/docs
     docker:
       - image: circleci/python:latest
     steps:
-      - checkout
-      - setup_remote_docker
+      - checkout:
+          path: ~/project
       - run:
           name: Install dependencies
-          command: |
-            cd docs
+          command:
             pip install -r requirements.txt
       - run:
           name: Make html
-          command: |
-            cd docs
+          command:
             make html
 
 workflows:
