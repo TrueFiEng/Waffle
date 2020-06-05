@@ -29,6 +29,7 @@ Versions and ethers compatibility
 - Use version :code:`0.2.3` with ethers 3 and solidity 4,
 - Use version :code:`1.2.0` with ethers 4 and solidity 4,
 - Use version :code:`2.*.*` with ethers 4, solidity 4, 5 and ability to use native or dockerized solc.
+- Use version :code:`3.*.*` with ethers 5, solidity 4, 5, 6 and ability to use native, dockerized solc or dockerized vyper.
 
 .. toctree::
    :maxdepth: 2

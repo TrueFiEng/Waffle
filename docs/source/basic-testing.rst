@@ -15,9 +15,6 @@ Creating a mock provider for your tests is super simple.
 
 This class takes an optional :code:`MockProviderOptions` parameter in the constructor. Then the :code:`ganacheOptions` from :code:`MockProviderOptions` are passed to the underlying ganache-core implementation. You can read more `about the options here <https://github.com/trufflesuite/ganache-core#options>`__.
 
-.. note::
-  Prior to Waffle :code:`2.3.0` provider was created using :code:`createMockProvider(options?)`. It behaved exactly like :code:`new MockProvider` but it returned :code:`providers.Web3Provider`, which is the parent class of :code:`MockProvider`.
-
 Getting wallets
 ---------------
 
@@ -36,15 +33,29 @@ To obtain wallets that have been prefunded with eth use the provider
 
 By default this method returns 10 wallets. You can modify the returned wallets, by changing MockProvider configuration.
 
-.. code-block:: ts
+.. tabs::
 
-  import { MockProvider } from 'ethereum-waffle';
-  const provider = new MockProvider({
-      ganacheOptions: {
+  .. group-tab:: Waffle 3.0.0
+
+    .. code-block:: ts
+
+      import { MockProvider } from 'ethereum-waffle';
+      const provider = new MockProvider({
+          ganacheOptions: {
+            accounts: [{balance: 'BALANCE IN WEI', secretKey: 'PRIVATE KEY'}]
+          }
+      });
+      const wallets = provider.getWallets();
+
+  .. group-tab:: Waffle 2.5.0
+
+    .. code-block:: ts
+
+      import { MockProvider } from 'ethereum-waffle';
+      const provider = new MockProvider({
         accounts: [{balance: 'BALANCE IN WEI', secretKey: 'PRIVATE KEY'}]
-      }
-  });
-  const wallets = provider.getWallets();
+      });
+      const wallets = provider.getWallets();
 
 You can also get an empty random wallet by calling:
 
@@ -54,26 +65,31 @@ You can also get an empty random wallet by calling:
   const provider = new MockProvider();
   const wallet = provider.createEmptyWallet();
 
-.. note::
-  Prior to Waffle :code:`2.3.0` wallets were obtained using :code:`getWallets(provider)`.
-
 Setup ENS
 ---------
 
-To setup basic ENS use the provider's function :code:`setupENS()`.
+.. tabs::
 
-.. code-block:: ts
+  .. group-tab:: Waffle 3.0.0
 
-  import {MockProvider} from '@ethereum-waffle/provider';
+    To setup basic ENS use the provider's function :code:`setupENS()`.
 
-  const provider = new MockProvider();
-  await provider.setupENS();
+    .. code-block:: ts
 
-This method employs the last of the provider's :code:`wallets` by default, but you can pass your own :code:`wallet` as an argument for :code:`setupENS(wallet)`.
+      import {MockProvider} from '@ethereum-waffle/provider';
 
-Also :code:`setupENS()` method saves ENS address in the provider's networks.
+      const provider = new MockProvider();
+      await provider.setupENS();
 
-Read more about ENS functions here :ref:`ens`.
+    This method employs the last of the provider's :code:`wallets` by default, but you can pass your own :code:`wallet` as an argument for :code:`setupENS(wallet)`.
+
+    Also :code:`setupENS()` method saves ENS address in the provider's networks.
+
+    Read more about ENS functions here :ref:`ens`.
+
+  .. group-tab:: Waffle 2.5.0
+
+    Not supported in this Waffle version.
 
 Deploying contracts
 -------------------
@@ -116,5 +132,4 @@ Link a library:
   link(LibraryConsumer, 'contracts/MyLibrary.sol:MyLibrary', myLibrary.address);
   libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
 
-Note: Note: As the second parameter of the link function, you need to use a fully qualified name (path to the file relative to the root of the project, followed by a colon and the contract name).
-
+.. note:: As the second parameter of the link function, you need to use a fully qualified name (path to the file relative to the root of the project, followed by a colon and the contract name).

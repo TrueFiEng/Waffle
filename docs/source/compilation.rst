@@ -12,21 +12,25 @@ library from :code:`npm`.
 
 For example you can install the popular :code:`@openzeppelin/contracts` package:
 
-.. code-block:: text
+.. tabs::
 
-  yarn add @openzeppelin/contracts
+  .. group-tab:: Yarn
 
-Or if you prefer npm:
+    .. code-block:: text
 
-.. code-block:: text
+      yarn add @openzeppelin/contracts
 
-  npm install @openzeppelin/contracts
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install @openzeppelin/contracts
 
 After installing a library you can import it in your Solidity code:
 
 .. code-block:: solidity
 
-  pragma solidity ^0.5.0;
+  pragma solidity ^0.6.0;
 
   import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 

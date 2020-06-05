@@ -81,14 +81,14 @@ Testing whether the transaction changes balance of an account
 
 .. code-block:: ts
 
-  await expect(() => myContract.transferWei(receiverWallet.address, 2))
-    .to.changeBalance(receiverWallet, 2);
+  await expect(() => wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
+    .to.changeBalance(walletTo, 200);
 
 
-**Note:** transaction call should be passed to the ``expect`` as a callback (we need to check the balance before the call).
+.. note:: Transaction call should be passed to the :code:`expect` as a callback (we need to check the balance before the call).
 The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet.
 
-**Note:** ``changeBalance`` calls should not be chained. If you need to chain it, you probably want to use ``changeBalances`` matcher.
+.. note:: :code:`changeBalance` calls should not be chained. If you need to chain it, you probably want to use :code:`changeBalances` matcher.
 
 Change balance (multiple accounts)
 ----------------------------------
@@ -97,8 +97,8 @@ Testing whether the transaction changes balance for multiple accounts:
 
 .. code-block:: ts
 
-  await expect(() => myContract.transferWei(receiverWallet.address, 2))
-    .to.changeBalances([senderWallet, receiverWallet], [-2, 2]);
+  await expect(() => wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
+    .to.changeBalances([walletFrom, walletTo], [-200, 200]);
 
 
 Proper address

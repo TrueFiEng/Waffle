@@ -11,14 +11,19 @@ want to excert more control over what happens when they use Waffle in their
 projects.
 
 This is why we made it very easy to configure Waffle to match your needs. All
-you need to do is create a :code:`.waffle.json` file inside your project and
+you need to do is create a :code:`waffle.json` file inside your project and
 point waffle to it.
 
-First create your :code:`.waffle.json` configuration file:
+First create your :code:`waffle.json` configuration file:
 
 .. code-block:: json
 
-  {}
+  {
+    "compilerType": "solcjs",
+    "compilerVersion": "0.6.2",
+    "sourceDirectory": "./src",
+    "outputDirectory": "./build"
+  }
 
 .. note::
 
@@ -26,20 +31,34 @@ First create your :code:`.waffle.json` configuration file:
 
 Afterwards update your :code:`package.json` build script:
 
-.. code-block:: json
+.. tabs::
 
-  {
-    "scripts": {
-      "build": "waffle .waffle.json"
-    }
-  }
+  .. group-tab:: Waffle 3.0.0
 
-.. note::
+    .. code-block:: json
 
-  Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
-  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+      {
+        "scripts": {
+          "build": "waffle waffle.json"
+        }
+      }
 
-Configuration options starting waffle 2.4.0:
+    .. note::
+
+      Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
+      :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
+  .. group-tab:: Waffle 2.5.0
+    .. code-block:: json
+
+      {
+        "scripts": {
+          "build": "waffle waffle.json"
+        }
+      }
+
+
+Configuration options:
 
 - :ref:`sourceDirectory`
 - :ref:`outputDirectory`
@@ -50,18 +69,6 @@ Configuration options starting waffle 2.4.0:
 - :ref:`compilerOptions`
 - :ref:`outputHumanReadableAbi`
 - :ref:`outputType`
-
-Deprecated configuration for waffle 2.3.0 and earlier:
-
-- :code:`sourcesPath` - renamed to :ref:`sourceDirectory`
-- :code:`targetPath` - renamed to :ref:`outputDirectory`
-- :code:`npmPath` - renamed to :ref:`nodeModulesDirectory`
-- :code:`compiler` - renamed to :ref:`compilerType`
-- :code:`docker-tag` - replaced by :ref:`compilerVersion`
-- :code:`solcVersion` - replaced by :ref:`compilerVersion`
-- :code:`legacyOutput` - removed, setting it to false had no effect
-- :code:`allowedPaths` - renamed to :ref:`compilerAllowedPaths`
-- :code:`ganacheOptions` - removed, wasn't used by the compiler
 
 .. _sourceDirectory:
 
@@ -127,10 +134,13 @@ compilerType
 Specifies the compiler to use. For more information see: :ref:`compile-times`.
 Allowed values:
 
-  - :code:`solcjs` (default)
+  - :code:`solcjs`
   - :code:`native`
   - :code:`dockerized-solc`
   - :code:`dockerized-vyper`
+
+Waffle uses :code:`solcjs` as the default value for
+:code:`compilerType`.
 
 Example:
 
@@ -346,12 +356,24 @@ To choice of the output is set in config file, i.e.:
     "outputType": "combined"
   }
 
-Possible options are:
+.. tabs::
 
-- `'multiple'`: single file for each contract;
-- `'combined'`: one KLAB friendly file;
--  `'all'`: generates both above outputs;
-- `'minimal'`: single file for each contract with minimal information (just abi and bytecode).
+  .. group-tab:: Waffle 3.0.0
+
+    Possible options are:
+
+    - `'multiple'`: single file for each contract;
+    - `'combined'`: one KLAB friendly file;
+    - `'all'`: generates both above outputs;
+    - `'minimal'`: single file for each contract with minimal information (just abi and bytecode).
+
+  .. group-tab:: Waffle 2.5.0
+
+    Possible options are:
+
+    - `'multiple'`: single file for each contract;
+    - `'combined'`: one KLAB friendly file;
+    - `'all'`: generates both above outputs;
 
 An example of full KLAB friendly config file:
 

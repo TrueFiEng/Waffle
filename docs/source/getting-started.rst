@@ -23,7 +23,7 @@ To get started install :code:`ethereum-waffle`:
 Add external dependency
 -----------------------
 
-To add an external library install it using npm:
+To add an external library install it using yarn or npm:
 
 .. tabs::
 
@@ -62,13 +62,32 @@ Compiling the contract
 
 In the :code:`package.json` file of your project add the following entry:
 
-.. code-block:: json
+.. tabs::
 
-  {
-    "scripts": {
-      "build": "waffle waffle.json",
-    }
-  }
+  .. group-tab:: Waffle 3.0.0
+
+    .. code-block:: json
+
+      {
+        "scripts": {
+          "build": "waffle waffle.json"
+        }
+      }
+
+    .. note::
+
+      Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
+      :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
+  .. group-tab:: Waffle 2.5.0
+
+    .. code-block:: json
+
+      {
+        "scripts": {
+          "build": "waffle waffle.json"
+        }
+      }
 
 .. note::
 

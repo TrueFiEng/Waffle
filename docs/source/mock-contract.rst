@@ -3,13 +3,17 @@ Mock contract
 
 Mocking your smart contract dependencies.
 
-.. note::
-  Breaking changes will not result in a new major version.
-
 Usage
 -----
+.. tabs::
 
-Create an instance of a mock contract providing the ABI/interface of the smart contract you want to mock:
+  .. group-tab:: Waffle 3.0.0
+
+    Create an instance of a mock contract providing the :code:`ABI` of the smart contract you want to mock:
+
+  .. group-tab:: Waffle 2.5.0
+
+    Create an instance of a mock contract providing the :code:`ABI/interface` of the smart contract you want to mock:
 
 .. code-block:: ts
 
