@@ -13,6 +13,7 @@ export interface Config {
    * - native - uses local installation of solc
    * - dockerized-solc - uses solc from a docker image
    * - solcjs - uses solc from the solcjs npm package
+   * - dockerized-vyper - uses vyper from a docker image
    */
   compilerType: 'native' | 'dockerized-solc' | 'solcjs' | 'dockerized-vyper';
   /** Version of the solidity compiler e.g. "0.5.1" or "default" */
