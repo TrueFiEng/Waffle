@@ -1,7 +1,16 @@
 Chai matchers
 =============
 
-A set of sweet chai matchers, makes your test easy to write and read. Below is the list of available matchers:
+A set of sweet chai matchers, makes your test easy to write and read. Before you can start using the matchers, you have to tell chai to use the solidity plugin:
+
+.. code-block:: ts
+
+  import chai from "chai";
+  import { solidity } from "ethereum-waffle";
+  
+  chai.use(solidity);
+
+Below is the list of available matchers:
 
 Bignumbers
 ----------
