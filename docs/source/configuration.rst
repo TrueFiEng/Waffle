@@ -35,18 +35,18 @@ Afterwards update your :code:`package.json` build script:
 
   .. group-tab:: Waffle 3.0.0
 
-    .. code-block:: json
-
-      {
-        "scripts": {
-          "build": "waffle waffle.json"
-        }
-      }
-
     .. note::
 
       Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
       :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
+    .. code-block:: json
+
+      {
+        "scripts": {
+          "build": "waffle"
+        }
+      }
 
   .. group-tab:: Waffle 2.5.0
     .. code-block:: json
@@ -350,12 +350,6 @@ and second (KLAB friendly) generates one file (Combined-Json.json) combining all
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
 To choice of the output is set in config file, i.e.:
 
-.. code-block:: json
-
-  {
-    "outputType": "combined"
-  }
-
 .. tabs::
 
   .. group-tab:: Waffle 3.0.0
@@ -374,6 +368,12 @@ To choice of the output is set in config file, i.e.:
     - `'multiple'`: single file for each contract;
     - `'combined'`: one KLAB friendly file;
     - `'all'`: generates both above outputs;
+
+.. code-block:: json
+
+  {
+    "outputType": "combined"
+  }
 
 An example of full KLAB friendly config file:
 

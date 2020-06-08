@@ -27,7 +27,7 @@ This class takes a :code:`wallet` in the constructor. The :code:`wallet` availab
 
   .. group-tab:: Waffle 2.5.0
 
-    Not supported in this Waffle version.
+    ENS is not supported in older Waffle versions.
 
 Creating top level domain
 -------------------------
@@ -51,7 +51,7 @@ Use :code:`createSubDomain` function for creating a sub domain:
 
   .. group-tab:: Waffle 3.0.0
 
-    Also, it's possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
+    It is also possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
 
     .. code-block:: ts
 
@@ -74,7 +74,7 @@ Use :code:`setAddress` function for setting address for the domain:
 
   .. group-tab:: Waffle 3.0.0
 
-    Also, it's possible to set an address for domain recursively, if the domain doesn't exist, by specifying the appropriate option:
+    It is also possible to set an address for domain recursively, if the domain doesn't exist, by specifying the appropriate option:
 
     .. code-block:: ts
 
