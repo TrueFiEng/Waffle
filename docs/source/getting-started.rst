@@ -70,6 +70,11 @@ In the :code:`package.json` file of your project add the following entry:
     }
   }
 
+.. note::
+
+  Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
+  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
 In the :code:`waffle.json` file of your project add the following entry:
 
 .. code-block:: json

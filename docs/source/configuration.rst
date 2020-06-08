@@ -34,6 +34,11 @@ Afterwards update your :code:`package.json` build script:
     }
   }
 
+.. note::
+
+  Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
+  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
 Configuration options starting waffle 2.4.0:
 
 - :ref:`sourceDirectory`
