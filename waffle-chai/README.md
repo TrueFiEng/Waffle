@@ -22,6 +22,17 @@ yarn add --dev @ethereum-waffle/chai
 npm install --save-dev @ethereum-waffle/chai
 ```
 
+## Usage
+```ts
+import { expect, use } from "chai";
+import { waffleChai } from "@ethereum-waffle/chai";
+import { bigNumberify } from "ethers/utils";
+
+use(chaiAsPromised);
+
+expect(bigNumberify("6")).to.be.gt(0);
+```
+
 ## Feature overview
 
 **NOTE**: You do not need to use this package directly. You can install it through the main package (`ethereum-waffle`) and use it instead.
