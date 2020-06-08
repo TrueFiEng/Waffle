@@ -26,10 +26,11 @@ npm install --save-dev @ethereum-waffle/chai
 ```ts
 import { expect, use } from "chai";
 import { waffleChai } from "@ethereum-waffle/chai";
+import { bigNumberify } from "ethers/utils";
 
 use(chaiAsPromised);
 
-expect(new BigNumber(6)).to.be.gt(0);
+expect(bigNumberify("6")).to.be.gt(0);
 ```
 
 ## Feature overview
