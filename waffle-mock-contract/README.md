@@ -49,6 +49,27 @@ await mockContract.mock.<nameOfMethod>.reverts()
 await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).reverts()
 ```
 
+Sometimes you may have an overloaded function name:
+
+```solidity
+contract OverloadedFunctions is Ownable {
+  function burn(uint256 amount) external returns (bool) {
+    // ...
+  }
+
+  function burn(address user, uint256 amount) external onlyOwner returns (bool) {
+    // ...
+  }
+}
+```
+
+You may choose which function to call by using its signature:
+
+```js
+await mockContract.mock['burn(uint256)'].returns(true)
+await mockContract.mock['burn(address,uint256)'].withArgs('0x1234...', 1000).reverts()
+```
+
 ## Example
 
 The example below illustrates how `mock-contract` can be used to test the very simple `AmIRichAlready` contract.

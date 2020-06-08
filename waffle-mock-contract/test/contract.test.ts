@@ -5,6 +5,7 @@ import {Contract, ContractFactory} from 'ethers';
 
 import DoppelgangerContract from '../src/Doppelganger.json';
 import Counter from './helpers/interfaces/Counter.json';
+import CounterOverloaded from './helpers/interfaces/CounterOverloaded.json';
 
 use(chaiAsPromised);
 
@@ -18,8 +19,9 @@ describe('Doppelganger - Contract', () => {
       const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
       const contract = await factory.deploy();
       const pretender = new Contract(contract.address, Counter.abi, wallet);
+      const pretenderOverloaded = new Contract(contract.address, CounterOverloaded.abi, wallet);
 
-      return {contract, pretender};
+      return {contract, pretender, pretenderOverloaded};
     };
 
     it('reverts when trying to call a not initialized method', async () => {
@@ -46,6 +48,17 @@ describe('Doppelganger - Contract', () => {
       await contract.__waffle__mockReturns(callData, returnedValue);
 
       expect(await pretender.add(5)).to.equal(returnedValue);
+    });
+
+    it('allows function to be looked up by signature', async () => {
+      const {contract, pretenderOverloaded} = await deploy();
+      const addSignature = '0x4f2be91f';
+      const callData = `${addSignature}`;
+      const returnedValue = '0x1000000000000000000000000000000000000000000000000000000000004234';
+
+      await contract.__waffle__mockReturns(callData, returnedValue);
+
+      expect(await pretenderOverloaded['add()']()).to.equal(returnedValue);
     });
 
     it('reverts if mock was set up for call with some argument and method was called with another', async () => {
