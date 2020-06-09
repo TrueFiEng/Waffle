@@ -19,15 +19,28 @@ Creating a simple ENS for testing with :code:`ENS`.
 
 This class takes a :code:`wallet` in the constructor. The :code:`wallet` available in :code:`MockProvider` class in package :code:`@ethereum-waffle/provider`.
 
-.. tabs::
+Setup ENS
+---------
 
-  .. group-tab:: Waffle 3.0.0
+.. note::
 
-    Also, if you use :code:`MockProvider`, you can use :code:`setupENS()` function in :code:`MockProvider`, to create and setup simple :code:`ENS`. `Read more about this usage here <https://ethereum-waffle.readthedocs.io/en/latest/basic-testing.html#setup-ens>`__.
+  The feature was introduced in Waffle 3.0.0
 
-  .. group-tab:: Waffle 2.5.0
 
-    ENS is not supported in older Waffle versions.
+Also, if you use :code:`MockProvider`, you can use :code:`setupENS()` function in :code:`MockProvider`,
+to create and setup simple :code:`ENS`.
+
+.. code-block:: ts
+
+  import {MockProvider} from '@ethereum-waffle/provider';
+
+  const provider = new MockProvider();
+  await provider.setupENS();
+  await provider.ens.createTopLevelDomain('test');
+
+:code:`setupENS()` method employs the last of the provider's :code:`wallets` by default, but you can pass your own :code:`wallet` as an argument for :code:`setupENS(wallet)`.
+
+Also :code:`setupENS()` method saves ENS address in the provider's networks.
 
 Creating top level domain
 -------------------------
@@ -36,7 +49,7 @@ Use :code:`createTopLevelDomain` function to create a top level domain:
 
 .. code-block:: ts
 
-  await ensBuilder.createTopLevelDomain('test');
+  await ens.createTopLevelDomain('test');
 
 Creating sub domain
 -------------------
@@ -45,21 +58,20 @@ Use :code:`createSubDomain` function for creating a sub domain:
 
 .. code-block:: ts
 
-  await ensBuilder.createSubDomain('ethworks.test');
+  await ens.createSubDomain('ethworks.test');
 
-.. tabs::
+Creating sub domain with options
+--------------------------------
 
-  .. group-tab:: Waffle 3.0.0
+.. note::
 
-    It is also possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
+  The feature was introduced in Waffle 3.0.0
 
-    .. code-block:: ts
+It is also possible to create a sub domain recursively, if the top domain doesn't exist, by specifying the appropriate option:
 
-      await ens.createSubDomain('waffle.ethworks.tld', {recursive: true});
+.. code-block:: ts
 
-  .. group-tab:: Waffle 2.5.0
-
-    Not supported in this Waffle version.
+  await ens.createSubDomain('waffle.ethworks.tld', {recursive: true});
 
 Setting address
 ---------------
@@ -70,30 +82,22 @@ Use :code:`setAddress` function for setting address for the domain:
 
   await ensBuilder.setAddress('vlad.ethworks.test', '0x001...03');
 
-.. tabs::
+Setting address with options
+----------------------------
 
-  .. group-tab:: Waffle 3.0.0
+.. note::
 
-    It is also possible to set an address for domain recursively, if the domain doesn't exist, by specifying the appropriate option:
+  The feature was introduced in Waffle 3.0.0
 
-    .. code-block:: ts
 
-      await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
+It is also possible to set an address for domain recursively, if the domain doesn't exist, by specifying the appropriate option:
 
-  .. group-tab:: Waffle 2.5.0
+.. code-block:: ts
 
-    Not supported in this Waffle version.
+  await ens.setAddress('vlad.waffle.ethworks.tld', '0x001...03', {recursive: true});
 
-.. tabs::
+Use :code:`setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if the domain doesn't exist:
 
-  .. group-tab:: Waffle 3.0.0
+.. code-block:: ts
 
-    Use :code:`setAddressWithReverse` function for setting address for the domain and make this domain reverse. Add recursive option if the domain doesn't exist:
-
-    .. code-block:: ts
-
-      await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});
-
-  .. group-tab:: Waffle 2.5.0
-
-    Not supported in this Waffle version.
+  await ens.setAddressWithReverse('vlad.ethworks.tld', wallet, {recursive: true});

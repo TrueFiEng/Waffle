@@ -53,7 +53,7 @@ Below is an example contract written in Solidity. Place it in :code:`contracts/B
   // Example class - a mock class using delivering from ERC20
   contract BasicToken is ERC20 {
     constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
-        _mimnt(msg.sender, initialBalance);
+        _mint(msg.sender, initialBalance);
     }
   }
 
@@ -62,14 +62,15 @@ Compiling the contract
 
 Add the following entry in the :code:`package.json` of your project :
 
+.. note::
+
+  Since Waffle 3.0.0 it recognises :code:`waffle.json` as default configuration file. If your configuration file is called
+  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
+
 .. tabs::
 
   .. group-tab:: Waffle 3.0.0
-
-    .. note::
-
-      Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
-      :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
 
     .. code-block:: json
 
