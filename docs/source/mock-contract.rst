@@ -3,13 +3,17 @@ Mock contract
 
 Mocking your smart contract dependencies.
 
-.. note::
-  Breaking changes will not result in a new major version.
-
 Usage
 -----
+.. tabs::
 
-Create an instance of a mock contract providing the ABI/interface of the smart contract you want to mock:
+  .. group-tab:: Waffle 3.0.0
+
+    Create an instance of a mock contract providing the :code:`ABI` of the smart contract you want to mock:
+
+  .. group-tab:: Waffle 2.5.0
+
+    Create an instance of a mock contract providing the :code:`ABI/interface` of the smart contract you want to mock:
 
 .. code-block:: ts
 
@@ -19,7 +23,7 @@ Create an instance of a mock contract providing the ABI/interface of the smart c
 
   const mockContract = await deployMockContract(wallet, contractAbi);
 
-Mock contract can now be passed into other contracts by using the :code:`address` attribute.
+The mock contract can now be integrated into other contracts by using the :code:`address` attribute.
 Return values for mocked functions can be set using:
 
 .. code-block:: ts
@@ -63,7 +67,7 @@ The example below illustrates how :code:`mock-contract` can be used to test the 
 
 
 We are mostly interested in the :code:`tokenContract.balanceOf` call.
-Mock contract will be used to mock exactly this call with values that are significant for the return of the :code:`check()` method.
+Mock contract will be used to mock exactly this call with values that are relevant for the return of the :code:`check()` method.
 
 .. code-block:: ts
 

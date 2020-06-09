@@ -12,21 +12,25 @@ library from :code:`npm`.
 
 For example you can install the popular :code:`@openzeppelin/contracts` package:
 
-.. code-block:: text
+.. tabs::
 
-  yarn add @openzeppelin/contracts
+  .. group-tab:: Yarn
 
-Or if you prefer npm:
+    .. code-block:: text
 
-.. code-block:: text
+      yarn add @openzeppelin/contracts
 
-  npm install @openzeppelin/contracts
+  .. group-tab:: NPM
 
-After installing a library you can import it in your Solidity code:
+    .. code-block:: text
+
+      npm install @openzeppelin/contracts
+
+After installing a library, you can import it into your Solidity code:
 
 .. code-block:: solidity
 
-  pragma solidity ^0.5.0;
+  pragma solidity ^0.6.0;
 
   import "@openzeppelin/contracts/token/ERC721/ERC721Full.sol";
 
@@ -50,7 +54,7 @@ By default, Waffle uses `solc-js <https://github.com/ethereum/solc-js>`__
 for compiling smart contracts. The package provides JavaScript bindings for the
 Solidity compiler. It is slow, but easy to use and install in the JS ecosystem.
 
-Because we value speed and flexibility we provide some alternatives that you can
+Because we value speed and flexibility, we provide some alternatives that you can
 use with Waffle. There are two other options:
 
 1. Installing solc directly on your computer, see :ref:`native-solc`
@@ -61,9 +65,9 @@ use with Waffle. There are two other options:
 Using native solc
 -----------------
 
-This is the fastest option but comes with some downsides. A system wide
+This is the fastest option but comes with some downsides. The system wide
 installation means that you are stuck with a single Solidity version across all
-of your projects. Additionally it might be complicated to install old versions
+of your projects. Additionally it might be complicated to install the old versions
 of the compiler using this method.
 
 We recommend this option if you only care about the latest solidity version.
@@ -84,7 +88,7 @@ Change the :code:`compilerType` setting in your :code:`.waffle.json` file:
 
 To read more about configuring Waffle, see :ref:`configuration`.
 
-When compiling your smart contracts Waffle will now use the native solc installation.
+When compiling your smart contracts, Waffle will now use the native solc installation.
 
 .. _dockerized-solc:
 
@@ -118,7 +122,7 @@ Then, change the :code:`compilerType` setting in your :code:`.waffle.json` file:
 If no :code:`compilerVersion` is specified the docker tag pulled defaults to
 :code:`latest`. To read more about configuring Waffle, see :ref:`configuration`.
 
-When compiling your smart contracts Waffle will now use the docker image you
+When compiling your smart contracts, Waffle will now use the docker image you
 pulled.
 
 Using dockerized vyper
@@ -148,5 +152,5 @@ Then, change the :code:`compilerType` setting in your :code:`.waffle.json` file:
 If no :code:`compilerVersion` is specified the docker tag pulled defaults to
 :code:`latest`. To read more about configuring Waffle, see :ref:`configuration`.
 
-When compiling your smart contracts Waffle will now use the docker image you
+When compiling your smart contracts, Waffle will now use the docker image you
 pulled.

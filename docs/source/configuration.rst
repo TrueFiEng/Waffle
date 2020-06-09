@@ -6,40 +6,59 @@ Configuration
 Configuration file
 ------------------
 
-While Waffle works well enough without any configurations advanced users might
+While Waffle works well enough without any configurations, advanced users might
 want to excert more control over what happens when they use Waffle in their
 projects.
 
-This is why we made it very easy to configure Waffle to match your needs. All
-you need to do is create a :code:`.waffle.json` file inside your project and
+This is why we made it very easy to configure Waffle to meet your needs. All
+you need to do is create a :code:`waffle.json` file inside your project and
 point waffle to it.
 
-First create your :code:`.waffle.json` configuration file:
-
-.. code-block:: json
-
-  {}
-
-.. note::
-
-  All of the configuration options are optional.
-
-Afterwards update your :code:`package.json` build script:
+First create your :code:`waffle.json` configuration file:
 
 .. code-block:: json
 
   {
-    "scripts": {
-      "build": "waffle .waffle.json"
-    }
+    "compilerType": "solcjs",
+    "compilerVersion": "0.6.2",
+    "sourceDirectory": "./src",
+    "outputDirectory": "./build"
   }
 
 .. note::
 
-  Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
-  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+  Each configuration is optional.
 
-Configuration options starting waffle 2.4.0:
+Afterwards update your :code:`package.json` build script:
+
+.. tabs::
+
+  .. group-tab:: Waffle 3.0.0
+
+    .. note::
+
+      Waffle recognises :code:`waffle.json` as the default configuration file. If your configuration file is called
+      :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
+    .. code-block:: json
+
+      {
+        "scripts": {
+          "build": "waffle"
+        }
+      }
+
+  .. group-tab:: Waffle 2.5.0
+    .. code-block:: json
+
+      {
+        "scripts": {
+          "build": "waffle waffle.json"
+        }
+      }
+
+
+Configuration options:
 
 - :ref:`sourceDirectory`
 - :ref:`outputDirectory`
@@ -50,18 +69,6 @@ Configuration options starting waffle 2.4.0:
 - :ref:`compilerOptions`
 - :ref:`outputHumanReadableAbi`
 - :ref:`outputType`
-
-Deprecated configuration for waffle 2.3.0 and earlier:
-
-- :code:`sourcesPath` - renamed to :ref:`sourceDirectory`
-- :code:`targetPath` - renamed to :ref:`outputDirectory`
-- :code:`npmPath` - renamed to :ref:`nodeModulesDirectory`
-- :code:`compiler` - renamed to :ref:`compilerType`
-- :code:`docker-tag` - replaced by :ref:`compilerVersion`
-- :code:`solcVersion` - replaced by :ref:`compilerVersion`
-- :code:`legacyOutput` - removed, setting it to false had no effect
-- :code:`allowedPaths` - renamed to :ref:`compilerAllowedPaths`
-- :code:`ganacheOptions` - removed, wasn't used by the compiler
 
 .. _sourceDirectory:
 
@@ -127,10 +134,13 @@ compilerType
 Specifies the compiler to use. For more information see: :ref:`compile-times`.
 Allowed values:
 
-  - :code:`solcjs` (default)
+  - :code:`solcjs`
   - :code:`native`
   - :code:`dockerized-solc`
   - :code:`dockerized-vyper`
+
+Waffle uses :code:`solcjs` as the default value for
+:code:`compilerType`.
 
 Example:
 
@@ -237,7 +247,7 @@ outputHumanReadableAbi
 
 Waffle supports `Human Readable Abi <https://blog.ricmoo.com/human-readable-contract-abis-in-ethers-js-141902f4d917>`__.
 
-In order to enable its output you need to set :code:`outputHumanReadableAbi` to :code:`true` in your config file:
+In order to enable its output, you need to set :code:`outputHumanReadableAbi` to :code:`true` in your config file:
 
 .. code-block:: json
 
@@ -292,8 +302,11 @@ The configuration can even be a promise
   })
 
 .. hint::
-  This is a powerful feature if you want to asynchronously load different compliation configurations in different environments.
-  For example, you can use native solc in CI for faster compilation, whereas deciding the exact solc-js version locally based on the contract versions being used, since many of those operations are asynchronous, you'll most likely be returning a Promise to waffle to handle.
+  This is a powerful feature if you want to asynchronously load different compliation configurations
+  in different environments.
+  For example, you can use native solc in CI for faster compilation, while deciding the exact
+  solc-js version locally based on the contract versions being used. Since many of those operations
+  are asynchronous, you'll most likely be returning a Promise to waffle to handle.
 
 Setting Solidity compiler version
 ---------------------------------
@@ -303,7 +316,7 @@ See :ref:`compilerVersion`.
 Usage with Truffle
 ------------------
 
-Waffle output should be compatible by default with Truffle.
+Waffle output should be compatible with Truffle by default.
 
 Custom compiler options
 -----------------------
@@ -335,23 +348,35 @@ The default compilation process is not compatible with KLAB
   }
 
 
-2. Set appropriate output type. We support two types: one (default) generates single file for each contract
-and second (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The second type does not meet
+2. Set appropriate output type. We support two types: one (default) generates a single file for each contract
+and the other (KLAB friendly) generates one file (Combined-Json.json) combining all contracts. The latter type does not meet
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
-To choice of the output is set in config file, i.e.:
+Set the output in the config file:
+
+.. tabs::
+
+  .. group-tab:: Waffle 3.0.0
+
+    Possible options are:
+
+    - `'multiple'`: a single file for each contract;
+    - `'combined'`: one KLAB friendly file;
+    - `'all'`: generates both above outputs;
+    - `'minimal'`: a single file for each contract with minimal information (just abi and bytecode).
+
+  .. group-tab:: Waffle 2.5.0
+
+    Possible options are:
+
+    - `'multiple'`: single file for each contract;
+    - `'combined'`: one KLAB friendly file;
+    - `'all'`: generates both above outputs;
 
 .. code-block:: json
 
   {
     "outputType": "combined"
   }
-
-Possible options are:
-
-- `'multiple'`: single file for each contract;
-- `'combined'`: one KLAB friendly file;
--  `'all'`: generates both above outputs;
-- `'minimal'`: single file for each contract with minimal information (just abi and bytecode).
 
 An example of full KLAB friendly config file:
 
@@ -377,7 +402,7 @@ An example of full KLAB friendly config file:
 
 Monorepo
 --------
-Waffle works well with mono-repositories. It is enough to set up common nodeModulesDirectory in the configuration file to make it work.
+Waffle works well with mono-repositories. It is enough to set up a common nodeModulesDirectory in the configuration file to make it work.
 We recommend using `yarn workspaces <https://yarnpkg.com/lang/en/docs/workspaces/>`_ and `wsrun <https://github.com/whoeverest/wsrun>`_ for monorepo management.
 
 .. _lerna:
@@ -385,12 +410,12 @@ We recommend using `yarn workspaces <https://yarnpkg.com/lang/en/docs/workspaces
 Usage with Lernajs
 ------------------
 
-Waffle works with `lerna <https://lernajs.io/>`__, but require additional configuration.
-When lerna cross-links npm packages in monorepo, it creates symbolic links to original catalog.
-That leads to sources files located beyond allowed paths. This process breaks compilation with native solc.
+Waffle works with `lerna <https://lernajs.io/>`__, but requires additional configuration.
+When lerna cross-links npm packages in monorepo, it creates symbolic links to the original catalog.
+They lead to sources files located beyond allowed paths. This process breaks compilation with native solc.
 
 
-If you see a message like below in your monorepo setup:
+If you see the following message in your monorepo setup:
 
 .. code-block:: text
 
@@ -421,4 +446,4 @@ Add to waffle configuration in YourProjectDapp:
 
 That should solve a problem.
 
-Currently Waffle does not support similar feature for dockerized solc.
+Currently Waffle does not support a similar feature for dockerized solc.

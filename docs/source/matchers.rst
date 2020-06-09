@@ -36,7 +36,7 @@ Testing what events were emitted with what arguments:
 Called on contract
 ------------------
 
-Testing if function was called on provided contract:
+Testing if function was called on the provided contract:
 
 .. code-block:: ts
 
@@ -77,18 +77,18 @@ Testing if transaction was reverted with certain message:
 
 Change balance
 --------------
-Testing whether the transaction changes balance of an account
+Testing whether the transaction changes the balance of the account
 
 .. code-block:: ts
 
-  await expect(() => myContract.transferWei(receiverWallet.address, 2))
-    .to.changeBalance(receiverWallet, 2);
+  await expect(() => wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
+    .to.changeBalance(walletTo, 200);
 
 
-**Note:** transaction call should be passed to the ``expect`` as a callback (we need to check the balance before the call).
+.. note:: The transaction call should be passed to the :code:`expect` as a callback (we need to check the balance before the call).
 The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet.
 
-**Note:** ``changeBalance`` calls should not be chained. If you need to chain it, you probably want to use ``changeBalances`` matcher.
+.. note:: :code:`changeBalance` calls should not be chained. If you need to chain it, you probably want to use :code:`changeBalances` matcher.
 
 Change balance (multiple accounts)
 ----------------------------------
@@ -97,13 +97,13 @@ Testing whether the transaction changes balance for multiple accounts:
 
 .. code-block:: ts
 
-  await expect(() => myContract.transferWei(receiverWallet.address, 2))
-    .to.changeBalances([senderWallet, receiverWallet], [-2, 2]);
+  await expect(() => wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
+    .to.changeBalances([walletFrom, walletTo], [-200, 200]);
 
 
 Proper address
 ------------------
-Testing if string is a proper address:
+Testing if a string is a proper address:
 
 .. code-block:: ts
 
@@ -112,7 +112,7 @@ Testing if string is a proper address:
 
 Proper private key
 ------------------
-Testing if string is a proper secret:
+Testing if a string is a proper secret:
 
 .. code-block:: ts
 
@@ -120,7 +120,7 @@ Testing if string is a proper secret:
 
 Proper hex
 ----------
-Testing if string is a proper hex value of given length:
+Testing if a string is a proper hex value of given length:
 
 .. code-block:: ts
 
