@@ -40,6 +40,7 @@ Versions and ethers compatibility
    basic-testing.rst
    matchers.rst
    fixtures.rst
-   configuration.rst
    mock-contract.rst
    ens.rst
+   configuration.rst
+   migration-guides.rst
