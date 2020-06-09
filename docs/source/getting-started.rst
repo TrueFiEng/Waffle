@@ -4,7 +4,7 @@ Getting Started
 Installation
 ------------
 
-To get started install :code:`ethereum-waffle`:
+To get started, install :code:`ethereum-waffle`:
 
 .. tabs::
 
@@ -23,7 +23,7 @@ To get started install :code:`ethereum-waffle`:
 Add external dependency
 -----------------------
 
-To add an external library install it using yarn or npm:
+Add an external library by installing it with yarn or npm:
 
 .. tabs::
 
@@ -42,7 +42,7 @@ To add an external library install it using yarn or npm:
 Writing a contract
 ------------------
 
-Below is example contract written in Solidity. Place it in :code:`contracts/BasicToken.sol` file of your project:
+Below is an example contract written in Solidity. Place it in :code:`contracts/BasicToken.sol` file of your project:
 
 .. code-block:: solidity
 
@@ -53,14 +53,14 @@ Below is example contract written in Solidity. Place it in :code:`contracts/Basi
   // Example class - a mock class using delivering from ERC20
   contract BasicToken is ERC20 {
     constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
-        _mint(msg.sender, initialBalance);
+        _mimnt(msg.sender, initialBalance);
     }
   }
 
 Compiling the contract
 ----------------------
 
-In the :code:`package.json` file of your project add the following entry:
+Add the following entry in the :code:`package.json` of your project :
 
 .. tabs::
 
@@ -88,11 +88,6 @@ In the :code:`package.json` file of your project add the following entry:
           "build": "waffle waffle.json"
         }
       }
-
-.. note::
-
-  Waffle recognises :code:`waffle.json` as default configuration file. If your configuration file is called
-  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
 
 In the :code:`waffle.json` file of your project add the following entry:
 
@@ -147,9 +142,9 @@ Writing tests
 -------------
 
 After you have successfully authored a Smart Contract you can now think about
-testing it. Fortunately for you Waffle is packed with tools that help with that.
+testing it. Fortunately for you, Waffle is packed with tools that help with that.
 
-Tests in waffle are written using `Mocha <https://mochajs.org/>`__ alongide with
+Tests in waffle are written using `Mocha <https://mochajs.org/>`__ alongside with
 `Chai <https://www.chaijs.com/>`__. You can use a different test environment,
 but Waffle matchers only work with :code:`chai`.
 
@@ -169,7 +164,7 @@ Run:
 
       npm install --save-dev mocha chai
 
-Belows is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
+Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
 .. code-block:: ts
 

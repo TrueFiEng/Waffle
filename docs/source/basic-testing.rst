@@ -72,7 +72,7 @@ Setup ENS
 
   .. group-tab:: Waffle 3.0.0
 
-    To setup basic ENS use the provider's function :code:`setupENS()`.
+    To setup basic ENS, use the provider's function :code:`setupENS()`.
 
     .. code-block:: ts
 
@@ -94,7 +94,7 @@ Setup ENS
 Deploying contracts
 -------------------
 
-Once you compile your contracts using waffle you can deploy them in your javascript code. It accepts three arguments:
+Once you compile your contracts using waffle, you can deploy them in your javascript code. It accepts three arguments:
   - wallet to send the deploy transaction
   - contract information (abi and bytecode)
   - contract constructor arguments
@@ -132,4 +132,4 @@ Link a library:
   link(LibraryConsumer, 'contracts/MyLibrary.sol:MyLibrary', myLibrary.address);
   libraryConsumer = await deployContract(wallet, LibraryConsumer, []);
 
-.. note:: As the second parameter of the link function, you need to use a fully qualified name (path to the file relative to the root of the project, followed by a colon and the contract name).
+.. note:: You need to use a fully qualified name as the second parameter of the link function (path to the file relative to the root of the project, followed by a colon and the contract name).

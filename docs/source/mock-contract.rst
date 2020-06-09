@@ -23,7 +23,7 @@ Usage
 
   const mockContract = await deployMockContract(wallet, contractAbi);
 
-Mock contract can now be passed into other contracts by using the :code:`address` attribute.
+The mock contract can now be integrated into other contracts by using the :code:`address` attribute.
 Return values for mocked functions can be set using:
 
 .. code-block:: ts
@@ -67,7 +67,7 @@ The example below illustrates how :code:`mock-contract` can be used to test the 
 
 
 We are mostly interested in the :code:`tokenContract.balanceOf` call.
-Mock contract will be used to mock exactly this call with values that are significant for the return of the :code:`check()` method.
+Mock contract will be used to mock exactly this call with values that are relevant for the return of the :code:`check()` method.
 
 .. code-block:: ts
 
