@@ -31,14 +31,14 @@ First create your :code:`waffle.json` configuration file:
 
 Afterwards update your :code:`package.json` build script:
 
+.. note::
+
+  Since Waffle 3.0.0 it recognises :code:`waffle.json` as the default configuration file. If your configuration file is called
+  :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
+
 .. tabs::
 
   .. group-tab:: Waffle 3.0.0
-
-    .. note::
-
-      Waffle recognises :code:`waffle.json` as the default configuration file. If your configuration file is called
-      :code:`waffle.json`, it's possible to use just :code:`waffle` to build contracts.
 
     .. code-block:: json
 
@@ -353,24 +353,17 @@ and the other (KLAB friendly) generates one file (Combined-Json.json) combining 
 (in contrary to the first one) all official solidity standards since KLAB requirements are slightly modified.
 Set the output in the config file:
 
-.. tabs::
 
-  .. group-tab:: Waffle 3.0.0
+Possible options are:
 
-    Possible options are:
+- `'multiple'`: a single file for each contract;
+- `'combined'`: one KLAB friendly file;
+- `'all'`: generates both above outputs;
+- `'minimal'`: a single file for each contract with minimal information (just abi and bytecode).
 
-    - `'multiple'`: a single file for each contract;
-    - `'combined'`: one KLAB friendly file;
-    - `'all'`: generates both above outputs;
-    - `'minimal'`: a single file for each contract with minimal information (just abi and bytecode).
+.. note::
 
-  .. group-tab:: Waffle 2.5.0
-
-    Possible options are:
-
-    - `'multiple'`: single file for each contract;
-    - `'combined'`: one KLAB friendly file;
-    - `'all'`: generates both above outputs;
+  `'minimal'` option was introduced in Waffle 3.0.0.
 
 .. code-block:: json
 
@@ -402,7 +395,7 @@ An example of full KLAB friendly config file:
 
 Monorepo
 --------
-Waffle works well with mono-repositories. It is enough to set up a common nodeModulesDirectory in the configuration file to make it work.
+Waffle works well with mono-repositories. It is enough to set up a common :code:`nodeModulesDirectory` in the configuration file to make it work.
 We recommend using `yarn workspaces <https://yarnpkg.com/lang/en/docs/workspaces/>`_ and `wsrun <https://github.com/whoeverest/wsrun>`_ for monorepo management.
 
 .. _lerna:
