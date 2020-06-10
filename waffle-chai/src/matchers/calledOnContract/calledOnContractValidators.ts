@@ -1,28 +1,32 @@
 import {Contract} from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
 
+interface ErrorConstructor<T extends any[]> {
+  new (...args: T): Error;
+}
+
 export function validateContract(contract: any): asserts contract is Contract {
-  validateCondition(
-    contract instanceof Contract,
+  ensure(
+    contract instanceof Contract, TypeError,
     'argument must be a contract'
   );
 }
 
 export function validateMockProvider(provider: any): asserts provider is MockProvider {
-  validateCondition(
-    !!provider.callHistory,
+  ensure(
+    !!provider.callHistory, TypeError,
     'contract.provider should have a call history'
   );
 
-  validateCondition(
-    provider.callHistory instanceof Array,
-    'contract.provider.callHistory must be a CallHistory'
+  ensure(
+    provider.callHistory instanceof Array, Error,
+    'calledOnContract matcher requires provider that support call history'
   );
 }
 
 export function validateFnName(fnName: any, contract: Contract): asserts fnName is string {
-  validateCondition(
-    typeof fnName === 'string',
+  ensure(
+    typeof fnName === 'string', TypeError,
     'function name must be a string'
   );
   function isFunction(name: string) {
@@ -32,14 +36,15 @@ export function validateFnName(fnName: any, contract: Contract): asserts fnName 
       return false;
     }
   }
-  validateCondition(
-    isFunction(fnName),
+  ensure(
+    isFunction(fnName), TypeError,
     'function must exist in provided contract'
   );
 }
 
-function validateCondition(condition: boolean, msg: string): asserts condition {
+export function ensure<T extends any[]>(condition: boolean, ErrorToThrow: ErrorConstructor<T>, ...errorArgs: T):
+  asserts condition {
   if (!condition) {
-    throw new TypeError(msg);
+    throw new ErrorToThrow(...errorArgs);
   }
 }

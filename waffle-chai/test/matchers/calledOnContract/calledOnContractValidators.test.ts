@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {MockProvider, RecordedCall} from '@ethereum-waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 import {constants, Contract, ContractFactory, getDefaultProvider} from 'ethers';
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
 import {validateMockProvider} from '../../../src/matchers/calledOnContract/calledOnContractValidators';
@@ -55,14 +55,13 @@ describe('UNIT: provider validation', () => {
   });
 
   it('Incorrect type of call history in provider', async () => {
-    const provider = {callHistory: 'callHistory'};
+    const provider = {callHistory: 'invalidType'};
     expect(() => validateMockProvider(provider))
-      .to.throw('contract.provider.callHistory must be a CallHistory');
+      .to.throw('calledOnContract matcher requires provider that support call history');
   });
 
   it('Correct type of call history in provider', () => {
-    const record: RecordedCall = {};
-    const provider = {callHistory: [record]};
+    const provider = {callHistory: []};
     expect(() => validateMockProvider(provider))
       .to.not.throw();
   });
