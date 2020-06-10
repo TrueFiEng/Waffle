@@ -10,8 +10,13 @@ export function validateContract(contract: any): asserts contract is Contract {
 
 export function validateMockProvider(provider: any): asserts provider is MockProvider {
   validateCondition(
-    provider instanceof MockProvider,
-    'contract.provider must be a MockProvider'
+    !!provider.callHistory,
+    'contract.provider should have a call history'
+  );
+
+  validateCondition(
+    provider.callHistory instanceof Array,
+    'contract.provider.callHistory must be a CallHistory'
   );
 }
 
