@@ -1,4 +1,4 @@
-import {providers, Wallet} from 'ethers';
+import {providers, Signer, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
@@ -41,12 +41,11 @@ export class MockProvider extends providers.Web3Provider {
     return this._ens;
   }
 
-  async setupENS(wallet?: Wallet) {
-    if (!wallet) {
-      const wallets = this.getWallets();
-      wallet = wallets[wallets.length - 1];
+  async setupENS(signer?: Signer) {
+    if (!signer) {
+      signer = this.getSigner(0);
     }
-    const ens = await deployENS(wallet);
+    const ens = await deployENS(signer);
     this.network.ensAddress = ens.ens.address;
     this._ens = ens;
   }

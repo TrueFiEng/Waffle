@@ -1,6 +1,6 @@
 import chai, {expect} from 'chai';
-import {constants, utils} from 'ethers';
-import {getWallet} from './utils';
+import {constants, Signer, utils} from 'ethers';
+import {getSigner} from './utils';
 import {deployENS, ENS} from '../src/index';
 
 import chaiAsPromised from 'chai-as-promised';
@@ -12,11 +12,11 @@ const {namehash} = utils;
 const nonExistingNode = '0x0000000000000000000000000000000000000000000000000000000000000001';
 
 describe('Deploy Ens', async () => {
-  const wallet = getWallet();
+  const signer: Signer = getSigner();
   let ens: ENS;
 
   beforeEach(async () => {
-    ens = await deployENS(wallet);
+    ens = await deployENS(signer);
     await ens.createTopLevelDomain('test');
   });
 
@@ -26,12 +26,12 @@ describe('Deploy Ens', async () => {
 
   it('PublicResolver deployed and setup', async () => {
     expect(await ens.ens.resolver(namehash('resolver'))).to.eq(ens.resolver.address);
-    expect(await ens.ens.owner(namehash('resolver'))).to.eq(wallet.address);
+    expect(await ens.ens.owner(namehash('resolver'))).to.eq(await signer.getAddress());
     expect(await ens.resolver['addr(bytes32)'](namehash('resolver'))).to.eq(ens.resolver.address);
   });
 
   it('ReverseRegistrar deployed and setup', async () => {
-    expect(await ens.ens.owner(namehash('reverse'))).to.eq(wallet.address);
+    expect(await ens.ens.owner(namehash('reverse'))).to.eq(await signer.getAddress());
     expect(await ens.ens.owner(namehash('addr.reverse'))).to.eq(ens.reverseRegistrar.address);
   });
 
@@ -81,17 +81,17 @@ describe('Deploy Ens', async () => {
       it('existing domain', async () => {
         const node = namehash('vlad.ethworks.test');
         await ens.createSubDomain('ethworks.test');
-        await ens.setAddress('vlad.ethworks.test', ens.wallet.address);
-        expect(await ens.ens.owner(node)).to.eq(ens.wallet.address);
-        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(ens.wallet.address);
+        await ens.setAddress('vlad.ethworks.test', await ens.signer.getAddress());
+        expect(await ens.ens.owner(node)).to.eq(await ens.signer.getAddress());
+        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(await ens.signer.getAddress());
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
       });
     });
 
     describe('Reverse', async () => {
       it('reverse', async () => {
-        await ens.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
-        const node = namehash(wallet.address.slice(2) + '.addr.reverse');
+        await ens.setAddressWithReverse('vlad.ethworks.test', signer, {recursive: true});
+        const node = namehash((await signer.getAddress()).slice(2) + '.addr.reverse');
         expect(await ens.ens.owner(node)).to.eq(ens.reverseRegistrar.address);
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
         expect(await ens.resolver.name(node)).to.eq('vlad.ethworks.test');
@@ -101,16 +101,16 @@ describe('Deploy Ens', async () => {
     describe('Recursive', async () => {
       it('nonexistent domain', async () => {
         const node = namehash('vlad.test.tld');
-        await ens.setAddress('vlad.test.tld', ens.wallet.address, {recursive: true});
-        expect(await ens.ens.owner(node)).to.eq(ens.wallet.address);
-        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(ens.wallet.address);
+        await ens.setAddress('vlad.test.tld', await ens.signer.getAddress(), {recursive: true});
+        expect(await ens.ens.owner(node)).to.eq(await ens.signer.getAddress());
+        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(await ens.signer.getAddress());
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
       });
     });
 
     describe('Fail', async () => {
       it('nonexistent domain', async () => {
-        await expect(ens.setAddress('vlad.nonexistent.test', ens.wallet.address))
+        await expect(ens.setAddress('vlad.nonexistent.test', await ens.signer.getAddress()))
           .to.be.rejectedWith('Domain nonexistent.test doesn\'t exist.');
       });
     });

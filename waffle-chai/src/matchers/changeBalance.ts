@@ -1,9 +1,9 @@
-import {Wallet, BigNumber} from 'ethers';
+import {BigNumber, Signer} from 'ethers';
 
 export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalance', function (
     this: any,
-    wallet: Wallet,
+    signer: Signer,
     balanceChange: any
   ) {
     const subject = this._obj;
@@ -11,13 +11,13 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
       throw new Error(`Expect subject should be a callback returning the Promise
         e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalance('0xa', -200)`);
     }
-    const derivedPromise = getBalanceChange(subject, wallet).then(
-      (actualChange) => {
+    const derivedPromise = getBalanceChange(subject, signer).then(
+      async (actualChange) => {
         this.assert(
           actualChange.eq(BigNumber.from(balanceChange)),
-          `Expected "${wallet.address}" to change balance by ${balanceChange} wei, ` +
+          `Expected "${await signer.getAddress()}" to change balance by ${balanceChange} wei, ` +
             `but it has changed by ${actualChange} wei`,
-          `Expected "${wallet.address}" to not change balance by ${balanceChange} wei,`,
+          `Expected "${await signer.getAddress()}" to not change balance by ${balanceChange} wei,`,
           balanceChange,
           actualChange
         );
@@ -32,10 +32,10 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
 
 export async function getBalanceChange(
   transactionCallback: () => any,
-  wallet: Wallet
+  signer: Signer
 ) {
-  const balanceBefore = await wallet.getBalance();
+  const balanceBefore = await signer.getBalance();
   await transactionCallback();
-  const balanceAfter = await wallet.getBalance();
+  const balanceAfter = await signer.getBalance();
   return balanceAfter.sub(balanceBefore);
 }

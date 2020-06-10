@@ -1,12 +1,12 @@
-import {ContractFactory, utils, Wallet} from 'ethers';
+import {ContractFactory, Signer, utils} from 'ethers';
 import {ExpectedTopLevelDomain, InvalidDomain} from './errors';
 
 const {namehash} = utils;
 
 export const COIN_TYPE_ETH = 60;
 
-export const deployContract = async (wallet: Wallet, contractJSON: any, args: Array<any>) => {
-  const factory = new ContractFactory(contractJSON.abi, contractJSON.bytecode, wallet);
+export const deployContract = async (signer: Signer, contractJSON: any, args: Array<any>) => {
+  const factory = new ContractFactory(contractJSON.abi, contractJSON.bytecode, signer);
   return factory.deploy(...args);
 };
 
