@@ -1,7 +1,8 @@
 import {expect} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
+import {MockProvider, RecordedCall} from '@ethereum-waffle/provider';
 import {constants, Contract, ContractFactory, getDefaultProvider} from 'ethers';
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
+import {validateMockProvider} from '../../../src/matchers/calledOnContract/calledOnContractValidators';
 
 async function setup() {
   const provider = new MockProvider();
@@ -27,7 +28,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
 
     expect(
       () => expect('calledFunction').to.be.calledOnContract(contract)
-    ).to.throw(TypeError, 'contract.provider must be a MockProvider');
+    ).to.throw(TypeError, 'contract.provider should have a call history');
   });
 
   it('throws type error when the provided function is not a string', async () => {
@@ -44,5 +45,25 @@ describe('INTEGRATION: ethCalledValidators', () => {
     expect(
       () => expect('notExistingFunction').to.be.calledOnContract(contract)
     ).to.throw(TypeError, 'function must exist in provided contract');
+  });
+});
+
+describe('UNIT: provider validation', () => {
+  it('No call history in provider', async () => {
+    expect(() => validateMockProvider(getDefaultProvider()))
+      .to.throw('contract.provider should have a call history');
+  });
+
+  it('Incorrect type of call history in provider', async () => {
+    const provider = {callHistory: 'callHistory'};
+    expect(() => validateMockProvider(provider))
+      .to.throw('contract.provider.callHistory must be a CallHistory');
+  });
+
+  it('Correct type of call history in provider', () => {
+    const record: RecordedCall = {};
+    const provider = {callHistory: [record]};
+    expect(() => validateMockProvider(provider))
+      .to.not.throw();
   });
 });
