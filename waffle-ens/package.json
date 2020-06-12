@@ -1,6 +1,6 @@
 {
   "name": "@ethereum-waffle/ens",
-  "version": "3.0.0-beta.3",
+  "version": "3.0.0",
   "description": "A mock ens implementation for testing.",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -42,7 +42,7 @@
     "ganache-core": "^2.10.2"
   },
   "dependencies": {
-    "ethers": "^5.0.0-beta.184",
+    "ethers": "^5.0.1",
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4"
   }
