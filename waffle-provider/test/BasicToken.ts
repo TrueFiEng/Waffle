@@ -1,7 +1,7 @@
-import {Wallet, ContractFactory} from 'ethers';
+import {ContractFactory, Signer} from 'ethers';
 
-export async function deployToken(wallet: Wallet, totalSupply: number) {
-  const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, wallet);
+export async function deployToken(signer: Signer, totalSupply: number) {
+  const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, signer);
   return factory.deploy(totalSupply);
 }
 

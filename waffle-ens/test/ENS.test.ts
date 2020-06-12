@@ -81,9 +81,9 @@ describe('Deploy Ens', async () => {
       it('existing domain', async () => {
         const node = namehash('vlad.ethworks.test');
         await ens.createSubDomain('ethworks.test');
-        await ens.setAddress('vlad.ethworks.test', ens.wallet.address);
-        expect(await ens.ens.owner(node)).to.eq(ens.wallet.address);
-        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(ens.wallet.address);
+        await ens.setAddress('vlad.ethworks.test', await ens.signer.getAddress());
+        expect(await ens.ens.owner(node)).to.eq(await ens.signer.getAddress());
+        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(await ens.signer.getAddress());
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
       });
     });
@@ -91,7 +91,7 @@ describe('Deploy Ens', async () => {
     describe('Reverse', async () => {
       it('reverse', async () => {
         await ens.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
-        const node = namehash(wallet.address.slice(2) + '.addr.reverse');
+        const node = namehash((wallet.address).slice(2) + '.addr.reverse');
         expect(await ens.ens.owner(node)).to.eq(ens.reverseRegistrar.address);
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
         expect(await ens.resolver.name(node)).to.eq('vlad.ethworks.test');
@@ -101,16 +101,16 @@ describe('Deploy Ens', async () => {
     describe('Recursive', async () => {
       it('nonexistent domain', async () => {
         const node = namehash('vlad.test.tld');
-        await ens.setAddress('vlad.test.tld', ens.wallet.address, {recursive: true});
-        expect(await ens.ens.owner(node)).to.eq(ens.wallet.address);
-        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(ens.wallet.address);
+        await ens.setAddress('vlad.test.tld', await ens.signer.getAddress(), {recursive: true});
+        expect(await ens.ens.owner(node)).to.eq(await ens.signer.getAddress());
+        expect(await ens.resolver['addr(bytes32)'](node)).to.eq(await ens.signer.getAddress());
         expect(await ens.ens.resolver(node)).to.eq(ens.resolver.address);
       });
     });
 
     describe('Fail', async () => {
       it('nonexistent domain', async () => {
-        await expect(ens.setAddress('vlad.nonexistent.test', ens.wallet.address))
+        await expect(ens.setAddress('vlad.nonexistent.test', await ens.signer.getAddress()))
           .to.be.rejectedWith('Domain nonexistent.test doesn\'t exist.');
       });
     });
