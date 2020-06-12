@@ -1,9 +1,7 @@
 import {Contract} from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
-
-interface ErrorConstructor<T extends any[]> {
-  new (...args: T): Error;
-}
+import {ProviderWithHistoryExpected} from './error';
+import {ensure} from './utils';
 
 export function validateContract(contract: any): asserts contract is Contract {
   ensure(
@@ -14,13 +12,7 @@ export function validateContract(contract: any): asserts contract is Contract {
 
 export function validateMockProvider(provider: any): asserts provider is MockProvider {
   ensure(
-    !!provider.callHistory, TypeError,
-    'contract.provider should have a call history'
-  );
-
-  ensure(
-    provider.callHistory instanceof Array, Error,
-    'calledOnContract matcher requires provider that support call history'
+    (!!provider.callHistory && provider.callHistory instanceof Array), ProviderWithHistoryExpected
   );
 }
 
@@ -40,11 +32,4 @@ export function validateFnName(fnName: any, contract: Contract): asserts fnName 
     isFunction(fnName), TypeError,
     'function must exist in provided contract'
   );
-}
-
-export function ensure<T extends any[]>(condition: boolean, ErrorToThrow: ErrorConstructor<T>, ...errorArgs: T):
-  asserts condition {
-  if (!condition) {
-    throw new ErrorToThrow(...errorArgs);
-  }
 }

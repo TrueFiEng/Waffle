@@ -28,7 +28,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
 
     expect(
       () => expect('calledFunction').to.be.calledOnContract(contract)
-    ).to.throw(TypeError, 'contract.provider should have a call history');
+    ).to.throw('calledOnContract matcher requires provider that support call history');
   });
 
   it('throws type error when the provided function is not a string', async () => {
@@ -51,7 +51,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
 describe('UNIT: provider validation', () => {
   it('No call history in provider', async () => {
     expect(() => validateMockProvider(getDefaultProvider()))
-      .to.throw('contract.provider should have a call history');
+      .to.throw('calledOnContract matcher requires provider that support call history');
   });
 
   it('Incorrect type of call history in provider', async () => {
