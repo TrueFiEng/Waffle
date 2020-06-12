@@ -1,12 +1,12 @@
-import {Contract, ContractFactory, utils, Wallet} from 'ethers';
+import {Contract, ContractFactory, Signer, utils} from 'ethers';
 import {Fragment, JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
 
 type ABI = string | Array<Fragment | JsonFragment | string>
 
-async function deploy(wallet: Wallet) {
-  const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
+async function deploy(signer: Signer) {
+  const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, signer);
   return factory.deploy();
 }
 
@@ -48,11 +48,11 @@ export interface MockContract extends Contract {
   };
 }
 
-export async function deployMockContract(wallet: Wallet, abi: ABI): Promise<MockContract> {
-  const mockContractInstance = await deploy(wallet);
+export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
+  const mockContractInstance = await deploy(signer);
 
   const mock = createMock(abi, mockContractInstance);
-  const mockedContract = new Contract(mockContractInstance.address, abi, wallet) as MockContract;
+  const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;
   mockedContract.mock = mock;
 
   return mockedContract;

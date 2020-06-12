@@ -1,4 +1,4 @@
-import {Wallet, providers, ContractFactory} from 'ethers';
+import {providers, ContractFactory, Signer} from 'ethers';
 import {ContractJSON, isStandard, hasByteCode} from './ContractJSON';
 
 const defaultDeployOptions = {
@@ -7,7 +7,7 @@ const defaultDeployOptions = {
 };
 
 export async function deployContract(
-  wallet: Wallet,
+  signer: Signer,
   contractJSON: ContractJSON,
   args: any[] = [],
   overrideOptions: providers.TransactionRequest = {}
@@ -19,7 +19,7 @@ export async function deployContract(
   const factory = new ContractFactory(
     contractJSON.abi,
     bytecode,
-    wallet
+    signer
   );
   const contract = await factory.deploy(...args, {
     ...defaultDeployOptions,

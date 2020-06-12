@@ -64,7 +64,7 @@ describe('INTEGRATION: MockProvider', () => {
       const wallets = provider.getWallets();
       const wallet = wallets[wallets.length - 1];
       expect(provider.network.ensAddress).to.eq(provider.ens.ens.address);
-      expect(provider.ens.wallet.address).to.eq(wallet.address);
+      expect(await provider.ens.signer.getAddress()).to.eq(wallet.address);
     });
 
     it('resolveName', async () => {
