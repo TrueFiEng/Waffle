@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/mock-contract",
   "description": "Mock smart contracts in a smart way.",
-  "version": "3.0.0-beta.3",
+  "version": "3.0.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -40,13 +40,13 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.0-beta.137",
-    "ethers": "^5.0.0-beta.184"
+    "@ethersproject/abi": "^5.0.1",
+    "ethers": "^5.0.1"
   },
   "devDependencies": {
-    "@ethereum-waffle/chai": "^3.0.0-beta.3",
-    "@ethereum-waffle/compiler": "^3.0.0-beta.3",
-    "@ethereum-waffle/provider": "^3.0.0-beta.3",
+    "@ethereum-waffle/chai": "^3.0.0",
+    "@ethereum-waffle/compiler": "^3.0.0",
+    "@ethereum-waffle/provider": "^3.0.0",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/mocha": "^5.2.7",
