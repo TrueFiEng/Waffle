@@ -3,9 +3,9 @@
 
 ![Ethereum Waffle](https://raw.githubusercontent.com/EthWorks/Waffle/master/docs/source/logo.png)
 
-Library for writing and testing smart contracts.
+The most advanced framework for testing smart contracts.
 
-Sweeter, simpler and faster than Truffle.
+Sweeter, simpler and faster.
 
 ## Links
 * Website - https://getwaffle.io/
