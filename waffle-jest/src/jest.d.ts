@@ -1,23 +1,34 @@
-declare namespace jest {
-  interface Matchers<R> {
-    // misc matchers
-    toBeProperAddress(): R;
-    toBeProperPrivateKey(): R;
-    toBeProperHex(length: number): R;
+import {BigNumber, Wallet, Contract} from 'ethers'; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-    // BigNumber matchers
-    toEqBN(value: number | string | BigNumber): R;
-    toBeGtBN(value: number | string | BigNumber): R;
-    toBeLtBN(value: number | string | BigNumber): R;
-    toBeGteBN(value: number | string | BigNumber): R;
-    toBeLteBN(value: number | string | BigNumber): R;
+export type Numberish = number | string | BigNumber;
 
-    // balance matchers
-    toChangeBalance(wallet: Wallet, balanceChange: number | string | BigNumber): R;
-    toChangeBalances(wallets: Wallet[], balanceChanges: any[]): R;
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      // misc matchers
+      toBeProperAddress(): R;
+      toBeProperPrivateKey(): R;
+      toBeProperHex(length: number): R;
 
-    // revert matchers
-    toBeReverted(): R;
-    toBeRevertedWith(revertReason: string): R;
+      // BigNumber matchers
+      toEqBN(value: Numberish): R;
+      toBeGtBN(value: Numberish): R;
+      toBeLtBN(value: Numberish): R;
+      toBeGteBN(value: Numberish): R;
+      toBeLteBN(value: Numberish): R;
+
+      // balance matchers
+      toChangeBalance(wallet: Wallet, balanceChange: Numberish): R;
+      toChangeBalances(wallets: Wallet[], balanceChanges: Numberish[]): R;
+
+      // revert matchers
+      toBeReverted(): R;
+      toBeRevertedWith(revertReason: string): R;
+
+      // emit matcher
+      toEmit(contract: Contract, eventName: string): R;
+    }
   }
 }
+
+export {};

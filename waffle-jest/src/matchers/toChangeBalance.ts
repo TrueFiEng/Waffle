@@ -1,14 +1,15 @@
 import {Wallet, BigNumber} from 'ethers';
+import {Numberish} from '../jest';
 
 export async function toChangeBalance(
   transactionCallback: () => Promise<any>,
   wallet: Wallet,
-  balanceChange: number | string | BigNumber
+  balanceChange: Numberish
 ) {
   if (typeof transactionCallback !== 'function') {
     throw new Error(
       'Expect subject should be a callback returning a Promise\n' +
-      'e.g.: await expect(() => wallet.send({to: \'0xb\', value: 200})).toChangeBalance(\'0xa\', -200)'
+        'e.g.: await expect(() => wallet.send({to: \'0xb\', value: 200})).toChangeBalance(\'0xa\', -200)'
     );
   }
 

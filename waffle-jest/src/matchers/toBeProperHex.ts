@@ -1,4 +1,4 @@
-export function toBeProperHex(received: any, length: number) {
+export function toBeProperHex(received: string, length: number) {
   const regexp = new RegExp(`^0x[0-9-a-fA-F]{${length}}$`);
   const pass = regexp.test(received);
   return pass

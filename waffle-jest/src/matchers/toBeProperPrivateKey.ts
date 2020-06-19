@@ -1,4 +1,4 @@
-export function toBeProperPrivateKey(received: any) {
+export function toBeProperPrivateKey(received: string) {
   const pass = /^0x[0-9-a-fA-F]{64}$/.test(received);
   return pass
     ? {
