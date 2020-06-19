@@ -27,7 +27,7 @@ declare global {
 
       // emit matcher
       toEmit(contract: Contract, eventName: string): R;
-      toEmitWithArgs(contract: Contract, eventName: string, args: any[]): R;
+      toEmitWithArgs(contract: Contract, eventName: string, expectedArgs: any[]): R;
     }
   }
 }
