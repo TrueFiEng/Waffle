@@ -213,13 +213,6 @@ describe('INTEGRATION: Events', () => {
   //   );
   // });
 
-  // it('Event emitted in one contract but not in the other', async () => {
-  //   const differentEvents = await factory.deploy();
-  //   await expect(events.emitOne())
-  //     .toEmit(events, 'One')
-  //     .and.not.toEmit(differentEvents, 'One');
-  // });
-
   // it('Emit event multiple times with different args', async () => {
   //   await expect(events.emitOneMultipleTimes())
   //     .toEmit(events, 'One')
