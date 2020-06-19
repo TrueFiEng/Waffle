@@ -6,6 +6,8 @@ import {toChangeBalance} from './matchers/toChangeBalance';
 import {toChangeBalances} from './matchers/toChangeBalances';
 import {toBeReverted} from './matchers/toBeReverted';
 import {toBeRevertedWith} from './matchers/toBeRevertedWith';
+import {toEmit} from './matchers/toEmit';
+import {toEmitWithArgs} from './matchers/toEmitWithArgs';
 
 export const waffleJest = {
   // misc matchers
@@ -22,5 +24,9 @@ export const waffleJest = {
 
   // revert matchers
   toBeReverted,
-  toBeRevertedWith
+  toBeRevertedWith,
+
+  // emit matchers
+  toEmit,
+  toEmitWithArgs
 };
