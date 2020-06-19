@@ -14,5 +14,6 @@ declare namespace jest {
 
     // Balance matchers
     toChangeBalance(wallet: Wallet, balanceChange: number | string | BigNumber): R;
+    toChangeBalances(wallets: Wallet[], balanceChanges: any[]): R;
   }
 }
