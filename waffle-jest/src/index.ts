@@ -1,6 +1,5 @@
-import {toBeProperAddress} from './matchers/properAddress';
+import {toBeProperAddress} from './matchers/toBeProperAddress';
 
 export const waffleJest = {
   toBeProperAddress
-
 };
