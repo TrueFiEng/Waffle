@@ -1,4 +1,3 @@
-import {expect, AssertionError} from 'chai';
 import {BigNumber} from 'ethers';
 
 describe('UNIT: BigNumber matchers', () => {
@@ -19,107 +18,86 @@ describe('UNIT: BigNumber matchers', () => {
   }
 
   describe('equal', () => {
-    it('.to.equal', () => {
-      checkAll(10, 10, (a, b) => expect(a).to.equal(b));
+    it('.toEqBN', () => {
+      checkAll(10, 10, (a, b) => expect(a).toEqBN(b));
     });
 
-    it('.to.eq', () => {
-      checkAll(10, 10, (a, b) => expect(a).to.eq(b));
-    });
-
-    it('.not.to.equal', () => {
-      checkAll(10, 11, (a, b) => expect(a).not.to.equal(b));
-    });
-
-    it('.not.to.eq', () => {
-      checkAll(10, 11, (a, b) => expect(a).not.to.eq(b));
+    it('.not.toEqBN', () => {
+      checkAll(10, 11, (a, b) => expect(a).not.toEqBN(b));
     });
 
     it('throws proper message on error', () => {
-      expect(() => expect(BigNumber.from(10)).to.equal(11)).to.throw(
-        AssertionError,
+      expect(() => expect(BigNumber.from(10)).toEqBN(11)).toThrowError(
         'Expected "10" to be equal 11'
       );
     });
   });
 
-  describe('above', () => {
-    it('.to.be.above', () => {
-      checkAll(10, 9, (a, b) => expect(a).to.be.above(b));
+  describe('greater than', () => {
+    it('.toBeGtBN', () => {
+      checkAll(10, 9, (a, b) => expect(a).toBeGtBN(b));
     });
 
-    it('.to.be.gt', () => {
-      checkAll(10, 9, (a, b) => expect(a).to.be.gt(b));
+    it('.not.toBeGtBN', () => {
+      checkAll(10, 10, (a, b) => expect(a).not.toBeGtBN(b));
+      checkAll(10, 11, (a, b) => expect(a).not.toBeGtBN(b));
     });
 
-    it('.not.to.be.above', () => {
-      checkAll(10, 10, (a, b) => expect(a).not.to.be.above(b));
-      checkAll(10, 11, (a, b) => expect(a).not.to.be.above(b));
-    });
-
-    it('.not.to.be.gt', () => {
-      checkAll(10, 10, (a, b) => expect(a).not.to.be.gt(b));
-      checkAll(10, 11, (a, b) => expect(a).not.to.be.gt(b));
+    it('throws proper message on error', () => {
+      expect(() => expect(BigNumber.from(10)).toBeGtBN(11)).toThrowError(
+        'Expected "10" to be greater than 11'
+      );
     });
   });
 
-  describe('below', () => {
-    it('.to.be.below', () => {
-      checkAll(10, 11, (a, b) => expect(a).to.be.below(b));
-    });
-
-    it('.to.be.lt', () => {
-      checkAll(10, 11, (a, b) => expect(a).to.be.lt(b));
-    });
-
-    it('.not.to.be.below', () => {
-      checkAll(10, 10, (a, b) => expect(a).not.to.be.below(b));
-      checkAll(10, 9, (a, b) => expect(a).not.to.be.below(b));
+  describe('less than', () => {
+    it('.toBeLtBN', () => {
+      checkAll(10, 11, (a, b) => expect(a).toBeLtBN(b));
     });
 
     it('.not.to.be.lt', () => {
-      checkAll(10, 10, (a, b) => expect(a).not.to.be.lt(b));
-      checkAll(10, 9, (a, b) => expect(a).not.to.be.lt(b));
+      checkAll(10, 10, (a, b) => expect(a).not.toBeLtBN(b));
+      checkAll(10, 9, (a, b) => expect(a).not.toBeLtBN(b));
+    });
+
+    it('throws proper message on error', () => {
+      expect(() => expect(BigNumber.from(11)).toBeLtBN(10)).toThrowError(
+        'Expected "11" to be less than 10'
+      );
     });
   });
 
-  describe('at least', () => {
-    it('.to.be.at.least', () => {
-      checkAll(10, 10, (a, b) => expect(a).to.be.at.least(b));
-      checkAll(10, 9, (a, b) => expect(a).to.be.at.least(b));
+  describe('greater than or equal', () => {
+    it('.toBeGteBN', () => {
+      checkAll(10, 10, (a, b) => expect(a).toBeGteBN(b));
+      checkAll(10, 9, (a, b) => expect(a).toBeGteBN(b));
     });
 
-    it('.to.be.gte', () => {
-      checkAll(10, 10, (a, b) => expect(a).to.be.gte(b));
-      checkAll(10, 9, (a, b) => expect(a).to.be.gte(b));
+    it('.not.toBeGteBN', () => {
+      checkAll(10, 11, (a, b) => expect(a).not.toBeGteBN(b));
     });
 
-    it('.not.to.be.at.least', () => {
-      checkAll(10, 11, (a, b) => expect(a).not.to.be.at.least(b));
-    });
-
-    it('.not.to.be.gte', () => {
-      checkAll(10, 11, (a, b) => expect(a).not.to.be.gte(b));
+    it('throws proper message on error', () => {
+      expect(() => expect(BigNumber.from(10)).toBeGteBN(11)).toThrowError(
+        'Expected "10" to be greater than or equal 11'
+      );
     });
   });
 
-  describe('at most', () => {
-    it('.to.be.at.most', () => {
-      checkAll(10, 10, (a, b) => expect(a).to.be.at.most(b));
-      checkAll(10, 11, (a, b) => expect(a).to.be.at.most(b));
+  describe('less than or equal', () => {
+    it('.toBeLteBN', () => {
+      checkAll(10, 10, (a, b) => expect(a).toBeLteBN(b));
+      checkAll(10, 11, (a, b) => expect(a).toBeLteBN(b));
     });
 
-    it('.to.be.lte', () => {
-      checkAll(10, 10, (a, b) => expect(a).to.be.lte(b));
-      checkAll(10, 11, (a, b) => expect(a).to.be.lte(b));
+    it('.not.toBeLteBN', () => {
+      checkAll(10, 9, (a, b) => expect(a).not.toBeLteBN(b));
     });
 
-    it('.not.to.be.at.most', () => {
-      checkAll(10, 9, (a, b) => expect(a).not.to.be.at.most(b));
-    });
-
-    it('.not.to.be.lte', () => {
-      checkAll(10, 9, (a, b) => expect(a).not.to.be.lte(b));
+    it('throws proper message on error', () => {
+      expect(() => expect(BigNumber.from(11)).toBeLteBN(10)).toThrowError(
+        'Expected "11" to be less than or equal 10'
+      );
     });
   });
 });
