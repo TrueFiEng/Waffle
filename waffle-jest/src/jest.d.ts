@@ -12,11 +12,12 @@ declare namespace jest {
     toBeGteBN(value: number | string | BigNumber): R;
     toBeLteBN(value: number | string | BigNumber): R;
 
-    // Balance matchers
+    // balance matchers
     toChangeBalance(wallet: Wallet, balanceChange: number | string | BigNumber): R;
     toChangeBalances(wallets: Wallet[], balanceChanges: any[]): R;
 
     // revert matchers
     toBeReverted(): R;
+    toBeRevertedWith(revertReason: string): R;
   }
 }

@@ -5,13 +5,22 @@ import {bigNumberMatchers} from './matchers/bigNumber';
 import {toChangeBalance} from './matchers/toChangeBalance';
 import {toChangeBalances} from './matchers/toChangeBalances';
 import {toBeReverted} from './matchers/toBeReverted';
+import {toBeRevertedWith} from './matchers/toBeRevertedWith';
 
 export const waffleJest = {
+  // misc matchers
   toBeProperAddress,
   toBeProperPrivateKey,
   toBeProperHex,
+
+  // BigNumber matchers
   ...bigNumberMatchers,
+
+  // balance matchers
   toChangeBalance,
   toChangeBalances,
-  toBeReverted
+
+  // revert matchers
+  toBeReverted,
+  toBeRevertedWith
 };
