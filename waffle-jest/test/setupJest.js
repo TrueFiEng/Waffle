@@ -4,11 +4,11 @@ expect.extend({
     return pass
       ? {
         pass: true,
-        message: `Expected "${received}" not to be a proper address`
+        message: () => `Expected "${received}" not to be a proper address`
       }
       : {
         pass: false,
-        message: `Expected "${received}" to be a proper address`
+        message: () => `Expected "${received}" to be a proper address`
       };
   }
 });

@@ -1,29 +1,26 @@
-// import {expect, AssertionError} from 'chai';
-
 describe('UNIT: Miscellaneous', () => {
-  describe.only('Proper address', () => {
-    it.only('Expect to be proper address', async () => {
+  describe('Proper address', () => {
+    it('Expect to be proper address', async () => {
       expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').toBeProperAddress();
       expect('0x846C66cf71C43f80403B51fE3906B3599D63336f').toBeProperAddress();
     });
 
-    //   it('Expect not to be proper address', async () => {
-    //     expect('0x28FAA621c3348823D6c6548981a19716bcDc740').to.not.be.properAddress;
-    //     expect('0x846C66cf71C43f80403B51fE3906B3599D63336g').to.not.be.properAddress;
-    //   });
+    it('Expect not to be proper address', async () => {
+      expect('0x28FAA621c3348823D6c6548981a19716bcDc740').not.toBeProperAddress();
+      expect('0x846C66cf71C43f80403B51fE3906B3599D63336g').not.toBeProperAddress();
+    });
 
-    //   it('Expect to throw if invalid address', async () => {
-    //     expect(
-    //       () => expect('0x28FAA621c3348823D6c6548981a19716bcDc740').to.be.properAddress
-    //     ).to.throw(AssertionError, 'Expected "0x28FAA621c3348823D6c6548981a19716bcDc740" to be a proper address');
-    //   });
+    it('Expect to throw if invalid address', async () => {
+      expect(
+        () => expect('0x28FAA621c3348823D6c6548981a19716bcDc740').toBeProperAddress()
+      ).toThrowError('Expected "0x28FAA621c3348823D6c6548981a19716bcDc740" to be a proper address');
+    });
 
-    //   it('Expect to throw if negation with proper address)', async () => {
-    //     expect(
-    //       () => expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').not.to.be.properAddress
-    //     ).to.throw(AssertionError, 'Expected "0x28FAA621c3348823D6c6548981a19716bcDc740e" not to be a proper address');
-    //   });
-    // });
+    it('Expect to throw if negation with proper address)', async () => {
+      expect(
+        () => expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').not.toBeProperAddress()
+      ).toThrowError('Expected "0x28FAA621c3348823D6c6548981a19716bcDc740e" not to be a proper address');
+    });
 
     // describe('Proper private', () => {
     //   it('Expect to be proper private', async () => {
