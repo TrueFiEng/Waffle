@@ -11,5 +11,8 @@ declare namespace jest {
     toBeLtBN(value: number | string | BigNumber): R;
     toBeGteBN(value: number | string | BigNumber): R;
     toBeLteBN(value: number | string | BigNumber): R;
+
+    // Balance matchers
+    toChangeBalance(wallet: Wallet, balanceChange: number | string | BigNumber): R;
   }
 }
