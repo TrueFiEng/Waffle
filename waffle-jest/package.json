@@ -37,7 +37,8 @@
   },
   "dependencies": {
     "@ethereum-waffle/provider": "^3.0.0",
-    "ethers": "^5.0.0"
+    "ethers": "^5.0.0",
+    "jest-diff": "^26.0.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.0",

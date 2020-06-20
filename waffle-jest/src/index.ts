@@ -6,8 +6,8 @@ import {toChangeBalance} from './matchers/toChangeBalance';
 import {toChangeBalances} from './matchers/toChangeBalances';
 import {toBeReverted} from './matchers/toBeReverted';
 import {toBeRevertedWith} from './matchers/toBeRevertedWith';
-import {toEmit} from './matchers/toEmit';
-import {toEmitWithArgs} from './matchers/toEmitWithArgs';
+import {toHaveEmitted} from './matchers/toHaveEmitted/toHaveEmitted';
+import {toHaveEmittedWith} from './matchers/toHaveEmitted/toHaveEmittedWith';
 import {toBeCalledOnContract} from './matchers/calledOnContract/calledOnContract';
 import {toBeCalledOnContractWith} from './matchers/calledOnContract/calledOnContractWith';
 
@@ -29,8 +29,8 @@ export const waffleJest = {
   toBeRevertedWith,
 
   // emit matchers
-  toEmit,
-  toEmitWithArgs,
+  toHaveEmitted,
+  toHaveEmittedWith,
 
   // calledOnContract matchers
   toBeCalledOnContract,

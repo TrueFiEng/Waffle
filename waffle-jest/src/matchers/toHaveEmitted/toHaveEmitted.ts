@@ -1,13 +1,13 @@
-import {Contract, Transaction, utils, providers} from 'ethers';
+import {Contract, Transaction, utils} from 'ethers';
+import {filterLogsWithTopics} from './utils';
 
-export async function toEmit(
-  promise: Promise<Transaction>,
+export async function toHaveEmitted(
+  transaction: Transaction,
   contract: Contract,
   eventName: string
 ) {
-  const tx = await promise;
   const receipt = await contract.provider.getTransactionReceipt(
-    tx.hash as string
+    transaction.hash as string
   );
 
   let eventFragment: utils.EventFragment | undefined;
@@ -44,18 +44,4 @@ export async function toEmit(
         `Expected event "${eventName}" to be emitted, but it wasn't`
     };
   }
-}
-
-function filterLogsWithTopics(
-  logs: providers.Log[],
-  topic: any,
-  contractAddress: string
-) {
-  return logs
-    .filter((log) => log.topics.includes(topic))
-    .filter(
-      (log) =>
-        log.address &&
-        log.address.toLowerCase() === contractAddress.toLowerCase()
-    );
 }
