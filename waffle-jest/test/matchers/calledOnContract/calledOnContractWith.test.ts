@@ -1,7 +1,6 @@
 import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
-import {AssertionError, expect} from 'chai';
 
 async function setup() {
   const provider = new MockProvider();
@@ -17,7 +16,7 @@ describe('INTEGRATION: calledOnContractWith', () => {
 
     await contract.callWithParameter(1);
 
-    expect('callWithParameter').to.be.calledOnContractWith(contract, [1]);
+    expect('callWithParameter').toBeCalledOnContractWith(contract, [1]);
   });
 
   it('checks that contract function with provided multiple parameters was called', async () => {
@@ -25,15 +24,15 @@ describe('INTEGRATION: calledOnContractWith', () => {
 
     await contract.callWithParameters(2, 3);
 
-    expect('callWithParameters').to.be.calledOnContractWith(contract, [2, 3]);
+    expect('callWithParameters').toBeCalledOnContractWith(contract, [2, 3]);
   });
 
   it('throws assertion error when contract function with parameter was not called', async () => {
     const {contract} = await setup();
 
     expect(
-      () => expect('callWithParameter').to.be.calledOnContractWith(contract, [1])
-    ).to.throw(AssertionError, 'Expected contract function with parameters to be called');
+      () => expect('callWithParameter').toBeCalledOnContractWith(contract, [1])
+    ).toThrowError('Expected contract function with parameters to be called');
   });
 
   it('checks that contract function with parameter was not called', async () => {
@@ -41,7 +40,7 @@ describe('INTEGRATION: calledOnContractWith', () => {
 
     await contract.callWithParameter(2);
 
-    expect('callWithParameter').not.to.be.calledOnContractWith(contract, [1]);
+    expect('callWithParameter').not.toBeCalledOnContractWith(contract, [1]);
   });
 
   it('checks that contract function with parameters was not called', async () => {
@@ -49,7 +48,7 @@ describe('INTEGRATION: calledOnContractWith', () => {
 
     await contract.callWithParameters(1, 2);
 
-    expect('callWithParameters').not.to.be.calledOnContractWith(contract, [1, 3]);
+    expect('callWithParameters').not.toBeCalledOnContractWith(contract, [1, 3]);
   });
 
   it('throws assertion error when contract function with parameter was called', async () => {
@@ -57,8 +56,8 @@ describe('INTEGRATION: calledOnContractWith', () => {
     await contract.callWithParameter(2);
 
     expect(
-      () => expect('callWithParameter').not.to.be.calledOnContractWith(contract, [2])
-    ).to.throw(AssertionError, 'Expected contract function with parameters NOT to be called');
+      () => expect('callWithParameter').not.toBeCalledOnContractWith(contract, [2])
+    ).toThrowError('Expected contract function with parameters NOT to be called');
   });
 
   it(
@@ -68,8 +67,8 @@ describe('INTEGRATION: calledOnContractWith', () => {
       const {contract: secondDeployContract} = await setup();
       await contract.callWithParameter(2);
 
-      expect('callWithParameter').to.be.calledOnContractWith(contract, [2]);
-      expect('callWithParameter').not.to.be.calledOnContractWith(secondDeployContract, [2]);
+      expect('callWithParameter').toBeCalledOnContractWith(contract, [2]);
+      expect('callWithParameter').not.toBeCalledOnContractWith(secondDeployContract, [2]);
     }
   );
 
@@ -81,6 +80,6 @@ describe('INTEGRATION: calledOnContractWith', () => {
       await contract.callWithParameters(2, 3);
       await contract.callWithParameters(4, 5);
 
-      expect('callWithParameters').to.be.calledOnContractWith(contract, [2, 3]);
+      expect('callWithParameters').toBeCalledOnContractWith(contract, [2, 3]);
     });
 });
