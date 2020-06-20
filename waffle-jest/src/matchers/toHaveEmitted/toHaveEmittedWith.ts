@@ -8,7 +8,7 @@ export async function toHaveEmittedWith(
   contract: Contract,
   eventName: string,
   expectedArgs: unknown[]
-) {
+): Promise<{ pass: boolean; message: () => string }> {
   const receipt = await contract.provider.getTransactionReceipt(
     transaction.hash as string
   );
@@ -71,6 +71,8 @@ export async function toHaveEmittedWith(
   const lastResult = results[results.length - 1];
   return {
     pass: false,
-    message: () => diff(lastResult.expectedArgs, lastResult.actualArgs)
+    message: () =>
+      diff(lastResult.expectedArgs, lastResult.actualArgs) ||
+      'The expected args do not match the received args. No diff is available.'
   };
 }
