@@ -1,4 +1,3 @@
-import {AssertionError, expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
@@ -16,21 +15,21 @@ describe('INTEGRATION: calledOnContract', () => {
     const {contract} = await setup();
     await contract.callWithoutParameter();
 
-    expect('callWithoutParameter').to.be.calledOnContract(contract);
+    expect('callWithoutParameter').toBeCalledOnContract(contract);
   });
 
   it('throws assertion error when contract function was not called', async () => {
     const {contract} = await setup();
 
     expect(
-      () => expect('callWithoutParameter').to.be.calledOnContract(contract)
-    ).to.throw(AssertionError, 'Expected contract function to be called');
+      () => expect('callWithoutParameter').toBeCalledOnContract(contract)
+    ).toThrowError('Expected contract function to be called');
   });
 
   it('checks that contract function was not called', async () => {
     const {contract} = await setup();
 
-    expect('callWithoutParameter').not.to.be.calledOnContract(contract);
+    expect('callWithoutParameter').not.toBeCalledOnContract(contract);
   });
 
   it('throws assertion error when contract function was called', async () => {
@@ -38,8 +37,8 @@ describe('INTEGRATION: calledOnContract', () => {
     await contract.callWithoutParameter();
 
     expect(
-      () => expect('callWithoutParameter').not.to.be.calledOnContract(contract)
-    ).to.throw(AssertionError, 'Expected contract function NOT to be called');
+      () => expect('callWithoutParameter').not.toBeCalledOnContract(contract)
+    ).toThrowError('Expected contract function NOT to be called');
   });
 
   it(
@@ -49,8 +48,8 @@ describe('INTEGRATION: calledOnContract', () => {
       const {contract: secondDeployContract} = await setup();
       await contract.callWithoutParameter();
 
-      expect('callWithoutParameter').to.be.calledOnContract(contract);
-      expect('callWithoutParameter').not.to.be.calledOnContract(secondDeployContract);
+      expect('callWithoutParameter').toBeCalledOnContract(contract);
+      expect('callWithoutParameter').not.toBeCalledOnContract(secondDeployContract);
     }
   );
 });

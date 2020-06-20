@@ -8,6 +8,7 @@ import {toBeReverted} from './matchers/toBeReverted';
 import {toBeRevertedWith} from './matchers/toBeRevertedWith';
 import {toEmit} from './matchers/toEmit';
 import {toEmitWithArgs} from './matchers/toEmitWithArgs';
+import {toBeCalledOnContract} from './matchers/calledOnContract/calledOnContract';
 
 export const waffleJest = {
   // misc matchers
@@ -28,5 +29,8 @@ export const waffleJest = {
 
   // emit matchers
   toEmit,
-  toEmitWithArgs
+  toEmitWithArgs,
+
+  // calledOnContract matchers
+  toBeCalledOnContract
 };

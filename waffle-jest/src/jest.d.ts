@@ -28,6 +28,9 @@ declare global {
       // emit matcher
       toEmit(contract: Contract, eventName: string): R;
       toEmitWithArgs(contract: Contract, eventName: string, expectedArgs: any[]): R;
+
+      // calledOnContract matchers
+      toBeCalledOnContract(contract: Contract): R;
     }
   }
 }
