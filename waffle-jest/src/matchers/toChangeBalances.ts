@@ -1,5 +1,5 @@
 import {Wallet, BigNumber} from 'ethers';
-import {Numberish} from '../jest';
+import {Numberish} from '../types';
 
 export async function toChangeBalances(
   transactionCallback: () => Promise<any>,

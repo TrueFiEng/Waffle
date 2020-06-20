@@ -1,5 +1,5 @@
 import {BigNumber} from 'ethers';
-import {Numberish} from '../jest';
+import {Numberish} from '../types';
 
 // NOTE: Jest does not currently support overriding matchers while calling
 // original implementation, therefore we have to name our matchers something
