@@ -26,8 +26,8 @@ declare global {
       toBeRevertedWith(revertReason: string): R;
 
       // emit matcher
-      toEmit(contract: Contract, eventName: string): R;
-      toEmitWithArgs(
+      toHaveEmitted(contract: Contract, eventName: string): R;
+      toHaveEmittedWith(
         contract: Contract,
         eventName: string,
         expectedArgs: any[]
