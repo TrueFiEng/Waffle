@@ -42,7 +42,7 @@ Add an external library by installing it with yarn or npm:
 Writing a contract
 ------------------
 
-Below is an example contract written in Solidity. Place it in :code:`contracts/BasicToken.sol` file of your project:
+Below is an example contract written in Solidity. Place it in :code:`src/BasicToken.sol` file of your project:
 
 .. code-block:: solidity
 
