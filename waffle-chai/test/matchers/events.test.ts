@@ -52,7 +52,7 @@ describe('INTEGRATION: Events', () => {
     await expect(events.emitTwo()).to.not.emit(events, 'One');
   });
 
-  it('Emit unexistent event: fail', async () => {
+  it('Emit nonexistent event: fail', async () => {
     await expect(
       expect(events.emitOne()).to.emit(events, 'Three')
     ).to.be.eventually.rejectedWith(
@@ -62,7 +62,7 @@ describe('INTEGRATION: Events', () => {
     );
   });
 
-  it('Negate emit unexistent event: fail', async () => {
+  it('Negate emit nonexistent event: fail', async () => {
     await expect(
       expect(events.emitOne()).not.to.emit(events, 'Three')
     ).to.be.eventually.rejectedWith(
@@ -84,7 +84,7 @@ describe('INTEGRATION: Events', () => {
     await expect(events.emitBoth()).to.emit(events, 'Two');
   });
 
-  it('Emit both: success (one expect with two to)', async () => {
+  it('Emit both: success (one expect with two "to" prepositions)', async () => {
     await expect(events.emitBoth())
       .to.emit(events, 'One')
       .withArgs(
@@ -153,7 +153,7 @@ describe('INTEGRATION: Events', () => {
     );
   });
 
-  it('Event with one different arg (string)', async () => {
+  it('Event with one different arg (string) #2', async () => {
     await expect(
       expect(events.emitOne())
         .to.emit(events, 'One')
