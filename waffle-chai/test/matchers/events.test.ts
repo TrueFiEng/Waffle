@@ -110,7 +110,7 @@ describe('INTEGRATION: Events', () => {
       expect(events.emitOne()).to.emit(events, 'One').withArgs(1)
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'Expected "One" event to have 1 argument(s), but has 3'
+      'Expected "One" event to have 1 argument(s), but it has 3'
     );
   });
 
@@ -119,7 +119,7 @@ describe('INTEGRATION: Events', () => {
       expect(events.emitOne()).to.emit(events, 'One').withArgs(1, 2, 3, 4)
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'Expected "One" event to have 4 argument(s), but has 3'
+      'Expected "One" event to have 4 argument(s), but it has 3'
     );
   });
 
@@ -134,7 +134,7 @@ describe('INTEGRATION: Events', () => {
         )
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'Expected "2" to be equal 1'
+      'Expected "1" to be equal 2'
     );
   });
 
@@ -149,7 +149,7 @@ describe('INTEGRATION: Events', () => {
         )
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'expected \'Two\' to equal \'One\''
+      'expected \'One\' to equal \'Two\''
     );
   });
 
@@ -164,8 +164,8 @@ describe('INTEGRATION: Events', () => {
         )
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'expected \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124\' ' +
-        'to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\''
+      'expected \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\' ' +
+        'to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124\''
     );
   });
 
@@ -206,8 +206,8 @@ describe('INTEGRATION: Events', () => {
         )
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'expected \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162121\' ' +
-        'to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\''
+      'expected \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\' ' +
+        'to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162121\''
     );
   });
 
@@ -225,7 +225,7 @@ describe('INTEGRATION: Events', () => {
     ).to.be.eventually.rejectedWith(
       AssertionError,
       // eslint-disable-next-line no-useless-escape
-      'Expected "0" to be equal 1'
+      'Expected "1" to be equal 0'
     );
   });
 
