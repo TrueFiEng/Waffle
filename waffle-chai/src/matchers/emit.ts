@@ -55,7 +55,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     context.assert(
       actualArgs.length === expectedArgs.length,
       `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
-      `but has ${actualArgs.length}`,
+      `but it has ${actualArgs.length}`,
       'Do not combine .not. with .withArgs()',
       expectedArgs.length,
       actualArgs.length
@@ -63,10 +63,10 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     for (let index = 0; index < expectedArgs.length; index++) {
       if (expectedArgs[index].length !== undefined && typeof expectedArgs[index] !== 'string') {
         for (let j = 0; j < expectedArgs[index].length; j++) {
-          new Assertion(expectedArgs[index][j]).equal(actualArgs[index][j]);
+          new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
         }
       } else {
-        new Assertion((expectedArgs[index])).equal((actualArgs[index]));
+        new Assertion((actualArgs[index])).equal((expectedArgs[index]));
       }
     }
   };
