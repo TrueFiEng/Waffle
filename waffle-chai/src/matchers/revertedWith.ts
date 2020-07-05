@@ -1,6 +1,7 @@
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
     const promise = this._obj;
+
     const onSuccess = (value: any) => {
       this.assert(
         false,
@@ -11,13 +12,24 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
       );
       return value;
     };
+
     const onError = (error: any) => {
+      // See https://github.com/ethers-io/ethers.js/issues/829
+      const isEstimateGasError =
+        error instanceof Object &&
+        error.code === 'UNPREDICTABLE_GAS_LIMIT' &&
+        'error' in error;
+
+      if (isEstimateGasError) {
+        error = error.error;
+      }
+
       const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
       const isReverted = message.search('revert') >= 0 && message.search(revertReason) >= 0;
       const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
-      const isError = message.search('code=') >= 0;
+
       this.assert(
-        isReverted || isThrown || isError,
+        isReverted || isThrown,
         `Expected transaction to be reverted with ${revertReason}, but other exception was thrown: ${error}`,
         `Expected transaction NOT to be reverted with ${revertReason}`,
         `Transaction reverted with ${revertReason}.`,
@@ -25,6 +37,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
       );
       return error;
     };
+
     const derivedPromise = promise.then(onSuccess, onError);
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);

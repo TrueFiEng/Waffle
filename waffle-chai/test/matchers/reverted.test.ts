@@ -25,7 +25,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 
   it('ThrowAndModify: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
+    await expect(matchers.doThrowAndModify()).to.be.reverted;
   });
 
   it('Revert: success', async () => {
@@ -68,6 +68,12 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     await expect(matchers.doThrow()).to.be.revertedWith('');
   });
 
+  it('Throw: fail when message is expected', async () => {
+    await expect(
+      expect(matchers.doThrow()).to.be.revertedWith('Message other than empty string')
+    ).to.eventually.be.rejected;
+  });
+
   it('Not to revert: success', async () => {
     await expect(matchers.doNothing()).not.to.be.revertedWith('');
   });
@@ -76,8 +82,33 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     await expect(matchers.doRevertAndModify()).to.be.revertedWith('Revert cause');
   });
 
-  it('ThrowAndModify: success', async () => {
+  it('Revert with modification: fail when different message was thrown', async () => {
+    await expect(
+      expect(matchers.doRevertAndModify()).to.be.revertedWith('Different message')
+    ).to.eventually.be.rejected;
+  });
+
+  it('Revert with modification: fail when different message was thrown (no estimateGas call)', async () => {
+    await expect(
+      expect(matchers.doRevertAndModify({gasLimit: 6_000_000})).to.be.revertedWith('Different message')
+    ).to.eventually.be.rejected;
+  });
+
+  it('Throw with modification: success', async () => {
     await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
+  });
+
+  it('Throw with modification: fail when message is expected', async () => {
+    await expect(
+      expect(matchers.doThrowAndModify()).to.be.revertedWith('Message other than empty string')
+    ).to.eventually.be.rejected;
+  });
+
+  it('Throw with modification: fail when message is expected (no estimateGas call)', async () => {
+    await expect(
+      expect(matchers.doThrowAndModify({gasLimit: 6_000_000}))
+        .to.be.revertedWith('Message other than empty string')
+    ).to.eventually.be.rejected;
   });
 
   it('Revert: success', async () => {
@@ -109,6 +140,22 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   it('Require: fail when different message', async () => {
     await expect(
       expect(matchers.doRequireFail()).to.be.revertedWith('Different message')
+    ).to.be.eventually.rejected;
+  });
+
+  it('Require with modification: success', async () => {
+    await expect(matchers.doRequireFailAndModify()).to.be.revertedWith('Require cause');
+  });
+
+  it('Require with modification: fail when different message', async () => {
+    await expect(
+      expect(matchers.doRequireFailAndModify()).to.be.revertedWith('Different message')
+    ).to.be.eventually.rejected;
+  });
+
+  it('Require with modification: fail when different message (no estimateGas call)', async () => {
+    await expect(
+      expect(matchers.doRequireFailAndModify({gasLimit: 6_000_000})).to.be.revertedWith('Different message')
     ).to.be.eventually.rejected;
   });
 
