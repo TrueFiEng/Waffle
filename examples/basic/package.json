@@ -17,11 +17,11 @@
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
-    "ethereum-waffle": "3.0.1",
+    "ethereum-waffle": "3.0.0",
     "ethers": "4.0.47",
     "mocha": "^7.1.2",
     "ts-node": "^8.9.1",
     "typescript": "^3.8.3",
-    "@openzeppelin/contracts": "^3.0.1"
+    "@openzeppelin/contracts": "^3.0.0"
   }
 }
