@@ -30,7 +30,7 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
-  return Object.values(functions).reduce((acc, func) => {
+  const mockedAbi = Object.values(functions).reduce((acc, func) => {
     const stubbed = stub(mockContractInstance, encoder, func);
     return {
       ...acc,
@@ -38,6 +38,8 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
       [func.format()]: stubbed
     };
   }, {} as MockContract['mock']);
+
+  return mockedAbi;
 }
 
 export type Stub = ReturnType<typeof stub>;
@@ -46,6 +48,8 @@ export interface MockContract extends Contract {
   mock: {
     [key: string]: Stub;
   };
+  call: Function
+  staticcall: Function
 }
 
 export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
@@ -54,6 +58,30 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
   const mock = createMock(abi, mockContractInstance);
   const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;
   mockedContract.mock = mock;
+
+  const encoder = new utils.AbiCoder();
+
+  mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any) => {
+    let func: utils.FunctionFragment = contract.interface.functions[functionName]
+    if (!func.outputs) {
+      throw new Error('Cannot staticcall function with no outputs')
+    }
+    let tx = await contract.populateTransaction[functionName](params)
+    let data = tx.data
+    let result
+    let returnValue = await mockContractInstance.__waffle__staticcall(contract.address, data)
+    result = encoder.decode(func.outputs, returnValue);
+    if (result.length == 1) {
+      result = result[0]
+    }
+    return result
+  }
+
+  mockedContract.call = async (contract: Contract, functionName: string, ...params: any) => {
+    let tx = await contract.populateTransaction[functionName](params)
+    let data = tx.data
+    return await mockContractInstance.__waffle__call(contract.address, data)
+  }
 
   return mockedContract;
 }

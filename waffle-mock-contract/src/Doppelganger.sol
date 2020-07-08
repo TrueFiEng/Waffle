@@ -35,6 +35,18 @@ contract Doppelganger {
         });
     }
 
+    function __waffle__call(address target, bytes calldata data) external returns (bytes memory) {
+      (bool succeeded, bytes memory returnValue) = target.call(data);
+      require(succeeded, "Mock call failed");
+      return returnValue;
+    }
+
+    function __waffle__staticcall(address target, bytes calldata data) external view returns (bytes memory) {
+      (bool succeeded, bytes memory returnValue) = target.staticcall(data);
+      require(succeeded, "Mock staticcall failed");
+      return returnValue;
+    }
+
     function __internal__getMockCall() view private returns (MockCall storage mockCall) {
         mockCall = mockConfig[keccak256(msg.data)];
         if (mockCall.initialized == true) {
