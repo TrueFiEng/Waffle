@@ -37,13 +37,13 @@ contract Doppelganger {
 
     function __waffle__call(address target, bytes calldata data) external returns (bytes memory) {
       (bool succeeded, bytes memory returnValue) = target.call(data);
-      require(succeeded, "Mock call failed");
+      require(succeeded, string(returnValue));
       return returnValue;
     }
 
     function __waffle__staticcall(address target, bytes calldata data) external view returns (bytes memory) {
       (bool succeeded, bytes memory returnValue) = target.staticcall(data);
-      require(succeeded, "Mock staticcall failed");
+      require(succeeded, string(returnValue));
       return returnValue;
     }
 
