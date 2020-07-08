@@ -2,7 +2,7 @@ import {use, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {waffleChai} from '@ethereum-waffle/chai';
-import {Contract, ContractFactory} from 'ethers';
+import {ContractFactory} from 'ethers';
 
 import {deployMockContract} from '../src';
 import Counter from './helpers/interfaces/Counter.json';
@@ -47,18 +47,18 @@ describe('Mock Contract - Integration (called directly)', () => {
 
   it('should be able to call to another contract', async () => {
     const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
-    const counter = await counterFactory.deploy()
+    const counter = await counterFactory.deploy();
     const mockCounter = await deployMockContract(wallet, Counter.abi);
 
-    expect(await mockCounter.staticcall(counter, 'read()')).to.equal('0')
-  })
+    expect(await mockCounter.staticcall(counter, 'read()')).to.equal('0');
+  });
 
   it('should be able to execute another contract', async () => {
     const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
-    const counter = await counterFactory.deploy()
+    const counter = await counterFactory.deploy();
     const mockCounter = await deployMockContract(wallet, Counter.abi);
 
-    await mockCounter.call(counter, 'increment()')
-    expect(await counter.read()).to.equal('1')
-  })
+    await mockCounter.call(counter, 'increment()');
+    expect(await counter.read()).to.equal('1');
+  });
 });
