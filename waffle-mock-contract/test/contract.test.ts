@@ -114,31 +114,32 @@ describe('Doppelganger - Contract', () => {
   });
 
   describe('call mechanisms', () => {
-    let doppelganger: Contract
-    let counter: Contract
+    let doppelganger: Contract;
+    let counter: Contract;
 
     beforeEach(async () => {
       const doppelgangerFactory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, wallet);
       doppelganger = await doppelgangerFactory.deploy();
       const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
-      counter = await counterFactory.deploy()
-    })
+      counter = await counterFactory.deploy();
+    });
 
     describe('staticcall()', () => {
       it('should allow a user to call a contract through the mock', async () => {
-        let fn = counter.interface.functions['read()']
-        let data = fn.encode([])
-        expect(await doppelganger.__waffle__staticcall(counter.address, data)).to.equal('0x0000000000000000000000000000000000000000000000000000000000000000')
-      })
-    })
+        const fn = counter.interface.functions['read()'];
+        const data = fn.encode([]);
+        expect(await doppelganger.__waffle__staticcall(counter.address, data))
+          .to.equal('0x0000000000000000000000000000000000000000000000000000000000000000');
+      });
+    });
 
     describe('call()', () => {
       it('should allow a user to execute a transaction through the mock', async () => {
-        let fn = counter.interface.functions['increment()']
-        let data = fn.encode([])
-        await doppelganger.__waffle__call(counter.address, data)
-        expect(await counter.read()).to.equal('1')
-      })
-    })
-  })
+        const fn = counter.interface.functions['increment()'];
+        const data = fn.encode([]);
+        await doppelganger.__waffle__call(counter.address, data);
+        expect(await counter.read()).to.equal('1');
+      });
+    });
+  });
 });
