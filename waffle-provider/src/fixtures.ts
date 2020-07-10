@@ -1,18 +1,18 @@
-import {providers, Wallet} from 'ethers';
+import {providers, Signer} from 'ethers';
 import {MockProvider} from './MockProvider';
 
-type Fixture<T> = (wallets: Wallet[], provider: MockProvider) => Promise<T>;
+type Fixture<T> = (signers: Signer[], provider: MockProvider) => Promise<T>;
 interface Snapshot<T> {
   fixture: Fixture<T>;
   data: T;
   id: string;
   provider: providers.Web3Provider;
-  wallets: Wallet[];
+  signers: Signer[];
 }
 
 export const loadFixture = createFixtureLoader();
 
-export function createFixtureLoader(overrideWallets?: Wallet[], overrideProvider?: MockProvider) {
+export function createFixtureLoader(overrideSigners?: Signer[], overrideProvider?: MockProvider) {
   const snapshots: Snapshot<any>[] = [];
 
   return async function load<T>(fixture: Fixture<T>): Promise<T> {
@@ -23,12 +23,12 @@ export function createFixtureLoader(overrideWallets?: Wallet[], overrideProvider
       return snapshot.data;
     } else {
       const provider = overrideProvider ?? new MockProvider();
-      const wallets = overrideWallets ?? provider.getWallets();
+      const signers = overrideSigners ?? provider.getWallets();
 
-      const data = await fixture(wallets, provider);
+      const data = await fixture(signers, provider);
       const id = await provider.send('evm_snapshot', []);
 
-      snapshots.push({fixture, data, id, provider, wallets});
+      snapshots.push({fixture, data, id, provider, signers});
       return data;
     }
   };
