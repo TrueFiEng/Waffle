@@ -1,9 +1,9 @@
-import {Wallet, BigNumber} from 'ethers';
+import {BigNumber, Signer} from 'ethers';
 
 export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalances', function (
     this: any,
-    wallets: Wallet[],
+    signers: Signer[],
     balanceChanges: any[]
   ) {
     const subject = this._obj;
@@ -11,16 +11,19 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
       throw new Error(`Expect subject should be a callback returning the Promise
         e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalances(['0xa', '0xb'], [-200, 200])`);
     }
-    const derivedPromise = getBalanceChanges(subject, wallets).then(
-      (actualChanges) => {
-        const walletsAddresses = wallets.map((wallet) => wallet.address);
+
+    const derivedPromise = Promise.all([
+      getBalanceChanges(subject, signers),
+      getAddresses(signers)
+    ]).then(
+      ([actualChanges, signerAddresses]) => {
         this.assert(
           actualChanges.every((change, ind) =>
             change.eq(BigNumber.from(balanceChanges[ind]))
           ),
-          `Expected ${walletsAddresses} to change balance by ${balanceChanges} wei, ` +
+          `Expected ${signerAddresses} to change balance by ${balanceChanges} wei, ` +
             `but it has changed by ${actualChanges} wei`,
-          `Expected ${walletsAddresses} to not change balance by ${balanceChanges} wei,`,
+          `Expected ${signerAddresses} to not change balance by ${balanceChanges} wei,`,
           balanceChanges.map((balanceChange) => balanceChange.toString()),
           actualChanges.map((actualChange) => actualChange.toString())
         );
@@ -35,14 +38,18 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
 
 async function getBalanceChanges(
   transactionCallback: () => any,
-  wallets: Wallet[]
+  signers: Signer[]
 ) {
   const balancesBefore = await Promise.all(
-    wallets.map((wallet) => wallet.getBalance())
+    signers.map((signer) => signer.getBalance())
   );
   await transactionCallback();
   const balancesAfter = await Promise.all(
-    wallets.map((wallet) => wallet.getBalance())
+    signers.map((signer) => signer.getBalance())
   );
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+}
+
+function getAddresses(signers: Signer[]) {
+  return Promise.all(signers.map((signer) => signer.getAddress()));
 }
