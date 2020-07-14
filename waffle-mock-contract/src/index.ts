@@ -64,10 +64,10 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
   mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any[]) => {
     let func: utils.FunctionFragment = contract.interface.functions[functionName];
     if (!func) {
-      func = Object.values(contract.interface.functions).find(f => f.name === functionName) as FunctionFragment
+      func = Object.values(contract.interface.functions).find(f => f.name === functionName) as FunctionFragment;
     }
     if (!func) {
-      throw new Error(`Unknown function ${functionName}`)
+      throw new Error(`Unknown function ${functionName}`);
     }
     if (!func.outputs) {
       throw new Error('Cannot staticcall function with no outputs');
