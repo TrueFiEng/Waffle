@@ -1,5 +1,5 @@
 import {Contract, ContractFactory, Signer, utils} from 'ethers';
-import {Fragment, JsonFragment} from '@ethersproject/abi';
+import {Fragment, JsonFragment, FunctionFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
 
@@ -48,8 +48,8 @@ export interface MockContract extends Contract {
   mock: {
     [key: string]: Stub;
   };
-  call: Function;
-  staticcall: Function;
+  call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+  staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
 export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
@@ -61,8 +61,14 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
 
   const encoder = new utils.AbiCoder();
 
-  mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any) => {
-    const func: utils.FunctionFragment = contract.interface.functions[functionName];
+  mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any[]) => {
+    let func: utils.FunctionFragment = contract.interface.functions[functionName];
+    if (!func) {
+      func = Object.values(contract.interface.functions).find(f => f.name === functionName) as FunctionFragment
+    }
+    if (!func) {
+      throw new Error(`Unknown function ${functionName}`)
+    }
     if (!func.outputs) {
       throw new Error('Cannot staticcall function with no outputs');
     }
@@ -77,7 +83,7 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
     return result;
   };
 
-  mockedContract.call = async (contract: Contract, functionName: string, ...params: any) => {
+  mockedContract.call = async (contract: Contract, functionName: string, ...params: any[]) => {
     const tx = await contract.populateTransaction[functionName](params);
     const data = tx.data;
     return mockContractInstance.__waffle__call(contract.address, data);

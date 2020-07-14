@@ -51,6 +51,7 @@ describe('Mock Contract - Integration (called directly)', () => {
     const mockCounter = await deployMockContract(wallet, Counter.abi);
 
     expect(await mockCounter.staticcall(counter, 'read()')).to.equal('0');
+    expect(await mockCounter.staticcall(counter, 'read')).to.equal('0');
   });
 
   it('should be able to execute another contract', async () => {
@@ -60,5 +61,8 @@ describe('Mock Contract - Integration (called directly)', () => {
 
     await mockCounter.call(counter, 'increment()');
     expect(await counter.read()).to.equal('1');
+
+    await mockCounter.call(counter, 'increment');
+    expect(await counter.read()).to.equal('2');
   });
 });
