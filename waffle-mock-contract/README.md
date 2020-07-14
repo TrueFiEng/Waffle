@@ -59,6 +59,8 @@ const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.b
 const amIRich = await contractFactory.deploy()
 const mockERC20 = await deployMockContract(sender, IERC20.abi);
 let result = await mockERC20.staticcall(amIRich, 'check()')
+// or using just the function name
+result = await mockERC20.staticcall(amIRich, 'check')
 expect(result).to.equal(true) // result will be true if you have enough tokens
 ```
 
@@ -69,6 +71,8 @@ const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.b
 const amIRich = await contractFactory.deploy()
 const mockERC20 = await deployMockContract(sender, IERC20.abi);
 let result = await mockERC20.call(amIRich, 'setRichness(uint256)', 1000)
+// or using just the function name
+result = await mockERC20.call(amIRich, 'setRichness', 1000)
 expect(await amIRich.richness()).to.equal('1000') // richness was updated
 ```
 

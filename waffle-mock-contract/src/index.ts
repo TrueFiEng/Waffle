@@ -37,8 +37,8 @@ export interface MockContract extends Contract {
   mock: {
     [key: string]: Stub;
   };
-  call: Function;
-  staticcall: Function;
+  call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+  staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
 export async function deployMockContract(wallet: Wallet, abi: ABI): Promise<MockContract> {
@@ -52,7 +52,7 @@ export async function deployMockContract(wallet: Wallet, abi: ABI): Promise<Mock
   const mockedContract = new Contract(mockContractInstance.address, abi, wallet) as MockContract;
   mockedContract.mock = mock;
 
-  mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any) => {
+  mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any[]) => {
     const fn = contract.interface.functions[functionName];
     const data = fn.encode(params);
     let result;
@@ -64,7 +64,7 @@ export async function deployMockContract(wallet: Wallet, abi: ABI): Promise<Mock
     return result;
   };
 
-  mockedContract.call = async (contract: Contract, functionName: string, ...params: any) => {
+  mockedContract.call = async (contract: Contract, functionName: string, ...params: any[]) => {
     const data = contract.interface.functions[functionName].encode(params);
     return mockContractInstance.__waffle__call(contract.address, data);
   };
