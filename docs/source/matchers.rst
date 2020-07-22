@@ -20,7 +20,7 @@ Testing equality of big numbers:
 
   expect(await token.balanceOf(wallet.address)).to.equal(993);
 
-Available matchers for BigNumbers are: `equal`, `eq`, `above`, `below`, `least`, `most`.
+Available matchers for BigNumbers are: `equal`, `eq`, `above`, `gt`, `gte`, `below`, `lt`, `lte`, `least`, `most`.
 
 Emitting events
 ---------------
