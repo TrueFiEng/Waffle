@@ -52,6 +52,30 @@ await mockContract.mock.<nameOfMethod>.reverts()
 await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).reverts()
 ```
 
+You may wish to execute another contract through a mock.  Given the "AmIRichAlready" code below, you could call constant functions using `staticcall`:
+
+```js
+const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
+const amIRich = await contractFactory.deploy()
+const mockERC20 = await deployMockContract(sender, IERC20.abi);
+let result = await mockERC20.staticcall(amIRich, 'check()')
+// or using just the function name
+result = await mockERC20.staticcall(amIRich, 'check')
+expect(result).to.equal(true) // result will be true if you have enough tokens
+```
+
+You may also execute transactions through the mock, using `call`:
+
+```js
+const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
+const amIRich = await contractFactory.deploy()
+const mockERC20 = await deployMockContract(sender, IERC20.abi);
+let result = await mockERC20.call(amIRich, 'setRichness(uint256)', 1000)
+// or using just the function name
+result = await mockERC20.call(amIRich, 'setRichness', 1000)
+expect(await amIRich.richness()).to.equal('1000') // richness was updated
+```
+
 ## Example
 
 The example below illustrates how `mock-contract` can be used to test the very simple `AmIRichAlready` contract.
@@ -63,7 +87,7 @@ import "openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 
 contract AmIRichAlready {
     IERC20 private tokenContract;
-    uint private constant RICHNESS = 1000000 * 10 ** 18;
+    uint public richness = 1000000 * 10 ** 18;
 
     constructor (IERC20 _tokenContract) public {
         tokenContract = _tokenContract;
@@ -71,7 +95,11 @@ contract AmIRichAlready {
 
     function check() public view returns (bool) {
         uint balance = tokenContract.balanceOf(msg.sender);
-        return balance > RICHNESS;
+        return balance > richness;
+    }
+
+    function setRichness(uint256 _richness) {
+      richness = _richness;
     }
 }
 ```
