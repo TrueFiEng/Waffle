@@ -15,3 +15,6 @@ export const isDirectory = (directoryPath: string) =>
 export const getExtensionForCompilerType = (config: Config) => {
   return config.compilerType === 'dockerized-vyper' ? '.vy' : '.sol';
 };
+
+export const insert = (source: string, insertedValue: string, index: number) =>
+  `${source.slice(0, index)}${insertedValue}${source.slice(index)}`;

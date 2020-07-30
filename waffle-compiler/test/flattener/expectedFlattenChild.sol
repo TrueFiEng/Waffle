@@ -40,6 +40,7 @@ library Roles {
 
 // Dependency file: test/flattener/testSource/cycle1.sol
 
+// SPDX-License-Identifier: UNLICENSED
 // pragma solidity ^0.5.2;
 
 // import "test/flattener/testSource/cycle2.sol";

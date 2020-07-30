@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {isDirectory} from '../src/utils';
+import {insert, isDirectory} from '../src/utils';
 
 describe('UNIT: Utils', () => {
   describe('INTEGRATION: isDirectory', () => {
@@ -14,5 +14,9 @@ describe('UNIT: Utils', () => {
     it('invalid directory path', () => {
       expect(isDirectory('123')).to.be.false;
     });
+  });
+
+  it('insert pastes string into another string at index', () => {
+    expect(insert('123789', '456', 3)).to.equal('123456789');
   });
 });
