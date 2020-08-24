@@ -21,7 +21,8 @@ function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.Funct
       const encoded = encoder.encode(func.outputs, args);
       await mockContract.__waffle__mockReturns(callData, encoded);
     },
-    reverts: async () => mockContract.__waffle__mockReverts(callData),
+    reverts: async () => mockContract.__waffle__mockReverts(callData, 'Mock revert'),
+    revertsWithReason: async (reason: string) => mockContract.__waffle__mockReverts(callData, reason),
     withArgs: (...args: any[]) => stub(mockContract, encoder, func, args)
   };
 }
