@@ -8,6 +8,7 @@
     "waffle-*"
   ],
   "scripts": {
+    "postinstall": "patch-package",
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
     "test": "wsrun -c test"
