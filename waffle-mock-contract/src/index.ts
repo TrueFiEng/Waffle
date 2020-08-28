@@ -1,5 +1,5 @@
 import {Contract, ContractFactory, Signer, utils} from 'ethers';
-import {Fragment, JsonFragment} from '@ethersproject/abi';
+import {Fragment, JsonFragment, FunctionFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
 
@@ -30,7 +30,7 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
-  return Object.values(functions).reduce((acc, func) => {
+  const mockedAbi = Object.values(functions).reduce((acc, func) => {
     const stubbed = stub(mockContractInstance, encoder, func);
     return {
       ...acc,
@@ -38,6 +38,8 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
       [func.format()]: stubbed
     };
   }, {} as MockContract['mock']);
+
+  return mockedAbi;
 }
 
 export type Stub = ReturnType<typeof stub>;
@@ -46,6 +48,8 @@ export interface MockContract extends Contract {
   mock: {
     [key: string]: Stub;
   };
+  call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+  staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
 export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
@@ -54,6 +58,36 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
   const mock = createMock(abi, mockContractInstance);
   const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;
   mockedContract.mock = mock;
+
+  const encoder = new utils.AbiCoder();
+
+  mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any[]) => {
+    let func: utils.FunctionFragment = contract.interface.functions[functionName];
+    if (!func) {
+      func = Object.values(contract.interface.functions).find(f => f.name === functionName) as FunctionFragment;
+    }
+    if (!func) {
+      throw new Error(`Unknown function ${functionName}`);
+    }
+    if (!func.outputs) {
+      throw new Error('Cannot staticcall function with no outputs');
+    }
+    const tx = await contract.populateTransaction[functionName](params);
+    const data = tx.data;
+    let result;
+    const returnValue = await mockContractInstance.__waffle__staticcall(contract.address, data);
+    result = encoder.decode(func.outputs, returnValue);
+    if (result.length === 1) {
+      result = result[0];
+    }
+    return result;
+  };
+
+  mockedContract.call = async (contract: Contract, functionName: string, ...params: any[]) => {
+    const tx = await contract.populateTransaction[functionName](params);
+    const data = tx.data;
+    return mockContractInstance.__waffle__call(contract.address, data);
+  };
 
   return mockedContract;
 }
