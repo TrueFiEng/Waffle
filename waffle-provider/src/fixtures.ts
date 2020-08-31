@@ -1,7 +1,7 @@
 import {providers, Signer} from 'ethers';
 import {MockProvider} from './MockProvider';
 
-type Fixture<T> = (signers: Signer[], provider: MockProvider) => Promise<T>;
+export type Fixture<T> = (signers: Signer[], provider: MockProvider) => Promise<T>;
 interface Snapshot<T> {
   fixture: Fixture<T>;
   data: T;
