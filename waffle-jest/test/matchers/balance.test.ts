@@ -78,7 +78,7 @@ describe('INTEGRATION: Balance observers', () => {
         expect(1).toChangeBalance(sender, '-200')
       ).rejects.toThrowError(
         'Expect subject should be a callback returning a Promise\n' +
-        'e.g.: await expect(() => wallet.send({to: \'0xb\', value: 200})).toChangeBalance(\'0xa\', -200)'
+          'e.g.: await expect(() => wallet.send({to: \'0xb\', value: 200})).toChangeBalance(\'0xa\', -200)'
       );
     });
   });
@@ -165,7 +165,7 @@ describe('INTEGRATION: Balance observers', () => {
       ).rejects.toThrowError(
         /* eslint-disable max-len */
         'Expect subject should be a callback returning the Promise' +
-        'e.g.: await expect(() => wallet.send({to: \'0xb\', value: 200})).to.changeBalances([\'0xa\', \'0xb\'], [-200, 200])'
+          'e.g.: await expect(() => wallet.send({to: \'0xb\', value: 200})).to.changeBalances([\'0xa\', \'0xb\'], [-200, 200])'
         /* eslint-enable max-len */
       );
     });
