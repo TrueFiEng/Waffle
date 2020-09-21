@@ -60,7 +60,19 @@ jobs:
       - run: yarn build
       - run: yarn test
 
-  test_jest:
+  test_jest_10:
+    docker:
+      - image: circleci/node:10.18
+    steps:
+      - checkout
+      - setup_remote_docker
+      - install_dependencies:
+          key: 10
+      - setup_solc
+      - run: yarn build
+      - run: yarn test:jest
+
+  test_jest_11:
     docker:
       - image: circleci/node:11.15
     steps:
@@ -162,7 +174,8 @@ workflows:
       - lint
       - test_node_10
       - test_node_11
-      - test_jest
+      - test_jest_10
+      - test_jest_11
       - example_mock_contracts
       - example_change_balance
       - example_basic
