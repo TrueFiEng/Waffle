@@ -1,9 +1,11 @@
 import {expect, AssertionError} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
-import {BigNumber} from 'ethers';
+import {BigNumber, Contract} from 'ethers';
 
 describe('INTEGRATION: Balance observers', () => {
-  const [sender, receiver] = new MockProvider().getWallets();
+  const provider = new MockProvider();
+  const [sender, receiver] = provider.getWallets();
+  const contract = new Contract(receiver.address, [], provider);
 
   describe('Change balance, one account', () => {
     it('Should pass when expected balance change is passed as string and is equal to an actual', async () => {
@@ -159,19 +161,47 @@ describe('INTEGRATION: Balance observers', () => {
     });
 
     it('Should throw when not a callback is passed to expect', async () => {
+      const pendingTx = sender.sendTransaction({
+        to: receiver.address,
+        gasPrice: 0,
+        value: 200
+      });
+
       expect(() =>
         expect(
-          sender.sendTransaction({
-            to: receiver.address,
-            gasPrice: 0,
-            value: 200
-          })
+          pendingTx
         ).to.changeBalances([sender, receiver], ['-200', 200])
       ).to.throw(
         Error,
         `Expect subject should be a callback returning the Promise
         e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalances(['0xa', '0xb'], [-200, 200])`
       );
+
+      await pendingTx;
+    });
+  });
+
+  describe('Change balance, one contract', () => {
+    it('Should pass when expected balance change is passed as int and is equal to an actual', async () => {
+      await expect(async () =>
+        sender.sendTransaction({
+          to: contract.address,
+          gasPrice: 0,
+          value: 200
+        })
+      ).to.changeBalance(contract, 200);
+    });
+  });
+
+  describe('Change balances, one account, one contract', () => {
+    it('Should pass when all expected balance changes are equal to actual values', async () => {
+      await expect(() =>
+        sender.sendTransaction({
+          to: contract.address,
+          gasPrice: 0,
+          value: 200
+        })
+      ).to.changeBalances([sender, contract], [-200, 200]);
     });
   });
 });
