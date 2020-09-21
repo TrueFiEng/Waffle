@@ -1,4 +1,4 @@
-import {BigNumber} from 'ethers';
+import {BigNumber, providers} from 'ethers';
 import {getBalanceOf, getAddressOf, Account} from './misc/account';
 
 export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
@@ -8,10 +8,6 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
     balanceChanges: any[]
   ) {
     const subject = this._obj;
-    if (typeof subject !== 'function') {
-      throw new Error(`Expect subject should be a callback returning the Promise
-        e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalances(['0xa', '0xb'], [-200, 200])`);
-    }
 
     const derivedPromise = Promise.all([
       getBalanceChanges(subject, signers),
@@ -38,17 +34,31 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChanges(
-  transactionCallback: () => any,
+  transaction: providers.TransactionResponse | Function,
   signers: Account[]
 ) {
-  const balancesBefore = await Promise.all(
-    signers.map(getBalanceOf)
-  );
-  await transactionCallback();
-  const balancesAfter = await Promise.all(
-    signers.map(getBalanceOf)
-  );
-  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+  if (transaction instanceof Function) {
+    const balancesBefore = await Promise.all(
+      signers.map((signer) => getBalanceOf(signer))
+    );
+    await transaction();
+    const balancesAfter = await Promise.all(
+      signers.map((signer) => getBalanceOf(signer))
+    );
+
+    return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+  } else {
+    const transactionBlockNumber = (await transaction.wait()).blockNumber;
+
+    const balancesAfter = await Promise.all(
+      signers.map((signer) => getBalanceOf(signer, transactionBlockNumber))
+    );
+    const balancesBefore = await Promise.all(
+      signers.map((signer) => getBalanceOf(signer, transactionBlockNumber - 1))
+    );
+
+    return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+  }
 }
 
 function getAddresses(signers: Account[]) {

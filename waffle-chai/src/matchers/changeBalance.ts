@@ -1,4 +1,4 @@
-import {BigNumber} from 'ethers';
+import {BigNumber, providers} from 'ethers';
 import {Account, getAddressOf, getBalanceOf} from './misc/account';
 
 export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
@@ -8,10 +8,6 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
     balanceChange: any
   ) {
     const subject = this._obj;
-    if (typeof subject !== 'function') {
-      throw new Error(`Expect subject should be a callback returning the Promise
-        e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalance('0xa', -200)`);
-    }
     const derivedPromise = Promise.all([
       getBalanceChange(subject, signer),
       getAddressOf(signer)
@@ -35,12 +31,21 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
 }
 
 export async function getBalanceChange(
-  transactionCallback: () => any,
+  transaction: providers.TransactionResponse | Function,
   account: Account
 ) {
-  const balanceBefore = await getBalanceOf(account);
-  await transactionCallback();
-  const balanceAfter = await getBalanceOf(account);
+  if (transaction instanceof Function) {
+    const balanceBefore = await getBalanceOf(account);
+    await transaction();
+    const balanceAfter = await getBalanceOf(account);
 
-  return balanceAfter.sub(balanceBefore);
+    return balanceAfter.sub(balanceBefore);
+  } else {
+    const transactionBlockNumber = (await transaction.wait()).blockNumber;
+
+    const balanceAfter = await getBalanceOf(account, transactionBlockNumber);
+    const balanceBefore = await getBalanceOf(account, transactionBlockNumber - 1);
+
+    return balanceAfter.sub(balanceBefore);
+  }
 }
