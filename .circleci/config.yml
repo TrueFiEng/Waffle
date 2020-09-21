@@ -96,6 +96,18 @@ jobs:
       - run: yarn build
       - run: yarn test:jest
 
+  test_jest_12:
+    docker:
+      - image: circleci/node:12.18
+    steps:
+      - checkout
+      - setup_remote_docker
+      - install_dependencies:
+          key: 12
+      - setup_solc
+      - run: yarn build
+      - run: yarn test:jest
+
   example_mock_contracts:
     working_directory: ~/project/examples/mock-contracts
     docker:
@@ -189,6 +201,7 @@ workflows:
       - test_node_12
       - test_jest_10
       - test_jest_11
+      - test_jest_12
       - example_mock_contracts
       - example_change_balance
       - example_basic
