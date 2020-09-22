@@ -1,5 +1,5 @@
 import {Contract, Signer} from 'ethers';
-import { ensure } from '../calledOnContract/utils';
+import {ensure} from '../calledOnContract/utils';
 
 export type Account = Signer | Contract;
 
