@@ -46,7 +46,7 @@ jobs:
           key: 10
       - setup_solc
       - run: yarn build
-      - run: yarn test
+      - run: yarn test:others
 
   test_node_11:
     docker:
@@ -58,7 +58,7 @@ jobs:
           key: 11
       - setup_solc
       - run: yarn build
-      - run: yarn test
+      - run: yarn test:others
 
   test_node_12:
     docker:
@@ -70,7 +70,7 @@ jobs:
           key: 12
       - setup_solc
       - run: yarn build
-      - run: yarn test
+      - run: yarn test:others
 
   test_jest_10:
     docker:
