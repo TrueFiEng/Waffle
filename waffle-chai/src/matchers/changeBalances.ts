@@ -1,9 +1,10 @@
-import {BigNumber, Signer} from 'ethers';
+import {BigNumber} from 'ethers';
+import {getBalanceOf, getAddressOf, Account} from './misc/account';
 
 export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalances', function (
     this: any,
-    signers: Signer[],
+    signers: Account[],
     balanceChanges: any[]
   ) {
     const subject = this._obj;
@@ -38,18 +39,18 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
 
 async function getBalanceChanges(
   transactionCallback: () => any,
-  signers: Signer[]
+  signers: Account[]
 ) {
   const balancesBefore = await Promise.all(
-    signers.map((signer) => signer.getBalance())
+    signers.map(getBalanceOf)
   );
   await transactionCallback();
   const balancesAfter = await Promise.all(
-    signers.map((signer) => signer.getBalance())
+    signers.map(getBalanceOf)
   );
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
 
-function getAddresses(signers: Signer[]) {
-  return Promise.all(signers.map((signer) => signer.getAddress()));
+function getAddresses(signers: Account[]) {
+  return Promise.all(signers.map((signer) => getAddressOf(signer)));
 }
