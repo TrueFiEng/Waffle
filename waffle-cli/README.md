@@ -63,8 +63,7 @@ or with yarn:
 yarn add @openzeppelin/contracts -D
 ```
 
-
-###Note
+### Note
 
 Find this example in `examples/basic` and use it.
 
