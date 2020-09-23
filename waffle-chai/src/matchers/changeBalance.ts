@@ -1,5 +1,6 @@
 import {BigNumber, providers} from 'ethers';
-import {Account, getAddressOf, getBalanceOf} from './misc/account';
+import {ensure} from './calledOnContract/utils';
+import {Account, getAddressOf} from './misc/account';
 
 export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalance', function (
@@ -30,21 +31,23 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   });
 }
 
-export async function getBalanceChange(
+async function getBalanceChange(
   transaction: providers.TransactionResponse | (() => Promise<void> | void),
   account: Account
 ) {
+  ensure(account.provider !== undefined, TypeError, 'Provider not found');
+
   if (typeof transaction === 'function') {
-    const balanceBefore = await getBalanceOf(account);
+    const balanceBefore = await account.provider.getBalance(getAddressOf(account));
     await transaction();
-    const balanceAfter = await getBalanceOf(account);
+    const balanceAfter = await account.provider.getBalance(getAddressOf(account));
 
     return balanceAfter.sub(balanceBefore);
   } else {
     const transactionBlockNumber = (await transaction.wait()).blockNumber;
 
-    const balanceAfter = await getBalanceOf(account, transactionBlockNumber);
-    const balanceBefore = await getBalanceOf(account, transactionBlockNumber - 1);
+    const balanceAfter = await account.provider.getBalance(getAddressOf(account), transactionBlockNumber);
+    const balanceBefore = await account.provider.getBalance(getAddressOf(account), transactionBlockNumber - 1);
 
     return balanceAfter.sub(balanceBefore);
   }

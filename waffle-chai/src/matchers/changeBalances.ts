@@ -1,5 +1,6 @@
 import {BigNumber, providers} from 'ethers';
-import {getBalanceOf, getAddressOf, Account} from './misc/account';
+import {ensure} from './calledOnContract/utils';
+import {getAddressOf, Account} from './misc/account';
 
 export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalances', function (
@@ -38,24 +39,16 @@ async function getBalanceChanges(
   signers: Account[]
 ) {
   if (typeof transaction === 'function') {
-    const balancesBefore = await Promise.all(
-      signers.map((signer) => getBalanceOf(signer))
-    );
+    const balancesBefore = await getBalances(signers);
     await transaction();
-    const balancesAfter = await Promise.all(
-      signers.map((signer) => getBalanceOf(signer))
-    );
+    const balancesAfter = await getBalances(signers);
 
     return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
   } else {
     const transactionBlockNumber = (await transaction.wait()).blockNumber;
 
-    const balancesAfter = await Promise.all(
-      signers.map((signer) => getBalanceOf(signer, transactionBlockNumber))
-    );
-    const balancesBefore = await Promise.all(
-      signers.map((signer) => getBalanceOf(signer, transactionBlockNumber - 1))
-    );
+    const balancesAfter = await getBalances(signers, transactionBlockNumber);
+    const balancesBefore = await getBalances(signers, transactionBlockNumber - 1);
 
     return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
   }
@@ -63,4 +56,17 @@ async function getBalanceChanges(
 
 function getAddresses(signers: Account[]) {
   return Promise.all(signers.map((signer) => getAddressOf(signer)));
+}
+
+async function getBalances(signers: Account[], blockNumber?: number) {
+  return Promise.all(
+    signers.map((signer) => {
+      ensure(signer.provider !== undefined, TypeError, 'Provider not found');
+      if (blockNumber) {
+        return signer.provider.getBalance(getAddressOf(signer), blockNumber);
+      } else {
+        return signer.provider.getBalance(getAddressOf(signer));
+      }
+    })
+  );
 }
