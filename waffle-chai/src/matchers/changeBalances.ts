@@ -34,7 +34,7 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChanges(
-  transaction: providers.TransactionResponse | Function,
+  transaction: providers.TransactionResponse | (() => Promise<void> | void),
   signers: Account[]
 ) {
   if (transaction instanceof Function) {
