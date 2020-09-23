@@ -35,20 +35,33 @@ async function getBalanceChange(
   transaction: providers.TransactionResponse | (() => Promise<void> | void),
   account: Account
 ) {
+  if (typeof transaction === 'function') {
+    return getBalanceChangeForTransactionCall(transaction, account);
+  } else {
+    return getBalanceChangeForTransactionResponse(transaction, account);
+  }
+}
+
+async function getBalanceChangeForTransactionCall(transactionCall: (() => Promise<void> | void), account: Account) {
   ensure(account.provider !== undefined, TypeError, 'Provider not found');
 
-  if (typeof transaction === 'function') {
-    const balanceBefore = await account.provider.getBalance(getAddressOf(account));
-    await transaction();
-    const balanceAfter = await account.provider.getBalance(getAddressOf(account));
+  const balanceBefore = await account.provider.getBalance(getAddressOf(account));
+  await transactionCall();
+  const balanceAfter = await account.provider.getBalance(getAddressOf(account));
 
-    return balanceAfter.sub(balanceBefore);
-  } else {
-    const transactionBlockNumber = (await transaction.wait()).blockNumber;
+  return balanceAfter.sub(balanceBefore);
+}
 
-    const balanceAfter = await account.provider.getBalance(getAddressOf(account), transactionBlockNumber);
-    const balanceBefore = await account.provider.getBalance(getAddressOf(account), transactionBlockNumber - 1);
+async function getBalanceChangeForTransactionResponse(
+  transactionResponse: providers.TransactionResponse,
+  account: Account
+) {
+  ensure(account.provider !== undefined, TypeError, 'Provider not found');
 
-    return balanceAfter.sub(balanceBefore);
-  }
+  const transactionBlockNumber = (await transactionResponse.wait()).blockNumber;
+
+  const balanceAfter = await account.provider.getBalance(getAddressOf(account), transactionBlockNumber);
+  const balanceBefore = await account.provider.getBalance(getAddressOf(account), transactionBlockNumber - 1);
+
+  return balanceAfter.sub(balanceBefore);
 }

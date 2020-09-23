@@ -36,37 +36,48 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
 
 async function getBalanceChanges(
   transaction: providers.TransactionResponse | (() => Promise<void> | void),
-  signers: Account[]
+  accounts: Account[]
 ) {
   if (typeof transaction === 'function') {
-    const balancesBefore = await getBalances(signers);
-    await transaction();
-    const balancesAfter = await getBalances(signers);
-
-    return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+    return getBalancesChangeForTransactionCall(transaction, accounts);
   } else {
-    const transactionBlockNumber = (await transaction.wait()).blockNumber;
-
-    const balancesAfter = await getBalances(signers, transactionBlockNumber);
-    const balancesBefore = await getBalances(signers, transactionBlockNumber - 1);
-
-    return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+    return getBalancesChangeForTransactionResponse(transaction, accounts);
   }
 }
 
-function getAddresses(signers: Account[]) {
-  return Promise.all(signers.map((signer) => getAddressOf(signer)));
+function getAddresses(accounts: Account[]) {
+  return Promise.all(accounts.map((account) => getAddressOf(account)));
 }
 
-async function getBalances(signers: Account[], blockNumber?: number) {
+async function getBalances(accounts: Account[], blockNumber?: number) {
   return Promise.all(
-    signers.map((signer) => {
-      ensure(signer.provider !== undefined, TypeError, 'Provider not found');
+    accounts.map((account) => {
+      ensure(account.provider !== undefined, TypeError, 'Provider not found');
       if (blockNumber) {
-        return signer.provider.getBalance(getAddressOf(signer), blockNumber);
+        return account.provider.getBalance(getAddressOf(account), blockNumber);
       } else {
-        return signer.provider.getBalance(getAddressOf(signer));
+        return account.provider.getBalance(getAddressOf(account));
       }
     })
   );
+}
+
+async function getBalancesChangeForTransactionCall(transactionCall: (() => Promise<void> | void), accounts: Account[]) {
+  const balancesBefore = await getBalances(accounts);
+  await transactionCall();
+  const balancesAfter = await getBalances(accounts);
+
+  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
+}
+
+async function getBalancesChangeForTransactionResponse(
+  transactionResponse: providers.TransactionResponse,
+  accounts: Account[]
+) {
+  const transactionBlockNumber = (await transactionResponse.wait()).blockNumber;
+
+  const balancesAfter = await getBalances(accounts, transactionBlockNumber);
+  const balancesBefore = await getBalances(accounts, transactionBlockNumber - 1);
+
+  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
