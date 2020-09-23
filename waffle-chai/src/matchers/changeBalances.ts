@@ -37,7 +37,7 @@ async function getBalanceChanges(
   transaction: providers.TransactionResponse | (() => Promise<void> | void),
   signers: Account[]
 ) {
-  if (transaction instanceof Function) {
+  if (typeof transaction === 'function') {
     const balancesBefore = await Promise.all(
       signers.map((signer) => getBalanceOf(signer))
     );

@@ -34,7 +34,7 @@ export async function getBalanceChange(
   transaction: providers.TransactionResponse | (() => Promise<void> | void),
   account: Account
 ) {
-  if (transaction instanceof Function) {
+  if (typeof transaction === 'function') {
     const balanceBefore = await getBalanceOf(account);
     await transaction();
     const balanceAfter = await getBalanceOf(account);
