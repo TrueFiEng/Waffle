@@ -77,22 +77,31 @@ Testing if transaction was reverted with certain message:
 
 Change balance
 --------------
-Testing whether the transaction changes the balance of the account
+Testing whether the transaction changes the balance of the account:
 
 .. code-block:: ts
 
   await expect(() => wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
     .to.changeBalance(walletTo, 200);
 
+  await expect(await wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
+    .to.changeBalance(walletTo, 200);
 
-.. note:: The transaction call should be passed to the :code:`expect` as a callback (we need to check the balance before the call).
-The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet.
+:code:`expect` for :code:`changeBalance` gets one of the following parameters:
+
+  - **transaction call** : () => Promise<`TransactionResponse <https://docs.ethers.io/v5/api/providers/types/#providers-TransactionResponse>`_> - we first check the balance then call the transaction callback and finally calculate the difference between current balance and the balance before the transaction.
+  - **transaction response** : `TransactionResponse <https://docs.ethers.io/v5/api/providers/types/#providers-TransactionResponse>`_ - we check the balance difference between the block that transaction was mined in and the block before it.
+
+.. note:: :code:`changeBalance` calls will not work unless there is only one transaction mined in the block.
+
+The transaction call should be passed to the :code:`expect` as a callback (we need to check the balance before the call) or as a transaction response.
+
+The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet or a contract.
 
 .. note:: :code:`changeBalance` calls should not be chained. If you need to chain it, you probably want to use :code:`changeBalances` matcher.
 
 Change balance (multiple accounts)
 ----------------------------------
-
 Testing whether the transaction changes balance for multiple accounts:
 
 .. code-block:: ts
@@ -100,6 +109,10 @@ Testing whether the transaction changes balance for multiple accounts:
   await expect(() => wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
     .to.changeBalances([walletFrom, walletTo], [-200, 200]);
 
+  await expect(await wallet.sendTransaction({to: walletTo.address, gasPrice: 0, value: 200}))
+    .to.changeBalances([walletFrom, walletTo], [-200, 200]);
+
+.. note:: :code:`changeBalances` calls will not work unless there is only one transaction mined in the block.
 
 Proper address
 ------------------
@@ -125,4 +138,3 @@ Testing if a string is a proper hex value of given length:
 .. code-block:: ts
 
   expect('0x70').to.be.properHex(2);
-
