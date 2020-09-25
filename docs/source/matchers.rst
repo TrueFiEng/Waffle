@@ -7,7 +7,7 @@ A set of sweet chai matchers, makes your test easy to write and read. Before you
 
   import chai from "chai";
   import { solidity } from "ethereum-waffle";
-  
+
   chai.use(solidity);
 
 Below is the list of available matchers:
@@ -113,6 +113,34 @@ Testing whether the transaction changes balance for multiple accounts:
     .to.changeBalances([walletFrom, walletTo], [-200, 200]);
 
 .. note:: :code:`changeBalances` calls will not work unless there is only one transaction mined in the block.
+
+Change token balance
+--------------------
+Testing whether the transfer changes the balance of the account:
+
+.. code-block:: ts
+
+  await expect(() => token.transfer(walletTo.address, 200))
+    .to.changeTokenBalance(token, walletTo, 200);
+
+  await expect(() => token.transferFrom(walletFrom.address, walletTo.address, 200))
+    .to.changeTokenBalance(token, walletTo, 200);
+
+.. note:: The transfer call should be passed to the :code:`expect` as a callback (we need to check the balance before the call).
+
+The matcher can accept numbers, strings and BigNumbers as a balance change, while the address should be specified as a wallet or a contract.
+
+.. note:: :code:`changeTokenBalance` calls should not be chained. If you need to chain it, you probably want to use :code:`changeTokenBalances` matcher.
+
+Change token balance (multiple accounts)
+----------------------------------------
+
+Testing whether the transfer changes balance for multiple accounts:
+
+.. code-block:: ts
+
+  await expect(() => token.transfer(walletTo.address, 200))
+    .to.changeTokenBalances(token, [walletFrom, walletTo], [-200, 200]);
 
 Proper address
 ------------------

@@ -8,6 +8,8 @@ import {supportProperPrivateKey} from './matchers/properPrivateKey';
 import {supportProperHex} from './matchers/properHex';
 import {supportChangeBalance} from './matchers/changeBalance';
 import {supportChangeBalances} from './matchers/changeBalances';
+import {supportChangeTokenBalance} from './matchers/changeTokenBalance';
+import {supportChangeTokenBalances} from './matchers/changeTokenBalances';
 import {supportCalledOnContract} from './matchers/calledOnContract/calledOnContract';
 import {supportCalledOnContractWith} from './matchers/calledOnContract/calledOnContractWith';
 
@@ -21,6 +23,8 @@ export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportProperHex(chai.Assertion);
   supportChangeBalance(chai.Assertion);
   supportChangeBalances(chai.Assertion);
+  supportChangeTokenBalance(chai.Assertion);
+  supportChangeTokenBalances(chai.Assertion);
   supportCalledOnContract(chai.Assertion);
   supportCalledOnContractWith(chai.Assertion);
 }
