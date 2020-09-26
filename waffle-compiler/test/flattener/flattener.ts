@@ -1,7 +1,7 @@
 import {expect} from 'chai';
 import fs from 'fs-extra';
 import {inputToConfig} from '../../src/config';
-import {flattenAndSave} from '../../src';
+import {flattenAndSave, normalizeSpdxLicenceIdentifiers} from '../../src';
 
 const sourceDirectory = './test/flattener/testSource';
 const flattenOutputDirectory = './test/flattener/flattenFiles';
@@ -43,5 +43,21 @@ describe('flattening', () => {
   it('leaves other pragmas uncommented', async () => {
     const file = await flatAndGetChild();
     expect(file).to.include('\npragma experimental ABIEncoderV2;');
+  });
+
+  it('test', () => {
+    expect(normalizeSpdxLicenceIdentifiers(`test
+            // SPDX-License-Identifier: UNLICENSED
+        //    SPDX-License-Identifier: MIT
+        test2
+                  // SPDX-License-Identifier: WTFPL
+                  test3
+            `, 'test.sol')).to.equal(`test
+            // SPDX-License-Identifier: UNLICENSED
+
+        test2
+
+                  test3
+            `);
   });
 });

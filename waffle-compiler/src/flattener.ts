@@ -5,7 +5,7 @@ import {Config, InputConfig, inputToConfig, loadConfig} from './config';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSourcesAndCanonizeImports} from '@resolver-engine/imports';
 import {findInputs} from './findInputs';
-import {getExtensionForCompilerType} from './utils';
+import {getExtensionForCompilerType, insert} from './utils';
 
 export interface GatheredContractInterface {
   url: string;
@@ -60,8 +60,9 @@ function saveToFile(
 
     const contractsWithCommentedDirectives = contract.map(replaceDirectivesWithComments(rootContract));
     const source = ''.concat(...unique(contractsWithCommentedDirectives));
+    const sourceWithNormalizedLicences = normalizeSpdxLicenceIdentifiers(source, fileName);
 
-    fileSystem.writeFile(filePath, source);
+    fileSystem.writeFile(filePath, sourceWithNormalizedLicences);
   });
 }
 
@@ -83,4 +84,37 @@ function replaceDirectivesWithComments(rootContract: GatheredContractInterface) 
     const sourceWithCommentedPragmas = sourceWithCommentedImports.replace(PRAGMA_SOLIDITY_REGEX, '// pragma solidity');
     return `// Dependency file: ${filePath}\n\n` + sourceWithCommentedPragmas + '\n\n';
   };
+}
+
+function findUniqueLicences(flattenContracts: string): string[] {
+  const LICENCE_REGEX = /^\s*\/\/\s*SPDX-License-Identifier:(.*)$/mg;
+
+  const licences = new Set<string>();
+  let match;
+  while (true) {
+    match = LICENCE_REGEX.exec(flattenContracts);
+    if (!match) {
+      break;
+    }
+    licences.add(match[1].trim());
+  }
+  return [...licences];
+}
+
+export function normalizeSpdxLicenceIdentifiers(flattenContracts: string, contractName: string) {
+  const LICENCE_REGEX = /^\s*\/\/\s*SPDX-License-Identifier:(.*)$/mg;
+  const uniqueLicences = findUniqueLicences(flattenContracts);
+  if (uniqueLicences.length > 1) {
+    console.warn(`WARNING contract ${contractName}: multiple licences found: ${uniqueLicences.join(', ')}.
+  Solidity compiler does not allow more than one licence. Licence selected: ${uniqueLicences}
+    `);
+  }
+
+  const firstLicence = LICENCE_REGEX.exec(flattenContracts);
+  if (!firstLicence) {
+    return flattenContracts;
+  }
+
+  const normalizedContract = flattenContracts.replace(LICENCE_REGEX, '');
+  return insert(normalizedContract, firstLicence[0], firstLicence.index);
 }
