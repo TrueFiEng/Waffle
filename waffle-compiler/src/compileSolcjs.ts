@@ -16,6 +16,9 @@ export async function loadCompiler(config: Config) {
     if (isDirectory(config.compilerVersion)) {
       return require(path.resolve(config.compilerVersion));
     } else if (semverRegex.test(config.compilerVersion)) {
+      if (solc.version().startsWith(`${config.compilerVersion}+`)) {
+        return solc;
+      }
       try {
         const version = await resolveSemverVersion(config.compilerVersion);
         return loadRemoteVersion(version);
