@@ -29,7 +29,9 @@ Methods can also be set up to be reverted using:
 .. code-block:: ts
 
   await mockContract.mock.<nameOfMethod>.reverts()
+  await mockContract.mock.<nameOfMethod>.revertsWithReason(<reason>)
   await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).reverts()
+  await mockContract.mock.<nameOfMethod>.withArgs(<arguments>).revertsWithReason(<reason>)
 
 Example
 -------

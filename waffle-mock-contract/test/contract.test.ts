@@ -105,10 +105,17 @@ describe('Doppelganger - Contract', () => {
       expect(await pretender.testArgumentTypes(1, false, 'str', '0x0123')).to.equal('0x0123');
     });
 
+    it('reverts with no message', async () => {
+      const {contract, pretender} = await deploy();
+
+      await contract.__waffle__mockReverts(readSignature, '');
+      await expect(pretender.read()).to.be.revertedWith('');
+    });
+
     it('reverts with correct message', async () => {
       const {contract, pretender} = await deploy();
 
-      await contract.__waffle__mockReverts(readSignature);
+      await contract.__waffle__mockReverts(readSignature, 'Mock revert');
       await expect(pretender.read()).to.be.revertedWith('Mock revert');
     });
 
@@ -118,7 +125,7 @@ describe('Doppelganger - Contract', () => {
       const callData = `${addSignature}0000000000000000000000000000000000000000000000000000000000000005`;
       const returnedValue = '0x1000000000000000000000000000000000000000000000000000000000004234';
 
-      await contract.__waffle__mockReverts(callData);
+      await contract.__waffle__mockReverts(callData, 'Mock revert');
       await contract.__waffle__mockReturns(addSignature, returnedValue);
 
       await expect(pretender.add(5)).to.be.revertedWith('Mock revert');

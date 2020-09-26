@@ -1,16 +1,14 @@
-import {BigNumber, Signer} from 'ethers';
+import {BigNumber, providers} from 'ethers';
+import {ensure} from './calledOnContract/utils';
+import {getAddressOf, Account} from './misc/account';
 
 export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalances', function (
     this: any,
-    signers: Signer[],
+    signers: Account[],
     balanceChanges: any[]
   ) {
     const subject = this._obj;
-    if (typeof subject !== 'function') {
-      throw new Error(`Expect subject should be a callback returning the Promise
-        e.g.: await expect(() => wallet.send({to: '0xb', value: 200})).to.changeBalances(['0xa', '0xb'], [-200, 200])`);
-    }
 
     const derivedPromise = Promise.all([
       getBalanceChanges(subject, signers),
@@ -37,19 +35,49 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChanges(
-  transactionCallback: () => any,
-  signers: Signer[]
+  transaction: providers.TransactionResponse | (() => Promise<void> | void),
+  accounts: Account[]
 ) {
-  const balancesBefore = await Promise.all(
-    signers.map((signer) => signer.getBalance())
+  if (typeof transaction === 'function') {
+    return getBalancesChangeForTransactionCall(transaction, accounts);
+  } else {
+    return getBalancesChangeForTransactionResponse(transaction, accounts);
+  }
+}
+
+function getAddresses(accounts: Account[]) {
+  return Promise.all(accounts.map((account) => getAddressOf(account)));
+}
+
+async function getBalances(accounts: Account[], blockNumber?: number) {
+  return Promise.all(
+    accounts.map((account) => {
+      ensure(account.provider !== undefined, TypeError, 'Provider not found');
+      if (blockNumber) {
+        return account.provider.getBalance(getAddressOf(account), blockNumber);
+      } else {
+        return account.provider.getBalance(getAddressOf(account));
+      }
+    })
   );
-  await transactionCallback();
-  const balancesAfter = await Promise.all(
-    signers.map((signer) => signer.getBalance())
-  );
+}
+
+async function getBalancesChangeForTransactionCall(transactionCall: (() => Promise<void> | void), accounts: Account[]) {
+  const balancesBefore = await getBalances(accounts);
+  await transactionCall();
+  const balancesAfter = await getBalances(accounts);
+
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
 
-function getAddresses(signers: Signer[]) {
-  return Promise.all(signers.map((signer) => signer.getAddress()));
+async function getBalancesChangeForTransactionResponse(
+  transactionResponse: providers.TransactionResponse,
+  accounts: Account[]
+) {
+  const transactionBlockNumber = (await transactionResponse.wait()).blockNumber;
+
+  const balancesAfter = await getBalances(accounts, transactionBlockNumber);
+  const balancesBefore = await getBalances(accounts, transactionBlockNumber - 1);
+
+  return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
