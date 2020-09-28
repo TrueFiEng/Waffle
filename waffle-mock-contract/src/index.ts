@@ -85,7 +85,7 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
   };
 
   mockedContract.call = async (contract: Contract, functionName: string, ...params: any[]) => {
-    const tx = await contract.populateTransaction[functionName](params);
+    const tx = await contract.populateTransaction[functionName](...params);
     const data = tx.data;
     return mockContractInstance.__waffle__call(contract.address, data);
   };
