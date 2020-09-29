@@ -2,7 +2,7 @@ import {expect, AssertionError} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {BigNumber, Contract} from 'ethers';
 
-describe('INTEGRATION: Balance observers', () => {
+describe('INTEGRATION: changeBalance matcher', () => {
   const provider = new MockProvider();
   const [sender, receiver] = provider.getWallets();
   const contract = new Contract(receiver.address, [], provider);
@@ -165,18 +165,6 @@ describe('INTEGRATION: Balance observers', () => {
         ).to.changeBalance(contract, 200);
       });
     });
-
-    describe('Change balances, one account, one contract', () => {
-      it('Should pass when all expected balance changes are equal to actual values', async () => {
-        await expect(() =>
-          sender.sendTransaction({
-            to: contract.address,
-            gasPrice: 0,
-            value: 200
-          })
-        ).to.changeBalances([sender, contract], [-200, 200]);
-      });
-    });
   });
 
   describe('Transaction Response', () => {
@@ -331,17 +319,6 @@ describe('INTEGRATION: Balance observers', () => {
           value: 200
         })
         ).to.changeBalance(contract, 200);
-      });
-    });
-
-    describe('Change balances, one account, one contract', () => {
-      it('Should pass when all expected balance changes are equal to actual values', async () => {
-        await expect(await sender.sendTransaction({
-          to: contract.address,
-          gasPrice: 0,
-          value: 200
-        })
-        ).to.changeBalances([sender, contract], [-200, 200]);
       });
     });
   });

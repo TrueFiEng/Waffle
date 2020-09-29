@@ -1,4 +1,4 @@
-import {BigNumber, providers} from 'ethers';
+import {BigNumber, BigNumberish, providers} from 'ethers';
 import {ensure} from './calledOnContract/utils';
 import {Account, getAddressOf} from './misc/account';
 
@@ -6,7 +6,7 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalance', function (
     this: any,
     signer: Account,
-    balanceChange: any
+    balanceChange: BigNumberish
   ) {
     const subject = this._obj;
     const derivedPromise = Promise.all([
