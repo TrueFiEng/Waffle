@@ -8,7 +8,7 @@
 Library for mocking smart contract dependencies during unit testing.
 
 ## Installation
-In the current version of waffle (v2.x.x) you will install this package as a dependency of the main waffle package - `ethereum-waffle`.
+In the current version of waffle (v3.x.x) you will install this package as a dependency of the main waffle package - `ethereum-waffle`.
 
 ```
 yarn add --dev ethereum-waffle
