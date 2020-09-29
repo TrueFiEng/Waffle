@@ -75,7 +75,7 @@ You may wish to execute another contract through a mock.  Given the "AmIRichAlre
 ```js
 const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
 const amIRich = await contractFactory.deploy()
-const mockERC20 = await deployMockContract(sender, IERC20.abi);
+const mockERC20 = await deployMockContract(sender, ERC20.abi);
 
 let result = await mockERC20.staticcall(amIRich, 'check()')
 // you may also just use the function name
@@ -88,7 +88,7 @@ You may also execute transactions through the mock, using `call`:
 ```js
 const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
 const amIRich = await contractFactory.deploy()
-const mockERC20 = await deployMockContract(sender, IERC20.abi);
+const mockERC20 = await deployMockContract(sender, ERC20.abi);
 
 let result = await mockERC20.call(amIRich, 'setRichness(uint256)', 1000)
 // you may also just use the function name
@@ -120,7 +120,7 @@ contract AmIRichAlready {
         return balance > richness;
     }
 
-    function setRichness(uint256 _richness) {
+    function setRichness(uint256 _richness) public {
       richness = _richness;
     }
 }
@@ -129,21 +129,21 @@ contract AmIRichAlready {
 We are mostly interested in the `tokenContract.balanceOf` call. Mock contract will be used to mock exactly this call with values that are significant for the return of the `check()` method.
 
 ```js
-const {use, expect} = require('chai');
-const {ContractFactory, utils} = require('ethers');
-const {MockProvider} = require('@ethereum-waffle/provider');
-const {waffleChai} = require('@ethereum-waffle/chai');
-const {deployMockContract} = require('@ethereum-waffle/mock-contract');
+import {use, expect} from 'chai';
+import {ContractFactory, utils} from 'ethers';
+import {MockProvider} from '@ethereum-waffle/provider';
+import {waffleChai} from '@ethereum-waffle/chai';
+import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
-const IERC20 = require('../build/IERC20');
-const AmIRichAlready = require('../build/AmIRichAlready');
+import ERC20 from './helpers/interfaces/ERC20.json';
+import AmIRichAlready from './helpers/interfaces/AmIRichAlready.json';
 
 use(waffleChai);
 
 describe('Am I Rich Already', () => {
   async function setup() {
     const [sender, receiver] = new MockProvider().getWallets();
-    const mockERC20 = await deployMockContract(sender, IERC20.abi);
+    const mockERC20 = await deployMockContract(sender, ERC20.abi);
     const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
     const contract = await contractFactory.deploy(mockERC20.address);
     return {sender, receiver, contract, mockERC20};
