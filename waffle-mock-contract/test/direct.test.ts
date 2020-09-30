@@ -54,6 +54,22 @@ describe('Mock Contract - Integration (called directly)', () => {
     expect(await mockCounter.staticcall(counter, 'read')).to.equal('0');
   });
 
+  it('should be able to call another contract with a parameter', async () => {
+    const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
+    const counter = await counterFactory.deploy();
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
+
+    expect(await mockCounter.staticcall(counter, 'add', 1)).to.equal('1');
+  });
+
+  it('should be able to call another contract with many parameters', async () => {
+    const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
+    const counter = await counterFactory.deploy();
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
+
+    expect(await mockCounter.staticcall(counter, 'addThree', 1, 2, 3)).to.equal('6');
+  });
+
   it('should be able to execute another contract', async () => {
     const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
     const counter = await counterFactory.deploy();
@@ -64,5 +80,23 @@ describe('Mock Contract - Integration (called directly)', () => {
 
     await mockCounter.call(counter, 'increment');
     expect(await counter.read()).to.equal('2');
+  });
+
+  it('should be able to execute another contract with a parameter', async () => {
+    const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
+    const counter = await counterFactory.deploy();
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
+
+    await mockCounter.call(counter, 'increaseBy', 2);
+    expect(await counter.read()).to.equal('2');
+  });
+
+  it('should be able to execute another contract with many parameters', async () => {
+    const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
+    const counter = await counterFactory.deploy();
+    const mockCounter = await deployMockContract(wallet, Counter.abi);
+
+    await mockCounter.call(counter, 'increaseByThreeValues', 1, 2, 3);
+    expect(await counter.read()).to.equal('6');
   });
 });
