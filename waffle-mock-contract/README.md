@@ -75,7 +75,7 @@ You may wish to execute another contract through a mock.  Given the "AmIRichAlre
 ```js
 const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
 const amIRich = await contractFactory.deploy()
-const mockERC20 = await deployMockContract(sender, ERC20.abi);
+const mockERC20 = await deployMockContract(sender, IERC20.abi);
 
 let result = await mockERC20.staticcall(amIRich, 'check()')
 // you may also just use the function name
@@ -88,7 +88,7 @@ You may also execute transactions through the mock, using `call`:
 ```js
 const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
 const amIRich = await contractFactory.deploy()
-const mockERC20 = await deployMockContract(sender, ERC20.abi);
+const mockERC20 = await deployMockContract(sender, IERC20.abi);
 
 let result = await mockERC20.call(amIRich, 'setRichness(uint256)', 1000)
 // you may also just use the function name
@@ -135,7 +135,7 @@ import {MockProvider} from '@ethereum-waffle/provider';
 import {waffleChai} from '@ethereum-waffle/chai';
 import {deployMockContract} from '@ethereum-waffle/mock-contract';
 
-import ERC20 from './helpers/interfaces/ERC20.json';
+import IERC20 from './helpers/interfaces/IERC20.json';
 import AmIRichAlready from './helpers/interfaces/AmIRichAlready.json';
 
 use(waffleChai);
@@ -143,7 +143,7 @@ use(waffleChai);
 describe('Am I Rich Already', () => {
   async function setup() {
     const [sender, receiver] = new MockProvider().getWallets();
-    const mockERC20 = await deployMockContract(sender, ERC20.abi);
+    const mockERC20 = await deployMockContract(sender, IERC20.abi);
     const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
     const contract = await contractFactory.deploy(mockERC20.address);
     return {sender, receiver, contract, mockERC20};

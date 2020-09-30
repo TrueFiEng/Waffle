@@ -4,7 +4,7 @@ import {MockProvider} from '@ethereum-waffle/provider';
 import {waffleChai} from '@ethereum-waffle/chai';
 import {deployMockContract} from '../src';
 
-import ERC20 from './helpers/interfaces/ERC20.json';
+import IERC20 from './helpers/interfaces/IERC20.json';
 import AmIRichAlready from './helpers/interfaces/AmIRichAlready.json';
 
 use(waffleChai);
@@ -12,7 +12,7 @@ use(waffleChai);
 describe('Am I Rich Already', () => {
   async function setup() {
     const [sender, receiver] = new MockProvider().getWallets();
-    const mockERC20 = await deployMockContract(sender, ERC20.abi);
+    const mockERC20 = await deployMockContract(sender, IERC20.abi);
     const contractFactory = new ContractFactory(AmIRichAlready.abi, AmIRichAlready.bytecode, sender);
     const contract = await contractFactory.deploy(mockERC20.address);
     return {sender, receiver, contract, mockERC20};
