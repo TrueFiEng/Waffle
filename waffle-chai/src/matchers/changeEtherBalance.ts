@@ -33,7 +33,10 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChange(
-  transaction: providers.TransactionResponse | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  transaction:
+  | providers.TransactionResponse
+  | (() => Promise<providers.TransactionResponse>
+  | providers.TransactionResponse),
   account: Account,
   options: any
 ) {
@@ -44,7 +47,11 @@ async function getBalanceChange(
   }
 }
 
-async function getBalanceChangeForTransactionCall(transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse), account: Account, options: any) {
+async function getBalanceChangeForTransactionCall(
+  transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  account: Account,
+  options: any
+) {
   ensure(account.provider !== undefined, TypeError, 'Provider not found');
 
   const balanceBefore = await account.provider.getBalance(getAddressOf(account));
@@ -54,7 +61,7 @@ async function getBalanceChangeForTransactionCall(transactionCall: (() => Promis
 
   const balanceAfter = await account.provider.getBalance(getAddressOf(account));
 
-  if (options?.includeFee === true && await getAddressOf(account) == txResponse.from) {
+  if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
     const gasPrice = txResponse.gasPrice;
     const gasUsed = txReceipt.gasUsed;
     const txFee = gasPrice.mul(gasUsed);
@@ -75,11 +82,10 @@ async function getBalanceChangeForTransactionResponse(
   const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
 
-
   const balanceAfter = await account.provider.getBalance(getAddressOf(account), txBlockNumber);
   const balanceBefore = await account.provider.getBalance(getAddressOf(account), txBlockNumber - 1);
 
-  if (options?.includeFee === true && await getAddressOf(account) == txResponse.from) {
+  if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
     const gasPrice = txResponse.gasPrice;
     const gasUsed = txReceipt.gasUsed;
     const txFee = gasPrice.mul(gasUsed);
@@ -88,5 +94,4 @@ async function getBalanceChangeForTransactionResponse(
   } else {
     return balanceAfter.sub(balanceBefore);
   }
-
 }

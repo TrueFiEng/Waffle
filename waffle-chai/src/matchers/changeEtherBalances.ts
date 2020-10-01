@@ -36,7 +36,10 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChanges(
-  transaction: providers.TransactionResponse | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  transaction:
+  | providers.TransactionResponse
+  | (() => Promise<providers.TransactionResponse>
+  | providers.TransactionResponse),
   accounts: Account[],
   options: any
 ) {
@@ -67,7 +70,7 @@ async function getBalances(accounts: Account[], blockNumber?: number) {
 async function getTxFees(accounts: Account[], txResponse: providers.TransactionResponse, options: any) {
   return Promise.all(
     accounts.map(async (account) => {
-      if (options?.includeFee === true && await getAddressOf(account) == txResponse.from) {
+      if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
         const txReceipt = await txResponse.wait();
         const gasPrice = txResponse.gasPrice;
         const gasUsed = txReceipt.gasUsed;
@@ -81,7 +84,11 @@ async function getTxFees(accounts: Account[], txResponse: providers.TransactionR
   );
 }
 
-async function getBalancesChangeForTransactionCall(transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse), accounts: Account[], options: any) {
+async function getBalancesChangeForTransactionCall(
+  transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  accounts: Account[],
+  options: any
+) {
   const balancesBefore = await getBalances(accounts);
   const txResponse = await transactionCall();
   const balancesAfter = await getBalances(accounts);

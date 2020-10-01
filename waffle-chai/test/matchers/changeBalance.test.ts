@@ -48,12 +48,12 @@ describe('INTEGRATION: changeBalance matcher', () => {
 
       it('Should take into account transaction fee', async () => {
         await expect(() =>
-            sender.sendTransaction({
-              to: receiver.address,
-              gasPrice: 1,
-              value: 200
-            })
-          ).to.changeBalance(sender, -21200)
+          sender.sendTransaction({
+            to: receiver.address,
+            gasPrice: 1,
+            value: 200
+          })
+        ).to.changeBalance(sender, -21200);
       });
 
       it('Should throw when expected balance change value was different from an actual', async () => {
