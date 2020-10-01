@@ -40,6 +40,7 @@ describe('INTEGRATION: changeTokenBalances matcher', () => {
         'Expected 0x17ec8597ff92C3F44523bDc65BF0f1bE632917ff,0x63FC2aD3d021a4D7e64323529a55a9442C444dA0 ' +
             'to change balance by -200,201 wei, but it has changed by -200,200 wei'
       );
+      
       await expect(
         expect(() =>
           token.transfer(receiver.address, 200)

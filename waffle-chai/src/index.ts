@@ -9,6 +9,7 @@ import {supportProperHex} from './matchers/properHex';
 import {supportChangeBalance} from './matchers/changeBalance';
 import {supportChangeBalances} from './matchers/changeBalances';
 import {supportChangeEtherBalance} from './matchers/changeEtherBalance';
+import {supportChangeEtherBalances} from './matchers/changeEtherBalances';
 import {supportChangeTokenBalance} from './matchers/changeTokenBalance';
 import {supportChangeTokenBalances} from './matchers/changeTokenBalances';
 import {supportCalledOnContract} from './matchers/calledOnContract/calledOnContract';
@@ -25,6 +26,7 @@ export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportChangeBalance(chai.Assertion);
   supportChangeBalances(chai.Assertion);
   supportChangeEtherBalance(chai.Assertion);
+  supportChangeEtherBalances(chai.Assertion);
   supportChangeTokenBalance(chai.Assertion);
   supportChangeTokenBalances(chai.Assertion);
   supportCalledOnContract(chai.Assertion);
