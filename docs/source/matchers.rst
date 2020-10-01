@@ -103,11 +103,11 @@ The matcher can accept numbers, strings and BigNumbers as a balance change, whil
 
   // Default behavior
   await expect(await wallet.sendTransaction({to: walletTo.address, value: 200}))
-    .to.changeEtherBalance(walletTo, 200);
+    .to.changeEtherBalance(walletFrom, -200);
 
   // Transaction fee is not factored in
-  await expect(await wallet.sendTransaction({to: walletTo.address value: 200}))
-    .to.changeEtherBalance(walletTo, 21200, {includeFee: true});
+  await expect(await wallet.sendTransaction({to: walletTo.address, gasPrice: 1, value: 200}))
+    .to.changeEtherBalance(walletFrom, -21200, {includeFee: true});
 
 .. note:: :code:`changeEtherBalance` calls should not be chained. If you need to chain it, you probably want to use :code:`changeEtherBalances` matcher.
 
