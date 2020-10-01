@@ -11,24 +11,26 @@ import {findImports} from './findImports';
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 const semverRegex = /^\d+\.\d+\.\d+$/;
 
-export async function loadCompiler(config: Config) {
-  if (config.compilerVersion !== 'default') {
-    if (isDirectory(config.compilerVersion)) {
-      return require(path.resolve(config.compilerVersion));
-    } else if (semverRegex.test(config.compilerVersion)) {
-      if (solc.version().startsWith(`${config.compilerVersion}+`)) {
-        return solc;
-      }
-      try {
-        const version = await resolveSemverVersion(config.compilerVersion);
-        return loadRemoteVersion(version);
-      } catch (e) {
-        throw new Error(`Error fetching version: ${config.compilerVersion}.`);
-      }
-    }
-    return loadRemoteVersion(config.compilerVersion);
+export async function loadCompiler({compilerVersion}: Config) {
+  if (isDefaultVersion(compilerVersion)) {
+    return solc;
   }
-  return solc;
+  if (isDirectory(compilerVersion)) {
+    return require(path.resolve(compilerVersion));
+  }
+  try {
+    const version = semverRegex.test(compilerVersion)
+      ? await resolveSemverVersion(compilerVersion)
+      : compilerVersion;
+    return await loadRemoteVersion(version);
+  } catch (e) {
+    throw new Error(`Error fetching compiler version: ${compilerVersion}.`);
+  }
+}
+
+function isDefaultVersion(version: string) {
+  return version === 'default' ||
+    (semverRegex.test(version) && solc.version().startsWith(`${version}+`));
 }
 
 async function resolveSemverVersion(version: string) {
@@ -39,6 +41,7 @@ async function resolveSemverVersion(version: string) {
 
 const VERSION_LIST_URL = 'https://ethereum.github.io/solc-bin/bin/list.json';
 let cache: any = undefined;
+
 async function fetchReleases() {
   if (!cache) {
     const res = await fetch(VERSION_LIST_URL);
