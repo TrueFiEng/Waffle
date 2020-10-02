@@ -5,23 +5,23 @@ import {getAddressOf, Account} from './misc/account';
 export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalances', function (
     this: any,
-    signers: Account[],
+    accounts: Account[],
     balanceChanges: BigNumberish[]
   ) {
     const subject = this._obj;
 
     const derivedPromise = Promise.all([
-      getBalanceChanges(subject, signers),
-      getAddresses(signers)
+      getBalanceChanges(subject, accounts),
+      getAddresses(accounts)
     ]).then(
-      ([actualChanges, signerAddresses]) => {
+      ([actualChanges, accountAddresses]) => {
         this.assert(
           actualChanges.every((change, ind) =>
             change.eq(BigNumber.from(balanceChanges[ind]))
           ),
-          `Expected ${signerAddresses} to change balance by ${balanceChanges} wei, ` +
+          `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
             `but it has changed by ${actualChanges} wei`,
-          `Expected ${signerAddresses} to not change balance by ${balanceChanges} wei,`,
+          `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
           balanceChanges.map((balanceChange) => balanceChange.toString()),
           actualChanges.map((actualChange) => actualChange.toString())
         );
@@ -39,9 +39,9 @@ async function getBalanceChanges(
   accounts: Account[]
 ) {
   if (typeof transaction === 'function') {
-    return getBalancesChangeForTransactionCall(transaction, accounts);
+    return getBalanceChangesForTransactionCall(transaction, accounts);
   } else {
-    return getBalancesChangeForTransactionResponse(transaction, accounts);
+    return getBalanceChangesForTransactionResponse(transaction, accounts);
   }
 }
 
@@ -62,7 +62,7 @@ async function getBalances(accounts: Account[], blockNumber?: number) {
   );
 }
 
-async function getBalancesChangeForTransactionCall(transactionCall: (() => Promise<void> | void), accounts: Account[]) {
+async function getBalanceChangesForTransactionCall(transactionCall: (() => Promise<void> | void), accounts: Account[]) {
   const balancesBefore = await getBalances(accounts);
   await transactionCall();
   const balancesAfter = await getBalances(accounts);
@@ -70,7 +70,7 @@ async function getBalancesChangeForTransactionCall(transactionCall: (() => Promi
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
 
-async function getBalancesChangeForTransactionResponse(
+async function getBalanceChangesForTransactionResponse(
   transactionResponse: providers.TransactionResponse,
   accounts: Account[]
 ) {

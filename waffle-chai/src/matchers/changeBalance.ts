@@ -5,13 +5,13 @@ import {Account, getAddressOf} from './misc/account';
 export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalance', function (
     this: any,
-    signer: Account,
+    account: Account,
     balanceChange: BigNumberish
   ) {
     const subject = this._obj;
     const derivedPromise = Promise.all([
-      getBalanceChange(subject, signer),
-      getAddressOf(signer)
+      getBalanceChange(subject, account),
+      getAddressOf(account)
     ]).then(
       ([actualChange, address]) => {
         this.assert(

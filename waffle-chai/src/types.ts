@@ -13,15 +13,15 @@ declare namespace Chai {
     /**
      * @deprecated Use `changeEtherBalance()` instead.
      */
-    changeBalance(wallet: any, balance: any): AsyncAssertion;
+    changeBalance(account: any, balance: any): AsyncAssertion;
     /**
      * @deprecated Use `changeEtherBalances()` instead.
      */
-    changeBalances(wallets: any[], balances: any[]): AsyncAssertion;
-    changeEtherBalance(wallet: any, balance: any, options?: any): AsyncAssertion;
-    changeEtherBalances(wallets: any[], balances: any[], options?: any): AsyncAssertion;
-    changeTokenBalance(token: any, wallet: any, balance: any): AsyncAssertion;
-    changeTokenBalances(token: any, wallets: any[], balances: any[]): AsyncAssertion;
+    changeBalances(accounts: any[], balances: any[]): AsyncAssertion;
+    changeEtherBalance(account: any, balance: any, options?: any): AsyncAssertion;
+    changeEtherBalances(accounts: any[], balances: any[], options?: any): AsyncAssertion;
+    changeTokenBalance(token: any, account: any, balance: any): AsyncAssertion;
+    changeTokenBalances(token: any, accounts: any[], balances: any[]): AsyncAssertion;
     calledOnContract(contract: any): void;
     calledOnContractWith(contract: any, parameters: any[]): void;
   }

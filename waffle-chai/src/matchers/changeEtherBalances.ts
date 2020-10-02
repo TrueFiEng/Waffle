@@ -5,24 +5,24 @@ import {getAddressOf, Account} from './misc/account';
 export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeEtherBalances', function (
     this: any,
-    signers: Account[],
+    accounts: Account[],
     balanceChanges: BigNumberish[],
     options: any
   ) {
     const subject = this._obj;
 
     const derivedPromise = Promise.all([
-      getBalanceChanges(subject, signers, options),
-      getAddresses(signers)
+      getBalanceChanges(subject, accounts, options),
+      getAddresses(accounts)
     ]).then(
-      ([actualChanges, signerAddresses]) => {
+      ([actualChanges, accountAddresses]) => {
         this.assert(
           actualChanges.every((change, ind) =>
             change.eq(BigNumber.from(balanceChanges[ind]))
           ),
-          `Expected ${signerAddresses} to change balance by ${balanceChanges} wei, ` +
+          `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
             `but it has changed by ${actualChanges} wei`,
-          `Expected ${signerAddresses} to not change balance by ${balanceChanges} wei,`,
+          `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
           balanceChanges.map((balanceChange) => balanceChange.toString()),
           actualChanges.map((actualChange) => actualChange.toString())
         );
@@ -44,9 +44,9 @@ async function getBalanceChanges(
   options: any
 ) {
   if (typeof transaction === 'function') {
-    return getBalancesChangeForTransactionCall(transaction, accounts, options);
+    return getBalanceChangesForTransactionCall(transaction, accounts, options);
   } else {
-    return getBalancesChangeForTransactionResponse(transaction, accounts, options);
+    return getBalanceChangesForTransactionResponse(transaction, accounts, options);
   }
 }
 
@@ -84,7 +84,7 @@ async function getTxFees(accounts: Account[], txResponse: providers.TransactionR
   );
 }
 
-async function getBalancesChangeForTransactionCall(
+async function getBalanceChangesForTransactionCall(
   transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
   accounts: Account[],
   options: any
@@ -98,7 +98,7 @@ async function getBalancesChangeForTransactionCall(
   return balancesAfter.map((balance, ind) => balance.add(txFees[ind]).sub(balancesBefore[ind]));
 }
 
-async function getBalancesChangeForTransactionResponse(
+async function getBalanceChangesForTransactionResponse(
   txResponse: providers.TransactionResponse,
   accounts: Account[],
   options: any
