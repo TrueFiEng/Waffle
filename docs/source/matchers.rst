@@ -105,7 +105,7 @@ The matcher can accept numbers, strings and BigNumbers as a balance change, whil
   await expect(await wallet.sendTransaction({to: walletTo.address, value: 200}))
     .to.changeEtherBalance(wallet, -200);
 
-  // Transaction fee is not factored in
+  // To include the transaction fee use:
   await expect(await wallet.sendTransaction({to: walletTo.address, gasPrice: 1, value: 200}))
     .to.changeEtherBalance(wallet, -21200, {includeFee: true});
 
