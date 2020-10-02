@@ -1,7 +1,12 @@
+import sinon, {SinonSpy} from 'sinon';
 import {expect} from 'chai';
-import {loadCompiler} from '../../../src/compileSolcjs';
+import path from 'path';
+import https from 'https';
 import solc from 'solc';
+import {loadCompiler} from '../../../src/compileSolcjs';
 import {Config} from '../../../src/config';
+import {isDirectory} from '../../../src/utils';
+import rimraf from 'rimraf';
 
 describe('INTEGRATION: loadCompiler', () => {
   describe('when \'default\' is given as version', () => {
@@ -24,36 +29,96 @@ describe('INTEGRATION: loadCompiler', () => {
   });
 
   describe('when a non-default semver version is given', () => {
-    it('loads compiler for existing version', async () => {
-      const solcLoaded = await loadCompiler(
-        {compilerVersion: '0.7.0'} as Config
-      );
-      expect(solcLoaded.version()).to.startWith('0.7.0+commit');
+    describe('for existing version', () => {
+      const cacheDirectory = path.join(__dirname, 'cache');
+      let httpsGet: SinonSpy;
+
+      beforeEach(() => {
+        httpsGet = sinon.spy(https, 'get');
+      });
+
+      afterEach(() => {
+        httpsGet.restore();
+        if (isDirectory(cacheDirectory)) {
+          rimraf.sync(cacheDirectory);
+        }
+      });
+
+      it('loads compiler from a remote server', async () => {
+        const solcLoaded = await loadCompiler(
+          {compilerVersion: '0.7.0', cacheDirectory} as Config
+        );
+        expect(solcLoaded.version()).to.startWith('0.7.0+commit');
+        expect(httpsGet).to.have.been.calledOnce;
+      });
+
+      it('caches the loaded compiler and fetches from cache on subsequent calls', async () => {
+        await loadCompiler(
+          {compilerVersion: '0.7.0', cacheDirectory} as Config
+        );
+        const solcCached = await loadCompiler(
+          {compilerVersion: '0.7.0', cacheDirectory} as Config
+        );
+        expect(solcCached.version()).to.startWith('0.7.0+commit');
+        expect(httpsGet).to.have.been.calledOnce;
+      });
     });
 
-    it('throws an error for nonexistent version', async () => {
-      await expect(
-        loadCompiler(
-          {compilerVersion: '999.999.999'} as Config
-        )
-      ).to.be.rejectedWith('Error fetching compiler version: 999.999.999');
+    describe('for a nonexistent version', () => {
+      it('throws an error', async () => {
+        await expect(
+          loadCompiler(
+            {compilerVersion: '999.999.999'} as Config
+          )
+        ).to.be.rejectedWith('Error fetching compiler version: 999.999.999');
+      });
     });
   });
 
   describe('when a solcVersion is given', () => {
-    it('loads compiler for existing version', async () => {
-      const solcLoaded = await loadCompiler(
-        {compilerVersion: 'v0.5.9+commit.e560f70d'} as Config
-      );
-      expect(solcLoaded.version()).to.equal('0.5.9+commit.e560f70d.Emscripten.clang');
+    describe('for existing version', () => {
+      const cacheDirectory = path.join(__dirname, 'cache');
+      let httpsGet: SinonSpy;
+
+      beforeEach(() => {
+        httpsGet = sinon.spy(https, 'get');
+      });
+
+      afterEach(() => {
+        httpsGet.restore();
+        if (isDirectory(cacheDirectory)) {
+          rimraf.sync(cacheDirectory);
+        }
+      });
+
+      it('loads compiler from a remote server', async () => {
+        const solcLoaded = await loadCompiler(
+          {compilerVersion: 'v0.5.9+commit.e560f70d', cacheDirectory} as Config
+        );
+        expect(solcLoaded.version()).to.equal('0.5.9+commit.e560f70d.Emscripten.clang');
+        expect(httpsGet).to.have.been.calledOnce;
+      });
+
+      it('caches the loaded compiler and fetches from cache on subsequent calls', async () => {
+        await loadCompiler(
+          {compilerVersion: 'v0.5.9+commit.e560f70d', cacheDirectory} as Config
+        );
+        const solcCached = await loadCompiler(
+          {compilerVersion: 'v0.5.9+commit.e560f70d', cacheDirectory} as Config
+        );
+        expect(solcCached.version()).to.equal('0.5.9+commit.e560f70d.Emscripten.clang');
+        expect(httpsGet).to.have.been.calledOnce;
+      });
     });
 
-    it('throws an error for nonexistent version', async () => {
-      await expect(
-        loadCompiler(
-          {compilerVersion: '999.999.999+commit.deadbeef'} as Config
-        )
-      ).to.be.rejectedWith('Error fetching compiler version: 999.999.999+commit.deadbeef');
+    describe('for a nonexistent version', () => {
+      it('throws an error', async () => {
+        await expect(
+          loadCompiler(
+            {compilerVersion: '999.999.999+commit.deadbeef'} as Config
+          )
+        ).to.be.rejectedWith('Error fetching compiler version: 999.999.999+commit.deadbeef');
+      });
     });
   });
 

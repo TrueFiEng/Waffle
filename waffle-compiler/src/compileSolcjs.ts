@@ -1,14 +1,15 @@
 import solc from 'solc';
 import path from 'path';
-import {promisify} from 'util';
 import fetch from 'node-fetch';
 import {ImportFile} from '@resolver-engine/imports';
-import {isDirectory} from './utils';
+import {isDirectory, isFile} from './utils';
 import {Config} from './config';
 import {getCompilerInput} from './compilerInput';
 import {findImports} from './findImports';
+import mkdirp from 'mkdirp';
+import fs from 'fs';
+import https from 'https';
 
-const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 const semverRegex = /^\d+\.\d+\.\d+$/;
 
 export function compileSolcjs(config: Config) {
@@ -21,7 +22,7 @@ export function compileSolcjs(config: Config) {
   };
 }
 
-export async function loadCompiler({compilerVersion}: Config) {
+export async function loadCompiler({compilerVersion, cacheDirectory}: Config) {
   if (isDefaultVersion(compilerVersion)) {
     return solc;
   }
@@ -32,7 +33,7 @@ export async function loadCompiler({compilerVersion}: Config) {
     const version = semverRegex.test(compilerVersion)
       ? await resolveSemverVersion(compilerVersion)
       : compilerVersion;
-    return await loadRemoteVersion(version);
+    return await loadVersion(version, path.resolve(cacheDirectory, 'solcjs'));
   } catch (e) {
     throw new Error(`Error fetching compiler version: ${compilerVersion}.`);
   }
@@ -59,4 +60,44 @@ async function fetchReleases() {
     cache = releases;
   }
   return cache;
+}
+
+async function loadVersion(version: string, cacheDirectory: string) {
+  const cachedSolcPath = path.join(cacheDirectory, `${version}.js`);
+  if (!isFile(cachedSolcPath)) {
+    await cacheRemoteVersion(version, cacheDirectory);
+  }
+  return loadCachedVersion(cachedSolcPath);
+}
+
+async function cacheRemoteVersion(version: string, cacheDirectory: string) {
+  if (!isDirectory(cacheDirectory)) {
+    mkdirp.sync(cacheDirectory);
+  }
+
+  const filePath = path.join(cacheDirectory, `${version}.js`);
+  const file = fs.createWriteStream(filePath);
+  const url = `https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/bin/soljson-${version}.js`;
+
+  await new Promise((resolve, reject) => {
+    https.get(url, (response) => {
+      response.pipe(file);
+      file.on('finish', () => {
+        file.close();
+        resolve();
+      });
+    }).on('error', (error) => {
+      try {
+        fs.unlinkSync(filePath);
+      } finally {
+        reject(error);
+      }
+    });
+  });
+}
+
+function loadCachedVersion(cachedVersionPath: string) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const solcjs = require(cachedVersionPath);
+  return solc.setupMethods(solcjs);
 }
