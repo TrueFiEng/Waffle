@@ -11,6 +11,16 @@ import {findImports} from './findImports';
 const loadRemoteVersion = promisify(solc.loadRemoteVersion);
 const semverRegex = /^\d+\.\d+\.\d+$/;
 
+export function compileSolcjs(config: Config) {
+  return async function compile(sources: ImportFile[]) {
+    const solc = await loadCompiler(config);
+    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
+    const imports = findImports(sources);
+    const output = solc.compile(input, {imports});
+    return JSON.parse(output);
+  };
+}
+
 export async function loadCompiler({compilerVersion}: Config) {
   if (isDefaultVersion(compilerVersion)) {
     return solc;
@@ -49,14 +59,4 @@ async function fetchReleases() {
     cache = releases;
   }
   return cache;
-}
-
-export function compileSolcjs(config: Config) {
-  return async function compile(sources: ImportFile[]) {
-    const solc = await loadCompiler(config);
-    const input = getCompilerInput(sources, config.compilerOptions, 'Solidity');
-    const imports = findImports(sources);
-    const output = solc.compile(input, {imports});
-    return JSON.parse(output);
-  };
 }
