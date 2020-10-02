@@ -1,13 +1,13 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
-import {ensure} from './calledOnContract/utils';
 import {getAddressOf, Account} from './misc/account';
+import {BalanceChangeOptions, getAddresses, getBalances} from './misc/balance';
 
 export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeEtherBalances', function (
     this: any,
     accounts: Account[],
     balanceChanges: BigNumberish[],
-    options: any
+    options: BalanceChangeOptions
   ) {
     const subject = this._obj;
 
@@ -35,39 +35,37 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
   });
 }
 
-async function getBalanceChanges(
+export async function getBalanceChanges(
   transaction:
   | providers.TransactionResponse
-  | (() => Promise<providers.TransactionResponse>
-  | providers.TransactionResponse),
+  | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
   accounts: Account[],
-  options: any
+  options: BalanceChangeOptions
 ) {
+  let txResponse: providers.TransactionResponse;
+
   if (typeof transaction === 'function') {
-    return getBalanceChangesForTransactionCall(transaction, accounts, options);
+    txResponse = await transaction();
   } else {
-    return getBalanceChangesForTransactionResponse(transaction, accounts, options);
+    txResponse = transaction;
   }
+
+  const txReceipt = await txResponse.wait();
+  const txBlockNumber = txReceipt.blockNumber;
+
+  const balancesAfter = await getBalances(accounts, txBlockNumber);
+  const balancesBefore = await getBalances(accounts, txBlockNumber - 1);
+
+  const txFees = await getTxFees(accounts, txResponse, options);
+
+  return balancesAfter.map((balance, ind) => balance.add(txFees[ind]).sub(balancesBefore[ind]));
 }
 
-function getAddresses(accounts: Account[]) {
-  return Promise.all(accounts.map((account) => getAddressOf(account)));
-}
-
-async function getBalances(accounts: Account[], blockNumber?: number) {
-  return Promise.all(
-    accounts.map((account) => {
-      ensure(account.provider !== undefined, TypeError, 'Provider not found');
-      if (blockNumber) {
-        return account.provider.getBalance(getAddressOf(account), blockNumber);
-      } else {
-        return account.provider.getBalance(getAddressOf(account));
-      }
-    })
-  );
-}
-
-async function getTxFees(accounts: Account[], txResponse: providers.TransactionResponse, options: any) {
+async function getTxFees(
+  accounts: Account[],
+  txResponse: providers.TransactionResponse,
+  options: BalanceChangeOptions
+) {
   return Promise.all(
     accounts.map(async (account) => {
       if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
@@ -82,33 +80,4 @@ async function getTxFees(accounts: Account[], txResponse: providers.TransactionR
       return 0;
     })
   );
-}
-
-async function getBalanceChangesForTransactionCall(
-  transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
-  accounts: Account[],
-  options: any
-) {
-  const balancesBefore = await getBalances(accounts);
-  const txResponse = await transactionCall();
-  const balancesAfter = await getBalances(accounts);
-
-  const txFees = await getTxFees(accounts, txResponse, options);
-
-  return balancesAfter.map((balance, ind) => balance.add(txFees[ind]).sub(balancesBefore[ind]));
-}
-
-async function getBalanceChangesForTransactionResponse(
-  txResponse: providers.TransactionResponse,
-  accounts: Account[],
-  options: any
-) {
-  const txBlockNumber = (await txResponse.wait()).blockNumber;
-
-  const balancesAfter = await getBalances(accounts, txBlockNumber);
-  const balancesBefore = await getBalances(accounts, txBlockNumber - 1);
-
-  const txFees = await getTxFees(accounts, txResponse, options);
-
-  return balancesAfter.map((balance, ind) => balance.add(txFees[ind]).sub(balancesBefore[ind]));
 }

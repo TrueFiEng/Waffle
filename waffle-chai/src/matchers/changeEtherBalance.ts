@@ -1,13 +1,14 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
 import {ensure} from './calledOnContract/utils';
 import {Account, getAddressOf} from './misc/account';
+import {BalanceChangeOptions} from './misc/balance';
 
 export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeEtherBalance', function (
     this: any,
     account: Account,
     balanceChange: BigNumberish,
-    options: any
+    options: BalanceChangeOptions
   ) {
     const subject = this._obj;
     const derivedPromise = Promise.all([
@@ -32,52 +33,22 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
   });
 }
 
-async function getBalanceChange(
+export async function getBalanceChange(
   transaction:
   | providers.TransactionResponse
-  | (() => Promise<providers.TransactionResponse>
-  | providers.TransactionResponse),
+  | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
   account: Account,
-  options: any
+  options?: BalanceChangeOptions
 ) {
+  ensure(account.provider !== undefined, TypeError, 'Provider not found');
+
+  let txResponse: providers.TransactionResponse;
+
   if (typeof transaction === 'function') {
-    return getBalanceChangeForTransactionCall(transaction, account, options);
+    txResponse = await transaction();
   } else {
-    return getBalanceChangeForTransactionResponse(transaction, account, options);
+    txResponse = transaction;
   }
-}
-
-async function getBalanceChangeForTransactionCall(
-  transactionCall: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
-  account: Account,
-  options: any
-) {
-  ensure(account.provider !== undefined, TypeError, 'Provider not found');
-
-  const balanceBefore = await account.provider.getBalance(getAddressOf(account));
-
-  const txResponse = await transactionCall();
-  const txReceipt = await txResponse.wait();
-
-  const balanceAfter = await account.provider.getBalance(getAddressOf(account));
-
-  if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
-    const gasPrice = txResponse.gasPrice;
-    const gasUsed = txReceipt.gasUsed;
-    const txFee = gasPrice.mul(gasUsed);
-
-    return balanceAfter.add(txFee).sub(balanceBefore);
-  } else {
-    return balanceAfter.sub(balanceBefore);
-  }
-}
-
-async function getBalanceChangeForTransactionResponse(
-  txResponse: providers.TransactionResponse,
-  account: Account,
-  options: any
-) {
-  ensure(account.provider !== undefined, TypeError, 'Provider not found');
 
   const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
