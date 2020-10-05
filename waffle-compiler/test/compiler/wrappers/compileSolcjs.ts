@@ -1,5 +1,5 @@
 import sinon, {SinonSpy} from 'sinon';
-import {expect} from 'chai';
+import {assert, expect} from 'chai';
 import path from 'path';
 import https from 'https';
 import solc from 'solc';
@@ -7,6 +7,7 @@ import {loadCompiler} from '../../../src/compileSolcjs';
 import {Config} from '../../../src/config';
 import {isDirectory} from '../../../src/utils';
 import rimraf from 'rimraf';
+import fs from 'fs-extra';
 
 describe('INTEGRATION: loadCompiler', () => {
   describe('when \'default\' is given as version', () => {
@@ -34,6 +35,10 @@ describe('INTEGRATION: loadCompiler', () => {
       let httpsGet: SinonSpy;
 
       beforeEach(() => {
+        assert.isFalse(
+          fs.pathExistsSync(cacheDirectory),
+          `${path.resolve(cacheDirectory)} should be removed before running tests`
+        );
         httpsGet = sinon.spy(https, 'get');
       });
 
@@ -81,6 +86,10 @@ describe('INTEGRATION: loadCompiler', () => {
       let httpsGet: SinonSpy;
 
       beforeEach(() => {
+        assert.isFalse(
+          fs.pathExistsSync(cacheDirectory),
+          `${path.resolve(cacheDirectory)} should be removed before running tests`
+        );
         httpsGet = sinon.spy(https, 'get');
       });
 
