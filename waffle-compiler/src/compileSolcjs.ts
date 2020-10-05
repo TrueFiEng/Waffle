@@ -2,7 +2,7 @@ import solc from 'solc';
 import path from 'path';
 import fetch from 'node-fetch';
 import {ImportFile} from '@resolver-engine/imports';
-import {isDirectory, isFile} from './utils';
+import {isDirectory, isFile, removeEmptyDirsRecursively} from './utils';
 import {Config} from './config';
 import {getCompilerInput} from './compilerInput';
 import {findImports} from './findImports';
@@ -33,7 +33,7 @@ export async function loadCompiler({compilerVersion, cacheDirectory}: Config) {
     const version = semverRegex.test(compilerVersion)
       ? await resolveSemverVersion(compilerVersion)
       : compilerVersion;
-    return await loadVersion(version, path.resolve(cacheDirectory, 'solcjs'));
+    return await loadVersion(version, cacheDirectory);
   } catch (e) {
     throw new Error(`Error fetching compiler version: ${compilerVersion}.`);
   }
@@ -63,7 +63,7 @@ async function fetchReleases() {
 }
 
 async function loadVersion(version: string, cacheDirectory: string) {
-  const cachedSolcPath = path.join(cacheDirectory, `${version}.js`);
+  const cachedSolcPath = path.resolve(cacheDirectory, 'solcjs', `${version}.js`);
   if (!isFile(cachedSolcPath)) {
     await cacheRemoteVersion(version, cacheDirectory);
   }
@@ -71,11 +71,12 @@ async function loadVersion(version: string, cacheDirectory: string) {
 }
 
 async function cacheRemoteVersion(version: string, cacheDirectory: string) {
-  if (!isDirectory(cacheDirectory)) {
-    mkdirp.sync(cacheDirectory);
+  const solcCacheDirectory = path.resolve(cacheDirectory, 'solcjs');
+  if (!isDirectory(solcCacheDirectory)) {
+    mkdirp.sync(solcCacheDirectory);
   }
 
-  const filePath = path.join(cacheDirectory, `${version}.js`);
+  const filePath = path.join(solcCacheDirectory, `${version}.js`);
   const file = fs.createWriteStream(filePath);
   const url = `https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/bin/soljson-${version}.js`;
 
@@ -89,6 +90,7 @@ async function cacheRemoteVersion(version: string, cacheDirectory: string) {
     }).on('error', (error) => {
       try {
         fs.unlinkSync(filePath);
+        removeEmptyDirsRecursively(path.resolve(cacheDirectory));
       } finally {
         reject(error);
       }
