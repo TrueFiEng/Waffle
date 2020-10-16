@@ -37,6 +37,16 @@ function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.Funct
   };
 }
 
+export type Stub = ReturnType<typeof stub>;
+
+export interface MockContract extends Contract {
+  mock: {
+    [key: string]: Stub;
+  };
+  call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+  staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+}
+
 function createMock(abi: ABI, mockContractInstance: Contract) {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
