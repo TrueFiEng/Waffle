@@ -3,28 +3,37 @@ import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
 import {deployENS, ENS} from '@ethereum-waffle/ens';
-import {HardhatNetworkProvider} from '@nomiclabs/buidler/internal/hardhat-network/provider/provider';
-import {defaultHardhatNetworkParams} from '@nomiclabs/buidler/internal/core/config/default-config';
-import {HARDHAT_NETWORK_NAME} from '@nomiclabs/buidler/plugins';
+import {BuidlerEVMProvider} from '@nomiclabs/buidler/internal/buidler-evm/provider/provider';
+import {BUIDLEREVM_NETWORK_NAME} from '@nomiclabs/buidler/plugins';
 
 export {RecordedCall};
 
 const {
-  allowUnlimitedContractSize,
   blockGasLimit,
   chainId,
   hardfork,
-  loggingEnabled,
   throwOnCallFailures,
   throwOnTransactionFailures
-} = defaultHardhatNetworkParams;
+} = {
+  hardfork: 'istanbul',
+  blockGasLimit: 9500000,
+  chainId: 31337,
+  throwOnTransactionFailures: true,
+  throwOnCallFailures: true
+};
 
 function toHardhatGenesisAccounts(accounts: typeof defaultAccounts) {
-  return accounts.map(({balance, secretKey}) => ({balance, privateKey: secretKey}))
+  return accounts.map(({balance, secretKey}) => ({balance, privateKey: secretKey}));
 }
 
 interface MockProviderOptions {
   ganacheOptions: Ganache.IProviderOptions;
+}
+
+export class RequestableBuidlerProvider extends BuidlerEVMProvider {
+  request(args: { method: string; params?: Array<any> }): Promise<any> {
+    return this['_send'](args.method, args.params);
+  }
 }
 
 export class MockProvider extends providers.Web3Provider {
@@ -32,19 +41,16 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(new HardhatNetworkProvider(
+    super(new RequestableBuidlerProvider(
       hardfork,
-      HARDHAT_NETWORK_NAME,
+      BUIDLEREVM_NETWORK_NAME,
       chainId,
       chainId,
       blockGasLimit,
       throwOnTransactionFailures,
       throwOnCallFailures,
-      toHardhatGenesisAccounts(defaultAccounts),
-      undefined,
-      loggingEnabled,
-      allowUnlimitedContractSize
-    ));
+      toHardhatGenesisAccounts(defaultAccounts)
+    ) as any);
     this._callHistory = new CallHistory();
     this._callHistory.record(this);
   }

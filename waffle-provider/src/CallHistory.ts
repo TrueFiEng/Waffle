@@ -1,7 +1,7 @@
 import {providers, utils} from 'ethers';
-import {HardhatNetworkProvider} from '@nomiclabs/buidler/internal/hardhat-network/provider/provider';
-import {HardhatNode} from '@nomiclabs/buidler/internal/hardhat-network/provider/node';
-import {Mutex} from '@nomiclabs/buidler/internal/hardhat-network/vendor/await-semaphore';
+import {BuidlerNode} from '@nomiclabs/buidler/internal/buidler-evm/provider/node';
+import {Mutex} from '@nomiclabs/buidler/internal/buidler-evm/vendor/await-semaphore';
+import {RequestableBuidlerProvider} from './MockProvider';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -21,11 +21,11 @@ export class CallHistory {
   }
 
   record(provider: providers.Web3Provider) {
-    const hardhatProvider = provider.provider as HardhatNetworkProvider;
+    const hardhatProvider = provider.provider as any as RequestableBuidlerProvider;
     this._record(hardhatProvider);
   }
 
-  private _record(provider: HardhatNetworkProvider) {
+  private _record(provider: RequestableBuidlerProvider) {
     const originalRequest = provider.request.bind(provider);
     provider.request = async (args) => {
       const release = await this._mutex.acquire();
@@ -44,17 +44,17 @@ export class CallHistory {
   }
 }
 
-function isInitialised(provider: HardhatNetworkProvider): boolean {
+function isInitialised(provider: RequestableBuidlerProvider): boolean {
   return provider['_node'] !== undefined;
 }
 
-async function initialise(provider: HardhatNetworkProvider): Promise<HardhatNode> {
+async function initialise(provider: RequestableBuidlerProvider): Promise<BuidlerNode> {
   await provider['_init']();
   return provider['_node'];
 }
 
 async function addVmListener(
-  node: HardhatNode,
+  node: BuidlerNode,
   event: string,
   handler: (value: any) => void
 ) {
