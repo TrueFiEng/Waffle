@@ -67,19 +67,19 @@ describe('INTEGRATION: MockProvider', () => {
     it('setups ENS', async () => {
       const wallets = provider.getWallets();
       const wallet = wallets[wallets.length - 1];
-      expect(provider.network.ensAddress).to.eq(provider.ens.ens.address);
-      expect(await provider.ens.signer.getAddress()).to.eq(wallet.address);
+      expect(provider.network.ensAddress).to.eq(provider.ens!.ens.address);
+      expect(await provider.ens!.signer.getAddress()).to.eq(wallet.address);
     });
 
     it('resolveName', async () => {
       const [wallet] = provider.getWallets();
-      await provider.ens.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
+      await provider.ens!.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
       expect(await provider.resolveName('vlad.ethworks.test')).to.eq(wallet.address);
     });
 
     it('lookupAddress', async () => {
       const [wallet] = provider.getWallets();
-      await provider.ens.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
+      await provider.ens!.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
       expect(await provider.lookupAddress(wallet.address)).to.eq('vlad.ethworks.test');
     });
   });
