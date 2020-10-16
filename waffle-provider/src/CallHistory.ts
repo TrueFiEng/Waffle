@@ -1,6 +1,7 @@
 import {providers, utils} from 'ethers';
 import {HardhatNetworkProvider} from '@nomiclabs/buidler/internal/hardhat-network/provider/provider';
 import {HardhatNode} from '@nomiclabs/buidler/internal/hardhat-network/provider/node';
+import {Mutex} from '@nomiclabs/buidler/internal/hardhat-network/vendor/await-semaphore';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -9,6 +10,7 @@ export interface RecordedCall {
 
 export class CallHistory {
   private recordedCalls: RecordedCall[] = []
+  private readonly _mutex = new Mutex();
 
   clear() {
     this.recordedCalls = [];
@@ -26,13 +28,18 @@ export class CallHistory {
   private _record(provider: HardhatNetworkProvider) {
     const originalRequest = provider.request.bind(provider);
     provider.request = async (args) => {
-      if (!isInitialised(provider)) {
-        const node = await initialise(provider);
-        await addVmListener(node, 'beforeMessage', (message) => {
-          this.recordedCalls.push(toRecordedCall(message));
-        });
+      const release = await this._mutex.acquire();
+      try {
+        if (!isInitialised(provider)) {
+          const node = await initialise(provider);
+          await addVmListener(node, 'beforeMessage', (message) => {
+            this.recordedCalls.push(toRecordedCall(message));
+          });
+        }
+        return originalRequest(args);
+      } finally {
+        release();
       }
-      return originalRequest(args);
     };
   }
 }
