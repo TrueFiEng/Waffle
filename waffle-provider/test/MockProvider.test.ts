@@ -4,7 +4,11 @@ import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
 
 describe('INTEGRATION: MockProvider', () => {
-  const provider = new MockProvider();
+  let provider: MockProvider;
+
+  before(async () => {
+    provider = new MockProvider();
+  });
 
   it('returns wallets', async () => {
     const wallets = provider.getWallets();
