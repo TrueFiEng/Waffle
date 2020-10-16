@@ -1,0 +1,6 @@
+{
+  "compilerType": "solcjs",
+  "compilerVersion": "0.6.2",
+  "sourceDirectory": "./src",
+  "outputDirectory": "./build"
+}
