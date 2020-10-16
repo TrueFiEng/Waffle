@@ -1,4 +1,6 @@
 import {providers, utils} from 'ethers';
+import {HardhatNetworkProvider} from '@nomiclabs/buidler/internal/hardhat-network/provider/provider';
+import {HardhatNode} from '@nomiclabs/buidler/internal/hardhat-network/provider/node';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -17,24 +19,39 @@ export class CallHistory {
   }
 
   record(provider: providers.Web3Provider) {
-    addVmListener(provider, 'beforeMessage', (message) => {
-      this.recordedCalls.push(toRecordedCall(message));
-    });
+    const hardhatProvider = provider.provider as HardhatNetworkProvider;
+    this._record(hardhatProvider);
+  }
+
+  private _record(provider: HardhatNetworkProvider) {
+    const originalRequest = provider.request.bind(provider);
+    provider.request = async (args) => {
+      if (!isInitialised(provider)) {
+        const node = await initialise(provider);
+        await addVmListener(node, 'beforeMessage', (message) => {
+          this.recordedCalls.push(toRecordedCall(message));
+        });
+      }
+      return originalRequest(args);
+    };
   }
 }
 
-function addVmListener(
-  provider: providers.Web3Provider,
+function isInitialised(provider: HardhatNetworkProvider): boolean {
+  return provider['_node'] !== undefined;
+}
+
+async function initialise(provider: HardhatNetworkProvider): Promise<HardhatNode> {
+  await provider['_init']();
+  return provider['_node'];
+}
+
+async function addVmListener(
+  node: HardhatNode,
   event: string,
   handler: (value: any) => void
 ) {
-  const {blockchain} = (provider.provider as any).engine.manager.state;
-  const createVMFromStateTrie = blockchain.createVMFromStateTrie;
-  blockchain.createVMFromStateTrie = function (...args: any[]) {
-    const vm = createVMFromStateTrie.apply(this, args);
-    vm.on(event, handler);
-    return vm;
-  };
+  node['_vm'].on(event, handler);
 }
 
 function toRecordedCall(message: any): RecordedCall {
