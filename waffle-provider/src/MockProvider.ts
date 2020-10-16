@@ -3,8 +3,25 @@ import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import Ganache from 'ganache-core';
 import {deployENS, ENS} from '@ethereum-waffle/ens';
+import {HardhatNetworkProvider} from '@nomiclabs/buidler/internal/hardhat-network/provider/provider';
+import {defaultHardhatNetworkParams} from '@nomiclabs/buidler/internal/core/config/default-config';
+import {HARDHAT_NETWORK_NAME} from '@nomiclabs/buidler/plugins';
 
 export {RecordedCall};
+
+const {
+  allowUnlimitedContractSize,
+  blockGasLimit,
+  chainId,
+  hardfork,
+  loggingEnabled,
+  throwOnCallFailures,
+  throwOnTransactionFailures
+} = defaultHardhatNetworkParams;
+
+function toHardhatGenesisAccounts(accounts: typeof defaultAccounts) {
+  return accounts.map(({balance, secretKey}) => ({balance, privateKey: secretKey}))
+}
 
 interface MockProviderOptions {
   ganacheOptions: Ganache.IProviderOptions;
@@ -15,7 +32,19 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(Ganache.provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
+    super(new HardhatNetworkProvider(
+      hardfork,
+      HARDHAT_NETWORK_NAME,
+      chainId,
+      chainId,
+      blockGasLimit,
+      throwOnTransactionFailures,
+      throwOnCallFailures,
+      toHardhatGenesisAccounts(defaultAccounts),
+      undefined,
+      loggingEnabled,
+      allowUnlimitedContractSize
+    ));
     this._callHistory = new CallHistory();
     this._callHistory.record(this);
   }
