@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@ethereum-waffle/ens": "^3.1.1",
+    "@nomiclabs/buidler": "1.4.9",
     "ethers": "^5.0.1",
     "ganache-core": "^2.10.2",
     "patch-package": "^6.2.2",
