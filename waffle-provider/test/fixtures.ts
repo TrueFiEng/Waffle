@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import {BigNumber, utils, Wallet, ContractFactory} from 'ethers';
-import {MockProvider, loadFixture, createFixtureLoader} from '../src';
+import {BigNumber, ContractFactory, utils, Wallet} from 'ethers';
+import {createFixtureLoader, loadFixture, MockProvider} from '../src';
 import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 
 describe('Integration: Fixtures', () => {
@@ -62,8 +62,9 @@ describe('Integration: Fixtures', () => {
     await loadFixture(fixture);
     const balance3 = await provider.getBalance(wallet.address);
 
-    expect(balance1.toString()).not.to.equal(balance2.toString());
-    expect(balance1.toString()).to.equal(balance3.toString());
+
+    expect(balance2.toString()).not.to.equal(balance1.toString());
+    expect(balance3.toString()).to.equal(balance1.toString());
   });
 
   describe('allow for multiple uses of different fixtures', () => {
