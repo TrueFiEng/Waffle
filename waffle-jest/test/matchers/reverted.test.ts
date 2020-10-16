@@ -98,7 +98,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
       expect(matchers.doRevert()).toBeRevertedWith('different message')
     ).rejects.toThrowError(
       'Expected transaction to be reverted with different message, ' +
-        'but other exception was thrown: RuntimeError: VM Exception while processing transaction: revert Revert cause'
+        'but other exception was thrown: Error: VM Exception while processing transaction: revert Revert cause'
     );
   });
 
@@ -123,7 +123,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
       expect(matchers.doRequireFail()).toBeRevertedWith('Different message')
     ).rejects.toThrowError(
       'Expected transaction to be reverted with Different message, ' +
-        'but other exception was thrown: RuntimeError: VM Exception while processing transaction: revert Require cause'
+      'but other exception was thrown: Error: VM Exception while processing transaction: revert Require cause'
     );
   });
 
