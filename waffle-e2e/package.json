@@ -12,9 +12,9 @@
   },
   "devDependencies": {
     "ethers": "^5.0.1",
-    "@ethereum-waffle/compiler": "^3.1.1",
-    "@ethereum-waffle/chai": "^3.1.1",
-    "@ethereum-waffle/provider": "^3.1.1",
+    "@ethereum-waffle/compiler": "^3.1.2",
+    "@ethereum-waffle/chai": "^3.1.2",
+    "@ethereum-waffle/provider": "^3.1.2",
     "@types/chai": "^4.2.3",
     "@types/mocha": "^5.2.7",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
