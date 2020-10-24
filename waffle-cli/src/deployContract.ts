@@ -2,7 +2,7 @@ import {providers, ContractFactory, Signer} from 'ethers';
 import {ContractJSON, isStandard, hasByteCode} from './ContractJSON';
 
 const defaultDeployOptions = {
-  gasLimit: 4000000,
+  gasLimit: 6721975,
   gasPrice: 9000000000
 };
 
