@@ -1,3 +1,5 @@
 /**/custom_build
 /**/build
 /test/flattener/flattenFiles
+/cache
+test/projects/**/cache
