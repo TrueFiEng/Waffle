@@ -253,6 +253,11 @@ cd docs
 make html
 ```
 
+Before building documentation for the first time you may have to install required python packages:
+```sh
+pip install -r docs/requirements.txt
+```
+
 ## Roadmap
 
 See https://github.com/EthWorks/Waffle/issues/155

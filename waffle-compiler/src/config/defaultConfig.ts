@@ -5,6 +5,7 @@ export const defaultConfig: Config = {
   outputDirectory: './build',
   flattenOutputDirectory: './flatten',
   nodeModulesDirectory: './node_modules',
+  cacheDirectory: './cache',
   compilerType: 'solcjs',
   compilerVersion: 'default',
   compilerAllowedPaths: [],
