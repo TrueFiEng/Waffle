@@ -63,6 +63,7 @@ Configuration options:
 - :ref:`sourceDirectory`
 - :ref:`outputDirectory`
 - :ref:`nodeModulesDirectory`
+- :ref:`cacheDirectory`
 - :ref:`compilerType`
 - :ref:`compilerVersion`
 - :ref:`compilerAllowedPaths`
@@ -76,7 +77,7 @@ sourceDirectory
 ^^^^^^^^^^^^^^^
 
 You can specify a custom path to the directory containing your smart contracts.
-Waffle uses :code:`./contracts` as the default value for :code:`./sourceDirectory`.
+Waffle uses :code:`./contracts` as the default value for :code:`sourceDirectory`.
 The path you provide will be resolved relative to the current working directory.
 
 Example:
@@ -94,7 +95,7 @@ outputDirectory
 
 You can specify a custom path to the directory to which Waffle saves the
 compilation output. Waffle uses :code:`./build` as the default value for
-:code:`./outputDirectory`. The path you provide will be resolved relative to the
+:code:`outputDirectory`. The path you provide will be resolved relative to the
 current working directory.
 
 Example:
@@ -111,8 +112,8 @@ nodeModulesDirectory
 ^^^^^^^^^^^^^^^^^^^^
 
 You can specify a custom path to the :code:`node_modules` folder which Waffle
-will use to resolve third party dependencies. Waffle uses :code:`node_modules`
-as the default value for :code:`./nodeModulesDirectory`. The path you provide
+will use to resolve third party dependencies. Waffle uses :code:`./node_modules`
+as the default value for :code:`nodeModulesDirectory`. The path you provide
 will be resolved relative to the current working directory.
 
 For more information about third party libraries, see :ref:`third-party`.
@@ -124,6 +125,28 @@ Example:
   {
     "nodeModulesDirectory": "./custom/path/to/node_modules"
   }
+
+
+.. _cacheDirectory:
+
+cacheDirectory
+^^^^^^^^^^^^^^
+
+When compiling using :code:`solcjs` and using a non-default :code:`compilerVersion`
+Waffle downloads the necessary :code:`solcjs` binary from a remote server. This file
+is cached to speed up subsequent runs. You can specify a custom path to the directory
+in which caches are saved. Waffle uses :code:`./cache` as the default value for
+:code:`cacheDirectory`. The path you provide will be resolved relative to the current
+working directory.
+
+Example:
+
+.. code-block:: json
+
+  {
+    "cacheDirectory": "./custom/path/to/cache"
+  }
+
 
 
 .. _compilerType:
