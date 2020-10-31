@@ -5,22 +5,22 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalances', function (
     this: any,
     token: Contract,
-    signers: Account[],
+    accounts: Account[],
     balanceChanges: BigNumberish[]
   ) {
     const subject = this._obj;
     const derivedPromise = Promise.all([
-      getBalanceChangeForTransactionCall(subject, token, signers),
-      getAddresses(signers)
+      getBalanceChanges(subject, token, accounts),
+      getAddresses(accounts)
     ]).then(
-      ([actualChanges, signerAddresses]) => {
+      ([actualChanges, accountAddresses]) => {
         this.assert(
           actualChanges.every((change, ind) =>
             change.eq(BigNumber.from(balanceChanges[ind]))
           ),
-          `Expected ${signerAddresses} to change balance by ${balanceChanges} wei, ` +
+          `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
             `but it has changed by ${actualChanges} wei`,
-          `Expected ${signerAddresses} to not change balance by ${balanceChanges} wei,`,
+          `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
           balanceChanges.map((balanceChange) => balanceChange.toString()),
           actualChanges.map((actualChange) => actualChange.toString())
         );
@@ -45,7 +45,7 @@ async function getBalances(token: Contract, accounts: Account[]) {
   );
 }
 
-async function getBalanceChangeForTransactionCall(
+async function getBalanceChanges(
   transactionCall: (() => Promise<void> | void),
   token: Contract,
   accounts: Account[]
