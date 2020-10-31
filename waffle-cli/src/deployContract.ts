@@ -1,11 +1,6 @@
 import {providers, ContractFactory, Signer} from 'ethers';
 import {ContractJSON, isStandard, hasByteCode} from './ContractJSON';
 
-const defaultDeployOptions = {
-  gasLimit: 4000000,
-  gasPrice: 9000000000
-};
-
 export async function deployContract(
   signer: Signer,
   contractJSON: ContractJSON,
@@ -22,7 +17,6 @@ export async function deployContract(
     signer
   );
   const contract = await factory.deploy(...args, {
-    ...defaultDeployOptions,
     ...overrideOptions
   });
   await contract.deployed();
