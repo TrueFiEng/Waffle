@@ -5,13 +5,13 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalance', function (
     this: any,
     token: Contract,
-    signer: Account,
+    account: Account,
     balanceChange: BigNumberish
   ) {
     const subject = this._obj;
     const derivedPromise = Promise.all([
-      getBalanceChangeForTransactionCall(subject, token, signer),
-      getAddressOf(signer)
+      getBalanceChange(subject, token, account),
+      getAddressOf(account)
     ]).then(
       ([actualChange, address]) => {
         this.assert(
@@ -31,7 +31,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
   });
 }
 
-async function getBalanceChangeForTransactionCall(
+async function getBalanceChange(
   transactionCall: (() => Promise<void> | void),
   token: Contract,
   account: Account

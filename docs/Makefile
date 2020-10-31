@@ -14,6 +14,11 @@ help:
 
 .PHONY: help Makefile
 
+# Runs "make html" in a loop every 3 seconds.
+# Useful for writing documentation.
+watch:
+	while true; do make html -s; sleep 3; done
+
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile

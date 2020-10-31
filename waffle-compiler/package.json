@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/compiler",
   "description": "Compile solidity without the hassle.",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -45,14 +45,15 @@
     "solc": "^0.6.3"
   },
   "devDependencies": {
+    "@ethereum-waffle/chai": "^3.1.2",
+    "@ethereum-waffle/provider": "^3.1.2",
     "@openzeppelin/contracts": "^3.0.1",
-    "@ethereum-waffle/chai": "^3.1.1",
-    "@ethereum-waffle/provider": "^3.1.1",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/chai-string": "^1.4.2",
     "@types/fs-extra": "^8.0.1",
     "@types/mocha": "^5.2.7",
+    "@types/rimraf": "^3.0.0",
     "@types/sinon": "^7.5.0",
     "@types/sinon-chai": "^3.2.3",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
