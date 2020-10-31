@@ -18,3 +18,23 @@ export const getExtensionForCompilerType = (config: Config) => {
 
 export const insert = (source: string, insertedValue: string, index: number) =>
   `${source.slice(0, index)}${insertedValue}${source.slice(index)}`;
+
+export const removeEmptyDirsRecursively = (directoryPath: string) => {
+  if (!isDirectory(directoryPath)) {
+    return;
+  }
+  let files = fs.readdirSync(directoryPath);
+  if (files.length > 0) {
+    files.forEach((file) => {
+      const filePath = path.join(directoryPath, file);
+      removeEmptyDirsRecursively(filePath);
+    });
+
+    // Re-evaluate files as after deleting a subdirectory we may have parent directory empty now
+    files = fs.readdirSync(directoryPath);
+  }
+
+  if (files.length === 0) {
+    fs.rmdirSync(directoryPath);
+  }
+};

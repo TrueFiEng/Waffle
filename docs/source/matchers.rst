@@ -164,7 +164,7 @@ Testing if a string is a proper address:
 
 Proper private key
 ------------------
-Testing if a string is a proper secret:
+Testing if a string is a proper private key:
 
 .. code-block:: ts
 
