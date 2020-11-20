@@ -50,7 +50,7 @@ async function resolveSemverVersion(version: string) {
   return item.substring('soljson-'.length, item.length - '.js'.length);
 }
 
-const VERSION_LIST_URL = 'https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/bin/list.json';
+const VERSION_LIST_URL = 'https://solc-bin.ethereum.org/bin/list.json';
 let cache: any = undefined;
 
 async function fetchReleases() {
