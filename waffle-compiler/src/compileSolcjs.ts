@@ -9,8 +9,10 @@ import {findImports} from './findImports';
 import mkdirp from 'mkdirp';
 import fs from 'fs';
 import https from 'https';
+import type http from 'http';
 
 const semverRegex = /^\d+\.\d+\.\d+$/;
+const HTTP_FORBIDDEN = 403;
 
 export function compileSolcjs(config: Config) {
   return async function compile(sources: ImportFile[]) {
@@ -78,23 +80,37 @@ async function cacheRemoteVersion(version: string, cacheDirectory: string) {
 
   const filePath = path.join(solcCacheDirectory, `${version}.js`);
   const file = fs.createWriteStream(filePath);
-  const url = `https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/bin/soljson-${version}.js`;
+  const wasm32Url = `https://solc-bin.ethereum.org/emscripten-wasm32/solc-emscripten-wasm32-${version}.js`;
+  const asmjsUrl = `https://solc-bin.ethereum.org/emscripten-asmjs/solc-emscripten-asmjs-${version}.js`;
 
   await new Promise((resolve, reject) => {
-    https.get(url, (response) => {
+    const handleResponse = (onHttpForbidden: () => void) => (response: http.IncomingMessage) => {
+      if (response.statusCode === HTTP_FORBIDDEN) {
+        onHttpForbidden();
+        return;
+      }
       response.pipe(file);
       file.on('finish', () => {
         file.close();
         resolve();
       });
-    }).on('error', (error) => {
+    };
+
+    const retryWithAsmjs = () =>
+      https.get(asmjsUrl, handleResponse(handleError))
+        .on('error', handleError);
+
+    const handleError = (error?: Error) => {
       try {
         fs.unlinkSync(filePath);
         removeEmptyDirsRecursively(path.resolve(cacheDirectory));
       } finally {
         reject(error);
       }
-    });
+    };
+
+    https.get(wasm32Url, handleResponse(retryWithAsmjs))
+      .on('error', handleError);
   });
 }
 

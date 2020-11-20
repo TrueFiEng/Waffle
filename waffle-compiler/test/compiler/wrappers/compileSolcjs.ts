@@ -49,12 +49,22 @@ describe('INTEGRATION: loadCompiler', () => {
         }
       });
 
-      it('loads compiler from a remote server', async () => {
+      it('loads wasm32 compiler from a remote server', async () => {
         const solcLoaded = await loadCompiler(
           {compilerVersion: '0.7.0', cacheDirectory} as Config
         );
         expect(solcLoaded.version()).to.startWith('0.7.0+commit');
         expect(httpsGet).to.have.been.calledOnce;
+        expect(httpsGet.firstCall.args[0]).to.include('wasm32');
+      });
+
+      it('loads asmjs compiler if wasm32 is not available', async () => {
+        const solcLoaded = await loadCompiler(
+          {compilerVersion: '0.3.0', cacheDirectory} as Config
+        );
+        expect(solcLoaded.version()).to.startWith('0.3.0');
+        expect(httpsGet).to.have.been.calledTwice;
+        expect(httpsGet.secondCall.args[0]).to.include('asmjs');
       });
 
       it('caches the loaded compiler and fetches from cache on subsequent calls', async () => {
@@ -100,12 +110,22 @@ describe('INTEGRATION: loadCompiler', () => {
         }
       });
 
-      it('loads compiler from a remote server', async () => {
+      it('loads wasm32 compiler from a remote server', async () => {
         const solcLoaded = await loadCompiler(
           {compilerVersion: 'v0.5.9+commit.e560f70d', cacheDirectory} as Config
         );
         expect(solcLoaded.version()).to.equal('0.5.9+commit.e560f70d.Emscripten.clang');
         expect(httpsGet).to.have.been.calledOnce;
+        expect(httpsGet.firstCall.args[0]).to.include('wasm32');
+      });
+
+      it('loads asmjs compiler if wasm32 is not available', async () => {
+        const solcLoaded = await loadCompiler(
+          {compilerVersion: 'v0.3.0+commit.11d67369', cacheDirectory} as Config
+        );
+        expect(solcLoaded.version()).to.startWith('0.3.0-11d67369');
+        expect(httpsGet).to.have.been.calledTwice;
+        expect(httpsGet.secondCall.args[0]).to.include('asmjs');
       });
 
       it('caches the loaded compiler and fetches from cache on subsequent calls', async () => {
