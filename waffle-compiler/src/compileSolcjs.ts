@@ -50,7 +50,7 @@ async function resolveSemverVersion(version: string) {
   return item.substring('soljson-'.length, item.length - '.js'.length);
 }
 
-const VERSION_LIST_URL = 'https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/bin/list.json';
+const VERSION_LIST_URL = 'https://solc-bin.ethereum.org/bin/list.json';
 let cache: any = undefined;
 
 async function fetchReleases() {
@@ -78,7 +78,7 @@ async function cacheRemoteVersion(version: string, cacheDirectory: string) {
 
   const filePath = path.join(solcCacheDirectory, `${version}.js`);
   const file = fs.createWriteStream(filePath);
-  const url = `https://raw.githubusercontent.com/ethereum/solc-bin/gh-pages/bin/soljson-${version}.js`;
+  const url = `https://solc-bin.ethereum.org/bin/soljson-${version}.js`;
 
   await new Promise((resolve, reject) => {
     https.get(url, (response) => {
