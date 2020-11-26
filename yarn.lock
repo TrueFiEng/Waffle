@@ -842,10 +842,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@openzeppelin/contracts@^3.0.1":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.2.0.tgz#3e6b3a7662d8ed64271ade96ef42655db983fd9d"
-  integrity sha512-bUOmkSoPkjnUyMiKo6RYnb0VHBk5D9KKDAgNLzF41aqAM3TeE0yGdFF5dVRcV60pZdJLlyFT/jjXIZCWyyEzAQ==
+"@openzeppelin/contracts@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-3.0.1.tgz#2f327f77d16b43f14674086b2b634bda38cb0838"
+  integrity sha512-uSrD7hZ0ViuHGqHZbeHawZBi/uy7aBiNramXAt2dFFuSuoU4u9insS3V3zdVfOnYSPreUo636xSOuQIFN4//HA==
 
 "@resolver-engine/core@^0.3.3":
   version "0.3.3"
@@ -6917,10 +6917,10 @@ onetime@^5.1.0:
   dependencies:
     mimic-fn "^2.1.0"
 
-openzeppelin-solidity@^2.1.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.5.1.tgz#1cdcce30c4c6a7b6625dab62ccd0440a813ab597"
-  integrity sha512-oCGtQPLOou4su76IMr4XXJavy9a8OZmAXeUZ8diOdFznlL/mlkIlYr7wajqCzH4S47nlKPS7m0+a2nilCTpVPQ==
+openzeppelin-solidity@2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/openzeppelin-solidity/-/openzeppelin-solidity-2.3.0.tgz#1ab7b4cc3782a5472ed61eb740c56a8bfdd74119"
+  integrity sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw==
 
 optionator@^0.8.1, optionator@^0.8.3:
   version "0.8.3"

@@ -47,7 +47,7 @@
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.2.1",
     "@ethereum-waffle/provider": "^3.2.1",
-    "@openzeppelin/contracts": "^3.0.1",
+    "@openzeppelin/contracts": "3.0.1",
     "@types/chai": "^4.2.3",
     "@types/chai-as-promised": "^7.1.2",
     "@types/chai-string": "^1.4.2",
@@ -65,7 +65,7 @@
     "eslint-plugin-import": "^2.20.2",
     "fs-extra": "^8.1.0",
     "mocha": "^7.1.2",
-    "openzeppelin-solidity": "^2.1.1",
+    "openzeppelin-solidity": "2.3.0",
     "rimraf": "^3.0.0",
     "sinon": "^7.5.0",
     "sinon-chai": "^3.3.0",
