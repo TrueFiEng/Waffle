@@ -5,6 +5,16 @@ import DoppelgangerContract from './Doppelganger.json';
 
 type ABI = string | Array<Fragment | JsonFragment | string>
 
+export type Stub = ReturnType<typeof stub>;
+
+export interface MockContract extends Contract {
+  mock: {
+    [key: string]: Stub;
+  };
+  call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+  staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+}
+
 async function deploy(signer: Signer) {
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, signer);
   return factory.deploy();
@@ -41,16 +51,6 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   }, {} as MockContract['mock']);
 
   return mockedAbi;
-}
-
-export type Stub = ReturnType<typeof stub>;
-
-export interface MockContract extends Contract {
-  mock: {
-    [key: string]: Stub;
-  };
-  call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
-  staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
 export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {

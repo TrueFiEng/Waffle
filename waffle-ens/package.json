@@ -25,7 +25,7 @@
   "types": "dist/esm/index.d.ts",
   "scripts": {
     "prepublishOnly": "yarn build",
-    "test": "export NODE_ENV=test && mocha",
+    "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
     "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
@@ -35,15 +35,12 @@
   "engines": {
     "node": ">=10.0"
   },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "mocha": "^6.2.1",
-    "ganache-core": "^2.10.2"
-  },
   "dependencies": {
-    "ethers": "^5.0.1",
     "@ensdomains/ens": "^0.4.4",
-    "@ensdomains/resolver": "^0.2.4"
+    "@ensdomains/resolver": "^0.2.4",
+    "ethers": "^5.0.1"
+  },
+  "devDependencies": {
+    "ganache-core": "^2.10.2"
   }
 }

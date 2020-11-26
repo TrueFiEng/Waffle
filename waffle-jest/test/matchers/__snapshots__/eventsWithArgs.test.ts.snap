@@ -6,18 +6,18 @@ exports[`INTEGRATION: Events Emitted With Args arrays BigNumber received is 1, n
 
 [2m  Array [[22m
 [2m    Array [[22m
-[2m      BigNumber {[22m
-[32m-       \\"_hex\\": \\"0x00\\",[39m
-[31m+       \\"_hex\\": \\"0x01\\",[39m
-[2m        \\"_isBigNumber\\": true,[22m
+[2m      Object {[22m
+[32m-       \\"hex\\": \\"0x00\\",[39m
+[31m+       \\"hex\\": \\"0x01\\",[39m
+[2m        \\"type\\": \\"BigNumber\\",[22m
 [2m      },[22m
-[2m      BigNumber {[22m
-[2m        \\"_hex\\": \\"0x02\\",[22m
-[2m        \\"_isBigNumber\\": true,[22m
+[2m      Object {[22m
+[2m        \\"hex\\": \\"0x02\\",[22m
+[2m        \\"type\\": \\"BigNumber\\",[22m
 [2m      },[22m
-[2m      BigNumber {[22m
-[2m        \\"_hex\\": \\"0x03\\",[22m
-[2m        \\"_isBigNumber\\": true,[22m
+[2m      Object {[22m
+[2m        \\"hex\\": \\"0x03\\",[22m
+[2m        \\"type\\": \\"BigNumber\\",[22m
 [2m      },[22m
 [2m    ],[22m
 [2m    Array [[22m
@@ -33,17 +33,17 @@ exports[`INTEGRATION: Events Emitted With Args arrays bytes32 ends in different 
 
 [2m  Array [[22m
 [2m    Array [[22m
-[2m      BigNumber {[22m
-[2m        \\"_hex\\": \\"0x01\\",[22m
-[2m        \\"_isBigNumber\\": true,[22m
+[2m      Object {[22m
+[2m        \\"hex\\": \\"0x01\\",[22m
+[2m        \\"type\\": \\"BigNumber\\",[22m
 [2m      },[22m
-[2m      BigNumber {[22m
-[2m        \\"_hex\\": \\"0x02\\",[22m
-[2m        \\"_isBigNumber\\": true,[22m
+[2m      Object {[22m
+[2m        \\"hex\\": \\"0x02\\",[22m
+[2m        \\"type\\": \\"BigNumber\\",[22m
 [2m      },[22m
-[2m      BigNumber {[22m
-[2m        \\"_hex\\": \\"0x03\\",[22m
-[2m        \\"_isBigNumber\\": true,[22m
+[2m      Object {[22m
+[2m        \\"hex\\": \\"0x03\\",[22m
+[2m        \\"type\\": \\"BigNumber\\",[22m
 [2m      },[22m
 [2m    ],[22m
 [2m    Array [[22m
@@ -63,9 +63,9 @@ exports[`INTEGRATION: Events Emitted With Args multiples same event with differe
 [32m-   2,[39m
 [32m-   3,[39m
 [32m-   4,[39m
-[31m+   BigNumber {[39m
-[31m+     \\"_hex\\": \\"0x01\\",[39m
-[31m+     \\"_isBigNumber\\": true,[39m
+[31m+   Object {[39m
+[31m+     \\"hex\\": \\"0x01\\",[39m
+[31m+     \\"type\\": \\"BigNumber\\",[39m
 [31m+   },[39m
 [31m+   \\"DifferentKindOfOne\\",[39m
 [31m+   \\"0x0000000000000000000000000000000000000000000000000000000000000001\\",[39m
@@ -77,9 +77,9 @@ exports[`INTEGRATION: Events Emitted With Args simple not enough args 1`] = `
 [31m+ Received[39m
 
 [2m  Array [[22m
-[2m    BigNumber {[22m
-[2m      \\"_hex\\": \\"0x01\\",[22m
-[2m      \\"_isBigNumber\\": true,[22m
+[2m    Object {[22m
+[2m      \\"hex\\": \\"0x01\\",[22m
+[2m      \\"type\\": \\"BigNumber\\",[22m
 [2m    },[22m
 [31m+   \\"One\\",[39m
 [31m+   \\"0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\\",[39m
@@ -92,9 +92,9 @@ exports[`INTEGRATION: Events Emitted With Args simple one different arg (integer
 
 [2m  Array [[22m
 [32m-   2,[39m
-[31m+   BigNumber {[39m
-[31m+     \\"_hex\\": \\"0x01\\",[39m
-[31m+     \\"_isBigNumber\\": true,[39m
+[31m+   Object {[39m
+[31m+     \\"hex\\": \\"0x01\\",[39m
+[31m+     \\"type\\": \\"BigNumber\\",[39m
 [31m+   },[39m
 [2m    \\"One\\",[22m
 [2m    \\"0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\\",[22m
@@ -106,9 +106,9 @@ exports[`INTEGRATION: Events Emitted With Args simple one different arg (string 
 [31m+ Received[39m
 
 [2m  Array [[22m
-[2m    BigNumber {[22m
-[2m      \\"_hex\\": \\"0x01\\",[22m
-[2m      \\"_isBigNumber\\": true,[22m
+[2m    Object {[22m
+[2m      \\"hex\\": \\"0x01\\",[22m
+[2m      \\"type\\": \\"BigNumber\\",[22m
 [2m    },[22m
 [2m    \\"One\\",[22m
 [32m-   \\"0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124\\",[39m
@@ -121,9 +121,9 @@ exports[`INTEGRATION: Events Emitted With Args simple one different arg (string 
 [31m+ Received[39m
 
 [2m  Array [[22m
-[2m    BigNumber {[22m
-[2m      \\"_hex\\": \\"0x01\\",[22m
-[2m      \\"_isBigNumber\\": true,[22m
+[2m    Object {[22m
+[2m      \\"hex\\": \\"0x01\\",[22m
+[2m      \\"type\\": \\"BigNumber\\",[22m
 [2m    },[22m
 [32m-   \\"Two\\",[39m
 [31m+   \\"One\\",[39m
@@ -140,9 +140,9 @@ exports[`INTEGRATION: Events Emitted With Args simple too many args 1`] = `
 [32m-   2,[39m
 [32m-   3,[39m
 [32m-   4,[39m
-[31m+   BigNumber {[39m
-[31m+     \\"_hex\\": \\"0x01\\",[39m
-[31m+     \\"_isBigNumber\\": true,[39m
+[31m+   Object {[39m
+[31m+     \\"hex\\": \\"0x01\\",[39m
+[31m+     \\"type\\": \\"BigNumber\\",[39m
 [31m+   },[39m
 [31m+   \\"One\\",[39m
 [31m+   \\"0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\\",[39m
