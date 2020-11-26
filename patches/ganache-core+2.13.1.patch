@@ -10,7 +10,7 @@ index 7370c3d..664bca3 100644
  
  // we use optional dependencies which may, or may not exist, so try native first
 diff --git a/node_modules/ganache-core/lib/provider.js b/node_modules/ganache-core/lib/provider.js
-index 66423e1..eecaf48 100644
+index 05882b9..52fe818 100644
 --- a/node_modules/ganache-core/lib/provider.js
 +++ b/node_modules/ganache-core/lib/provider.js
 @@ -1,6 +1,3 @@
