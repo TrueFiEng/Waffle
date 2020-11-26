@@ -80,7 +80,7 @@ async function cacheRemoteVersion(version: string, cacheDirectory: string) {
   const file = fs.createWriteStream(filePath);
   const url = `https://solc-bin.ethereum.org/bin/soljson-${version}.js`;
 
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     https.get(url, (response) => {
       response.pipe(file);
       file.on('finish', () => {
