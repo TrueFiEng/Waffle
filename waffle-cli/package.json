@@ -29,7 +29,7 @@
   "scripts": {
     "prepublishOnly": "yarn build",
     "test:buildonly": "ts-node -T buildTestContracts",
-    "test:nobuild": "export NODE_ENV=test && mocha",
+    "test:nobuild": "mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
