@@ -35,15 +35,15 @@
   "engines": {
     "node": ">=10.0"
   },
+  "dependencies": {
+    "@ensdomains/ens": "^0.4.4",
+    "@ensdomains/resolver": "^0.2.4",
+    "ethers": "^5.0.1"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^6.2.1",
-    "ganache-core": "^2.10.2"
-  },
-  "dependencies": {
-    "ethers": "^5.0.1",
-    "@ensdomains/ens": "^0.4.4",
-    "@ensdomains/resolver": "^0.2.4"
+    "ganache-core": "^2.10.2",
+    "mocha": "^6.2.1"
   }
 }

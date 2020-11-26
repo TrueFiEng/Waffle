@@ -18,6 +18,12 @@
     "test:jest": "wsrun -p @ethereum-waffle/jest -c test"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "eslint": "^7.14.0",
+    "eslint-plugin-import": "^2.22.1",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2",
     "wsrun": "^5.2.0"
   }
 }

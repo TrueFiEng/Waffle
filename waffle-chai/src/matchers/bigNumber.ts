@@ -29,14 +29,14 @@ export function supportBigNumber(
 type Methods = 'eq' | 'gt' | 'lt' | 'gte' | 'lte';
 
 function override(method: Methods, name: string, utils: Chai.ChaiUtils) {
-  return (_super: Function) =>
+  return (_super: (...args: any[]) => any) =>
     overwriteBigNumberFunction(method, name, _super, utils);
 }
 
 function overwriteBigNumberFunction(
   functionName: Methods,
   readableName: string,
-  _super: Function,
+  _super: (...args: any[]) => any,
   chaiUtils: Chai.ChaiUtils
 ) {
   return function (this: Chai.AssertionStatic, ...args: any[]) {
