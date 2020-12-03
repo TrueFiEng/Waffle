@@ -18,20 +18,20 @@ declare global {
       toBeLteBN(value: Numberish): R;
 
       // balance matchers
-      toChangeBalance(wallet: Wallet, balanceChange: Numberish): R;
-      toChangeBalances(wallets: Wallet[], balanceChanges: Numberish[]): R;
+      toChangeBalance(wallet: Wallet, balanceChange: Numberish): Promise<R>;
+      toChangeBalances(wallets: Wallet[], balanceChanges: Numberish[]): Promise<R>;
 
       // revert matchers
-      toBeReverted(): R;
-      toBeRevertedWith(revertReason: string): R;
+      toBeReverted(): Promise<R>;
+      toBeRevertedWith(revertReason: string): Promise<R>;
 
       // emit matcher
-      toHaveEmitted(contract: Contract, eventName: string): R;
+      toHaveEmitted(contract: Contract, eventName: string): Promise<R>;
       toHaveEmittedWith(
         contract: Contract,
         eventName: string,
         expectedArgs: any[]
-      ): R;
+      ): Promise<R>;
 
       // calledOnContract matchers
       toBeCalledOnContract(contract: Contract): R;
