@@ -4,7 +4,7 @@ import {expect} from 'chai';
 import {compileProject} from '../../src/compiler';
 import {readFileContent} from '../../src/utils';
 
-const expectedMinimalOutput: object = {
+const expectedMinimalOutput: any = {
   abi: [
     {
       inputs: [

@@ -29,11 +29,11 @@ commands:
 jobs:
   lint:
     docker:
-      - image: circleci/node:11.15
+      - image: circleci/node:12.18
     steps:
       - checkout
       - install_dependencies:
-          key: 11
+          key: 12
       - run: yarn lint
 
   test_node_10:
@@ -44,18 +44,6 @@ jobs:
       - setup_remote_docker
       - install_dependencies:
           key: 10
-      - setup_solc
-      - run: yarn build
-      - run: yarn test:others
-
-  test_node_11:
-    docker:
-      - image: circleci/node:11.15
-    steps:
-      - checkout
-      - setup_remote_docker
-      - install_dependencies:
-          key: 11
       - setup_solc
       - run: yarn build
       - run: yarn test:others
@@ -72,6 +60,18 @@ jobs:
       - run: yarn build
       - run: yarn test:others
 
+  test_node_14:
+    docker:
+      - image: circleci/node:14.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - install_dependencies:
+          key: 14
+      - setup_solc
+      - run: yarn build
+      - run: yarn test:others
+
   test_jest_10:
     docker:
       - image: circleci/node:10.18
@@ -80,18 +80,6 @@ jobs:
       - setup_remote_docker
       - install_dependencies:
           key: 10
-      - setup_solc
-      - run: yarn build
-      - run: yarn test:jest
-
-  test_jest_11:
-    docker:
-      - image: circleci/node:11.15
-    steps:
-      - checkout
-      - setup_remote_docker
-      - install_dependencies:
-          key: 11
       - setup_solc
       - run: yarn build
       - run: yarn test:jest
@@ -108,10 +96,22 @@ jobs:
       - run: yarn build
       - run: yarn test:jest
 
+  test_jest_14:
+    docker:
+      - image: circleci/node:14.0
+    steps:
+      - checkout
+      - setup_remote_docker
+      - install_dependencies:
+          key: 14
+      - setup_solc
+      - run: yarn build
+      - run: yarn test:jest
+
   examples:
     working_directory: ~/project/examples
     docker:
-      - image: circleci/node:11.15
+      - image: circleci/node:12.18
     steps:
       - checkout:
           path: ~/project
@@ -165,10 +165,10 @@ workflows:
     jobs:
       - lint
       - test_node_10
-      - test_node_11
       - test_node_12
+      - test_node_14
       - test_jest_10
-      - test_jest_11
       - test_jest_12
+      - test_jest_14
       - examples
       - docs

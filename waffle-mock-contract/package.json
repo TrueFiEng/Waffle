@@ -46,19 +46,6 @@
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.2.1",
     "@ethereum-waffle/compiler": "^3.2.1",
-    "@ethereum-waffle/provider": "^3.2.1",
-    "@types/chai": "^4.2.3",
-    "@types/chai-as-promised": "^7.1.2",
-    "@types/mocha": "^5.2.7",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.2",
-    "mocha": "^7.1.2",
-    "rimraf": "^3.0.0",
-    "ts-node": "^8.9.1",
-    "typescript": "^3.8.3"
+    "@ethereum-waffle/provider": "^3.2.1"
   }
 }

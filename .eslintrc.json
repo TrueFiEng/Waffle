@@ -25,6 +25,7 @@
         }
       }
     ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/indent": [
       "error",
       2,
@@ -525,7 +526,8 @@
         "import/no-extraneous-dependencies": [
           "error",
           {
-            "devDependencies": true
+            "devDependencies": true,
+            "packageDir": [".", ".."]
           }
         ]
       }

@@ -18,6 +18,26 @@
     "test:jest": "wsrun -p @ethereum-waffle/jest -c test"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/chai-as-promised": "^7.1.3",
+    "@types/chai-string": "^1.4.2",
+    "@types/mocha": "^8.0.4",
+    "@types/rimraf": "^3.0.0",
+    "@types/sinon": "^9.0.9",
+    "@types/sinon-chai": "^3.2.5",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-string": "^1.5.0",
+    "eslint": "^7.14.0",
+    "eslint-plugin-import": "^2.22.1",
+    "mocha": "^8.2.1",
+    "rimraf": "^3.0.2",
+    "sinon": "^9.2.1",
+    "sinon-chai": "^3.5.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.2",
     "wsrun": "^5.2.0"
   }
 }

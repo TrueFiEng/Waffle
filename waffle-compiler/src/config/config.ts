@@ -26,7 +26,7 @@ export interface Config {
    */
   compilerAllowedPaths: string[];
   /** Options passed to the compiler */
-  compilerOptions: object;
+  compilerOptions: any;
 
   /** Include the humanReadableAbi format */
   outputHumanReadableAbi: boolean;

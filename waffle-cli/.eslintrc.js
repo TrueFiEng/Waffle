@@ -1,5 +1,1 @@
-const baseConfig = require('../.eslintrc.json')
-
-module.exports = {
-  ...baseConfig,
-}
+module.exports = require('../.eslintrc.json')
