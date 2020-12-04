@@ -19,7 +19,7 @@ Sweeter, simpler and faster.
 ## Features:
 * Sweet set of chai matchers, e.g.:
   * `expect(...).to.be.revertedWith('Error message')`
-  * `expect(...).to.emit(contract, 'EventName).withArgs(...)`)
+  * `expect(...).to.emit(contract, 'EventName').withArgs(...)`)
 * Importing contracts from npm modules working out of the box, e.g.:
   * `import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";`
 * Fixtures that help write fast and maintainable test suites, e.g.:
