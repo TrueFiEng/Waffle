@@ -1,4 +1,5 @@
 import {Matcher} from 'earljs/internals';
+import {isHexString} from '../utils';
 
 export class HexStringMatcher extends Matcher {
   constructor(private length?: number) {
@@ -9,16 +10,13 @@ export class HexStringMatcher extends Matcher {
     if (typeof value !== 'string') {
       return false;
     }
-
-    const regexp = this.length !== undefined
-      ? new RegExp(`^0x[0-9-a-fA-F]{${this.length}}$`)
-      : /^0x[0-9-a-fA-F]*$/;
-
-    return regexp.test(value);
+    return isHexString(value, this.length);
   }
 
   toString() {
-    return this.length !== undefined ? `HexString(${this.length})` : 'HexString';
+    return this.length !== undefined
+      ? `HexString(${this.length})`
+      : 'HexString';
   }
 
   static make(length?: number): string {
