@@ -16,3 +16,7 @@ export function isHexString(value: string, length?: number) {
   const correctLength = length === undefined || value.length === length + 2;
   return isHex && correctLength;
 }
+
+export function isPrivateKey(value: string) {
+  return isHexString(value, 64);
+}

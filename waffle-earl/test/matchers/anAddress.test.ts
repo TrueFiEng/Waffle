@@ -14,10 +14,6 @@ describe('anAddress', () => {
     it(`expect("${value.toLowerCase()}").toEqual(expect.anAddress())`, () => {
       expect(value.toLowerCase()).toEqual(expect.anAddress());
     });
-
-    it(`expect("${value.toUpperCase()}").not.toEqual(expect.anAddress())`, () => {
-      expect(value.toUpperCase()).not.toEqual(expect.anAddress());
-    });
   }
 
   const failingCases = [
