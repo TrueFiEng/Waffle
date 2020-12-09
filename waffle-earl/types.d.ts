@@ -1,20 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  ExpectInterface,
-  Expectation,
-  expect,
-  loadMatchers,
-  mockFn
-} from 'earljs';
+import {plugin} from './dist/esm';
+
+type Matchers = (typeof plugin)['matchers'];
+type Validators = (typeof plugin)['validators'];
 
 declare module 'earljs' {
-  interface ExpectInterface {
-    evenNumber: () => number;
-  }
-
-  interface Expectation<T> {
-    toBeEven: (this: Expectation<number>) => void;
-  }
-
-  export {ExpectInterface, Expectation, expect, loadMatchers, mockFn};
+  interface ExpectInterface extends Matchers {}
+  interface Expectation<T> extends Validators {}
 }

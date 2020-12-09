@@ -39,9 +39,9 @@
     "ethers": "^5.0.0"
   },
   "devDependencies": {
-    "earljs": "^0.1.4"
+    "earljs": "^0.1.6"
   },
   "peerDependencies": {
-    "earljs": "^0.1.4"
+    "earljs": "^0.1.6"
   }
 }

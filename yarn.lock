@@ -3253,6 +3253,17 @@ duplexer3@^0.1.4:
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
   integrity sha1-7gHdHKwO08vH/b6jfcCo8c4ALOI=
 
+earljs@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/earljs/-/earljs-0.1.6.tgz#fc8d6cad7ef1cb2b74a42fe54bbb7a40ba75e06d"
+  integrity sha512-Ng9j9O9ccrXXXCf0Xo+B6wmJ+oepiaJq7wpCAEgFf5REClAJHbwqkI79kI66Adx+VEqym0TtEMq0vfi5/xetRw==
+  dependencies:
+    debug "^4.1.1"
+    jest-snapshot "^26.6.2"
+    lodash "^4.17.15"
+    pretty-format "^26.6.2"
+    ts-essentials "^6.0.5"
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -8774,6 +8785,11 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
   integrity sha1-yy4SAwZ+DI3h9hQJS5/kVwTqYAM=
+
+ts-essentials@^6.0.5:
+  version "6.0.7"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-6.0.7.tgz#5f4880911b7581a873783740ce8b94da163d18a6"
+  integrity sha512-2E4HIIj4tQJlIHuATRHayv0EfMGK3ris/GRk1E3CFnsZzeNV+hUmelbaTZHLtXaZppM5oLhHRtO04gINC4Jusw==
 
 ts-jest@^26.4.4:
   version "26.4.4"
