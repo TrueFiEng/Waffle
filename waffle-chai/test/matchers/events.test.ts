@@ -27,7 +27,9 @@ describe('INTEGRATION: Events', () => {
   });
 
   it('Emit two: success', async () => {
-    await expect(events.emitTwo()).to.emit(events, 'Two');
+    await expect(
+      events.emitTwo()).to.emit(events, 'Two')
+      .withArgs(2, 'Two', '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123', 'Two');
   });
 
   it('Emit two: fail', async () => {
