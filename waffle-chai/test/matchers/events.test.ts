@@ -53,6 +53,15 @@ describe('INTEGRATION: Events', () => {
         hash,
         '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
       );
+    await expect(events.emitIndex())
+      .to.emit(events, 'Index')
+      .withArgs(
+        'Three',
+        'Three',
+        bytes,
+        bytes,
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      );
   });
 
   it('Do not emit one: fail', async () => {

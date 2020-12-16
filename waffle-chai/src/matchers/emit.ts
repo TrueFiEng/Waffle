@@ -67,7 +67,11 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         }
       } else {
         if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed === true) {
-          new Assertion(actualArgs[index].hash).equal(expectedArgs[index]);
+          const expectedArgBytes = utils.isHexString(expectedArgs[index])
+            ? utils.arrayify(expectedArgs[index]) : utils.toUtf8Bytes(expectedArgs[index]);
+          new Assertion(actualArgs[index].hash).to.be.oneOf(
+            [expectedArgs[index], utils.keccak256(expectedArgBytes)]
+          );
         } else {
           new Assertion(actualArgs[index]).equal(expectedArgs[index]);
         }
