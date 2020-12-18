@@ -295,6 +295,23 @@ For the compiled contracts you will now see the following in the output:
   }
 
 
+typechain
+^^^^^^^^^
+
+Waffle supports `typechain <https://github.com/ethereum-ts/TypeChain>`__ artifacts generation. 
+To enable typed artifacts generation you should switch enable property to :code:`true`. You are also able to define target 
+folder for your artifacts by defining :code:`outputDir` property, which is optional. Property :code:`outputDir` is relative to :ref:`outputDirectory`.
+
+.. code-block:: json
+
+  {
+    "typechain": [
+      "enable": true,
+      "outputDir": "typechain"
+    ]
+  }
+
+
 Other configuration file formats
 --------------------------------
 

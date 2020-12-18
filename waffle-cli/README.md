@@ -176,6 +176,15 @@ Example configuration file looks like this (all fields optional):
 }
 ```
 
+To enable generation a [typechain](https://github.com/ethereum-ts/TypeChain) artifacts:
+```json
+{
+  "typechain": {
+    "enable": true
+  }
+}
+```
+
 ### Flattener
 To flat your smart contracts run:
 
