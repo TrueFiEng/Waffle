@@ -3,7 +3,7 @@
     "evmVersion": "constantinople"
   },
   "compilerVersion": "0.5.9",
-  "typechainOptions": {
+  "typechain": {
     "enabled": true
   }
 }

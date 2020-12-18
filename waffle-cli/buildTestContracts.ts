@@ -19,7 +19,7 @@ const buildExampleContracts = async () => {
 };
 const buildExampleTypes = async () => {
   console.log('Building example types...');
-  await generateTypes(inputToConfig({outputDirectory: './test/example/build', typechainOptions: {enabled: true, outputDir: '../../../build'}}))
+  await generateTypes(inputToConfig({outputDirectory: './test/example/build', typechain: {enabled: true, outputDir: '../../../build'}}))
 }
 
 (async function () {

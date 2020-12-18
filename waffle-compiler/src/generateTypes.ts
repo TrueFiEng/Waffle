@@ -4,7 +4,7 @@ import {TypeChain} from 'typechain/dist/TypeChain';
 import {Config} from './config';
 
 export async function generateTypes(config: Config) {
-  const typesOutputDirName = config.typechainOptions.outputDir || 'types';
+  const typesOutputDirName = config.typechain.outputDir || 'types';
   await tsGenerator(
     {cwd: config.outputDirectory},
     new TypeChain({

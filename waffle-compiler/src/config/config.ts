@@ -39,7 +39,7 @@ export interface Config {
    */
   outputType: 'multiple' | 'combined' | 'all' | 'minimal';
   /** Control contract types generation with Typechain */
-  typechainOptions: {
+  typechain: {
     /** Enable type generation. False by default */
     enabled: boolean;
     /** Target directory for generated types. Relative to outputDirectory */

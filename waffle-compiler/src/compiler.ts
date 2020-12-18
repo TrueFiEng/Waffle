@@ -11,7 +11,7 @@ export async function compileProject(configPath?: string) {
   const partialConfig = await loadConfig(configPath);
   await compileAndSave(partialConfig);
   const config = inputToConfig(partialConfig);
-  if (config.typechainOptions.enabled) {
+  if (config.typechain.enabled) {
     await generateTypes(config);
   }
 }
