@@ -47,4 +47,31 @@ describe('UNIT: hexEqual', () => {
       'Expected "0xabc" not to be a hex string equal to "abc", but "abc" is not a valid hex string'
     );
   });
+
+  it('xyz is not a hex string', () => {
+    expect(
+      () => expect('xyz').to.hexEqual('0x1A4')
+    ).to.throw(
+      AssertionError,
+      'Expected "xyz" to be a hex string equal to "0x1A4", but "xyz" is not a valid hex string'
+    );
+  });
+
+  it('0xyz is not a hex string', () => {
+    expect(
+      () => expect('0xyz').to.hexEqual('0x1A4')
+    ).to.throw(
+      AssertionError,
+      'Expected "0xyz" to be a hex string equal to "0x1A4", but "0xyz" is not a valid hex string'
+    );
+  });
+
+  it('empty string is not a hex string', () => {
+    expect(
+      () => expect('').to.hexEqual('0x0')
+    ).to.throw(
+      AssertionError,
+      'Expected "" to be a hex string equal to "0x0", but "" is not a valid hex string'
+    );
+  });
 });
