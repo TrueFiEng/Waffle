@@ -38,10 +38,11 @@ export interface Config {
    * - minimal - output just ABI and Bytecode
    */
   outputType: 'multiple' | 'combined' | 'all' | 'minimal';
-  /** Options which control contract types generation with Typechain */
+  /** Control contract types generation with Typechain */
   typechainOptions: {
+    /** Enable type generation. False by default */
     enabled: boolean;
-    /** relative to outputDirectory */
+    /** Target directory for generated types. Relative to outputDirectory */
     outputDir?: string;
   };
 }
