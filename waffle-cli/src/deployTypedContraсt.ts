@@ -1,6 +1,6 @@
 import {ContractFactory, providers, Wallet} from 'ethers';
 
-export type Newable<T> = { new(...args: any[]): T };
+type Newable<T> = { new(...args: any[]): T };
 
 export async function deployTypedContract<T extends ContractFactory>(
   wallet: Wallet,
