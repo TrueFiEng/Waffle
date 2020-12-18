@@ -1,5 +1,4 @@
-import { ContractFactory, providers, Wallet } from 'ethers';
-
+import {ContractFactory, providers, Wallet} from 'ethers';
 
 export type Newable<T> = { new(...args: any[]): T };
 
