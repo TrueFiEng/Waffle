@@ -122,4 +122,25 @@ describe('UNIT: BigNumber matchers', () => {
       checkAll(10, 9, (a, b) => expect(a).not.to.be.lte(b));
     });
   });
+
+  describe('within', () => {
+    it('.to.be.within', () => {
+      expect(BigNumber.from(100)).to.be.within(BigNumber.from(99), BigNumber.from(101));
+    });
+
+    it('.not.to.be.within', () => {
+      expect(BigNumber.from(100)).not.to.be.within(BigNumber.from(101), BigNumber.from(102));
+      expect(BigNumber.from(100)).not.to.be.within(BigNumber.from(98), BigNumber.from(99));
+    });
+  });
+
+  describe('closeTo', () => {
+    it('.to.be.closeTo', () => {
+      expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(101), 10);
+    });
+
+    it('.not.to.be.closeTo', () => {
+      expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(111), 10);
+    });
+  });
 });
