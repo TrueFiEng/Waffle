@@ -178,6 +178,14 @@ Testing if a string is a proper hex value of given length:
 
   expect('0x70').to.be.properHex(2);
 
+Hex Equal
+----------
+Testing if a string is a proper hex with value equal to the given hex value. Case insensitive and strips leading zeros:
+
+.. code-block:: ts
+
+  expect('0x00012AB').to.hexEqual('0x12ab');
+
 Deprecated matchers
 ===================
 
