@@ -1,5 +1,4 @@
 import {AssertionError, expect} from 'chai';
-import { BigNumber } from 'ethers';
 
 describe('UNIT: hexEqual', () => {
   it('0xAB equals 0xab', () => {
@@ -20,20 +19,32 @@ describe('UNIT: hexEqual', () => {
 
   it('0x edge case', () => {
     expect('0x').to.hexEqual('0x000000');
-  })
+  });
 
   it('abc is not a hex string', () => {
     expect(
       () => expect('abc').to.hexEqual('0xabc')
-    ).to.throw(AssertionError, 'Expected "abc" to be a hex string equal to "0xabc", but "abc" is not a valid hex string');
+    ).to.throw(
+      AssertionError,
+      'Expected "abc" to be a hex string equal to "0xabc", but "abc" is not a valid hex string'
+    );
     expect(
       () => expect('0xabc').to.hexEqual('abc')
-    ).to.throw(AssertionError, 'Expected "0xabc" to be a hex string equal to "abc", but "abc" is not a valid hex string')
+    ).to.throw(
+      AssertionError,
+      'Expected "0xabc" to be a hex string equal to "abc", but "abc" is not a valid hex string'
+    );
     expect(
       () => expect('abc').to.not.hexEqual('0xabc')
-    ).to.throw(AssertionError, 'Expected "abc" not to be a hex string equal to "0xabc", but "abc" is not a valid hex string');
+    ).to.throw(
+      AssertionError,
+      'Expected "abc" not to be a hex string equal to "0xabc", but "abc" is not a valid hex string'
+    );
     expect(
       () => expect('0xabc').to.not.hexEqual('abc')
-    ).to.throw(AssertionError, 'Expected "0xabc" not to be a hex string equal to "abc", but "abc" is not a valid hex string')
+    ).to.throw(
+      AssertionError,
+      'Expected "0xabc" not to be a hex string equal to "abc", but "abc" is not a valid hex string'
+    );
   });
 });
