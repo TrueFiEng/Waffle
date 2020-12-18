@@ -22,7 +22,7 @@ const buildExampleTypes = async () => {
   await generateTypes(inputToConfig({outputDirectory: './test/example/build', typechainOptions: {enabled: true, outputDir: '../../../build'}}))
 }
 
-const _ = async function () {
+(async function () {
   await buildExampleContracts();
   await buildExampleTypes();
-}().catch(console.error)
+})().catch(console.error)
