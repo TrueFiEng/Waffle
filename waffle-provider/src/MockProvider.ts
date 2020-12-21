@@ -15,7 +15,7 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(Ganache.provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
+    super(createProvider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
     this._callHistory = new CallHistory();
     this._callHistory.record(this);
   }
@@ -49,5 +49,15 @@ export class MockProvider extends providers.Web3Provider {
     const ens = await deployENS(wallet);
     this.network.ensAddress = ens.ens.address;
     this._ens = ens;
+  }
+}
+
+function createProvider(options?: Ganache.IProviderOptions) {
+  if(options?.port) {
+    const server = Ganache.server(options);
+    server.listen(options.port)
+    return server.provider;
+  } else {
+    return Ganache.provider(options);
   }
 }
