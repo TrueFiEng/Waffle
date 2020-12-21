@@ -1,5 +1,5 @@
 import {expect, AssertionError} from 'chai';
-import {BigNumber, Contract, ContractFactory} from 'ethers';
+import {BigNumber, Contract, ContractFactory, ethers} from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
 
@@ -27,7 +27,9 @@ describe('INTEGRATION: Events', () => {
   });
 
   it('Emit two: success', async () => {
-    await expect(events.emitTwo()).to.emit(events, 'Two');
+    await expect(events.emitTwo())
+      .to.emit(events, 'Two')
+      .withArgs(2, 'Two');
   });
 
   it('Emit two: fail', async () => {
@@ -37,6 +39,29 @@ describe('INTEGRATION: Events', () => {
       AssertionError,
       'Expected event "One" to be emitted, but it wasn\'t'
     );
+  });
+
+  it('Emit index: success', async () => {
+    const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
+    const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('Three'));
+    await expect(events.emitIndex())
+      .to.emit(events, 'Index')
+      .withArgs(
+        hash,
+        'Three',
+        bytes,
+        hash,
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      );
+    await expect(events.emitIndex())
+      .to.emit(events, 'Index')
+      .withArgs(
+        'Three',
+        'Three',
+        bytes,
+        bytes,
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      );
   });
 
   it('Do not emit one: fail', async () => {
