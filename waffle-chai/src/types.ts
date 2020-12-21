@@ -10,6 +10,7 @@ declare namespace Chai {
     revertedWith(reason: string): AsyncAssertion;
     emit(contract: any, eventName: string): EmitAssertion;
     properHex(length: number): void;
+    hexEqual(other: string): void;
     properPrivateKey: void;
     properAddress: void;
     /**
