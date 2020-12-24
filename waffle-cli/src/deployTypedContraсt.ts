@@ -9,9 +9,7 @@ export async function deployTypedContract<T extends ContractFactory>(
   overrideOptions: providers.TransactionRequest = {}
 ): Promise<ReturnType<T['deploy']>> {
   const contractFactory = new Factory(wallet);
-  const contract = await contractFactory.deploy(...args, {
-    ...overrideOptions
-  });
+  const contract = await contractFactory.deploy(...args, overrideOptions);
   await contract.deployed();
   return contract;
 }
