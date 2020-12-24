@@ -176,7 +176,7 @@ Example configuration file looks like this (all fields optional):
 }
 ```
 
-To enable generation a [typechain](https://github.com/ethereum-ts/TypeChain) artifacts:
+To enable generation of [typechain](https://github.com/ethereum-ts/TypeChain) artifacts:
 ```json
 {
   "typechain": {
