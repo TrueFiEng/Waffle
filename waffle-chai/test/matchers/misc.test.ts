@@ -1,4 +1,5 @@
 import {expect, AssertionError} from 'chai';
+import {ethers} from 'ethers';
 
 describe('UNIT: Miscellaneous', () => {
   describe('Proper address', () => {
@@ -78,6 +79,22 @@ describe('UNIT: Miscellaneous', () => {
       expect(
         () => expect('0x70').not.to.be.properHex(2)
       ).to.throw(AssertionError, 'Expected "0x70" not to be a proper hex of length 2, but it was');
+    });
+  });
+
+  describe('Other chai matchers compatibility', () => {
+    it('lengthOf works', async () => {
+      const one = ethers.constants.One;
+      const list = [1, 2, 3];
+
+      expect(one).to.be.at.least(1);
+
+      expect(list.length).to.be.at.least(one);
+      expect(list).to.have.lengthOf.at.least(1);
+      expect([1]).to.have.lengthOf.at.least(one);
+      expect(list).to.have.lengthOf.at.least(one);
+      expect(list).to.have.lengthOf.at.most(one.mul(3));
+      expect(() => expect(list).to.have.lengthOf.at.most(one)).to.throw;
     });
   });
 });

@@ -33,6 +33,25 @@ Testing what events were emitted with what arguments:
     .to.emit(token, 'Transfer')
     .withArgs(wallet.address, walletTo.address, 7);
 
+.. note::
+
+  The matcher will match :code:`indexed` event parameters of type :code:`string` or :code:`bytes`
+  even if the expected argument is not hashed using :code:`keccack256` first.
+
+Testing with indexed bytes or string parameters. These two examples are equivalent
+
+.. code-block:: ts
+
+  await expect(contract.addAddress("street", "city"))
+    .to.emit(contract, 'AddAddress')
+    .withArgs("street", "city");
+
+  const hashedStreet = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("street"));
+  const hashedCity = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("city"));
+  await expect(contract.addAddress(street, city))
+    .to.emit(contract, 'AddAddress')
+    .withArgs(hashedStreet, hashedCity);
+
 Called on contract
 ------------------
 
