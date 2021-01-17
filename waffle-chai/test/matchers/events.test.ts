@@ -287,4 +287,14 @@ describe('INTEGRATION: Events', () => {
       'Specified args not emitted in any of 3 emitted "One" events'
     );
   });
+
+  it('With executed transaction', async () => {
+    const tx = await events.emitOne();
+    await expect(tx).to.emit(events, 'One');
+  });
+
+  it('With transaction hash', async () => {
+    const tx = await events.emitOne();
+    await expect(tx.hash).to.emit(events, 'One');
+  });
 });
