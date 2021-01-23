@@ -1,6 +1,7 @@
 {
   "name": "@ethereum-waffle/e2e",
-  "version": "1.0.1",
+  "version": "1.0.0",
+  "private": true,
   "main": "index.js",
   "license": "MIT",
   "scripts": {
