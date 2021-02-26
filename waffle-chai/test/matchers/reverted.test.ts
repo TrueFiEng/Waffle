@@ -55,7 +55,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 });
 
-describe('INTEGRATION: Matchers: revertedWith', () => {
+describe.only('INTEGRATION: Matchers: revertedWith', () => {
   const [wallet] = new MockProvider().getWallets();
   let matchers: Contract;
 
@@ -80,6 +80,18 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
 
   it('Revert with modification: success', async () => {
     await expect(matchers.doRevertAndModify()).to.be.revertedWith('Revert cause');
+  });
+
+  it('Revert with modification: fail when not full message match', async () => {
+    await expect(
+      expect(matchers.doRevertAndModify()).to.be.revertedWith('cause')
+    ).to.eventually.be.rejected;
+  });
+
+  it('Revert with modification: fail when empty string', async () => {
+    await expect(
+      expect(matchers.doRevertAndModify()).to.be.revertedWith('')
+    ).to.eventually.be.rejected;
   });
 
   it('Revert with modification: fail when different message was thrown', async () => {
