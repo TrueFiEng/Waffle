@@ -12,7 +12,6 @@ export const defaultConfig: Config = {
   compilerOptions: {},
   outputHumanReadableAbi: false,
   outputType: 'multiple',
-  typechain: {
-    enabled: false
-  }
+  typechainEnabled: false,
+  typechainOutputDir: 'types'
 };

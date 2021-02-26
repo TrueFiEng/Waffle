@@ -4,12 +4,11 @@ import {TypeChain} from 'typechain/dist/TypeChain';
 import {Config} from './config';
 
 export async function generateTypes(config: Config) {
-  const typesOutputDirName = config.typechain.outputDir || 'types';
   await tsGenerator(
     {cwd: config.outputDirectory},
     new TypeChain({
       cwd: config.outputDirectory,
-      rawConfig: {files: '*.json', outDir: typesOutputDirName, target: 'ethers-v5'}
+      rawConfig: {files: '*.json', outDir: config.typechainOutputDir, target: 'ethers-v5'}
     }));
-  return path.join(config.outputDirectory, typesOutputDirName);
+  return path.join(config.outputDirectory, config.typechainOutputDir);
 }
