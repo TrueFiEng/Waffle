@@ -5,3 +5,4 @@ yarn-error.log
 /docs/env
 .idea
 out
+docs/venv

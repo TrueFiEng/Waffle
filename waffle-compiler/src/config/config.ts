@@ -38,6 +38,11 @@ export interface Config {
    * - minimal - output just ABI and Bytecode
    */
   outputType: 'multiple' | 'combined' | 'all' | 'minimal';
+  /** Control contract types generation with Typechain */
+  /** Enable type generation. False by default */
+  typechainEnabled: boolean;
+  /** Target directory for generated types. Relative to outputDirectory */
+  typechainOutputDir: string;
 }
 
 export type InputConfig = Partial<Config>

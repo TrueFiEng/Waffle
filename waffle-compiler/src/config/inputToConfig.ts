@@ -1,7 +1,7 @@
 import {Config, InputConfig} from './config';
 import {defaultConfig} from './defaultConfig';
 
-export function inputToConfig(input: InputConfig) {
+export function inputToConfig(input: InputConfig): Config {
   const result: Config = {...defaultConfig};
 
   for (const key in input) {

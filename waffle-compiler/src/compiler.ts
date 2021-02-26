@@ -5,9 +5,15 @@ import {findInputs} from './findInputs';
 import {saveOutput} from './saveOutput';
 import {ImportsFsEngine, resolvers} from '@resolver-engine/imports-fs';
 import {gatherSources} from '@resolver-engine/imports';
+import {generateTypes} from './generateTypes';
 
 export async function compileProject(configPath?: string) {
-  await compileAndSave(await loadConfig(configPath));
+  const partialConfig = await loadConfig(configPath);
+  await compileAndSave(partialConfig);
+  const config = inputToConfig(partialConfig);
+  if (config.typechainEnabled) {
+    await generateTypes(config);
+  }
 }
 
 export async function compileAndSave(input: InputConfig) {
