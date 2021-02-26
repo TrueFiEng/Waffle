@@ -45,6 +45,4 @@ export interface Config {
   typechainOutputDir: string;
 }
 
-export type DeepPartial<T> = {[P in keyof T]?: DeepPartial<T[P]>};
-
-export type InputConfig = DeepPartial<Config>
+export type InputConfig = Partial<Config>
