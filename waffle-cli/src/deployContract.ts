@@ -23,17 +23,22 @@ export async function deployContract<T extends ContractFactory>(
   args: Parameters<T['deploy']>| any[] = [],
   overrideOptions: providers.TransactionRequest = {}
 ): Promise<ReturnType<T['deploy']> | Contract> {
-  if ('abi' in factoryOrContractJson){
+  if ('abi' in factoryOrContractJson) {
     return deployFromJson(wallet, factoryOrContractJson, args, overrideOptions);
-  } else  {
-    const contractFactory = new factoryOrContractJson(wallet);
+  } else {
+    const Factory = factoryOrContractJson as Newable<T>;
+    const contractFactory = new Factory(wallet);
     const contract = await contractFactory.deploy(...args, overrideOptions);
     await contract.deployed();
     return contract;
   }
 }
 
-async function deployFromJson(wallet: Signer, contractJson: ContractJSON, args: any[], overrideOptions: providers.TransactionRequest) {
+async function deployFromJson(
+  wallet: Signer,
+  contractJson: ContractJSON,
+  args: any[],
+  overrideOptions: providers.TransactionRequest) {
   const bytecode = isStandard(contractJson) ? contractJson.evm.bytecode : contractJson.bytecode;
   if (!hasByteCode(bytecode)) {
     throw new Error('Cannot deploy contract with empty bytecode');
