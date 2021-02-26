@@ -40,7 +40,7 @@ function getAddresses(accounts: Account[]) {
 async function getBalances(token: Contract, accounts: Account[]) {
   return Promise.all(
     accounts.map(async (account) => {
-      return token.balanceOf(getAddressOf(account));
+      return token['balanceOf(address)'](getAddressOf(account));
     })
   );
 }

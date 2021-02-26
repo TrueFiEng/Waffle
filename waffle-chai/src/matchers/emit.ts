@@ -1,4 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
+import {waitForPendingTransaction} from './misc/transaction';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
   const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
@@ -6,42 +7,41 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
-    const promise = this._obj;
-    const derivedPromise = promise.then((tx: any) =>
-      contract.provider.getTransactionReceipt(tx.hash)
-    ).then((receipt: providers.TransactionReceipt) => {
-      let eventFragment: utils.EventFragment | undefined;
-      try {
-        eventFragment = contract.interface.getEvent(eventName);
-      } catch (e) {
+    const tx = this._obj;
+    const derivedPromise = waitForPendingTransaction(tx, contract.provider)
+      .then((receipt: providers.TransactionReceipt) => {
+        let eventFragment: utils.EventFragment | undefined;
+        try {
+          eventFragment = contract.interface.getEvent(eventName);
+        } catch (e) {
         // ignore error
-      }
+        }
 
-      if (eventFragment === undefined) {
-        const isNegated = this.__flags.negate === true;
+        if (eventFragment === undefined) {
+          const isNegated = this.__flags.negate === true;
 
-        this.assert(
-          isNegated,
-          `Expected event "${eventName}" to be emitted, but it doesn't` +
+          this.assert(
+            isNegated,
+            `Expected event "${eventName}" to be emitted, but it doesn't` +
           ' exist in the contract. Please make sure you\'ve compiled' +
           ' its latest version before running the test.',
-          `WARNING: Expected event "${eventName}" NOT to be emitted.` +
+            `WARNING: Expected event "${eventName}" NOT to be emitted.` +
           ' The event wasn\'t emitted because it doesn\'t' +
           ' exist in the contract. Please make sure you\'ve compiled' +
           ' its latest version before running the test.',
-          eventName,
-          ''
-        );
-        return;
-      }
+            eventName,
+            ''
+          );
+          return;
+        }
 
-      const topic = contract.interface.getEventTopic(eventFragment);
-      this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
-      this.assert(this.logs.length > 0,
-        `Expected event "${eventName}" to be emitted, but it wasn't`,
-        `Expected event "${eventName}" NOT to be emitted, but it was`
-      );
-    });
+        const topic = contract.interface.getEventTopic(eventFragment);
+        this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
+        this.assert(this.logs.length > 0,
+          `Expected event "${eventName}" to be emitted, but it wasn't`,
+          `Expected event "${eventName}" NOT to be emitted, but it was`
+        );
+      });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
     this.promise = derivedPromise;
@@ -66,7 +66,15 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
         }
       } else {
-        new Assertion((actualArgs[index])).equal((expectedArgs[index]));
+        if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed === true) {
+          const expectedArgBytes = utils.isHexString(expectedArgs[index])
+            ? utils.arrayify(expectedArgs[index]) : utils.toUtf8Bytes(expectedArgs[index]);
+          new Assertion(actualArgs[index].hash).to.be.oneOf(
+            [expectedArgs[index], utils.keccak256(expectedArgBytes)]
+          );
+        } else {
+          new Assertion(actualArgs[index]).equal(expectedArgs[index]);
+        }
       }
     }
   };

@@ -6,6 +6,7 @@ import {supportEmit} from './matchers/emit';
 import {supportProperAddress} from './matchers/properAddress';
 import {supportProperPrivateKey} from './matchers/properPrivateKey';
 import {supportProperHex} from './matchers/properHex';
+import {supportHexEqual} from './matchers/hexEqual';
 import {supportChangeBalance} from './matchers/changeBalance';
 import {supportChangeBalances} from './matchers/changeBalances';
 import {supportChangeEtherBalance} from './matchers/changeEtherBalance';
@@ -23,6 +24,7 @@ export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportProperAddress(chai.Assertion);
   supportProperPrivateKey(chai.Assertion);
   supportProperHex(chai.Assertion);
+  supportHexEqual(chai.Assertion);
   supportChangeBalance(chai.Assertion);
   supportChangeBalances(chai.Assertion);
   supportChangeEtherBalance(chai.Assertion);

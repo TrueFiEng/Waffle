@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/jest",
   "description": "A sweet set of jest matchers for your blockchain testing needs.",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "author": "Adrian Li <li.adrianmc@gmail.com>",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -36,7 +36,7 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/provider": "^3.2.1",
+    "@ethereum-waffle/provider": "^3.2.2",
     "ethers": "^5.0.0",
     "jest-diff": "^26.0.1"
   },

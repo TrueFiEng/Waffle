@@ -46,6 +46,10 @@ function overwriteBigNumberFunction(
   return function (this: Chai.AssertionStatic, ...args: any[]) {
     const [actual] = args;
     const expected = chaiUtils.flag(this, 'object');
+    if (chaiUtils.flag(this, 'doLength') && BigNumber.isBigNumber(actual)) {
+      _super.apply(this, [actual.toNumber()]);
+      return;
+    }
     if (BigNumber.isBigNumber(expected) || BigNumber.isBigNumber(actual)) {
       this.assert(
         BigNumber.from(expected)[functionName](actual),
