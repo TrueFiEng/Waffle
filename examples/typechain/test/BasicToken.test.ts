@@ -1,6 +1,6 @@
 import {expect, use} from 'chai';
 import {Contract} from 'ethers';
-import { deployTypedContract, MockProvider, solidity } from 'ethereum-waffle';
+import { deployContract, deployContract, MockProvider, solidity } from 'ethereum-waffle';
 import { BasicToken, BasicTokenFactory } from '../typechain';
 
 use(solidity);
@@ -10,7 +10,7 @@ describe('BasicToken', () => {
   let token: BasicToken;
 
   beforeEach(async () => {
-    token = await deployTypedContract(wallet, BasicTokenFactory, [1000]);
+    token = await deployContract(wallet, BasicTokenFactory, [1000]);
   });
 
   it('Assigns initial balance', async () => {
