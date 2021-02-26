@@ -55,7 +55,7 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 });
 
-describe.only('INTEGRATION: Matchers: revertedWith', () => {
+describe('INTEGRATION: Matchers: revertedWith', () => {
   const [wallet] = new MockProvider().getWallets();
   let matchers: Contract;
 
