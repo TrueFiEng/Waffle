@@ -1,4 +1,4 @@
-name: CI
+name: Main CI
 on: [push]
 jobs:
   test-node:
