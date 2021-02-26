@@ -34,7 +34,7 @@ It wraps `ganache-core` in an `ethers` provider and extends it with useful funct
 
 You can learn more about it [in the documentation](https://ethereum-waffle.readthedocs.io/en/latest/basic-testing.html).
 
-###Usage
+### Usage
 
 Examples of creating `MockProvider` and usage `getWallets` function:
 ```ts
