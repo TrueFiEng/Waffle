@@ -31,6 +31,7 @@ Sweeter, simpler and faster.
   * use native solc binary for fast compilation in CI environment
   * use solc-js based on contract versions detected (async)
 * Support for TypeScript
+* Type-safe contract deployment and interactions with TypeChain
 * [Documentation](https://ethereum-waffle.readthedocs.io/en/latest/)
 
 ## Documentation

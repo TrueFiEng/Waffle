@@ -299,19 +299,17 @@ typechain
 ^^^^^^^^^
 
 Waffle supports `typechain <https://github.com/ethereum-ts/TypeChain>`__ artifacts generation.
-To enable typed artifacts generation you should set :code:`enable` property to :code:`true`.
-You are also able to define target folder for your artifacts by defining :code:`outputDir` property, which is set to :code:`./types` by default.
-Property :code:`outputDir` is a path relative to :ref:`outputDirectory`.
+To enable typed artifacts generation you should set :code:`typechainEnable` property to :code:`true`.
+You are also able to define target folder for your artifacts by defining :code:`typechainOutputDir` property, which is set to :code:`./types` by default.
+Property :code:`typechainOutputDir` is a path relative to :ref:`outputDirectory`.
 
 Example:
 
 .. code-block:: json
 
   {
-    "typechain": [
-      "enable": true,
-      "outputDir": "typechain"
-    ]
+    "typechainEnable": true,
+    "typechainOutputDir": "typechain"
   }
 
 
