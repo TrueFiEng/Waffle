@@ -61,8 +61,7 @@ function overwriteBigNumberFunction(
 }
 
 function overrideWithin(utils: Chai.ChaiUtils) {
-  return (_super: (...args: any[]) => any) =>
-    overwriteBigNumberWithin(_super, utils);
+  return (_super: (...args: any[]) => any) => overwriteBigNumberWithin(_super, utils);
 }
 
 function overwriteBigNumberWithin(_super: (...args: any[]) => any, chaiUtils: Chai.ChaiUtils) {
@@ -72,8 +71,8 @@ function overwriteBigNumberWithin(_super: (...args: any[]) => any, chaiUtils: Ch
     if (BigNumber.isBigNumber(expected) || BigNumber.isBigNumber(start) || BigNumber.isBigNumber(finish)) {
       this.assert(
         BigNumber.from(start).lte(expected) && BigNumber.from(finish).gte(expected),
-        `Expected "${expected}" to be within ${[start, finish]}`,
-        `Expected "${expected}" NOT to be within ${[start, finish]}`,
+        `Expected "${expected}" to be within [${[start, finish]}]`,
+        `Expected "${expected}" NOT to be within [${[start, finish]}]`,
         [start, finish],
         expected
       );
