@@ -31,6 +31,7 @@ Sweeter, simpler and faster.
   * use native solc binary for fast compilation in CI environment
   * use solc-js based on contract versions detected (async)
 * Support for TypeScript
+* Type-safe contract deployment and interactions with TypeChain
 * [Documentation](https://ethereum-waffle.readthedocs.io/en/latest/)
 
 ## Documentation
@@ -173,6 +174,15 @@ Example configuration file looks like this (all fields optional):
   "sourceDirectory": "./custom_contracts",
   "outputDirectory": "./custom_build",
   "nodeModulesDirectory": "./custom_node_modules"
+}
+```
+
+To enable generation of [typechain](https://github.com/ethereum-ts/TypeChain) artifacts:
+```json
+{
+  "typechain": {
+    "enable": true
+  }
 }
 ```
 
