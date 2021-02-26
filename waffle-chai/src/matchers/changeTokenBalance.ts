@@ -36,9 +36,9 @@ async function getBalanceChange(
   token: Contract,
   account: Account
 ) {
-  const balanceBefore: BigNumber = await token.balanceOf(await getAddressOf(account));
+  const balanceBefore: BigNumber = await token['balanceOf(address)'](await getAddressOf(account));
   await transactionCall();
-  const balanceAfter: BigNumber = await token.balanceOf(await getAddressOf(account));
+  const balanceAfter: BigNumber = await token['balanceOf(address)'](await getAddressOf(account));
 
   return balanceAfter.sub(balanceBefore);
 }
