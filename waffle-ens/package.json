@@ -6,6 +6,9 @@
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "private": false,
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "ethereum",
     "smart-contracts",

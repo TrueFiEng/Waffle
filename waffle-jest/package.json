@@ -6,6 +6,9 @@
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "ethereum",
     "smart-contracts",
