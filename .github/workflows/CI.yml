@@ -26,6 +26,8 @@ jobs:
 
   example-mock-contract:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./examples/mock-contracts
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -34,7 +36,6 @@ jobs:
           node-version: 12.8
       - name: Mock-contracts
         run: yarn install && yarn lint && yarn build && yarn test
-        working-directory: ${{ env.working-directory }}/mock-contracts
   examples:
     runs-on: ubuntu-latest
     env:
