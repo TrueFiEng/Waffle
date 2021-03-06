@@ -23,6 +23,18 @@ jobs:
         run: sudo cp ./.github/workflows/solc /bin
       - run: yarn build
       - run: yarn test:others
+
+  example-mock-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.8
+      - name: Mock-contracts
+        run: yarn install && yarn lint && yarn build && yarn test
+        working-directory: ${{ env.working-directory }}/mock-contracts
   examples:
     runs-on: ubuntu-latest
     env:
@@ -33,9 +45,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.8
-      - name: Mock-contracts
-        run: yarn install && yarn lint && yarn build && yarn test
-        working-directory: ${{ env.working-directory }}/mock-contracts
       - name: Change-balance
         run: yarn install && yarn lint && yarn test
         working-directory: ${{ env.working-directory }}/change-balance
