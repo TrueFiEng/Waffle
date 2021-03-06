@@ -127,6 +127,11 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     await expect(matchers.doRevert()).to.be.revertedWith('Revert cause');
   });
 
+  it('Revert: success when message includes special symbols', async () => {
+    await expect(matchers.doRevertWithComplexReason())
+      .to.be.revertedWith('Revert cause (with complex reason)');
+  });
+
   it('Revert: fail when different message was thrown', async () => {
     await expect(
       expect(matchers.doRevert()).to.be.revertedWith('Different message')
