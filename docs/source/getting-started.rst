@@ -165,7 +165,7 @@ Run:
 
       npm install --save-dev mocha chai
 
-You may also need to add :code:`ts-node` and :code:`typescript` if not installed globally.
+If you are using Typescript don't forget to add add :code:`ts-node` and :code:`typescript` if not installed globally.
 
 Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
