@@ -129,6 +129,36 @@ contract PauserRole {
 }
 
 
+// Dependency file: test/flattener/testSource/directivesImport.sol
+
+// pragma solidity >=0.4.24 <0.6.0;
+
+contract DirectivesImport {}
+
+
+// Dependency file: test/flattener/testSource/directives.sol
+
+// pragma solidity >=0.4.24 <0.6.0;
+
+// import "test/flattener/testSource/directivesImport.sol";
+//  import "test/flattener/testSource/directivesImport.sol";
+// import   "test/flattener/testSource/directivesImport.sol";
+// import{symbol1 as alias, symbol2} from "directivesImport.sol";
+
+/**
+* IMPORTANT! the issue as in #422
+*/
+contract Directives {
+  struct Import {
+    bool isImported;
+  }
+
+  function importData(address source) public {
+    imports = uint[];
+  }
+}
+
+
 // Root file: test/flattener/testSource/child.sol
 
 pragma solidity >=0.4.24 <0.6.0;
@@ -136,6 +166,7 @@ pragma solidity >=0.4.24 <0.6.0;
 // import "openzeppelin-solidity/contracts/access/Roles.sol";
 // import "test/flattener/testSource/parent.sol";
 // import "openzeppelin-solidity/contracts/access/roles/PauserRole.sol";
+// import "test/flattener/testSource/directives.sol";
 
 contract Child {
   mapping(address => uint256) balances;
