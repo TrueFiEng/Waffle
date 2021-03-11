@@ -1,11 +1,14 @@
 {
   "name": "@ethereum-waffle/compiler",
   "description": "Compile solidity without the hassle.",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "ethereum",
     "smart-contracts",
@@ -37,16 +40,19 @@
   "dependencies": {
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
+    "@typechain/ethers-v5": "^2.0.0",
     "@types/mkdirp": "^0.5.2",
     "@types/node-fetch": "^2.5.5",
     "ethers": "^5.0.1",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.6.0",
-    "solc": "^0.6.3"
+    "solc": "^0.6.3",
+    "ts-generator": "^0.1.1",
+    "typechain": "^3.0.0"
   },
   "devDependencies": {
-    "@ethereum-waffle/chai": "^3.2.2",
-    "@ethereum-waffle/provider": "^3.2.2",
+    "@ethereum-waffle/chai": "^3.3.0",
+    "@ethereum-waffle/provider": "^3.3.0",
     "@openzeppelin/contracts": "3.0.1",
     "@types/fs-extra": "^9.0.4",
     "fs-extra": "^9.0.1",

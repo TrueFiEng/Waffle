@@ -1,11 +1,14 @@
 {
   "name": "@ethereum-waffle/ens",
-  "version": "3.2.2",
+  "version": "3.2.3",
   "description": "A mock ens implementation for testing.",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "private": false,
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "ethereum",
     "smart-contracts",

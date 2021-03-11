@@ -1,11 +1,14 @@
 {
   "name": "@ethereum-waffle/provider",
   "description": "A mock provider for your blockchain testing needs.",
-  "version": "3.2.2",
+  "version": "3.3.0",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "ethereum",
     "smart-contracts",
