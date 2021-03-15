@@ -18,7 +18,12 @@ export function createFixtureLoader(overrideWallets?: Wallet[], overrideProvider
   return async function load<T>(fixture: Fixture<T>): Promise<T> {
     const snapshot = snapshots.find((snapshot) => snapshot.fixture === fixture);
     if (snapshot) {
+      // revert blockchain state
       await snapshot.provider.send('evm_revert', [snapshot.id]);
+
+      // revert provider internal state (NOTE!!! This is fragile)
+      snapshot.provider._maxInternalBlockNumber = 0;
+
       snapshot.id = await snapshot.provider.send('evm_snapshot', []);
       return snapshot.data;
     } else {
