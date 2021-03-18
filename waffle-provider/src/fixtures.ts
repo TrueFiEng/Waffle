@@ -22,6 +22,7 @@ export function createFixtureLoader(overrideWallets?: Wallet[], overrideProvider
       await snapshot.provider.send('evm_revert', [snapshot.id]);
 
       // revert provider internal state (NOTE!!! This is fragile)
+      // see: https://github.com/ethers-io/ethers.js/issues/1383 in order to replace with a better solution
       snapshot.provider._maxInternalBlockNumber = 0;
 
       snapshot.id = await snapshot.provider.send('evm_snapshot', []);
