@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import Ganache from 'ganache-core';
+import type Ganache from 'ganache-core';
 import {deployENS, ENS} from '@ethereum-waffle/ens';
 
 export {RecordedCall};
@@ -15,7 +15,7 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(Ganache.provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
+    super(require("ganache").provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
     this._callHistory = new CallHistory();
     this._callHistory.record(this);
   }
