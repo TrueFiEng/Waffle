@@ -4,7 +4,7 @@
 
 ### Patch Changes
 
-- dc7afe4: Bugfix: Handle messages with special symbols in revertedWith
+- dc7afe4: Bugfix: Handle messages with special symbols in `revertedWith`
 - Updated dependencies [6952eb9]
   - @ethereum-waffle/provider@3.3.1
 
