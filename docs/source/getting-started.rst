@@ -165,6 +165,8 @@ Run:
 
       npm install --save-dev mocha chai
 
+If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`.
+
 Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
 .. code-block:: ts
@@ -234,6 +236,15 @@ Update your :code:`package.json` file to include:
       "test": "export NODE_ENV=test && mocha",
     }
   }
+
+If you are using TypeScript add :code:`mocha.opts` file in your test folder:
+
+.. code-block:: text
+
+  -r ts-node/register/transpile-only
+  --timeout 50000
+  --no-warnings
+  test/**/*.test.{js,ts}
 
 And run:
 
