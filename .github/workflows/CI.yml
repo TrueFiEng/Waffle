@@ -18,11 +18,13 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Cache
+        id: cache-node
         uses: actions/cache@v2
         with:
           path: ./.cache/yarn
           key: yarn-packages-waffle-${{ matrix.node }}-{{ checksum "yarn.lock" }}
       - run: yarn install --frozen-lockfile
+        if: steps.cache-node.outputs.cache-hit != 'true'
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
       - run: yarn build
