@@ -180,9 +180,7 @@ Example configuration file looks like this (all fields optional):
 To enable generation of [typechain](https://github.com/ethereum-ts/TypeChain) artifacts:
 ```json
 {
-  "typechain": {
-    "enable": true
-  }
+  "typechainEnabled": true
 }
 ```
 
