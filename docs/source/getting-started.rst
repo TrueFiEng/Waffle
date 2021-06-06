@@ -165,7 +165,8 @@ Run:
 
       npm install --save-dev mocha chai
 
-If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`.
+.. note::
+  If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`. Lastly, instead of using :code:`mocha` in your Node scripts within your :code:`package.json`, replace it with :code:`ts-node`.
 
 Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
