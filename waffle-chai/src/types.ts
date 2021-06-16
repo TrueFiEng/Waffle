@@ -33,6 +33,10 @@ declare namespace Chai {
     (value: any, message?: string): Assertion;
   }
 
+  interface CloseTo {
+    (expected: any, delta: number, message?: string): Assertion,
+  }
+
   interface AsyncAssertion extends Assertion, Promise<void> {
   }
 
