@@ -4,6 +4,7 @@ export function supportBigNumber(
   Assertion: Chai.AssertionStatic,
   utils: Chai.ChaiUtils
 ) {
+  Assertion.overwriteMethod('equals', override('eq', 'equal', utils));
   Assertion.overwriteMethod('equal', override('eq', 'equal', utils));
   Assertion.overwriteMethod('eq', override('eq', 'equal', utils));
 
