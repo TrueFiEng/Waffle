@@ -43,5 +43,10 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.13.1"
+  },
+  "resolutions": {
+    "underscore": ">=1.12.1",
+    "lodash": ">=4.17.21",
+    "mixme": ">=0.5.1"
   }
 }
