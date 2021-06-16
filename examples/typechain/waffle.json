@@ -3,8 +3,6 @@
   "compilerVersion": "0.6.2",
   "sourceDirectory": "./src",
   "outputDirectory": "./build",
-  "typechain": {
-    "enabled": true,
-    "outputDir": "../typechain"
-  }
+  "typechainEnabled": true,
+  "typechainOutputDir": "../typechain"
 }
