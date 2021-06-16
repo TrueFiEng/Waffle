@@ -45,7 +45,7 @@
     "@types/node-fetch": "^2.5.5",
     "ethers": "^5.0.1",
     "mkdirp": "^0.5.1",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "solc": "^0.6.3",
     "ts-generator": "^0.1.1",
     "typechain": "^3.0.0"
