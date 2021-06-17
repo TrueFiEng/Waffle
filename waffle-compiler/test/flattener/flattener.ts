@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import fs from 'fs-extra';
-import {inputToConfig} from '../../src/config';
-import {flattenAndSave, normalizeSpdxLicenceIdentifiers} from '../../src';
+import {inputToConfig, flattenAndSave, flattenSingleFile, normalizeSpdxLicenceIdentifiers} from '../../src';
 
 const sourceDirectory = './test/flattener/testSource';
 const flattenOutputDirectory = './test/flattener/flattenFiles';
@@ -59,5 +58,10 @@ describe('flattening', () => {
 
                   test3
             `);
+  });
+
+  it('single file flattening', async () => {
+    const expectedFile = fs.readFileSync('./test/flattener/expectedFlattenChild.sol', 'utf8');
+    expect(await flattenSingleFile(config, 'child.sol')).to.equal(expectedFile);
   });
 });
