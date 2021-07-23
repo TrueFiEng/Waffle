@@ -72,7 +72,7 @@ async function getTxFees(
         const txReceipt = await txResponse.wait();
         const gasPrice = txResponse.gasPrice;
         const gasUsed = txReceipt.gasUsed;
-        const txFee = gasPrice.mul(gasUsed);
+        const txFee = gasPrice!.mul(gasUsed);
 
         return txFee;
       }

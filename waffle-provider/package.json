@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@ethereum-waffle/ens": "^3.3.0",
-    "ethers": "^5.0.1",
+    "ethers": "^5.4.1",
     "ganache-core": "^2.13.2",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0"

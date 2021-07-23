@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@ethersproject/abi": "^5.0.1",
-    "ethers": "^5.0.1"
+    "ethers": "^5.4.1"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.0",
