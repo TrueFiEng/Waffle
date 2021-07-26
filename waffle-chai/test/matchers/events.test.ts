@@ -138,7 +138,7 @@ describe('INTEGRATION: Events', () => {
         'One',
         '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
       );
-  })
+  });
 
   it('Event with not enough args', async () => {
     await expect(

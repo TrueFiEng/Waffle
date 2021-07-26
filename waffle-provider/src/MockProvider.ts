@@ -15,7 +15,7 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(require("ganache-core").provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
+    super(require('ganache-core').provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
     this._callHistory = new CallHistory();
     this._callHistory.record(this);
   }
