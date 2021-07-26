@@ -75,4 +75,3 @@ jobs:
       - run: yarn install --frozen-lockfile
       - name: linter
         run: yarn install && yarn lint
-        
