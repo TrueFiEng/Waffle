@@ -74,4 +74,4 @@ jobs:
           node-version: 12.8
       - run: yarn install --frozen-lockfile
       - name: linter
-        run: yarn install
+        run: yarn install && yarn lint

@@ -74,7 +74,7 @@ export const EVENTS_ABI = [
   'function emitArrays() public',
   'function doNotEmit() pure public',
   'function emitNested() public',
-  'function _emitInternal() internal',
+  'function _emitInternal() internal'
 ];
 
 // eslint-disable-next-line max-len
