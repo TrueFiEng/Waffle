@@ -70,7 +70,7 @@ async function getTxFees(
     accounts.map(async (account) => {
       if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
         const txReceipt = await txResponse.wait();
-        const gasPrice = txResponse.gasPrice;
+        const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;;
         const gasUsed = txReceipt.gasUsed;
         const txFee = gasPrice.mul(gasUsed);
 
