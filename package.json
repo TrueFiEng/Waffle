@@ -47,6 +47,8 @@
   "resolutions": {
     "underscore": ">=1.12.1",
     "lodash": ">=4.17.21",
-    "mixme": ">=0.5.1"
+    "mixme": ">=0.5.1",
+    "set-value": ">=4.0.1",
+    "yargs-parser": ">=5.0.1"
   }
 }
