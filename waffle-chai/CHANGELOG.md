@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 3.4.1
+
+### Patch Changes
+
+- 5407af7: changeEtherBalances/changeEtherBalance compatablity with london hardfork
+
 ## 3.4.0
 
 ### Minor Changes
