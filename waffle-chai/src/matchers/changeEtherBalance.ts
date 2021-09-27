@@ -57,7 +57,7 @@ export async function getBalanceChange(
   const balanceBefore = await account.provider.getBalance(getAddressOf(account), txBlockNumber - 1);
 
   if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
-    const gasPrice = txResponse.gasPrice;
+    const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
     const gasUsed = txReceipt.gasUsed;
     const txFee = gasPrice.mul(gasUsed);
 
