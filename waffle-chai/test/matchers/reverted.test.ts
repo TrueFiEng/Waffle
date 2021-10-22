@@ -41,7 +41,8 @@ describe('INTEGRATION: Matchers: reverted', () => {
   it('Not to revert: fail', async () => {
     await expect(
       expect(matchers.doThrow()).not.to.be.reverted
-    ).to.be.eventually.rejected;
+      // eslint-disable-next-line max-len
+    ).to.be.eventually.rejectedWith('Expected transaction NOT to be reverted, but it was reverted with "VM Exception while processing transaction: invalid opcode"');
   });
 
   it('Revert: fail, random exception', async () => {
