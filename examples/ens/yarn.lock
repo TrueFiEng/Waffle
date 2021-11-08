@@ -23,31 +23,12 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@ensdomains/ens@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@ensdomains/ens/-/ens-0.4.4.tgz#05e7bb138471a5e5844b4c1f263ec0ad7edcd272"
-  integrity sha512-Qya0A4pd0dd3fF4tPqJve9eyEHp82jIMv17ElZU4dSHy68xN8sEpuiyI6Z8+2sGeHLRQ55LaCM6p293YHnYRlQ==
-  dependencies:
-    bluebird "^3.5.2"
-    eth-ens-namehash "^2.0.8"
-    ethereumjs-testrpc "^6.0.3"
-    ganache-cli "^6.1.0"
-    solc "^0.4.20"
-    testrpc "0.0.1"
-    web3-utils "^1.0.0-beta.31"
-
-"@ensdomains/resolver@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@ensdomains/resolver/-/resolver-0.2.4.tgz#c10fe28bf5efbf49bff4666d909aed0265efbc89"
-  integrity sha512-bvaTH34PMCbv6anRa9I/0zjLJgY4EuznbEMgbV77JBCQ9KNC46rzi0avuxpOfu+xDjPEtSFGqVEOr5GlUSGudA==
-
 "@ethereum-waffle/ens@^3.2.4":
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/@ethereum-waffle/ens/-/ens-3.2.4.tgz#c486be4879ea7107e1ff01b24851a5e44f5946ce"
   integrity sha512-lkRVPCEkk7KOwH9MqFMB+gL0X8cZNsm+MnKpP9CNbAyhFos2sCDGcY8t6BA12KBK6pdMuuRXPxYL9WfPl9bqSQ==
   dependencies:
-    "@ensdomains/ens" "^0.4.4"
-    "@ensdomains/resolver" "^0.2.4"
+    "@ensdomains/ens-contracts" "^0.0.7"
     ethers "^5.0.1"
 
 "@ethereum-waffle/provider@^3.0.0":

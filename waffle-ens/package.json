@@ -39,8 +39,7 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ensdomains/ens": "^0.4.4",
-    "@ensdomains/resolver": "^0.2.4",
+    "@ensdomains/ens-contracts": "^0.0.7",
     "ethers": "^5.0.1"
   },
   "devDependencies": {
