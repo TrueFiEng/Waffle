@@ -146,10 +146,13 @@ describe('UNIT: BigNumber matchers', () => {
   describe('closeTo', () => {
     it('.to.be.closeTo', () => {
       expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(101), 10);
+      expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(101), BigNumber.from(10));
     });
 
     it('.not.to.be.closeTo', () => {
       expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(111), 10);
+      expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(111), BigNumber.from(10));
+
     });
 
     it('expect to throw on error', () => {
@@ -157,7 +160,14 @@ describe('UNIT: BigNumber matchers', () => {
         () => expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(111), 10)
       ).to.throw(AssertionError, 'Expected "100" to be within 10 of 111');
       expect(
+        () => expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(111), BigNumber.from(10))
+      ).to.throw(AssertionError, 'Expected "100" to be within 10 of 111');
+
+      expect(
         () => expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(101), 10)
+      ).to.throw(AssertionError, 'Expected "100" NOT to be within 10 of 101');
+      expect(
+        () => expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(101), BigNumber.from(10))
       ).to.throw(AssertionError, 'Expected "100" NOT to be within 10 of 101');
     });
   });
