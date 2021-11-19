@@ -50,6 +50,16 @@ func getBalance(account *C.char) *C.char {
 	return C.CString(bal.String())
 }
 
+//export getTransactionCount
+func getTransactionCount(account *C.char) C.int {
+  count, err :=  simulator.Backend.NonceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  return C.int(count)
+}
+
 //export call
 func call(msgJson *C.char) *C.char {
 	var msg TransactionRequest
