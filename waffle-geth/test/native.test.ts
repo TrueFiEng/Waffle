@@ -1,32 +1,79 @@
+import {Interface} from '@ethersproject/abi';
+import {ContractFactory} from '@ethersproject/contracts';
 import {Wallet} from '@ethersproject/wallet';
+import {BigNumberish} from '@ethersproject/bignumber';
 import {expect} from 'chai';
-import {cgoCurrentMillis, getBalance, getBlockNumber, sendTransaction} from '../src/native';
+import {constants, utils, BytesLike} from 'ethers';
+import {cgoCurrentMillis, getBlockNumber, sendTransaction, library} from '../src/native';
+import WETH from './contracts/WETH9.json';
 
 describe('Native', () => {
+  const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82');
   it('can call a native function', () => {
     expect(cgoCurrentMillis()).to.be.a('number');
     expect(cgoCurrentMillis()).to.be.gt(0);
   });
 
   it('can get block number', () => {
-    expect(getBlockNumber()).to.equal('0');
+    expect(getBlockNumber()).to.equal('1');
   });
 
   it('can send transactions', async () => {
     const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82');
     const to = Wallet.createRandom().address;
-    const tx = await wallet.signTransaction({
+    await helpSendTransaction(wallet, {
       to: to,
       value: 123,
-      nonce: 0,
       gasPrice: 875000000,
-      gasLimit: 21000
+      gasLimit: 21000,
+      nonce: 1,
     });
-    sendTransaction(tx);
 
-    expect(getBlockNumber()).to.equal('1');
-
-    const balance = getBalance(to);
+    expect(getBlockNumber()).to.equal('2');
+    const balance = library.getBalance(to);
     expect(balance).to.eq('123');
   });
+
+  it('can deploy WETH', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployTx = weth.getDeployTransaction();
+    await helpSendTransaction(wallet, deployTx);
+    expect(getBlockNumber()).to.equal('3');
+    const depositData = contractInterface.encodeFunctionData('deposit');
+    const address = await utils.getContractAddress({from: wallet.address, nonce: 1});
+    const value = utils.parseEther('1');
+    await helpSendTransaction(wallet, {
+      data: depositData,
+      to: address,
+      value
+    });
+    const balance = library.getBalance(address);
+    expect(balance).to.eq(value);
+  });
 });
+
+interface TxParams {
+  data?: BytesLike;
+  nonce?: BigNumberish;
+  gasPrice?: BigNumberish;
+  gasLimit?: BigNumberish;
+  value?: BigNumberish;
+  to?: string;
+}
+
+let nonce = 1;
+
+async function helpSendTransaction(wallet: Wallet, params: TxParams) {
+  const tx = await wallet.signTransaction({
+    data: '0x',
+    nonce,
+    gasPrice: 875000000,
+    gasLimit: 100000,
+    value: 0,
+    to: constants.AddressZero,
+    ...params
+  });
+  await sendTransaction(tx);
+  nonce++;
+}
