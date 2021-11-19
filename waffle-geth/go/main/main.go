@@ -11,7 +11,9 @@ import (
   "github.com/ethereum/go-ethereum/common"
   "github.com/ethereum/go-ethereum/core/types"
   "log"
+  "math/big"
   "math/rand"
+  "strconv"
   "time"
 )
 
@@ -26,8 +28,6 @@ type TransactionRequest struct {
   data *string
   value *string
   chainId *uint64
-
-  txType *uint64
 }
 
 func main() {}
@@ -52,13 +52,48 @@ func getBalance(account *C.char) *C.char {
 
 //export call
 func call(msgJson *C.char) *C.char {
-  var msg ethereum.CallMsg
+  var msg TransactionRequest
+
+  fmt.Println(C.GoString(msgJson))
+
   err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
   if err != nil {
     log.Fatal(err)
   }
 
-  res, err := simulator.Backend.CallContract(context.Background(), msg, nil)
+  fmt.Println(msg)
+
+  var callMsg ethereum.CallMsg
+
+  if msg.from != nil {
+    callMsg.From = common.HexToAddress(*msg.from)
+  }
+  if msg.to != nil {
+    temp := common.HexToAddress(*msg.to)
+    callMsg.To = &temp
+  }
+  if msg.gasLimit != nil {
+    value, err := strconv.ParseUint(*msg.gasLimit, 16, 64)
+    if err != nil {
+      log.Fatal(err)
+    }
+
+    callMsg.Gas = value
+  }
+  if msg.gasPrice != nil {
+    callMsg.GasPrice = big.NewInt(0)
+    callMsg.GasPrice.SetString(*msg.gasPrice, 16)
+  }
+  if msg.data != nil {
+    data, err := hex.DecodeString(*msg.data)
+    if err != nil {
+      log.Fatal(err)
+    }
+
+    callMsg.Data = data
+  }
+
+  res, err := simulator.Backend.CallContract(context.Background(), callMsg, nil)
   if err != nil {
     log.Fatal(err)
   }
