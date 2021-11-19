@@ -13,6 +13,7 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
+import {getBlockNumber} from './native';
 
 export class GethProvider extends providers.Provider {
   call(transaction: utils.Deferrable<TransactionRequest>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
@@ -36,7 +37,7 @@ export class GethProvider extends providers.Provider {
   }
 
   getBlockNumber(): Promise<number> {
-    throw new Error('Not implemented');
+    return Promise.resolve(Number.parseInt(getBlockNumber()));
   }
 
   getBlockWithTransactions(
