@@ -13,6 +13,7 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   call: ['string', ['int', 'string']],
   getTransactionCount: ['int', ['int', 'string']],
   getLogs: ['string', ['int', 'string']],
+  getTransaction: ['string', ['int', 'string']],
   getCode: ['string', ['int', 'string']]
 });
 
@@ -62,6 +63,10 @@ export class Simulator {
 
   getCode(address: string): string {
     return `0x${library.getCode(this.id, address)!}`;
+  }
+
+  getTransaction(hash: string): string {
+    return library.getTransaction(this.id, hash);
   }
 }
 

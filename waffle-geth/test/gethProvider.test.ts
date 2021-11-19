@@ -47,12 +47,14 @@ describe('GethProvider', () => {
   it('send ETH transfer', async () => {
     const to = Wallet.createRandom().address;
 
-    await wallet.sendTransaction({
+    const tx = await wallet.sendTransaction({
       to: to,
       value: 123,
       gasPrice: 875000000,
       gasLimit: 21000
     })
+
+    expect((await provider.getTransaction(tx.hash)).to?.toLowerCase()).to.equal(to.toLowerCase());
 
     expect(await provider.getBalance(to)).to.equal(123);
   })
@@ -159,7 +161,7 @@ describe('GethProvider', () => {
     const logs = await provider.getLogs({from: 0, to: await provider.getBlockNumber()})
     expect(logs.length).to.eq(1)
     expect(logs[0].address.toLowerCase()).to.eq(address.toLowerCase())
-    expect(logs[0].transactionHash).to.eq(receipt.transactionHash)
+    expect(logs[0].transactionHash).to.eq(receipt.hash)
   })
 
   it('getCode', async () => {
