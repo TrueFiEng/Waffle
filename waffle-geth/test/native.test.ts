@@ -3,8 +3,8 @@ import {ContractFactory} from '@ethersproject/contracts';
 import {Wallet} from '@ethersproject/wallet';
 import {BigNumberish} from '@ethersproject/bignumber';
 import {expect} from 'chai';
-import {constants, utils, BytesLike} from 'ethers';
-import {cgoCurrentMillis, getBlockNumber, sendTransaction, library, call, getChainID} from '../src/native';
+import {BytesLike, utils} from 'ethers';
+import {call, cgoCurrentMillis, getBlockNumber, getChainID, library, sendTransaction} from '../src/native';
 import WETH from './contracts/WETH9.json';
 
 describe('Native', () => {
@@ -63,9 +63,9 @@ describe('Native', () => {
       to: address,
       data: contractInterface.encodeFunctionData('name'),
     })
-    console.log({ res })
+    console.log({res})
     const name = contractInterface.decodeFunctionResult('name', "0x" + res!)
-    console.log({ name })
+    console.log({name})
   });
 
   it('can get network', async () => {

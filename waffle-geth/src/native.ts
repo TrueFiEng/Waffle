@@ -1,35 +1,42 @@
 import ffi from 'ffi-napi';
 import {join} from 'path';
 import type {TransactionRequest} from '@ethersproject/abstract-provider';
-import {utils} from 'ethers';
 
 export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
   cgoCurrentMillis: ['int', []],
-  getBlockNumber: ['string', []],
-  getChainID: ['string', []],
-  sendTransaction: ['string', ['string']],
-  getBalance: ['string', ['string']],
-  call: ['string', ['string']],
-  getTransactionCount: ['int', ['string']]
+  newSimulator: ['int', []],
+  getBlockNumber: ['string', ['int']],
+  getChainID: ['string', ['int']],
+  sendTransaction: ['string', ['int', 'string']],
+  getBalance: ['string', ['int', 'string']],
+  call: ['string', ['int', 'string']],
+  getTransactionCount: ['int', ['int', 'string']]
 });
+
+const id = newSimulator()
 
 export function cgoCurrentMillis() {
   return library.cgoCurrentMillis();
 }
 
+export function newSimulator(): number {
+  return library.newSimulator();
+}
+
 export function getBlockNumber(): string {
-  return library.getBlockNumber();
+  return library.getBlockNumber(id);
 }
 
 export function call(msg: TransactionRequest) {
-  return '0x' + library.call(JSON.stringify(msg))
+  return '0x' + library.call(id, JSON.stringify(msg))
 }
+
 export function getBalance(address: string): string {
-  return library.getBalance(address);
+  return library.getBalance(id, address);
 }
 
 export function sendTransaction(data: string): string {
-  const res = library.sendTransaction(data);
+  const res = library.sendTransaction(id, data);
   console.log(res)
   return res
 }
@@ -39,5 +46,5 @@ export function getChainID(): string {
 }
 
 export function getTransactionCount(address: string): number {
-  return library.getTransactionCount(address);
+  return library.getTransactionCount(id, address);
 }
