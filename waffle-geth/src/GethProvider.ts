@@ -81,7 +81,7 @@ export class GethProvider extends providers.Provider {
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
-    return JSON.parse(getLogs(filter))
+    return JSON.parse(this.sim.getLogs(filter))
   }
 
   getNetwork(): Promise<Network> {
