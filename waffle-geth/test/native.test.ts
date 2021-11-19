@@ -85,8 +85,17 @@ describe('Native', () => {
     expect(name).to.equal('Wrapped Ether')
   });
 
-  it('can get network', async () => {
+  it('getChainID', async () => {
     expect(sim.getChainID()).to.equal('1337');
+  })
+
+  it('getCode', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployTx = weth.getDeployTransaction();
+    await helpSendTransaction(wallet, deployTx);
+    const address = await utils.getContractAddress({ from: wallet.address, nonce: 0 });
+    expect(sim.getCode(address)).to.equal(WETH.deployedBytecode)
   })
 });
 
@@ -99,4 +108,8 @@ interface TxParams {
   to?: string;
 }
 
+
+function getChainID(): any {
+  throw new Error('Function not implemented.');
+}
 

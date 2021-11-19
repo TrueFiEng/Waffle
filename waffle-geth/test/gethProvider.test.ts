@@ -155,10 +155,23 @@ describe('GethProvider', () => {
       nonce: 1
     });
     const receipt = await provider.sendTransaction(tx)
-    
+
     const logs = await provider.getLogs({from: 0, to: await provider.getBlockNumber()})
     expect(logs.length).to.eq(1)
     expect(logs[0].address.toLowerCase()).to.eq(address.toLowerCase())
     expect(logs[0].transactionHash).to.eq(receipt.transactionHash)
+  })
+
+  it('getCode', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployData = weth.getDeployTransaction();
+
+    const deployTx = await wallet.signTransaction({ ...deployData, nonce: 0, gasLimit: 10000000, gasPrice: 875000000 });
+    await provider.sendTransaction(deployTx)
+
+    const address = utils.getContractAddress({ from: wallet.address, nonce: 0 });
+
+    expect(await provider.getCode(address)).to.equal(WETH.deployedBytecode)
   })
 });

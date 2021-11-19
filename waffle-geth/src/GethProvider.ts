@@ -72,8 +72,8 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  getCode(addressOrName: string | Promise<string>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
-    throw new Error('Not implemented');
+  async getCode(addressOrName: string | Promise<string>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
+    return this.sim.getCode(await addressOrName)
   }
 
   async getGasPrice(): Promise<BigNumber> {

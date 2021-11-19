@@ -58,6 +58,17 @@ func getBlockNumber(simID C.int) *C.char {
 	return C.CString(bn.String())
 }
 
+//export getCode
+func getCode(simID C.int, account *C.char) *C.char {
+  sim := getSimulator(simID)
+	code, err := sim.Backend.CodeAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
+  if err != nil {
+		log.Fatal(err)
+	}
+
+  return C.CString(common.Bytes2Hex(code))
+}
+
 //export getChainID
 func getChainID(simID C.int) *C.char {
 	sim := getSimulator(simID)

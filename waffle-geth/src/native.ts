@@ -12,7 +12,8 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   getBalance: ['string', ['int', 'string']],
   call: ['string', ['int', 'string']],
   getTransactionCount: ['int', ['int', 'string']],
-  getLogs: ['string', ['int', 'string']]
+  getLogs: ['string', ['int', 'string']],
+  getCode: ['string', ['int', 'string']]
 });
 
 export function cgoCurrentMillis() {
@@ -58,4 +59,9 @@ export class Simulator {
   getLogs(filter: Filter): string[] {
     return library.getLogs(this.id, JSON.stringify(filter))
   }
+
+  getCode(address: string): string {
+    return `0x${library.getCode(this.id, address)!}`;
+  }
 }
+
