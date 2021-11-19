@@ -8,7 +8,7 @@ import { utils } from 'ethers';
 
 describe.only('GethProvider', () => {
   const provider = new GethProvider();
-  const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82');
+  const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82').connect(provider);
 
   it('getBlockNumber', async () => {
     expect(await provider.getBlockNumber()).to.equal(0);
@@ -39,6 +39,19 @@ describe.only('GethProvider', () => {
     expect(await provider.getBalance(to)).to.equal(123);
   });
 
+  it.only('send ETH transfer', async () => {
+    const to = Wallet.createRandom().address;
+
+    await wallet.sendTransaction({
+      to: to,
+      value: 123,
+      gasPrice: 875000000,
+      gasLimit: 21000
+    })
+
+    expect(await provider.getBalance(to)).to.equal(123);
+  })
+
   it('deploy WETH', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
@@ -62,7 +75,7 @@ describe.only('GethProvider', () => {
     expect(balance).to.eq(value);
   });
 
-  it.only('deploy WETH and call it', async () => {
+  it('deploy WETH and call it', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
@@ -77,6 +90,6 @@ describe.only('GethProvider', () => {
   });
 
   it('gets transaction count', async () => {
-    expect(await provider.getTransactionCount(wallet.address)).to.eq(0)
+    expect(await provider.getTransactionCount(Wallet.createRandom().address)).to.eq(0)
   })
 });

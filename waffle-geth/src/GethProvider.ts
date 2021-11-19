@@ -97,11 +97,11 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  getTransactionCount(
+  async getTransactionCount(
     addressOrName: string | Promise<string>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<number> {
-    return getTransactionCount(addressOrName)
+    return getTransactionCount(await addressOrName)
   }
 
   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
@@ -139,8 +139,8 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  resolveName(name: string | Promise<string>): Promise<string> {
-    throw new Error('Not implemented');
+  async resolveName(name: string | Promise<string>): Promise<string> {
+    return name
   }
 
   async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
