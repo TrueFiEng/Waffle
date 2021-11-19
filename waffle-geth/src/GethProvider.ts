@@ -14,7 +14,7 @@ import type {
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
 import {Simulator} from './native';
-import { resolveProperties } from '@ethersproject/properties';
+import {resolveProperties} from '@ethersproject/properties';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
@@ -26,8 +26,8 @@ export class GethProvider extends providers.Provider {
   sim: Simulator
 
   constructor() {
-    super()
-    this.sim = new Simulator()
+    super();
+    this.sim = new Simulator();
   }
 
   async call(
@@ -73,7 +73,7 @@ export class GethProvider extends providers.Provider {
   }
 
   async getCode(addressOrName: string | Promise<string>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
-    return this.sim.getCode(await addressOrName)
+    return this.sim.getCode(await addressOrName);
   }
 
   async getGasPrice(): Promise<BigNumber> {
@@ -81,7 +81,7 @@ export class GethProvider extends providers.Provider {
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
-    return JSON.parse(this.sim.getLogs(filter))
+    return JSON.parse(this.sim.getLogs(filter));
   }
 
   getNetwork(): Promise<Network> {
@@ -102,7 +102,26 @@ export class GethProvider extends providers.Provider {
 
   getTransaction(transactionHash: string): Promise<TransactionResponse> {
     const {Tx} = JSON.parse(this.sim.getTransaction(transactionHash));
-    return Tx;
+    return Promise.resolve({
+      hash: Tx.hash,
+      to: Tx.to,
+      nonce: Number.parseInt(Tx.nonce, 16),
+
+      gasLimit: BigNumber.from(Tx.gas),
+      gasPrice: BigNumber.from(Tx.gasPrice),
+
+      data: Tx.input,
+      value: BigNumber.from(Tx.value),
+      chainId: Number.parseInt(this.sim.getChainID(), 16),
+
+      r: Tx.r,
+      s: Tx.s,
+      v: Tx.v,
+
+      confirmations: 0,
+      from: '0x',
+      wait: () => { throw new Error('Not implemented'); }
+    });
   }
 
   async getTransactionCount(
@@ -154,20 +173,11 @@ export class GethProvider extends providers.Provider {
   async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
     const data = await signedTransaction;
     const result = JSON.parse(this.sim.sendTransaction(data));
+    const receipt = await this.getTransaction(result.transactionHash);
     return {
-      hash: result.transactionHash,
+      ...receipt,
       blockNumber: Number.parseInt(result.blockNumber, 16),
       blockHash: result.blockHash,
-      timestamp: undefined,
-      confirmations: 0,
-      from: '0x',
-      wait: () => { throw new Error('Not implemented'); },
-      nonce: 0,
-      gasLimit: BigNumber.from(0),
-      gasPrice: BigNumber.from(0),
-      data: '0x',
-      value: BigNumber.from(0),
-      chainId: 1
     };
   }
 
