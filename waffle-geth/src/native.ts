@@ -15,3 +15,11 @@ export function cgoCurrentMillis() {
 export function getBlockNumber(): string {
   return library.getBlockNumber();
 }
+
+export function getBalance(address: string): string {
+  return library.getBalance(address);
+}
+
+export function sendTransaction(data: string): void {
+  return library.sendTransaction(data);
+}
