@@ -6,3 +6,4 @@ yarn-error.log
 .idea
 out
 docs/venv
+.DS_Store

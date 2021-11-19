@@ -1,9 +1,10 @@
 import ffi from 'ffi-napi';
 import {join} from 'path';
 
-const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
+export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
   cgoCurrentMillis: ['int', []],
-  getBlockNumber: ['string', []]
+  getBlockNumber: ['string', []],
+  sendTransaction: ['void', ['string']],
 });
 
 export function cgoCurrentMillis() {
