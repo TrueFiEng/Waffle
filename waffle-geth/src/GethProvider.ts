@@ -13,7 +13,7 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {call, getBalance, getBlockNumber, sendTransaction, getChainID, getTransactionCount} from './native';
+import {call, getBalance, getBlockNumber, sendTransaction, getChainID, getTransactionCount, getLogs} from './native';
 import { resolveProperties } from '@ethersproject/properties';
 
 async function noBlockTag(blockTag: any) {
@@ -73,8 +73,8 @@ export class GethProvider extends providers.Provider {
     return BigNumber.from(8000000)
   }
 
-  getLogs(filter: Filter): Promise<Array<Log>> {
-    throw new Error('Not implemented');
+  async getLogs(filter: Filter): Promise<Log[]> {
+    return JSON.parse(getLogs(filter))
   }
 
   getNetwork(): Promise<Network> {
@@ -145,9 +145,8 @@ export class GethProvider extends providers.Provider {
 
   async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
     const data = await signedTransaction;
-    sendTransaction(data);
     // TODO use getTransaction
-    return null as any;
+    return JSON.parse(sendTransaction(data))
   }
 
   waitForTransaction(transactionHash: string, confirmations?: number, timeout?: number): Promise<TransactionReceipt> {

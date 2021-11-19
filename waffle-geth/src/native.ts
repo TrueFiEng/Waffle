@@ -1,6 +1,6 @@
 import ffi from 'ffi-napi';
 import {join} from 'path';
-import type {TransactionRequest} from '@ethersproject/abstract-provider';
+import type {TransactionRequest, Filter} from '@ethersproject/abstract-provider';
 import {utils} from 'ethers';
 
 export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
@@ -10,7 +10,8 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   sendTransaction: ['string', ['string']],
   getBalance: ['string', ['string']],
   call: ['string', ['string']],
-  getTransactionCount: ['int', ['string']]
+  getTransactionCount: ['int', ['string']],
+  getLogs: ['string', ['string']]
 });
 
 export function cgoCurrentMillis() {
@@ -29,9 +30,7 @@ export function getBalance(address: string): string {
 }
 
 export function sendTransaction(data: string): string {
-  const res = library.sendTransaction(data);
-  console.log(res)
-  return res
+  return library.sendTransaction(data);
 }
 
 export function getChainID(): string {
@@ -40,4 +39,8 @@ export function getChainID(): string {
 
 export function getTransactionCount(address: string): number {
   return library.getTransactionCount(address);
+}
+
+export function getLogs(filter: Filter): string[] {
+  return library.getLogs(JSON.stringify(filter))
 }

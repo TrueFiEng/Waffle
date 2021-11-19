@@ -75,7 +75,7 @@ describe('GethProvider', () => {
     expect(balance).to.eq(value);
   });
 
-  it.only('deploy WETH and call it', async () => {
+  it('deploy WETH and call it', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
@@ -127,4 +127,33 @@ describe('GethProvider', () => {
     })
     
   });
+
+  it('getLogs', async () => {
+    expect((await provider.getLogs({from: 0, to: 10})).length).to.eq(0)
+    // deploy WETH
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployData = weth.getDeployTransaction();
+    const deployTx = await wallet.signTransaction({ ...deployData, nonce: 0, gasLimit: 10000000, gasPrice: 875000000});
+    await provider.sendTransaction(deployTx)
+
+    //deposit ETH
+    const depositData = contractInterface.encodeFunctionData('deposit');
+    const address = utils.getContractAddress({from: wallet.address, nonce: 0});
+    const value = utils.parseEther('1');
+    const tx = await wallet.signTransaction({
+      data: depositData,
+      to: address,
+      value,
+      gasPrice: 865992500,
+      gasLimit: 100000,
+      nonce: 1
+    });
+    const receipt = await provider.sendTransaction(tx)
+    
+    const logs = await provider.getLogs({from: 0, to: await provider.getBlockNumber()})
+    expect(logs.length).to.eq(1)
+    expect(logs[0].address.toLowerCase()).to.eq(address.toLowerCase())
+    expect(logs[0].transactionHash).to.eq(receipt.transactionHash)
+  })
 });

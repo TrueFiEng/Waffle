@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
-	"log"
+  "log"
 	"math/big"
 	"math/rand"
 	"strconv"
@@ -64,6 +64,25 @@ func getTransactionCount(account *C.char) C.int {
 	}
 
 	return C.int(count)
+}
+
+//export getLogs
+func getLogs( queryJson *C.char ) *C.char {
+  var query ethereum.FilterQuery
+
+  err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+	logs, err := sim.Backend.FilterLogs(context.Background(), query)
+
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  logsJson, err := json.Marshal(logs)
+  return C.CString(string(logsJson))
 }
 
 //export call
