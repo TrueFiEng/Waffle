@@ -4,14 +4,31 @@ import "C"
 import (
   "context"
   "encoding/hex"
+  "encoding/json"
+  "fmt"
+  simulator2 "github.com/Ethworks/Waffle/simulator"
+  "github.com/ethereum/go-ethereum"
   "github.com/ethereum/go-ethereum/common"
   "github.com/ethereum/go-ethereum/core/types"
   "log"
   "math/rand"
-	"time"
-
-	simulator2 "github.com/Ethworks/Waffle/simulator"
+  "time"
 )
+
+type TransactionRequest struct {
+  to *string
+  from *string
+  nonce *string
+
+  gasLimit *string
+  gasPrice *string
+
+  data *string
+  value *string
+  chainId *uint64
+
+  txType *uint64
+}
 
 func main() {}
 
@@ -33,6 +50,21 @@ func getBalance(account *C.char) *C.char {
 	return C.CString(bal.String())
 }
 
+//export call
+func call(msgJson *C.char) *C.char {
+  var msg ethereum.CallMsg
+  err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  res, err := simulator.Backend.CallContract(context.Background(), msg, nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  return C.CString(hex.EncodeToString(res))
+}
 
 //export sendTransaction
 func sendTransaction(txData *C.char) {
@@ -54,6 +86,13 @@ func sendTransaction(txData *C.char) {
   }
 
   simulator.Backend.Commit()
+
+  receipt, err := simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
+  if err != nil {
+    log.Fatal(err)
+  }
+  fmt.Println(tx.Hash().String())
+  fmt.Println(receipt.ContractAddress.String())
 }
 
 //export cgoCurrentMillis
