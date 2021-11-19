@@ -13,7 +13,7 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {call, getBalance, getBlockNumber, sendTransaction} from './native';
+import {call, getBalance, getBlockNumber, sendTransaction, getChainID} from './native';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
@@ -77,7 +77,11 @@ export class GethProvider extends providers.Provider {
   }
 
   getNetwork(): Promise<Network> {
-    throw new Error('Not implemented');
+    const network: Network = {
+      name: 'undefined',
+      chainId: Number.parseInt(getChainID()),
+    };
+    return Promise.resolve(network);
   }
 
   getStorageAt(

@@ -40,6 +40,12 @@ func getBlockNumber() *C.char {
 	return C.CString(bn.String())
 }
 
+//export getChainID
+func getChainID() *C.char {
+	bn := simulator.GetChainID()
+	return C.CString(bn.String())
+}
+
 //export getBalance
 func getBalance(account *C.char) *C.char {
 	bal, err := simulator.Backend.BalanceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
