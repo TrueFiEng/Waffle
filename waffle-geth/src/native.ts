@@ -1,6 +1,6 @@
 import ffi from 'ffi-napi';
 import {join} from 'path';
-import type {TransactionRequest, Filter} from '@ethersproject/abstract-provider';
+import type {TransactionRequest, Filter, BlockTag} from '@ethersproject/abstract-provider';
 import {utils} from 'ethers';
 
 export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
@@ -12,7 +12,8 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   getBalance: ['string', ['int', 'string']],
   call: ['string', ['int', 'string']],
   getTransactionCount: ['int', ['int', 'string']],
-  getLogs: ['string', ['int', 'string']]
+  getLogs: ['string', ['int', 'string']],
+  // getBlockWithTransactions: ['string', ['int', 'string']]
 });
 
 export function cgoCurrentMillis() {
@@ -55,7 +56,11 @@ export class Simulator {
     return library.getTransactionCount(this.id, address);
   }
 
-  getLogs(filter: Filter): string[] {
+  getLogs(filter: Filter): string {
     return library.getLogs(this.id, JSON.stringify(filter))
   }
+
+  // getBlockWithTransactions(blockHashOrBlockTag: BlockTag | string | Promise<BlockTag | string>) {
+  //   return library.getBlockWithTransactions(this.id, blockHashOrBlockTag.toString())
+  // }
 }

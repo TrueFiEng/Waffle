@@ -108,7 +108,7 @@ export class GethProvider extends providers.Provider {
     addressOrName: string | Promise<string>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<number> {
-    return this.sim.getTransactionCount(await addressOrName)
+    return this.sim.getTransactionCount(await addressOrName);
   }
 
   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {

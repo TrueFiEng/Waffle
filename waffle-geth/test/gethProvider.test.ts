@@ -155,10 +155,24 @@ describe('GethProvider', () => {
       nonce: 1
     });
     const receipt = await provider.sendTransaction(tx)
-    
+
     const logs = await provider.getLogs({from: 0, to: await provider.getBlockNumber()})
     expect(logs.length).to.eq(1)
     expect(logs[0].address.toLowerCase()).to.eq(address.toLowerCase())
     expect(logs[0].transactionHash).to.eq(receipt.transactionHash)
   })
+
+  // it.only('getBlockWithTransactions', async () => {
+  //
+  //   const to = Wallet.createRandom().address;
+  //   await wallet.sendTransaction({
+  //     to: to,
+  //     value: 123,
+  //     gasPrice: 875000000,
+  //     gasLimit: 21000
+  //   })
+  //   console.log(await provider.getBlockNumber())
+  //   console.log(await provider.getBlockWithTransactions(1))
+  //   // expect().to.eq([])
+  // })
 });

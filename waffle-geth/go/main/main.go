@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
-  "log"
-  "fmt"
+	"fmt"
+	"log"
 	"math/big"
 	"math/rand"
 	"strconv"
@@ -87,25 +87,54 @@ func getTransactionCount(simID C.int, account *C.char) C.int {
 	return C.int(count)
 }
 
+// TODO WIP: do getTransaction first
+//type BlockWithTransactions struct {
+//	Hash       string
+//	ParentHash string
+//	Number     int
+//	Timestamp  int
+//	Nonce      string
+//	Difficulty int
+//	GasLimit   big.Int
+//	GasUsed    big.Int
+//	Miner      string
+//	ExtraData  string
+//  Transactions
+//}
+//
+////export getBlockWithTransactions
+//func getBlockWithTransactions(simID C.int, blockHash *C.char) *C.char {
+//	sim := getSimulator(simID)
+//
+//	block, err := sim.Backend.BlockByHash(context.Background(), common.HexToHash(C.GoString(blockHash)))
+//
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	txsJson, err := json.Marshal(txs)
+//
+//	return C.CString(string(txsJson))
+//}
+
 //export getLogs
-func getLogs( simID C.int, queryJson *C.char ) *C.char {
+func getLogs(simID C.int, queryJson *C.char) *C.char {
 	sim := getSimulator(simID)
 
-  var query ethereum.FilterQuery
+	var query ethereum.FilterQuery
 
-  err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
-  if err != nil {
-    log.Fatal(err)
-  }
+	err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	logs, err := sim.Backend.FilterLogs(context.Background(), query)
 
-  if err != nil {
-    log.Fatal(err)
-  }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  logsJson, err := json.Marshal(logs)
-  return C.CString(string(logsJson))
+	logsJson, err := json.Marshal(logs)
+	return C.CString(string(logsJson))
 }
 
 //export call
