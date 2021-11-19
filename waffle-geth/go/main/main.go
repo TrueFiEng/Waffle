@@ -1,15 +1,17 @@
 package main
 
-import "C"
 import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
-	"log"
+  "log"
+  "fmt"
 	"math/big"
 	"math/rand"
 	"strconv"
 	"time"
+
+	"C"
 
 	"github.com/Ethworks/Waffle/simulator"
 	"github.com/ethereum/go-ethereum"
@@ -32,22 +34,33 @@ type TransactionRequest struct {
 
 func main() {}
 
-var sim, _ = simulator.NewSimulator()
+var (
+	simulators      = make(map[int]*simulator.Simulator)
+	nextSimulatorID = 0
+)
+
+//export newSimulator
+func newSimulator() C.int {
+	sim, err := simulator.NewSimulator()
+	if err != nil {
+		log.Fatal(err)
+	}
+	id := nextSimulatorID
+	simulators[id] = sim
+	nextSimulatorID++
+	return C.int(id)
+}
 
 //export getBlockNumber
-func getBlockNumber() *C.char {
+func getBlockNumber(simID C.int) *C.char {
+	sim := getSimulator(simID)
 	bn := sim.GetLatestBlockNumber()
 	return C.CString(bn.String())
 }
 
-//export getChainID
-func getChainID() *C.char {
-	cid := sim.GetChainID()
-	return C.CString(cid.String())
-}
-
 //export getCode
-func getCode(account *C.char) *C.char {
+func getCode(simID C.int, account *C.char) *C.char {
+  sim := getSimulator(simID)
 	code, err := sim.Backend.CodeAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
   if err != nil {
 		log.Fatal(err)
@@ -56,8 +69,16 @@ func getCode(account *C.char) *C.char {
   return C.CString(common.Bytes2Hex(code))
 }
 
+//export getChainID
+func getChainID(simID C.int) *C.char {
+	sim := getSimulator(simID)
+	bn := sim.GetChainID()
+	return C.CString(bn.String())
+}
+
 //export getBalance
-func getBalance(account *C.char) *C.char {
+func getBalance(simID C.int, account *C.char) *C.char {
+	sim := getSimulator(simID)
 	bal, err := sim.Backend.BalanceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -67,7 +88,8 @@ func getBalance(account *C.char) *C.char {
 }
 
 //export getTransactionCount
-func getTransactionCount(account *C.char) C.int {
+func getTransactionCount(simID C.int, account *C.char) C.int {
+	sim := getSimulator(simID)
 	count, err := sim.Backend.NonceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
 	if err != nil {
 		log.Fatal(err)
@@ -76,8 +98,30 @@ func getTransactionCount(account *C.char) C.int {
 	return C.int(count)
 }
 
+//export getLogs
+func getLogs( simID C.int, queryJson *C.char ) *C.char {
+	sim := getSimulator(simID)
+
+  var query ethereum.FilterQuery
+
+  err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+	logs, err := sim.Backend.FilterLogs(context.Background(), query)
+
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  logsJson, err := json.Marshal(logs)
+  return C.CString(string(logsJson))
+}
+
 //export call
-func call(msgJson *C.char) *C.char {
+func call(simID C.int, msgJson *C.char) *C.char {
+	sim := getSimulator(simID)
 	var msg TransactionRequest
 
 	err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
@@ -124,7 +168,8 @@ func call(msgJson *C.char) *C.char {
 }
 
 //export sendTransaction
-func sendTransaction(txData *C.char) *C.char {
+func sendTransaction(simID C.int, txData *C.char) *C.char {
+	sim := getSimulator(simID)
 
 	bytes, err := hex.DecodeString(C.GoString(txData)[2:])
 	if err != nil {
@@ -149,12 +194,21 @@ func sendTransaction(txData *C.char) *C.char {
 		log.Fatal(err)
 	}
 
-  receiptJson, err := json.Marshal(receipt)
-  if err != nil {
-    log.Fatal(err)
-  }
+	receiptJson, err := json.Marshal(receipt)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  return C.CString(string(receiptJson))
+	return C.CString(string(receiptJson))
+}
+
+func getSimulator(simID C.int) *simulator.Simulator {
+	id := int(simID)
+	sim, ok := simulators[id]
+	if !ok {
+		log.Fatal(fmt.Errorf("simulator with %d does not exist", id))
+	}
+	return sim
 }
 
 //export cgoCurrentMillis
