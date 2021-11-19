@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-func main() {}
-
 //export cgoCurrentMillis
 func cgoCurrentMillis() C.long {
 	return C.long(time.Now().Unix())
