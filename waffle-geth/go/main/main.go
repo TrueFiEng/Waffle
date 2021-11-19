@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	simulator2 "github.com/Ethworks/Waffle/simulator"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
@@ -70,14 +69,10 @@ func getTransactionCount(account *C.char) C.int {
 func call(msgJson *C.char) *C.char {
 	var msg TransactionRequest
 
-	fmt.Println(C.GoString(msgJson))
-
 	err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(msg)
 
 	var callMsg ethereum.CallMsg
 
@@ -138,12 +133,10 @@ func sendTransaction(txData *C.char) {
 
 	simulator.Backend.Commit()
 
-	receipt, err := simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
+	_, err = simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(tx.Hash().String())
-	fmt.Println(receipt.ContractAddress.String())
 }
 
 //export cgoCurrentMillis

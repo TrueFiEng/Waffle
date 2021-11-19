@@ -79,8 +79,10 @@ describe.only('GethProvider', () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
+
     const deployTx = await wallet.signTransaction({ ...deployData, nonce: 0, gasLimit: 10000000, gasPrice: 875000000});
     await provider.sendTransaction(deployTx)
+
     const address = utils.getContractAddress({from: wallet.address, nonce: 0});
     const contract = new Contract(address, contractInterface, provider);
 
@@ -92,4 +94,37 @@ describe.only('GethProvider', () => {
   it('gets transaction count', async () => {
     expect(await provider.getTransactionCount(Wallet.createRandom().address)).to.eq(0)
   })
+
+  it.skip('bench', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployData = weth.getDeployTransaction();
+
+    let nonceCounter = 0;
+
+    const start = Date.now()
+    const COUNT = 1000;
+
+    for(let i = 0; i < COUNT; i++) {
+      const nonce = nonceCounter++
+
+      const deployTx = await wallet.signTransaction({ ...deployData, nonce, gasLimit: 10000000, gasPrice: 875000000});
+      await provider.sendTransaction(deployTx)
+
+      const address = utils.getContractAddress({from: wallet.address, nonce });
+      const contract = new Contract(address, contractInterface, provider);
+
+      const name = await contract.name();
+
+      expect(name).to.eq('Wrapped Ether')
+    }
+
+    const elapsed = Date.now() - start
+
+    console.log({
+      elapsed,
+      perIter: elapsed / COUNT
+    })
+    
+  });
 });
