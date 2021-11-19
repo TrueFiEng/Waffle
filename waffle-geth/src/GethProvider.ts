@@ -13,11 +13,21 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {getBalance, getBlockNumber, sendTransaction} from './native';
+import {call, getBalance, getBlockNumber, sendTransaction} from './native';
+
+async function noBlockTag(blockTag: any) {
+  if (await blockTag) {
+    throw new Error('Not implemented: blockTag');
+  }
+}
 
 export class GethProvider extends providers.Provider {
-  call(transaction: utils.Deferrable<TransactionRequest>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
-    throw new Error('Not implemented');
+  async call(
+    transaction: utils.Deferrable<TransactionRequest>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<string> {
+    await noBlockTag(blockTag);
+    return Promise.resolve(call(transaction));
   }
 
   emit(eventName: EventType, ...args: Array<any>): boolean {
@@ -32,9 +42,7 @@ export class GethProvider extends providers.Provider {
     addressOrName: string | Promise<string>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<BigNumber> {
-    if (blockTag) {
-      throw new Error('Not implemented: blockTag');
-    }
+    await noBlockTag(blockTag);
     const address = await addressOrName;
     if (!utils.isAddress(address)) {
       throw new Error('Not implemented: ENS');
@@ -116,6 +124,7 @@ export class GethProvider extends providers.Provider {
   }
 
   once(eventName: EventType, listener: Listener): Provider;
+
   once(eventName: 'block', handler: () => void): void;
   once(eventName: EventType | 'block', listener: Listener | (() => void)): Provider | void {
     throw new Error('Not implemented');

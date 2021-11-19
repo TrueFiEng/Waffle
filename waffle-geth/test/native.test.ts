@@ -41,7 +41,7 @@ describe('Native', () => {
     await helpSendTransaction(wallet, deployTx);
     expect(getBlockNumber()).to.equal('3');
     const depositData = contractInterface.encodeFunctionData('deposit');
-    const address = await utils.getContractAddress({from: wallet.address, nonce: 1});
+    const address = utils.getContractAddress({from: wallet.address, nonce: 1});
     const value = utils.parseEther('1');
     await helpSendTransaction(wallet, {
       data: depositData,
