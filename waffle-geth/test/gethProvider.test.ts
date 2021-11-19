@@ -125,7 +125,7 @@ describe('GethProvider', () => {
       elapsed,
       perIter: elapsed / COUNT
     })
-    
+
   });
 
   it('getLogs', async () => {
