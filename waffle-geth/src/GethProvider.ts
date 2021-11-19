@@ -77,7 +77,7 @@ export class GethProvider extends providers.Provider {
   }
 
   async getGasPrice(): Promise<BigNumber> {
-    return BigNumber.from(8000000)
+    return BigNumber.from(8000000);
   }
 
   async getLogs(filter: Filter): Promise<Log[]> {
@@ -87,7 +87,7 @@ export class GethProvider extends providers.Provider {
   getNetwork(): Promise<Network> {
     const network: Network = {
       name: 'undefined',
-      chainId: Number.parseInt(this.sim.getChainID()),
+      chainId: Number.parseInt(this.sim.getChainID())
     };
     return Promise.resolve(network);
   }
@@ -101,14 +101,15 @@ export class GethProvider extends providers.Provider {
   }
 
   getTransaction(transactionHash: string): Promise<TransactionResponse> {
-    throw new Error('Not implemented');
+    const {Tx} = JSON.parse(this.sim.getTransaction(transactionHash));
+    return Tx;
   }
 
   async getTransactionCount(
     addressOrName: string | Promise<string>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<number> {
-    return this.sim.getTransactionCount(await addressOrName)
+    return this.sim.getTransactionCount(await addressOrName);
   }
 
   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
@@ -147,13 +148,27 @@ export class GethProvider extends providers.Provider {
   }
 
   async resolveName(name: string | Promise<string>): Promise<string> {
-    return name
+    return name;
   }
 
   async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
     const data = await signedTransaction;
-    // TODO use getTransaction
-    return JSON.parse(this.sim.sendTransaction(data))
+    const result = JSON.parse(this.sim.sendTransaction(data));
+    return {
+      hash: result.transactionHash,
+      blockNumber: Number.parseInt(result.blockNumber, 16),
+      blockHash: result.blockHash,
+      timestamp: undefined,
+      confirmations: 0,
+      from: '0x',
+      wait: () => { throw new Error('Not implemented'); },
+      nonce: 0,
+      gasLimit: BigNumber.from(0),
+      gasPrice: BigNumber.from(0),
+      data: '0x',
+      value: BigNumber.from(0),
+      chainId: 1
+    };
   }
 
   waitForTransaction(transactionHash: string, confirmations?: number, timeout?: number): Promise<TransactionReceipt> {

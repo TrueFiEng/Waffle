@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/hex"
 	"encoding/json"
-  "log"
-  "fmt"
+	"fmt"
+	"log"
 	"math/big"
 	"math/rand"
 	"strconv"
@@ -99,24 +99,24 @@ func getTransactionCount(simID C.int, account *C.char) C.int {
 }
 
 //export getLogs
-func getLogs( simID C.int, queryJson *C.char ) *C.char {
+func getLogs(simID C.int, queryJson *C.char) *C.char {
 	sim := getSimulator(simID)
 
-  var query ethereum.FilterQuery
+	var query ethereum.FilterQuery
 
-  err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
-  if err != nil {
-    log.Fatal(err)
-  }
+	err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	logs, err := sim.Backend.FilterLogs(context.Background(), query)
 
-  if err != nil {
-    log.Fatal(err)
-  }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  logsJson, err := json.Marshal(logs)
-  return C.CString(string(logsJson))
+	logsJson, err := json.Marshal(logs)
+	return C.CString(string(logsJson))
 }
 
 //export call
@@ -165,6 +165,29 @@ func call(simID C.int, msgJson *C.char) *C.char {
 	}
 
 	return C.CString(hex.EncodeToString(res))
+}
+
+type txReceipt struct {
+	Tx        *types.Transaction
+	IsPending bool
+}
+
+//export getTransaction
+func getTransaction(simID C.int, txHash *C.char) *C.char {
+	sim := getSimulator(simID)
+
+	hash := common.HexToHash(C.GoString(txHash))
+	tx, isPending, err := sim.Backend.SimulatedBackend.TransactionByHash(context.Background(), hash)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	stringified, err := json.Marshal(txReceipt{Tx: tx, IsPending: isPending})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return C.CString(string(stringified[:]))
 }
 
 //export sendTransaction
