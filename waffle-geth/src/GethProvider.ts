@@ -13,7 +13,7 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {call, getBalance, getBlockNumber, sendTransaction, getChainID, getTransactionCount, getLogs} from './native';
+import {Simulator} from './native';
 import { resolveProperties } from '@ethersproject/properties';
 
 async function noBlockTag(blockTag: any) {
@@ -23,12 +23,19 @@ async function noBlockTag(blockTag: any) {
 }
 
 export class GethProvider extends providers.Provider {
+  sim: Simulator
+
+  constructor() {
+    super()
+    this.sim = new Simulator()
+  }
+
   async call(
     transaction: utils.Deferrable<TransactionRequest>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<string> {
     await noBlockTag(blockTag);
-    return call(await resolveProperties(transaction))!;
+    return this.sim.call(await resolveProperties(transaction))!;
   }
 
   emit(eventName: EventType, ...args: Array<any>): boolean {
@@ -48,7 +55,7 @@ export class GethProvider extends providers.Provider {
     if (!utils.isAddress(address)) {
       throw new Error('Not implemented: ENS');
     }
-    return BigNumber.from(getBalance(address));
+    return BigNumber.from(this.sim.getBalance(address));
   }
 
   getBlock(blockHashOrBlockTag: BlockTag | string | Promise<BlockTag | string>): Promise<Block> {
@@ -56,7 +63,7 @@ export class GethProvider extends providers.Provider {
   }
 
   getBlockNumber(): Promise<number> {
-    return Promise.resolve(Number.parseInt(getBlockNumber()));
+    return Promise.resolve(Number.parseInt(this.sim.getBlockNumber()));
   }
 
   getBlockWithTransactions(
@@ -80,7 +87,7 @@ export class GethProvider extends providers.Provider {
   getNetwork(): Promise<Network> {
     const network: Network = {
       name: 'undefined',
-      chainId: Number.parseInt(getChainID()),
+      chainId: Number.parseInt(this.sim.getChainID()),
     };
     return Promise.resolve(network);
   }
@@ -101,7 +108,7 @@ export class GethProvider extends providers.Provider {
     addressOrName: string | Promise<string>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<number> {
-    return getTransactionCount(await addressOrName)
+    return this.sim.getTransactionCount(await addressOrName)
   }
 
   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
@@ -146,7 +153,7 @@ export class GethProvider extends providers.Provider {
   async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
     const data = await signedTransaction;
     // TODO use getTransaction
-    return JSON.parse(sendTransaction(data))
+    return JSON.parse(this.sim.sendTransaction(data))
   }
 
   waitForTransaction(transactionHash: string, confirmations?: number, timeout?: number): Promise<TransactionReceipt> {

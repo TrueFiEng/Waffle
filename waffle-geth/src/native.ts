@@ -12,10 +12,8 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   getBalance: ['string', ['int', 'string']],
   call: ['string', ['int', 'string']],
   getTransactionCount: ['int', ['int', 'string']],
-  getLogs: ['string', ['string']]
+  getLogs: ['string', ['int', 'string']]
 });
-
-const id = newSimulator()
 
 export function cgoCurrentMillis() {
   return library.cgoCurrentMillis();
@@ -25,30 +23,39 @@ export function newSimulator(): number {
   return library.newSimulator();
 }
 
-export function getBlockNumber(): string {
-  return library.getBlockNumber(id);
-}
+export class Simulator {
+  id: number
 
-export function call(msg: TransactionRequest) {
-  return '0x' + library.call(id, JSON.stringify(msg))
-}
+  constructor() {
+    this.id = newSimulator()
+  }
 
-export function getBalance(address: string): string {
-  return library.getBalance(id, address);
-}
 
-export function sendTransaction(data: string): string {
-  return library.sendTransaction(data);
-}
+  getBlockNumber(): string {
+    return library.getBlockNumber(this.id);
+  }
 
-export function getChainID(): string {
-  return library.getChainID()!;
-}
+  call(msg: TransactionRequest) {
+    return '0x' + library.call(this.id, JSON.stringify(msg));
+  }
 
-export function getTransactionCount(address: string): number {
-  return library.getTransactionCount(id, address);
-}
+  getBalance(address: string): string {
+    return library.getBalance(this.id, address);
+  }
 
-export function getLogs(filter: Filter): string[] {
-  return library.getLogs(id, JSON.stringify(filter))
+  sendTransaction(data: string): string {
+    return library.sendTransaction(this.id, data);
+  }
+
+  getChainID(): string {
+    return library.getChainID(this.id);
+  }
+
+  getTransactionCount(address: string): number {
+    return library.getTransactionCount(this.id, address);
+  }
+
+  getLogs(filter: Filter): string[] {
+    return library.getLogs(this.id, JSON.stringify(filter))
+  }
 }

@@ -4,42 +4,60 @@ import {Wallet} from '@ethersproject/wallet';
 import {BigNumberish} from '@ethersproject/bignumber';
 import {expect} from 'chai';
 import {BytesLike, utils} from 'ethers';
-import {call, cgoCurrentMillis, getBlockNumber, getChainID, library, sendTransaction} from '../src/native';
 import WETH from './contracts/WETH9.json';
+import {cgoCurrentMillis, Simulator} from '../src/native';
 
 describe('Native', () => {
   const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82');
+  let sim: Simulator
+  let nonce: number
+
+  async function helpSendTransaction(wallet: Wallet, params: TxParams) {
+    const tx = await wallet.signTransaction({
+      data: '0x',
+      nonce,
+      gasPrice: 875000000,
+      gasLimit: 1000000,
+      value: 0,
+      ...params
+    });
+    sim.sendTransaction(tx);
+    nonce++;
+  }
+
+  beforeEach(async function () {
+    sim = new Simulator()
+    nonce = 0
+  });
+
   it('can call a native function', () => {
     expect(cgoCurrentMillis()).to.be.a('number');
     expect(cgoCurrentMillis()).to.be.gt(0);
   });
 
   it('can get block number', () => {
-    expect(getBlockNumber()).to.equal('1');
+    expect(sim.getBlockNumber()).to.equal('0');
   });
 
   it('can send transactions', async () => {
-    const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82');
     const to = Wallet.createRandom().address;
     await helpSendTransaction(wallet, {
-      to: to,
+      to,
       value: 123,
-      gasPrice: 875000000,
-      gasLimit: 21000,
-      nonce: 1,
     });
 
-    expect(getBlockNumber()).to.equal('2');
-    const balance = library.getBalance(to);
+    expect(sim.getBlockNumber()).to.equal('1');
+    const balance = sim.getBalance(to);
     expect(balance).to.eq('123');
   });
 
-  it('can deploy WETH', async () => {
+  it('can deploy WETH and wrap Ether', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployTx = weth.getDeployTransaction();
     await helpSendTransaction(wallet, deployTx);
-    expect(getBlockNumber()).to.equal('3');
+    expect(sim.getBlockNumber()).to.equal('1');
+
     const depositData = contractInterface.encodeFunctionData('deposit');
     const address = utils.getContractAddress({from: wallet.address, nonce: 1});
     const value = utils.parseEther('1');
@@ -48,7 +66,7 @@ describe('Native', () => {
       to: address,
       value
     });
-    const balance = library.getBalance(address);
+    const balance = sim.getBalance(address);
     expect(balance).to.eq(value);
   });
 
@@ -57,19 +75,18 @@ describe('Native', () => {
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployTx = weth.getDeployTransaction();
     await helpSendTransaction(wallet, deployTx);
-    const address = await utils.getContractAddress({from: wallet.address, nonce: 2});
+    const address = utils.getContractAddress({from: wallet.address, nonce: 0});
 
-    const res = call({
+    const res = sim.call({
       to: address,
       data: contractInterface.encodeFunctionData('name'),
     })
-    console.log({res})
-    const name = contractInterface.decodeFunctionResult('name', "0x" + res!)
-    console.log({name})
+    const [name] = contractInterface.decodeFunctionResult('name', res)
+    expect(name).to.equal('Wrapped Ether')
   });
 
   it('can get network', async () => {
-    expect(getChainID()).to.equal('1337');
+    expect(sim.getChainID()).to.equal('1337');
   })
 });
 
@@ -82,17 +99,4 @@ interface TxParams {
   to?: string;
 }
 
-let nonce = 1;
 
-async function helpSendTransaction(wallet: Wallet, params: TxParams) {
-  const tx = await wallet.signTransaction({
-    data: '0x',
-    nonce,
-    gasPrice: 875000000,
-    gasLimit: 1000000,
-    value: 0,
-    ...params
-  });
-  await sendTransaction(tx);
-  nonce++;
-}

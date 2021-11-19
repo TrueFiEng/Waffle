@@ -1,14 +1,19 @@
 import {expect} from 'chai';
 import {GethProvider} from '../src';
 import {Wallet} from '@ethersproject/wallet';
-import { Interface } from '@ethersproject/abi';
-import { Contract, ContractFactory } from '@ethersproject/contracts';
+import {Interface} from '@ethersproject/abi';
+import {Contract, ContractFactory} from '@ethersproject/contracts';
 import WETH from './contracts/WETH9.json'
-import { utils } from 'ethers';
+import {utils} from 'ethers';
 
 describe('GethProvider', () => {
-  const provider = new GethProvider();
-  const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82').connect(provider);
+  let provider: GethProvider
+  let wallet: Wallet
+
+  beforeEach(async function () {
+    provider = new GethProvider();
+    wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82').connect(provider);
+  });
 
   it('getBlockNumber', async () => {
     expect(await provider.getBlockNumber()).to.equal(0);
@@ -56,9 +61,9 @@ describe('GethProvider', () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
-    const deployTx = await wallet.signTransaction({ ...deployData, nonce: 1, gasLimit: 100000, gasPrice: 765992500});
+    const deployTx = await wallet.signTransaction({...deployData, nonce: 0, gasLimit: 100000, gasPrice: 76599250000});
     await provider.sendTransaction(deployTx)
-    expect(await provider.getBlockNumber()).to.equal(2);
+    expect(await provider.getBlockNumber()).to.equal(1);
     const depositData = contractInterface.encodeFunctionData('deposit');
     const address = utils.getContractAddress({from: wallet.address, nonce: 1});
     const value = utils.parseEther('1');
@@ -66,9 +71,9 @@ describe('GethProvider', () => {
       data: depositData,
       to: address,
       value,
-      gasPrice: 865992500,
+      gasPrice: 86599250000,
       gasLimit: 100000,
-      nonce: 2
+      nonce: 1
     });
     await provider.sendTransaction(tx)
     const balance = await provider.getBalance(address);
@@ -80,7 +85,7 @@ describe('GethProvider', () => {
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
 
-    const deployTx = await wallet.signTransaction({ ...deployData, nonce: 0, gasLimit: 10000000, gasPrice: 875000000});
+    const deployTx = await wallet.signTransaction({...deployData, nonce: 0, gasLimit: 10000000, gasPrice: 875000000});
     await provider.sendTransaction(deployTx)
 
     const address = utils.getContractAddress({from: wallet.address, nonce: 0});
@@ -105,13 +110,13 @@ describe('GethProvider', () => {
     const start = Date.now()
     const COUNT = 1000;
 
-    for(let i = 0; i < COUNT; i++) {
+    for (let i = 0; i < COUNT; i++) {
       const nonce = nonceCounter++
 
-      const deployTx = await wallet.signTransaction({ ...deployData, nonce, gasLimit: 10000000, gasPrice: 875000000});
+      const deployTx = await wallet.signTransaction({...deployData, nonce, gasLimit: 10000000, gasPrice: 875000000});
       await provider.sendTransaction(deployTx)
 
-      const address = utils.getContractAddress({from: wallet.address, nonce });
+      const address = utils.getContractAddress({from: wallet.address, nonce});
       const contract = new Contract(address, contractInterface, provider);
 
       const name = await contract.name();
