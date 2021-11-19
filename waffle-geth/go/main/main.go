@@ -114,7 +114,7 @@ func call(msgJson *C.char) *C.char {
 }
 
 //export sendTransaction
-func sendTransaction(txData *C.char) {
+func sendTransaction(txData *C.char) *C.char {
 
 	bytes, err := hex.DecodeString(C.GoString(txData)[2:])
 	if err != nil {
@@ -134,10 +134,17 @@ func sendTransaction(txData *C.char) {
 
 	sim.Backend.Commit()
 
-	_, err = sim.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
+	receipt, err := sim.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
 	if err != nil {
 		log.Fatal(err)
 	}
+
+  receiptJson, err := json.Marshal(receipt)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  return C.CString(string(receiptJson))
 }
 
 //export cgoCurrentMillis
