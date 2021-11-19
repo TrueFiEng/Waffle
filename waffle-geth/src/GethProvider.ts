@@ -13,7 +13,7 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {call, getBalance, getBlockNumber, sendTransaction} from './native';
+import {call, getBalance, getBlockNumber, sendTransaction, getTransactionCount} from './native';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
@@ -68,8 +68,8 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  getGasPrice(): Promise<BigNumber> {
-    throw new Error('Not implemented');
+  async getGasPrice(): Promise<BigNumber> {
+    return BigNumber.from(8000000)
   }
 
   getLogs(filter: Filter): Promise<Array<Log>> {
@@ -96,7 +96,7 @@ export class GethProvider extends providers.Provider {
     addressOrName: string | Promise<string>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<number> {
-    throw new Error('Not implemented');
+    return getTransactionCount(addressOrName)
   }
 
   getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
