@@ -64,7 +64,7 @@ describe('Native', () => {
       data: contractInterface.encodeFunctionData('name'),
     })
     console.log({ res })
-    const name = contractInterface.decodeFunctionData('name', res!)
+    const name = contractInterface.decodeFunctionResult('name', "0x" + res!)
     console.log({ name })
   });
 
@@ -89,9 +89,8 @@ async function helpSendTransaction(wallet: Wallet, params: TxParams) {
     data: '0x',
     nonce,
     gasPrice: 875000000,
-    gasLimit: 100000,
+    gasLimit: 1000000,
     value: 0,
-    to: constants.AddressZero,
     ...params
   });
   await sendTransaction(tx);
