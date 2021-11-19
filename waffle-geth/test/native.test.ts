@@ -4,7 +4,7 @@ import {Wallet} from '@ethersproject/wallet';
 import {BigNumberish} from '@ethersproject/bignumber';
 import {expect} from 'chai';
 import {constants, utils, BytesLike} from 'ethers';
-import {cgoCurrentMillis, getBlockNumber, sendTransaction, library, call, getChainID} from '../src/native';
+import {cgoCurrentMillis, getBlockNumber, sendTransaction, library, call, getChainID, getCode} from '../src/native';
 import WETH from './contracts/WETH9.json';
 
 describe('Native', () => {
@@ -68,8 +68,17 @@ describe('Native', () => {
     console.log({ name })
   });
 
-  it('can get network', async () => {
+  it('getNetwork', async () => {
     expect(getChainID()).to.equal('1337');
+  })
+
+  it('getCode', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployTx = weth.getDeployTransaction();
+    await helpSendTransaction(wallet, deployTx);
+    const address = await utils.getContractAddress({ from: wallet.address, nonce: 0 });
+    expect(getCode(address)).to.equal(WETH.deployedBytecode)
   })
 });
 
@@ -82,7 +91,7 @@ interface TxParams {
   to?: string;
 }
 
-let nonce = 1;
+let nonce = 0;
 
 async function helpSendTransaction(wallet: Wallet, params: TxParams) {
   const tx = await wallet.signTransaction({
