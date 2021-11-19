@@ -4,6 +4,7 @@ import "C"
 import (
   "context"
   "encoding/hex"
+  "github.com/ethereum/go-ethereum/common"
   "github.com/ethereum/go-ethereum/core/types"
   "log"
   "math/rand"
@@ -21,6 +22,17 @@ func getBlockNumber() *C.char {
 	bn := simulator.GetLatestBlockNumber()
 	return C.CString(bn.String())
 }
+
+//export getBalance
+func getBalance(account *C.char) *C.char {
+	bal, err := simulator.Backend.BalanceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+	return C.CString(bal.String())
+}
+
 
 //export sendTransaction
 func sendTransaction(txData *C.char) {

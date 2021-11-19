@@ -5,6 +5,7 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   cgoCurrentMillis: ['int', []],
   getBlockNumber: ['string', []],
   sendTransaction: ['void', ['string']],
+  getBalance: ['string', ['string']]
 });
 
 export function cgoCurrentMillis() {
