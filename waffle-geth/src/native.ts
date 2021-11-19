@@ -10,6 +10,6 @@ export function cgoCurrentMillis() {
   return library.cgoCurrentMillis();
 }
 
-export function getBlockNumber() {
+export function getBlockNumber(): string {
   return library.getBlockNumber();
 }
