@@ -6,6 +6,7 @@ import {utils} from 'ethers';
 export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
   cgoCurrentMillis: ['int', []],
   getBlockNumber: ['string', []],
+  getChainID: ['string', []],
   sendTransaction: ['void', ['string']],
   getBalance: ['string', ['string']],
   call: ['string', ['string']],
@@ -29,6 +30,10 @@ export function getBalance(address: string): string {
 
 export function sendTransaction(data: string): void {
   return library.sendTransaction(data);
+}
+
+export function getChainID(): string {
+  return library.getChainID()!;
 }
 
 export function getTransactionCount(address: string): number {

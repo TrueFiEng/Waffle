@@ -14,6 +14,14 @@ describe.only('GethProvider', () => {
     expect(await provider.getBlockNumber()).to.equal(0);
   });
 
+  it('getNetwork', async () => {
+    const network = {
+      name: 'undefined',
+      chainId: 1337,
+    }
+    expect(await provider.getNetwork()).to.deep.equal(network);
+  });
+
   it('getBalance', async () => {
     const to = Wallet.createRandom().address;
     expect(await provider.getBalance(to)).to.equal(0);
