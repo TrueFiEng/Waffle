@@ -39,7 +39,7 @@ describe.only('GethProvider', () => {
     expect(await provider.getBalance(to)).to.equal(123);
   });
 
-  it.only('send ETH transfer', async () => {
+  it('send ETH transfer', async () => {
     const to = Wallet.createRandom().address;
 
     await wallet.sendTransaction({
