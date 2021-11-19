@@ -13,7 +13,7 @@ import type {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {getBlockNumber} from './native';
+import {getBalance, getBlockNumber, sendTransaction} from './native';
 
 export class GethProvider extends providers.Provider {
   call(transaction: utils.Deferrable<TransactionRequest>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
@@ -28,8 +28,18 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  getBalance(addressOrName: string | Promise<string>, blockTag?: BlockTag | Promise<BlockTag>): Promise<BigNumber> {
-    throw new Error('Not implemented');
+  async getBalance(
+    addressOrName: string | Promise<string>,
+    blockTag?: BlockTag | Promise<BlockTag>
+  ): Promise<BigNumber> {
+    if (blockTag) {
+      throw new Error('Not implemented: blockTag');
+    }
+    const address = await addressOrName;
+    if (!utils.isAddress(address)) {
+      throw new Error('Not implemented: ENS');
+    }
+    return BigNumber.from(getBalance(address));
   }
 
   getBlock(blockHashOrBlockTag: BlockTag | string | Promise<BlockTag | string>): Promise<Block> {
@@ -119,8 +129,11 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
-    throw new Error('Not implemented');
+  async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
+    const data = await signedTransaction;
+    sendTransaction(data);
+    // TODO use getTransaction
+    return null as any;
   }
 
   waitForTransaction(transactionHash: string, confirmations?: number, timeout?: number): Promise<TransactionReceipt> {

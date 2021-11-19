@@ -30,7 +30,6 @@ export function getBlockNumber(): string {
   return library.getBlockNumber();
 }
 
-
 export function call(msg: TransactionRequest) {
   return library.call(JSON.stringify({
     From: undefined,     //      common.Address  // the sender of the 'transaction'
@@ -43,4 +42,11 @@ export function call(msg: TransactionRequest) {
     Data: msg.data,     //      []byte          // input data, usually an ABI-encoded contract method invocation
     // AccessList:     // types.AccessList // EIP-2930 access list.
   }))
+}
+export function getBalance(address: string): string {
+  return library.getBalance(address);
+}
+
+export function sendTransaction(data: string): void {
+  return library.sendTransaction(data);
 }
