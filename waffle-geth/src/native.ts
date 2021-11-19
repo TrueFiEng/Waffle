@@ -50,5 +50,5 @@ export function getTransactionCount(address: string): number {
 }
 
 export function getLogs(filter: Filter): string[] {
-  return library.getLogs(JSON.stringify(filter))
+  return library.getLogs(id, JSON.stringify(filter))
 }

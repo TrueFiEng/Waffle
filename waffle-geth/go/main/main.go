@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
   "log"
+  "fmt"
 	"math/big"
 	"math/rand"
 	"strconv"
@@ -87,7 +88,9 @@ func getTransactionCount(simID C.int, account *C.char) C.int {
 }
 
 //export getLogs
-func getLogs( queryJson *C.char ) *C.char {
+func getLogs( simID C.int, queryJson *C.char ) *C.char {
+	sim := getSimulator(simID)
+
   var query ethereum.FilterQuery
 
   err := json.Unmarshal([]byte(C.GoString(queryJson)), &query)
