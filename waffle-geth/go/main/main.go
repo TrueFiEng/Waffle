@@ -2,32 +2,32 @@ package main
 
 import "C"
 import (
-  "context"
-  "encoding/hex"
-  "encoding/json"
-  "fmt"
-  simulator2 "github.com/Ethworks/Waffle/simulator"
-  "github.com/ethereum/go-ethereum"
-  "github.com/ethereum/go-ethereum/common"
-  "github.com/ethereum/go-ethereum/core/types"
-  "log"
-  "math/big"
-  "math/rand"
-  "strconv"
-  "time"
+	"context"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	simulator2 "github.com/Ethworks/Waffle/simulator"
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
+	"log"
+	"math/big"
+	"math/rand"
+	"strconv"
+	"time"
 )
 
 type TransactionRequest struct {
-  to *string
-  from *string
-  nonce *string
+	To    *string `json:"to"`
+	From  *string `json:"from"`
+	Nonce *string `json:"nonce"`
 
-  gasLimit *string
-  gasPrice *string
+	GasLimit *string `json:"gasLimit"`
+	GasPrice *string `json:"gasPrice"`
 
-  data *string
-  value *string
-  chainId *uint64
+	Data    *string `json:"data"`
+	Value   *string `json:"value"`
+	ChainId *uint64 `json:"chainId"`
 }
 
 func main() {}
@@ -43,91 +43,91 @@ func getBlockNumber() *C.char {
 //export getBalance
 func getBalance(account *C.char) *C.char {
 	bal, err := simulator.Backend.BalanceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
-  if err != nil {
-    log.Fatal(err)
-  }
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	return C.CString(bal.String())
 }
 
 //export call
 func call(msgJson *C.char) *C.char {
-  var msg TransactionRequest
+	var msg TransactionRequest
 
-  fmt.Println(C.GoString(msgJson))
+	fmt.Println(C.GoString(msgJson))
 
-  err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
-  if err != nil {
-    log.Fatal(err)
-  }
+	err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  fmt.Println(msg)
+	fmt.Println(msg)
 
-  var callMsg ethereum.CallMsg
+	var callMsg ethereum.CallMsg
 
-  if msg.from != nil {
-    callMsg.From = common.HexToAddress(*msg.from)
-  }
-  if msg.to != nil {
-    temp := common.HexToAddress(*msg.to)
-    callMsg.To = &temp
-  }
-  if msg.gasLimit != nil {
-    value, err := strconv.ParseUint(*msg.gasLimit, 16, 64)
-    if err != nil {
-      log.Fatal(err)
-    }
+	if msg.From != nil {
+		callMsg.From = common.HexToAddress(*msg.From)
+	}
+	if msg.To != nil {
+		temp := common.HexToAddress(*msg.To)
+		callMsg.To = &temp
+	}
+	if msg.GasLimit != nil {
+		value, err := strconv.ParseUint(*msg.GasLimit, 16, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-    callMsg.Gas = value
-  }
-  if msg.gasPrice != nil {
-    callMsg.GasPrice = big.NewInt(0)
-    callMsg.GasPrice.SetString(*msg.gasPrice, 16)
-  }
-  if msg.data != nil {
-    data, err := hex.DecodeString(*msg.data)
-    if err != nil {
-      log.Fatal(err)
-    }
+		callMsg.Gas = value
+	}
+	if msg.GasPrice != nil {
+		callMsg.GasPrice = big.NewInt(0)
+		callMsg.GasPrice.SetString(*msg.GasPrice, 16)
+	}
+	if msg.Data != nil {
+		data, err := hex.DecodeString((*msg.Data)[2:])
+		if err != nil {
+			log.Fatal(err)
+		}
 
-    callMsg.Data = data
-  }
+		callMsg.Data = data
+	}
 
-  res, err := simulator.Backend.CallContract(context.Background(), callMsg, nil)
-  if err != nil {
-    log.Fatal(err)
-  }
+	res, err := simulator.Backend.CallContract(context.Background(), callMsg, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  return C.CString(hex.EncodeToString(res))
+	return C.CString(hex.EncodeToString(res))
 }
 
 //export sendTransaction
 func sendTransaction(txData *C.char) {
 
-  bytes, err := hex.DecodeString(C.GoString(txData)[2:])
-  if err != nil {
-    log.Fatal(err)
-  }
+	bytes, err := hex.DecodeString(C.GoString(txData)[2:])
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  tx := &types.Transaction{}
-  err = tx.UnmarshalBinary(bytes)
-  if err != nil {
-    log.Fatal(err)
-  }
+	tx := &types.Transaction{}
+	err = tx.UnmarshalBinary(bytes)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	err = simulator.Backend.SimulatedBackend.SendTransaction(context.Background(), tx)
-  if err != nil {
-    log.Fatal(err)
-  }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  simulator.Backend.Commit()
+	simulator.Backend.Commit()
 
-  receipt, err := simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
-  if err != nil {
-    log.Fatal(err)
-  }
-  fmt.Println(tx.Hash().String())
-  fmt.Println(receipt.ContractAddress.String())
+	receipt, err := simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(tx.Hash().String())
+	fmt.Println(receipt.ContractAddress.String())
 }
 
 //export cgoCurrentMillis

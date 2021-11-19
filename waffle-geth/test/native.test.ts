@@ -4,7 +4,7 @@ import {Wallet} from '@ethersproject/wallet';
 import {BigNumberish} from '@ethersproject/bignumber';
 import {expect} from 'chai';
 import {constants, utils, BytesLike} from 'ethers';
-import {cgoCurrentMillis, getBlockNumber, sendTransaction, library} from '../src/native';
+import {cgoCurrentMillis, getBlockNumber, sendTransaction, library, call} from '../src/native';
 import WETH from './contracts/WETH9.json';
 
 describe('Native', () => {
@@ -50,6 +50,22 @@ describe('Native', () => {
     });
     const balance = library.getBalance(address);
     expect(balance).to.eq(value);
+  });
+
+  it('can deploy WETH and call it', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployTx = weth.getDeployTransaction();
+    await helpSendTransaction(wallet, deployTx);
+    const address = await utils.getContractAddress({from: wallet.address, nonce: 2});
+
+    const res = call({
+      to: address,
+      data: contractInterface.encodeFunctionData('name'),
+    })
+    console.log({ res })
+    const name = contractInterface.decodeFunctionData('name', res!)
+    console.log({ name })
   });
 });
 
