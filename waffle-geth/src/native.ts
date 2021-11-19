@@ -9,7 +9,7 @@ export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib
   sendTransaction: ['void', ['string']],
   getBalance: ['string', ['string']],
   call: ['string', ['string']],
-  getTransactionCount: ['string', ['string']]
+  getTransactionCount: ['int', ['string']]
 });
 
 export function cgoCurrentMillis() {
@@ -31,6 +31,6 @@ export function sendTransaction(data: string): void {
   return library.sendTransaction(data);
 }
 
-export function getTransactionCount(address: string): string {
+export function getTransactionCount(address: string): number {
   return library.getTransactionCount(address);
 }

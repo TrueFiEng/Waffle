@@ -54,7 +54,7 @@ describe.only('GethProvider', () => {
     expect(balance).to.eq(value);
   });
 
-  it('get gas price', async () => {
+  it.only('gets transaction count', async () => {
     expect(await provider.getTransactionCount(wallet.address)).to.eq(0)
   })
 });
