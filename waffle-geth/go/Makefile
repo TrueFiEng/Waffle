@@ -1,2 +1,5 @@
 build:
-	go build -buildmode c-shared -o wafflegeth.so github.com/Ethworks/Waffle/main
+	go build -buildmode c-shared -o build/wafflegeth.so github.com/Ethworks/Waffle/main
+
+.PHONY:
+	build
