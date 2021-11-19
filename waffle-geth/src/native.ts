@@ -21,7 +21,7 @@ export function getBlockNumber(): string {
 }
 
 export function call(msg: TransactionRequest) {
-  return library.call(JSON.stringify(msg))
+  return '0x' + library.call(JSON.stringify(msg))
 }
 export function getBalance(address: string): string {
   return library.getBalance(address);

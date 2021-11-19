@@ -14,6 +14,7 @@ import type {
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
 import {call, getBalance, getBlockNumber, sendTransaction, getTransactionCount} from './native';
+import { resolveProperties } from '@ethersproject/properties';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
@@ -27,7 +28,7 @@ export class GethProvider extends providers.Provider {
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<string> {
     await noBlockTag(blockTag);
-    return Promise.resolve(call(transaction));
+    return call(await resolveProperties(transaction))!;
   }
 
   emit(eventName: EventType, ...args: Array<any>): boolean {

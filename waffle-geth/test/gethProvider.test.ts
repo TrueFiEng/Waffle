@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {GethProvider} from '../src';
 import {Wallet} from '@ethersproject/wallet';
 import { Interface } from '@ethersproject/abi';
-import { ContractFactory } from '@ethersproject/contracts';
+import { Contract, ContractFactory } from '@ethersproject/contracts';
 import WETH from './contracts/WETH9.json'
 import { utils } from 'ethers';
 
@@ -54,7 +54,21 @@ describe.only('GethProvider', () => {
     expect(balance).to.eq(value);
   });
 
-  it.only('gets transaction count', async () => {
+  it.only('deploy WETH and call it', async () => {
+    const contractInterface = new Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployData = weth.getDeployTransaction();
+    const deployTx = await wallet.signTransaction({ ...deployData, nonce: 0, gasLimit: 10000000, gasPrice: 875000000});
+    await provider.sendTransaction(deployTx)
+    const address = utils.getContractAddress({from: wallet.address, nonce: 0});
+    const contract = new Contract(address, contractInterface, provider);
+
+    const name = await contract.name();
+
+    expect(name).to.eq('Wrapped Ether')
+  });
+
+  it('gets transaction count', async () => {
     expect(await provider.getTransactionCount(wallet.address)).to.eq(0)
   })
 });
