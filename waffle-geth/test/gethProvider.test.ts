@@ -6,7 +6,7 @@ import { Contract, ContractFactory } from '@ethersproject/contracts';
 import WETH from './contracts/WETH9.json'
 import { utils } from 'ethers';
 
-describe.only('GethProvider', () => {
+describe('GethProvider', () => {
   const provider = new GethProvider();
   const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82').connect(provider);
 

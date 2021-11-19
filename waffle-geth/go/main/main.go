@@ -6,15 +6,16 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	simulator2 "github.com/Ethworks/Waffle/simulator"
-	"github.com/ethereum/go-ethereum"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/core/types"
 	"log"
 	"math/big"
 	"math/rand"
 	"strconv"
 	"time"
+
+	"github.com/Ethworks/Waffle/simulator"
+	"github.com/ethereum/go-ethereum"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 )
 
 type TransactionRequest struct {
@@ -32,23 +33,23 @@ type TransactionRequest struct {
 
 func main() {}
 
-var simulator, _ = simulator2.NewSimulator()
+var sim, _ = simulator.NewSimulator()
 
 //export getBlockNumber
 func getBlockNumber() *C.char {
-	bn := simulator.GetLatestBlockNumber()
+	bn := sim.GetLatestBlockNumber()
 	return C.CString(bn.String())
 }
 
 //export getChainID
 func getChainID() *C.char {
-	bn := simulator.GetChainID()
+	bn := sim.GetChainID()
 	return C.CString(bn.String())
 }
 
 //export getBalance
 func getBalance(account *C.char) *C.char {
-	bal, err := simulator.Backend.BalanceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
+	bal, err := sim.Backend.BalanceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -58,12 +59,12 @@ func getBalance(account *C.char) *C.char {
 
 //export getTransactionCount
 func getTransactionCount(account *C.char) C.int {
-  count, err :=  simulator.Backend.NonceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
-  if err != nil {
-    log.Fatal(err)
-  }
+	count, err := sim.Backend.NonceAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-  return C.int(count)
+	return C.int(count)
 }
 
 //export call
@@ -109,7 +110,7 @@ func call(msgJson *C.char) *C.char {
 		callMsg.Data = data
 	}
 
-	res, err := simulator.Backend.CallContract(context.Background(), callMsg, nil)
+	res, err := sim.Backend.CallContract(context.Background(), callMsg, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -131,14 +132,14 @@ func sendTransaction(txData *C.char) {
 		log.Fatal(err)
 	}
 
-	err = simulator.Backend.SimulatedBackend.SendTransaction(context.Background(), tx)
+	err = sim.Backend.SimulatedBackend.SendTransaction(context.Background(), tx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	simulator.Backend.Commit()
+	sim.Backend.Commit()
 
-	receipt, err := simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
+	receipt, err := sim.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
 	if err != nil {
 		log.Fatal(err)
 	}

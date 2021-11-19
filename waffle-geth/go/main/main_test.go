@@ -31,7 +31,7 @@ func TestName(t *testing.T) {
 		AccessList: nil,
 	}
 
-	res, err := simulator.Backend.CallContract(context.Background(), callMsg, nil)
+	res, err := sim.Backend.CallContract(context.Background(), callMsg, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,14 +54,14 @@ func deploy() {
 		log.Fatal(err)
 	}
 
-	err = simulator.Backend.SimulatedBackend.SendTransaction(context.Background(), tx)
+	err = sim.Backend.SimulatedBackend.SendTransaction(context.Background(), tx)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	simulator.Backend.Commit()
+	sim.Backend.Commit()
 
-	receipt, err := simulator.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
+	receipt, err := sim.Backend.SimulatedBackend.TransactionReceipt(context.Background(), tx.Hash())
 	if err != nil {
 		log.Fatal(err)
 	}
