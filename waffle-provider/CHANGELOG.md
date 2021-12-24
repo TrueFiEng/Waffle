@@ -1,5 +1,13 @@
 # @ethereum-waffle/provider
 
+## 3.4.1
+
+### Patch Changes
+
+- 71417c7: Provider compatibility with London hardfork
+- Updated dependencies [71417c7]
+  - @ethereum-waffle/ens@3.3.1
+
 ## 3.4.0
 
 ### Minor Changes

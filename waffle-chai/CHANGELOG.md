@@ -1,5 +1,13 @@
 # @ethereum-waffle/chai
 
+## 3.4.2
+
+### Patch Changes
+
+- 71417c7: Provider compatibility with London hardfork
+- Updated dependencies [71417c7]
+  - @ethereum-waffle/provider@3.4.1
+
 ## 3.4.1
 
 ### Patch Changes
