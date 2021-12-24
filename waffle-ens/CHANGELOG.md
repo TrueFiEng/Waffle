@@ -1,5 +1,11 @@
 # @ethereum-waffle/ens
 
+## 3.3.1
+
+### Patch Changes
+
+- 71417c7: Provider compatibility with London hardfork
+
 ## 3.3.0
 
 ### Minor Changes
