@@ -43,8 +43,8 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.1",
-    "ethers": "^5.0.1"
+    "@ethersproject/abi": "^5.5.0",
+    "ethers": "^5.5.2"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.0",
