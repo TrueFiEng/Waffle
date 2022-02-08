@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 3.4.3
+
+### Patch Changes
+
+- 9074f16: Adjust closeTo delta type to accept BigNumber inputs
+
 ## 3.4.2
 
 ### Patch Changes
