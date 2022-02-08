@@ -34,11 +34,10 @@ declare namespace Chai {
   }
 
   interface CloseTo {
-    (expected: any, delta: number, message?: string): Assertion;
+    (expected: any, delta: any, message?: string): Assertion;
   }
 
-  interface AsyncAssertion extends Assertion, Promise<void> {
-  }
+  interface AsyncAssertion extends Assertion, Promise<void> {}
 
   interface EmitAssertion extends AsyncAssertion {
     withArgs(...args: any[]): AsyncAssertion;

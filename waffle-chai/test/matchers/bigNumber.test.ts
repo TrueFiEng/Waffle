@@ -5,10 +5,7 @@ describe('UNIT: BigNumber matchers', () => {
   function checkAll(
     actual: number,
     expected: number,
-    test: (
-      actual: number | string | BigNumber,
-      expected: number | string | BigNumber
-    ) => void
+    test: (actual: number | string | BigNumber, expected: number | string | BigNumber) => void
   ) {
     test(actual, expected);
     test(BigNumber.from(actual), expected);
@@ -36,10 +33,7 @@ describe('UNIT: BigNumber matchers', () => {
     });
 
     it('throws proper message on error', () => {
-      expect(() => expect(BigNumber.from(10)).to.equal(11)).to.throw(
-        AssertionError,
-        'Expected "10" to be equal 11'
-      );
+      expect(() => expect(BigNumber.from(10)).to.equal(11)).to.throw(AssertionError, 'Expected "10" to be equal 11');
     });
   });
 
@@ -134,31 +128,45 @@ describe('UNIT: BigNumber matchers', () => {
     });
 
     it('expect to throw on error', () => {
-      expect(
-        () => expect(BigNumber.from(100)).to.be.within(BigNumber.from(80), BigNumber.from(90))
-      ).to.throw(AssertionError, 'Expected "100" to be within [80,90]');
-      expect(
-        () => expect(BigNumber.from(100)).not.to.be.within(BigNumber.from(99), BigNumber.from(101))
-      ).to.throw(AssertionError, 'Expected "100" NOT to be within [99,101]');
+      expect(() => expect(BigNumber.from(100)).to.be.within(BigNumber.from(80), BigNumber.from(90))).to.throw(
+        AssertionError,
+        'Expected "100" to be within [80,90]'
+      );
+      expect(() => expect(BigNumber.from(100)).not.to.be.within(BigNumber.from(99), BigNumber.from(101))).to.throw(
+        AssertionError,
+        'Expected "100" NOT to be within [99,101]'
+      );
     });
   });
 
   describe('closeTo', () => {
     it('.to.be.closeTo', () => {
       expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(101), 10);
+      expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(101), BigNumber.from(10));
     });
 
     it('.not.to.be.closeTo', () => {
       expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(111), 10);
+      expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(111), BigNumber.from(10));
     });
 
     it('expect to throw on error', () => {
-      expect(
-        () => expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(111), 10)
-      ).to.throw(AssertionError, 'Expected "100" to be within 10 of 111');
-      expect(
-        () => expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(101), 10)
-      ).to.throw(AssertionError, 'Expected "100" NOT to be within 10 of 101');
+      expect(() => expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(111), 10)).to.throw(
+        AssertionError,
+        'Expected "100" to be within 10 of 111'
+      );
+      expect(() => expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(111), BigNumber.from(10))).to.throw(
+        AssertionError,
+        'Expected "100" to be within 10 of 111'
+      );
+      expect(() => expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(101), 10)).to.throw(
+        AssertionError,
+        'Expected "100" NOT to be within 10 of 101'
+      );
+      expect(() => expect(BigNumber.from(100)).not.to.be.closeTo(BigNumber.from(101), BigNumber.from(10))).to.throw(
+        AssertionError,
+        'Expected "100" NOT to be within 10 of 101'
+      );
     });
   });
 });
