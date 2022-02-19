@@ -28,7 +28,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
       const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
       const isReverted = reasonsList
         ? reasonsList.some((r: string) => r === revertReason)
-        : message.includes('revert') && message.includes(revertReason);
+        : message === `VM Exception while processing transaction: reverted with reason string '${revertReason}'`;
       const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
 
       this.assert(
