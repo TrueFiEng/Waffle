@@ -1,6 +1,6 @@
 export async function toBeRevertedWith(
   promise: Promise<any>,
-  revertReason: string
+  revertReason: string | RegExp
 ) {
   try {
     await promise;
@@ -11,7 +11,8 @@ export async function toBeRevertedWith(
   } catch (error) {
     const message = error instanceof Object && 'message' in error ? error.message : JSON.stringify(error);
 
-    const isReverted = message.search('revert') >= 0 && message.search(revertReason) >= 0;
+    const isReverted = message.search('revert') >= 0 &&
+      (revertReason instanceof RegExp ? revertReason.test(message) : message.search(revertReason) >= 0);
     const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
     const isError = message.search('code=') >= 0;
 

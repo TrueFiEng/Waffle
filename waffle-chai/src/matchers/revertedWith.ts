@@ -1,5 +1,5 @@
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
-  Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
+  Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
     const promise = this._obj;
 
     const onSuccess = (value: any) => {
@@ -27,8 +27,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
       const reasonsList = error.results && Object.values(error.results).map((o: any) => o.reason);
       const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
       const isReverted = reasonsList
-        ? reasonsList.some((r: string) => r === revertReason)
-        : message.includes('revert') && message.includes(revertReason);
+        ? reasonsList.some((r: string) => revertReason instanceof RegExp ? revertReason.test(r) : r === revertReason)
+        : message.includes('revert') &&
+          (revertReason instanceof RegExp ? revertReason.test(message) : message.includes(revertReason));
       const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
 
       this.assert(

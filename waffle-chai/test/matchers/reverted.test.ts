@@ -132,9 +132,20 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
       .to.be.revertedWith('Revert cause (with complex reason)');
   });
 
+  it('Revert: success when message matches to the pattern', async () => {
+    await expect(matchers.doRevertWithComplexReason())
+      .to.be.revertedWith(/complex reason/);
+  });
+
   it('Revert: fail when different message was thrown', async () => {
     await expect(
       expect(matchers.doRevert()).to.be.revertedWith('Different message')
+    ).to.be.eventually.rejected;
+  });
+
+  it('Revert: fail when message does not match to the pattern', async () => {
+    await expect(
+      expect(matchers.doRevert()).to.be.revertedWith(/Different message/)
     ).to.be.eventually.rejected;
   });
 
