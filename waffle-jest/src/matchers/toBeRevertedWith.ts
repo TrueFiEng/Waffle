@@ -1,6 +1,6 @@
 export async function toBeRevertedWith(
   promise: Promise<any>,
-  revertReason: string
+  revertReason: string | RegExp
 ) {
   try {
     await promise;
