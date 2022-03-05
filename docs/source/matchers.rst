@@ -98,6 +98,13 @@ Testing if transaction was reverted with certain message:
   await expect(token.transfer(walletTo.address, 1007))
     .to.be.revertedWith('Insufficient funds');
 
+You can also test if revert message matches to a regular expression:
+
+.. code-block:: ts
+
+  await expect(token.checkRole('ADMIN'))
+    .to.be.revertedWith(/AccessControl: account .* is missing role .*/);
+
 Change ether balance
 --------------------
 Testing whether the transaction changes the balance of the account:
