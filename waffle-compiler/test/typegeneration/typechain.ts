@@ -14,7 +14,7 @@ const config = inputToConfig({
   compilerVersion
 });
 
-describe('Type generation with TypeChain', () => {
+describe.only('Type generation with TypeChain', () => {
   it('outputs types to specified directory', async () => {
     await compileAndSave(config);
     const outputDirectoryForTypes = await generateTypes(config);
@@ -25,6 +25,6 @@ describe('Type generation with TypeChain', () => {
   });
 
   after(() => {
-    fsx.removeSync(outputDirectory);
+    // fsx.removeSync(outputDirectory);
   });
 });

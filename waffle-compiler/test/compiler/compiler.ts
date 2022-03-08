@@ -13,7 +13,7 @@ const config = inputToConfig({
 });
 
 describe('INTEGRATION: Compiler', () => {
-  it('compile just compiles', async () => {
+  it.only('compile just compiles', async () => {
     const output = await compile(config);
     const basicTokenOutput = output.contracts[
       'test/projects/example/BasicToken.sol'
