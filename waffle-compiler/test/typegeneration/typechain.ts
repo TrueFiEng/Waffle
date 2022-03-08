@@ -14,17 +14,17 @@ const config = inputToConfig({
   compilerVersion
 });
 
-describe.only('Type generation with TypeChain', () => {
+describe('Type generation with TypeChain', () => {
   it('outputs types to specified directory', async () => {
     await compileAndSave(config);
     const outputDirectoryForTypes = await generateTypes(config);
     expect(outputDirectoryForTypes).to.eq(path.join(config.outputDirectory, 'types'));
-    const {BasicTokenMockFactory} = await import(path.join('..', '..', outputDirectoryForTypes, 'index.ts'));
-    expect(BasicTokenMockFactory.name).to.equal('BasicTokenMockFactory');
-    expect(Object.getPrototypeOf(BasicTokenMockFactory).name).to.equal('ContractFactory');
+    const {BasicTokenMock__factory} = await import(path.join('..', '..', outputDirectoryForTypes, 'index.ts'));
+    expect(BasicTokenMock__factory.name).to.equal('BasicTokenMock__factory');
+    expect(Object.getPrototypeOf(BasicTokenMock__factory).name).to.equal('ContractFactory');
   });
 
   after(() => {
-    // fsx.removeSync(outputDirectory);
+    fsx.removeSync(outputDirectory);
   });
 });
