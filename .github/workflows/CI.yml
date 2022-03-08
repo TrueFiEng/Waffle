@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - rzadp/ci-tests
 jobs:
   test-node:
     strategy:
