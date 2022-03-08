@@ -40,7 +40,7 @@
   "dependencies": {
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
-    "@typechain/ethers-v5": "^2.0.0",
+    "@typechain/ethers-v5": "^9.0.0",
     "@types/mkdirp": "^0.5.2",
     "@types/node-fetch": "^2.5.5",
     "ethers": "^5.5.4",
@@ -48,7 +48,7 @@
     "node-fetch": "^2.6.1",
     "solc": "^0.6.3",
     "ts-generator": "^0.1.1",
-    "typechain": "^3.0.0"
+    "typechain": "^7.0.0"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "^3.4.0",
