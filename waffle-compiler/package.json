@@ -43,7 +43,7 @@
     "@typechain/ethers-v5": "^2.0.0",
     "@types/mkdirp": "^0.5.2",
     "@types/node-fetch": "^2.5.5",
-    "ethers": "^5.0.1",
+    "ethers": "^5.5.4",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.6.1",
     "solc": "^0.6.3",
