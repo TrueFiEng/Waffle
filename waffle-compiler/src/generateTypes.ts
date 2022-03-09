@@ -10,7 +10,7 @@ export async function generateTypes(config: Config) {
     allFiles,
     filesToProcess: allFiles,
     target: 'ethers-v5',
-    outDir: config.typechainOutputDir,
+    outDir: config.typechainOutputDir
   });
   return path.join(config.outputDirectory, config.typechainOutputDir);
 }
