@@ -1,7 +1,7 @@
 import {expect, use} from 'chai';
 import {Contract} from 'ethers';
-import { deployContract, deployContract, MockProvider, solidity } from 'ethereum-waffle';
-import { BasicToken, BasicToken__factory } from '../typechain';
+import {deployContract, deployContract, MockProvider, solidity} from 'ethereum-waffle';
+import {BasicToken, BasicToken__factory} from '../typechain';
 
 use(solidity);
 
