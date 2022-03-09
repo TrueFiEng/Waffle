@@ -55,7 +55,7 @@
     "openzeppelin-solidity": "2.3.0",
     "ethers": "^5.5.4",
     "typechain": "^7.0.0",
-    "solc": "^0.8.12"
+    "solc": "^0.6.3"
   },
   "peerDependencies": {
     "typechain": "^7.0.0",
