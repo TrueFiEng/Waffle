@@ -7,7 +7,8 @@
     "node": ">=10.0"
   },
   "workspaces": [
-    "waffle-*"
+    "waffle-*",
+    "examples/**"
   ],
   "scripts": {
     "postinstall": "patch-package",
