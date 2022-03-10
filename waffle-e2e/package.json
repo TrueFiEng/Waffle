@@ -15,6 +15,6 @@
     "@ethereum-waffle/chai": "^3.4.0",
     "@ethereum-waffle/compiler": "^3.4.0",
     "@ethereum-waffle/provider": "^3.4.0",
-    "ethers": "^5.0.1"
+    "ethers": "^5.5.4"
   }
 }
