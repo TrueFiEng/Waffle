@@ -42,7 +42,7 @@
     "wsrun": "^5.2.0"
   },
   "dependencies": {
-    "@changesets/cli": "^2.13.1"
+    "@changesets/cli": "^2.21.1"
   },
   "resolutions": {
     "underscore": ">=1.12.1",
