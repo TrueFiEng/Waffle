@@ -1,5 +1,11 @@
 # @ethereum-waffle/ens
 
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- Bump typechain and ethers to the latest versions. Move them to peer deps.
+
 ## 3.3.1
 
 ### Patch Changes
