@@ -1,5 +1,16 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- Bump typechain and ethers to the latest versions. Move them to peer deps.
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - @ethereum-waffle/provider@4.0.0-alpha.0
+
 ## 3.4.3
 
 ### Patch Changes

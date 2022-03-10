@@ -547,6 +547,26 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@ethereum-waffle/ens@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@ethereum-waffle/ens/-/ens-3.3.1.tgz#0f1b7ac4fc156641c18accd60f8ce256e2c475cf"
+  integrity sha512-xSjNWnT2Iwii3J3XGqD+F5yLEOzQzLHNLGfI5KIXdtQ4FHgReW/AMGRgPPLi+n+SP08oEQWJ3sEKrvbFlwJuaA==
+  dependencies:
+    "@ensdomains/ens" "^0.4.4"
+    "@ensdomains/resolver" "^0.2.4"
+    ethers "^5.5.2"
+
+"@ethereum-waffle/provider@^3.4.0":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@ethereum-waffle/provider/-/provider-3.4.1.tgz#d59f5741d5ee96a7d5501f455709b38d81c8be2f"
+  integrity sha512-5iDte7c9g9N1rTRE/P4npwk1Hus/wA2yH850X6sP30mr1IrwSG9NKn6/2SOQkAVJnh9jqyLVg2X9xCODWL8G4A==
+  dependencies:
+    "@ethereum-waffle/ens" "^3.3.1"
+    ethers "^5.5.2"
+    ganache-core "^2.13.2"
+    patch-package "^6.2.2"
+    postinstall-postinstall "^2.1.0"
+
 "@ethersproject/abi@5.0.0-beta.153":
   version "5.0.0-beta.153"
   resolved "https://registry.yarnpkg.com/@ethersproject/abi/-/abi-5.0.0-beta.153.tgz#43a37172b33794e4562999f6e2d555b7599a8eee"
@@ -4835,7 +4855,7 @@ ethereumjs-wallet@0.6.5:
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-ethers@^5.5.4:
+ethers@^5.5.2, ethers@^5.5.4:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.0.tgz#924eb965dc03963fad0a09ce687efdf49aca3b45"
   integrity sha512-00FP71jt6bW3ndO5DhgH9mLIZhoCGnAKFLu8qig5KmV03ubEChKf2ilB3g6fX512tTYo+tSMDJ5WpCJWdBHkBQ==

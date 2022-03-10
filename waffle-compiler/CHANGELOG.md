@@ -1,5 +1,11 @@
 # @ethereum-waffle/compiler
 
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- Bump typechain and ethers to the latest versions. Move them to peer deps.
+
 ## 3.4.0
 
 ### Minor Changes
