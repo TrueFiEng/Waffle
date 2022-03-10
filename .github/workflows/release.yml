@@ -33,7 +33,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Logs
-        if: ${{ failure() }}
-        run: cat /home/runner/.npm/_logs/*-debug.log
-
