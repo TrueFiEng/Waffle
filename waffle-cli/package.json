@@ -50,6 +50,7 @@
     "@ethereum-waffle/mock-contract": "4.0.0-alpha.0",
     "@ethereum-waffle/provider": "4.0.0-alpha.0",
     "ethers": "^5.5.4",
+    "solc": "^0.6.3",
     "typechain": "^7.0.0"
   },
   "devDependencies": {}
