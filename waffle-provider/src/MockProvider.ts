@@ -7,7 +7,7 @@ import {deployENS, ENS} from '@ethereum-waffle/ens';
 export {RecordedCall};
 
 interface MockProviderOptions {
-  ganacheOptions: Ganache.IProviderOptions;
+  ganacheOptions: EthereumProviderOptions
 }
 
 export class MockProvider extends providers.Web3Provider {
