@@ -26,6 +26,7 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
+    "postinstall": "patch-package",
     "prepublishOnly": "yarn build",
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
@@ -41,7 +42,8 @@
     "@ethereum-waffle/ens": "4.0.0-alpha.0",
     "ethers": "^5.5.4",
     "ganache": "^7.0.3",
-    "postinstall-postinstall": "^2.1.0"
+    "postinstall-postinstall": "^2.1.0",
+    "patch-package": "^6.2.2"
   },
   "resolutions": {
     "web3": "1.2.4"
