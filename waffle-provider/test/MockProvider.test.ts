@@ -20,7 +20,9 @@ describe('INTEGRATION: MockProvider', () => {
     const original = Wallet.createRandom();
     const provider = new MockProvider({
       ganacheOptions: {
-        accounts: [{balance: '100', secretKey: original.privateKey}]
+        wallet: {
+          accounts: [{balance: '0x64', secretKey: original.privateKey}]
+        }
       }
     });
     const wallets = provider.getWallets();
