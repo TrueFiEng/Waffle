@@ -25,6 +25,7 @@ importers:
       eslint: ^7.14.0
       eslint-plugin-import: ^2.22.1
       mocha: ^8.2.1
+      patch-package: ^6.2.2
       rimraf: ^3.0.2
       sinon: ^9.2.1
       sinon-chai: ^3.5.0
@@ -49,6 +50,7 @@ importers:
       eslint: 7.18.0
       eslint-plugin-import: 2.22.1_eslint@7.18.0
       mocha: 8.2.1
+      patch-package: 6.4.7
       rimraf: 3.0.2
       sinon: 9.2.4
       sinon-chai: 3.5.0_chai@4.2.0+sinon@9.2.4
@@ -86,6 +88,9 @@ importers:
     specifiers:
       '@ethereum-waffle/chai': 4.0.0-alpha.0
       '@ethereum-waffle/provider': 4.0.0-alpha.0
+      '@ethersproject/abi': ^5.0.0
+      '@ethersproject/bytes': ^5.0.0
+      '@ethersproject/providers': ^5.0.0
       '@openzeppelin/contracts': 3.0.1
       '@resolver-engine/imports': ^0.3.3
       '@resolver-engine/imports-fs': ^0.3.3
@@ -101,9 +106,12 @@ importers:
       solc: ^0.6.3
       typechain: ^7.0.0
     dependencies:
+      '@ethersproject/abi': 5.6.0
+      '@ethersproject/bytes': 5.6.0
+      '@ethersproject/providers': 5.6.0
       '@resolver-engine/imports': 0.3.3
       '@resolver-engine/imports-fs': 0.3.3
-      '@typechain/ethers-v5': 9.0.0_eb09a0476163308acd049374f7725ffd
+      '@typechain/ethers-v5': 9.0.0_08b838d946f54737cab9321913ec3f5f
       '@types/mkdirp': 0.5.2
       '@types/node-fetch': 2.6.1
       mkdirp: 0.5.5
@@ -189,13 +197,11 @@ importers:
       '@ethereum-waffle/ens': 4.0.0-alpha.0
       ethers: ^5.5.4
       ganache: ^7.0.3
-      patch-package: ^6.2.2
       postinstall-postinstall: ^2.1.0
     dependencies:
       '@ethereum-waffle/ens': link:../waffle-ens
       ethers: 5.6.0
       ganache: 7.0.3
-      patch-package: 6.4.7
       postinstall-postinstall: 2.1.0
 
 packages:
@@ -1414,7 +1420,7 @@ packages:
     dependencies:
       node-gyp-build: 4.3.0
 
-  /@typechain/ethers-v5/9.0.0_eb09a0476163308acd049374f7725ffd:
+  /@typechain/ethers-v5/9.0.0_08b838d946f54737cab9321913ec3f5f:
     resolution: {integrity: sha512-bAanuPl1L2itaUdMvor/QvwnIH+TM/CmG00q17Ilv3ZZMeJ2j8HcarhgJUZ9pBY1teBb85P8cC03dz3mSSx+tQ==}
     peerDependencies:
       '@ethersproject/abi': ^5.0.0
@@ -1424,6 +1430,9 @@ packages:
       typechain: ^7.0.0
       typescript: '>=4.0.0'
     dependencies:
+      '@ethersproject/abi': 5.6.0
+      '@ethersproject/bytes': 5.6.0
+      '@ethersproject/providers': 5.6.0
       ethers: 5.6.0
       lodash: 4.17.21
       ts-essentials: 7.0.3_typescript@4.1.3
@@ -1757,7 +1766,6 @@ packages:
 
   /@yarnpkg/lockfile/1.1.0:
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
-    dev: false
 
   /abab/2.0.5:
     resolution: {integrity: sha512-9IK9EadsbHo6jLWIpxpR6pL0sazTXV6+SQv25ZB+F7Bj9mJNaOc4nCRabwd5M/JwmUa8idz6Eci6eKfJryPs6Q==}
@@ -4811,7 +4819,6 @@ packages:
     resolution: {integrity: sha512-1IMnbjt4KzsQfnhnzNd8wUEgXZ44IzZaZmnLYx7D5FZlaHt2gW20Cri8Q+E/t5tIj4+epTBub+2Zxu/vNILzqQ==}
     dependencies:
       micromatch: 4.0.2
-    dev: false
 
   /find-yarn-workspace-root2/1.2.16:
     resolution: {integrity: sha512-hr6hb1w8ePMpPVUK39S4RlwJzi+xPLuVuG8XlwXU3KD5Yn3qgBWVfy3AzNlDhWvE1EORCE65/Qm26rFQt3VLVA==}
@@ -6542,7 +6549,6 @@ packages:
     resolution: {integrity: sha512-nIeuVSzdCCs6TDPTqI8w1Yre34sSq7AkZ4B3sfOBbI2CgVSB4Du4aLQijFU2+lhAFCwt9+42Hel6lQNIv6AntQ==}
     dependencies:
       graceful-fs: 4.2.6
-    dev: false
 
   /klaw/1.3.1:
     resolution: {integrity: sha1-QIhDO0azsbolnXh4XY6W9zugJDk=}
@@ -7542,7 +7548,6 @@ packages:
     dependencies:
       is-docker: 2.2.1
       is-wsl: 2.2.0
-    dev: false
 
   /openzeppelin-solidity/2.3.0:
     resolution: {integrity: sha512-QYeiPLvB1oSbDt6lDQvvpx7k8ODczvE474hb2kLXZBPKMsxKT1WxTCHBYrCU7kS7hfAku4DcJ0jqOyL+jvjwQw==}
@@ -7775,7 +7780,6 @@ packages:
       semver: 5.7.1
       slash: 2.0.0
       tmp: 0.0.33
-    dev: false
 
   /path-browserify/1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
@@ -8757,7 +8761,6 @@ packages:
   /slash/2.0.0:
     resolution: {integrity: sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==}
     engines: {node: '>=6'}
-    dev: false
 
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
