@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - rzadp/bump-dependencies
 jobs:
   test-node:
     strategy:
