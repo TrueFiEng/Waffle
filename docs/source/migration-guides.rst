@@ -252,14 +252,17 @@ so we decided not to use this field. Now we support just :code:`contract.abi`.
   }
 
 
-Migration from Waffle 3.* to Waffle 4.0.0-alpha
+Migration from Waffle 3.4.0 to Waffle 4.0.0-alpha
 -----------------------------------------------
 
-The main difference between Waffle 3.* and Waffle 4.0.0-alpha is about dependencies that Waffle packages use. 
+Dependencies upgrades
+~~~~~~~~~~~~~~~~~~~~~
+
+The main difference between Waffle 3.4.0 and Waffle 4.0.0-alpha is about dependencies that Waffle packages use. 
 We updated the following dependencies:
 
 - :code:`typechain` - bumped version from ^2.0.0 to ^9.0.0. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install  :code:`typechain` manually when using Waffle.
-- :code:`ethers` - bumped version from to ^5.5.4. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install :code:`ethers`` manually when using Waffle.
+- :code:`ethers` - bumped version from to ^5.5.4. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install :code:`ethers` manually when using Waffle.
 - :code:`solc` - the package is used by :code:`waffle-compiler` package to provide the default option for compiling Soldity code. Was moved to the :code:`peerDependencies` section and has no version restrictions - you now have to install :code:`solc` manually when using Waffle.
 
 If you used type generation (:code:`typechainEnabled` option set to :code:`true` in :code:`waffle.json`), you need to update your code to conform to the new naming convention used by :code:`typechain`. Contract factories now have postfix :code:`__factory` instead of :code:`Factory`. For example, :code:`MyContractFactory` becomes :code:`MyContract__factory`. Example refactoring:
