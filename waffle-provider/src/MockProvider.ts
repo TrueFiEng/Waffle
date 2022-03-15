@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import {EthereumProviderOptions} from 'ganache';
+import type {EthereumProviderOptions, Provider} from 'ganache';
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
 
@@ -16,13 +16,16 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(require('ganache').provider({
+    const ganacheProvider: Provider = require('ganache').provider({
       accounts: defaultAccounts,
       logging: {quiet: true},
       ...options?.ganacheOptions
-    }));
-    this._callHistory = new CallHistory();
-    this._callHistory.record(this);
+    });
+    const callHistory = new CallHistory();
+    const recordedGanacheProvider = callHistory.record(ganacheProvider);
+
+    super(recordedGanacheProvider as any);
+    this._callHistory = callHistory;
   }
 
   getWallets() {
