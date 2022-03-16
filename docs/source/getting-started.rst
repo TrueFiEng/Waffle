@@ -31,7 +31,7 @@ Add an external library by installing it with yarn or npm:
 
     .. code-block:: text
 
-      yarn add @openzeppelin/contracts -D
+      yarn add @openzeppelin/contracts@3.4.2 -D
 
   .. group-tab:: NPM
 
@@ -166,7 +166,7 @@ Run:
       npm install --save-dev mocha chai
 
 .. note::
-  If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`. Lastly, instead of using :code:`mocha` in your Node scripts within your :code:`package.json`, replace it with :code:`ts-node`.
+  If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`. Lastly, make sure to install mocha types: :code:`npm i -D @types/mocha`.
 
 Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
@@ -238,14 +238,14 @@ Update your :code:`package.json` file to include:
     }
   }
 
-If you are using TypeScript add :code:`mocha.opts` file in your test folder:
+If you are using TypeScript add a :code:`.mocharc.json` file in your root directory:
 
-.. code-block:: text
+.. code-block:: json
 
-  -r ts-node/register/transpile-only
-  --timeout 50000
-  --no-warnings
-  test/**/*.test.{js,ts}
+  {
+    "require": "ts-node/register/transpile-only",
+    "spec": "test/**/*.test.{js,ts}"
+  }
 
 And run:
 
