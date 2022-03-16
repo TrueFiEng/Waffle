@@ -29,18 +29,23 @@ export class CallHistory {
         return function (...args: any[]) {
           const result = original.apply(target, args);
           if (prop === 'request') {
-            console.log('we have a request');
-            console.log(JSON.stringify(args));
-            if (args[0]?.method === 'eth_call' || args[0]?.method === 'eth_estimateGas') {
+            const method = args[0]?.method;
+            // console.log('we have a request');
+            // console.log(JSON.stringify(args));
+            if (method === 'eth_call') {
               // Gas estimate is followed by a `eth_sendRawTransaction`.
               // It is easier to decode gas estimation args than decode eth_sendRawTransaction
-              console.log('its a call');
-              console.log(prop, JSON.stringify(args) + ' -> ' + JSON.stringify(result));
               callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
+              // console.log('its a call');
+              // console.log(prop, JSON.stringify(args) + ' -> ' + JSON.stringify(result));
+            } else if (method === 'eth_sendRawTransaction') {
+              console.log('raw tx')
+              const parsedTx = parseTransaction(args[0]?.params?.[0]);
+              callHistory.recordedCalls.push(toRecordedCall(parsedTx));
             }
           } else if (prop !== 'request') {
-            console.log('different prop: ', prop);
-            console.log(JSON.stringify(args));
+            // console.log('different prop: ', prop);
+            // console.log(JSON.stringify(args));
           }
 
           return result;
