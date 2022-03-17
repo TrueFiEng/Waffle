@@ -1,36 +1,31 @@
 import {providers, ContractFactory, Signer, Wallet, Contract} from 'ethers';
 import {ContractJSON, isStandard, hasByteCode} from './ContractJSON';
 
-type Newable<T> = { new(...args: any[]): T };
+type Newable<T> = { new(...args: any): T };
 
-export function deployContract(
-  signer: Signer,
-  contractJSON: ContractJSON,
-  args?: any[],
-  overrideOptions?: providers.TransactionRequest
-): Promise<Contract>
+type ContractFactoryOrJSON = Newable<ContractFactory> | ContractJSON;
 
-export async function deployContract<T extends ContractFactory>(
-  wallet: Wallet,
-  Factory: Newable<T>,
-  args: Parameters<T['deploy']>,
-  overrideOptions?: providers.TransactionRequest
-): Promise<ReturnType<T['deploy']>>
+type ContractTypeOf<T> = T extends Newable<infer U> ? (U extends ContractFactory ? ReturnType<U['deploy']> : never) : Contract;
+type DeployArgumentsOf<T> = T extends Newable<infer U> ? (U extends ContractFactory ? Parameters<U['deploy']> : never) : any[];
 
-export async function deployContract<T extends ContractFactory>(
+const isFactory = (contract: ContractFactoryOrJSON): contract is Newable<ContractFactory> => 
+  'call' in contract
+
+export async function deployContract<T extends ContractFactoryOrJSON>(
   wallet: Wallet | Signer,
-  factoryOrContractJson: Newable<T> | ContractJSON,
-  args: Parameters<T['deploy']>| any[] = [],
+  factoryOrContractJson: T,
+  args: DeployArgumentsOf<T> = [] as any,
   overrideOptions: providers.TransactionRequest = {}
-): Promise<ReturnType<T['deploy']> | Contract> {
-  if ('abi' in factoryOrContractJson) {
-    return deployFromJson(wallet, factoryOrContractJson, args, overrideOptions);
-  } else {
-    const Factory = factoryOrContractJson as Newable<T>;
+): Promise<ContractTypeOf<T>> {
+  if (isFactory(factoryOrContractJson)) {
+    const Factory = factoryOrContractJson;
     const contractFactory = new Factory(wallet);
     const contract = await contractFactory.deploy(...args, overrideOptions);
     await contract.deployed();
-    return contract;
+    return contract as any;
+  } else {
+    const contract = await deployFromJson(wallet, factoryOrContractJson, args, overrideOptions);
+    return contract as any;
   }
 }
 
