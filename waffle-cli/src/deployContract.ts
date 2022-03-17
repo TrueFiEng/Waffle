@@ -5,11 +5,15 @@ type Newable<T> = { new(...args: any): T };
 
 type ContractFactoryOrJSON = Newable<ContractFactory> | ContractJSON;
 
-type ContractTypeOf<T> = T extends Newable<infer U> ? (U extends ContractFactory ? ReturnType<U['deploy']> : never) : Contract;
-type DeployArgumentsOf<T> = T extends Newable<infer U> ? (U extends ContractFactory ? Parameters<U['deploy']> : never) : any[];
+type ContractTypeOf<T> = T extends Newable<infer U>
+  ? (U extends ContractFactory ? ReturnType<U['deploy']> : never)
+  : Contract;
+type DeployArgumentsOf<T> = T extends Newable<infer U>
+  ? (U extends ContractFactory ? Parameters<U['deploy']> : never)
+  : any[];
 
-const isFactory = (contract: ContractFactoryOrJSON): contract is Newable<ContractFactory> => 
-  'call' in contract
+const isFactory = (contract: ContractFactoryOrJSON): contract is Newable<ContractFactory> =>
+  'call' in contract;
 
 export async function deployContract<T extends ContractFactoryOrJSON>(
   wallet: Wallet | Signer,
