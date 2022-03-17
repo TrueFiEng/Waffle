@@ -1,4 +1,5 @@
 import {utils} from 'ethers';
+import { parseTransaction } from 'ethers/lib/utils';
 import type {Provider} from 'ganache';
 
 export interface RecordedCall {
@@ -10,6 +11,7 @@ export class CallHistory {
   private recordedCalls: RecordedCall[] = []
 
   clear() {
+    console.log('clearing...')
     this.recordedCalls = [];
   }
 
@@ -19,6 +21,48 @@ export class CallHistory {
 
   record(provider: Provider): Provider {
     const callHistory = this;
+
+
+    // WRITE A GOOD COMMENT HERE
+    (provider as any).on('connect', () => {
+      (provider as any).on('ganache:vm:tx:step', (args: any) => {
+        try {
+
+          if(args.data.opcode.name === 'CALL') {
+            const [gas, addr, value, argsOffset, argsLength, retOffset, retLength]: Buffer[] = [...args.data.stack].reverse();
+
+            const calldata = args.data.memory.slice(decodeNumber(argsOffset), decodeNumber(argsOffset)+decodeNumber(argsLength));
+            callHistory.recordedCalls.push(toRecordedCall({
+              to: addr,
+              data: calldata,
+            }));
+
+          }
+          else {
+            console.log(args.data.opcode.name)
+          }
+        } catch(err) {
+          console.log(err)
+        }
+        // console.log('ganache:vm:tx:step')
+      });
+      // (provider as any).on('ganache:vm:tx:before', (args: any) => {
+      //   console.log('ganache:vm:tx:before')
+      //   console.log(args)
+      // });
+      // (provider as any).on('ganache:vm:tx:after', (args: any) => {
+      //   console.log('ganache:vm:tx:after')
+      //   console.log(args)
+      // });
+      // (provider as any).on('message', (args: any) => {
+      //   console.log('message')
+      //   console.log(args)
+      // });
+      // (provider as any).on('data', (args: any) => {
+      //   console.log('data')
+      //   console.log(args)
+      // });
+    });
 
     const ganacheProviderProxy = new Proxy(provider, {
       get(target, prop, receiver) {
@@ -32,7 +76,7 @@ export class CallHistory {
             const method = args[0]?.method;
             // console.log('we have a request');
             // console.log(JSON.stringify(args));
-            if (method === 'eth_call') {
+            if (method === 'eth_call') { // query
               // Gas estimate is followed by a `eth_sendRawTransaction`.
               // It is easier to decode gas estimation args than decode eth_sendRawTransaction
               callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
@@ -41,7 +85,11 @@ export class CallHistory {
             } else if (method === 'eth_sendRawTransaction') {
               console.log('raw tx')
               const parsedTx = parseTransaction(args[0]?.params?.[0]);
+
               callHistory.recordedCalls.push(toRecordedCall(parsedTx));
+              console.log(callHistory.recordedCalls.length)
+            } else {
+              console.log('method', method)
             }
           } else if (prop !== 'request') {
             // console.log('different prop: ', prop);
@@ -104,3 +152,8 @@ function toRecordedCall(message: any): RecordedCall {
     data: message.data ? utils.hexlify(message.data) : '0x'
   };
 }
+
+function decodeNumber(data: Buffer) {
+  const newData = Buffer.concat([data, Buffer.alloc(32, 0)])
+  return newData.readUInt32LE()
+} 

@@ -16,11 +16,15 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    const ganacheProvider: Provider = require('ganache').provider({
-      accounts: defaultAccounts,
+    const mergedOptions: EthereumProviderOptions = {
+      wallet: {
+        accounts: defaultAccounts
+      },
       logging: {quiet: true},
+      miner: {defaultTransactionGasLimit: 90_000},
       ...options?.ganacheOptions
-    });
+    }
+    const ganacheProvider: Provider = require('ganache').provider(mergedOptions);
     const callHistory = new CallHistory();
     const recordedGanacheProvider = callHistory.record(ganacheProvider);
 
