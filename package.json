@@ -7,7 +7,8 @@
     "node": ">=10.0"
   },
   "workspaces": [
-    "waffle-*"
+    "waffle-*",
+    "examples/*"
   ],
   "scripts": {
     "postinstall": "patch-package",
@@ -38,7 +39,7 @@
     "sinon": "^9.2.1",
     "sinon-chai": "^3.5.0",
     "ts-node": "^9.0.0",
-    "typescript": "^4.1.2",
+    "typescript": "^4.6.2",
     "wsrun": "^5.2.0"
   },
   "dependencies": {

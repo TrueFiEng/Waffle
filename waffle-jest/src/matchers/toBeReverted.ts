@@ -7,7 +7,7 @@ export async function toBeReverted(promise: Promise<any>) {
     };
   } catch (error) {
     const message =
-      error instanceof Object && 'message' in error ? error.message : JSON.stringify(error);
+      error instanceof Object && 'message' in error ? (error as any).message : JSON.stringify(error);
 
     const isReverted = message.search('revert') >= 0;
     const isThrown = message.search('invalid opcode') >= 0;
