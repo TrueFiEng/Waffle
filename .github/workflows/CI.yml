@@ -28,51 +28,26 @@ jobs:
         run: sudo cp ./.github/workflows/solc /bin
       - run: yarn build
       - run: yarn test:others
-  # examples:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     working-directory: ./examples
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Use Node.js
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12.8
-  #     - name: Mock-contracts
-  #       run: yarn install && yarn lint && yarn build && yarn test
-  #       working-directory: ${{ env.working-directory }}/mock-contracts
-  #     - name: Change-balance
-  #       run: yarn install && yarn lint && yarn test
-  #       working-directory: ${{ env.working-directory }}/change-balance
-  #     - name: Basic
-  #       run: yarn install && yarn lint && yarn build && yarn test
-  #       working-directory: ${{ env.working-directory }}/basic
-  #     - name: Called-on-contract
-  #       run: yarn install && yarn lint && yarn build && yarn test
-  #       working-directory: ${{ env.working-directory }}/called-on-contract
-  #     - name: Ens
-  #       run: yarn install && yarn lint && yarn test
-  #       working-directory: ${{ env.working-directory }}/ens
-  # docs-and-linter:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     working-directory: ./docs
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: 3.7
-  #     - name: dependencies
-  #       run: pip install -r requirements.txt
-  #       working-directory: ${{ env.working-directory }}
-  #     - name: Make html
-  #       run: make html
-  #       working-directory: ${{ env.working-directory }}
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12.8
-  #     - run: yarn install --frozen-lockfile
-  #     - name: linter
-  #       run: yarn install && yarn lint
+  docs-and-linter:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./docs
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: dependencies
+        run: pip install -r requirements.txt
+        working-directory: ${{ env.working-directory }}
+      - name: Make html
+        run: make html
+        working-directory: ${{ env.working-directory }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - run: yarn install --frozen-lockfile
+      - name: linter
+        run: yarn install && yarn lint
