@@ -4,6 +4,7 @@ import {defaultConfig} from './defaultConfig';
 export function inputToConfig(input: InputConfig): Config {
   const result: Config = {...defaultConfig};
 
+  console.log('input to config..')
   for (const key in input) {
     if ((input as any)[key] !== undefined) {
       if (key in defaultConfig) {
@@ -14,7 +15,9 @@ export function inputToConfig(input: InputConfig): Config {
     }
   }
 
+  console.log('input to config ok')
   validate(result);
+  console.log(result)
   return result;
 }
 

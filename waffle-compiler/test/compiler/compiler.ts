@@ -14,7 +14,9 @@ const config = inputToConfig({
 
 describe('INTEGRATION: Compiler', () => {
   it.only('compile just compiles', async () => {
+    console.log('compiling..')
     const output = await compile(config);
+    console.log('compiled.')
     const basicTokenOutput = output.contracts[
       'test/projects/example/BasicToken.sol'
     ].BasicToken;

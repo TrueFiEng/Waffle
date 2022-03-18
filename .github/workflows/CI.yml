@@ -26,7 +26,7 @@ jobs:
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
       - run: yarn build
-      - run: yarn test:others
+      - run: cd waffle-compiler && yarn test
   docs-and-linter:
     runs-on: ubuntu-latest
     env:

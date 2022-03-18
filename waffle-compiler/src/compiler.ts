@@ -27,7 +27,10 @@ export async function compile(input: InputConfig) {
 }
 
 async function newCompile(config: Config) {
-  const resolver = ImportsFsEngine().addResolver(
+  console.log('new compile..')
+  const importsFsEngine = ImportsFsEngine();
+  console.log('adding resolved..')
+  const resolver = importsFsEngine.addResolver(
     // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
