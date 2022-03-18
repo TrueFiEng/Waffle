@@ -31,11 +31,14 @@ async function newCompile(config: Config) {
     // Backwards compatibility - change node_modules path
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
   );
+  console.log('gathering sources...')
   const sources = await gatherSources(
     findInputs(config.sourceDirectory, getExtensionForCompilerType(config)),
     '.',
     resolver
   );
+  console.log('sources gathered.')
+  console.log(sources)
   return getCompileFunction(config)(sources);
 }
 
