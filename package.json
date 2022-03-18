@@ -14,7 +14,7 @@
     "postinstall": "patch-package",
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
-    "test": "wsrun -c test",
+    "test": "wsrun -c -e test",
     "test:others": "wsrun -x @ethereum-waffle/jest -c test",
     "test:jest": "wsrun -p @ethereum-waffle/jest -c test",
     "release": "yarn build && yarn changeset publish"
