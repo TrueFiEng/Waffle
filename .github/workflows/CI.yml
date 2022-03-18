@@ -52,26 +52,26 @@ jobs:
       - name: Ens
         run: yarn install && yarn lint && yarn test
         working-directory: ${{ env.working-directory }}/ens
-  # docs-and-linter:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     working-directory: ./docs
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: 3.7
-  #     - name: dependencies
-  #       run: pip install -r requirements.txt
-  #       working-directory: ${{ env.working-directory }}
-  #     - name: Make html
-  #       run: make html
-  #       working-directory: ${{ env.working-directory }}
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12.8
-  #     - run: yarn install --frozen-lockfile
-  #     - name: linter
-  #       run: yarn install && yarn lint
+  docs-and-linter:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./docs
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: dependencies
+        run: pip install -r requirements.txt
+        working-directory: ${{ env.working-directory }}
+      - name: Make html
+        run: make html
+        working-directory: ${{ env.working-directory }}
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.8
+      - run: yarn install --frozen-lockfile
+      - name: linter
+        run: yarn install && yarn lint
