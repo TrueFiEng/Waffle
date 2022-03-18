@@ -46,7 +46,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.14.1
+          node-version: 16.14.0
       - run: yarn install --frozen-lockfile
       - name: linter
         run: yarn install && yarn lint
