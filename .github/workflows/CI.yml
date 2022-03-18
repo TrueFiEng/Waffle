@@ -27,11 +27,11 @@ jobs:
         run: sudo cp ./.github/workflows/solc /bin
       - run: yarn build
       - run: |
-          cd waffle-compiler
+          cd waffle-cli
+          yarn test
+          cd ../waffle-compiler
           yarn test
           cd ../waffle-ens
-          yarn test
-          cd ../waffle-cli
           yarn test
   # examples:
   #   runs-on: ubuntu-latest
