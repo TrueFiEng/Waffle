@@ -26,19 +26,7 @@ jobs:
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
       - run: yarn build
-      - run: |
-          cd waffle-mock-contract
-          yarn test
-          cd ../waffle-compiler
-          yarn test
-          cd ../waffle-ens
-          yarn test
-          cd ../waffle-cli
-          yarn test
-          cd ../waffle-chai
-          yarn test
-          cd ../waffle-provider
-          yarn test
+      - run: yarn test:others
   # examples:
   #   runs-on: ubuntu-latest
   #   env:
