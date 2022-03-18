@@ -53,5 +53,7 @@
     "solc": "^0.6.3",
     "typechain": "^7.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "openzeppelin-solidity": "2.3.0"
+  }
 }
