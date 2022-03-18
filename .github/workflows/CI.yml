@@ -31,6 +31,8 @@ jobs:
           yarn test
           cd ../waffle-ens
           yarn test
+          cd ../waffle-cli
+          yarn test
   # examples:
   #   runs-on: ubuntu-latest
   #   env:
