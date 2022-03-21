@@ -102,7 +102,7 @@ describe('GethProvider', () => {
     expect(await provider.getTransactionCount(Wallet.createRandom().address)).to.eq(0)
   })
 
-  it.skip('bench', async () => {
+  it.only('bench', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();

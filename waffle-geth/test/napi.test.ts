@@ -1,0 +1,3 @@
+describe('napi', () => {
+  it('cgo')
+})

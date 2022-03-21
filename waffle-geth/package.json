@@ -39,10 +39,14 @@
   },
   "dependencies": {
     "ethers": "^5.0.1",
-    "ffi-napi": "^4.0.3"
+    "ffi-napi": "^4.0.3",
+    "bindings": "~1.2.1",
+    "node-addon-api": "^4.2.0"
   },
   "devDependencies": {
+    "@ethereum-waffle/chai": "^3.4.0",
     "@types/ffi-napi": "^4.0.4",
-    "@ethereum-waffle/chai": "^3.4.0"
-  }
+    "node-gyp": "^8.4.1"
+  },
+  "gypfile": true
 }
