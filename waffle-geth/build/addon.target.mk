@@ -169,7 +169,7 @@ LIBTOOLFLAGS_Release := \
 	-Wl,-search_paths_first
 
 LIBS := \
-	/Users/dmytro/Projects/work/Waffle/waffle-geth/go/build/wafflegeth.dylib
+	/Users/dmytro/Projects/work/Waffle/waffle-geth/go/build/wafflegeth.a
 
 $(builddir)/addon.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(builddir)/addon.node: LIBS := $(LIBS)

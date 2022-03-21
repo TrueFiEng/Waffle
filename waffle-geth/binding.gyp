@@ -9,7 +9,7 @@
         "<!@(node -p \"require('node-addon-api').include\")"
       ],
       "libraries": [
-        "/Users/dmytro/Projects/work/Waffle/waffle-geth/go/build/wafflegeth.dylib"
+        "/Users/dmytro/Projects/work/Waffle/waffle-geth/go/build/wafflegeth.a"
         # "./go/build/wafflegeth.dylib"
       ],
       'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
