@@ -49,6 +49,8 @@
   "devDependencies": {
     "@ethereum-waffle/chai": "4.0.0-alpha.0",
     "@ethereum-waffle/compiler": "4.0.0-alpha.0",
-    "@ethereum-waffle/provider": "4.0.0-alpha.0"
+    "solc": "^0.6.3",
+    "@ethereum-waffle/provider": "4.0.0-alpha.0",
+    "typechain": "^7.0.0"
   }
 }

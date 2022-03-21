@@ -8,7 +8,7 @@ jobs:
   test-node:
     strategy:
       matrix:
-        node: ["12.22", "14.x", "16.x"]
+        node: ["12.17", "14.x", "16.x"]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -17,16 +17,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+      - run: npm i -g pnpm@6.20.3
       - name: Cache
         uses: actions/cache@v2
         with:
-          path: ./.cache/yarn
-          key: yarn-packages-waffle-${{ matrix.node }}-{{ checksum "yarn.lock" }}
-      - run: yarn install --frozen-lockfile
+          path: ~/.pnpm-store
+          key: pnpm-packages-waffle-${{ matrix.node }}-{{ checksum "pnpm-lock.yaml" }}
+      - run: pnpm install --frozen-lockfile
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
-      - run: yarn build
-      - run: yarn test:others
+      - run: pnpm run build
+      - run: pnpm run test:others
   docs-and-linter:
     runs-on: ubuntu-latest
     env:
@@ -46,7 +47,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.14.0
-      - run: yarn install --frozen-lockfile
+          node-version: 16.14
+      - run: npm i -g pnpm@6.20.3
+      - run: pnpm install --frozen-lockfile
       - name: linter
-        run: yarn install && yarn lint
+        run: pnpm install && pnpm run lint
