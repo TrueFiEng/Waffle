@@ -10,13 +10,12 @@
     "waffle-*"
   ],
   "scripts": {
-    "postinstall": "patch-package",
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
     "test": "wsrun -e -s -c test",
     "test:others": "wsrun -e -s -x @ethereum-waffle/jest -c test",
     "test:jest": "wsrun -p @ethereum-waffle/jest -c test",
-    "release": "yarn build && yarn changeset publish"
+    "release": "pnpm run build && pnpm changeset publish"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
