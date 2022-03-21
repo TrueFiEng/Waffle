@@ -8,4 +8,6 @@ out
 docs/venv
 build
 cache
+
+# Auto-generated typechain files
 typechain
