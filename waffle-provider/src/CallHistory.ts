@@ -38,9 +38,9 @@ export class CallHistory {
             }));
 
           }
-          else {
-            console.log(args.data.opcode.name)
-          }
+          // else {
+          //   console.log(args.data.opcode.name)
+          // }
         } catch(err) {
           console.log(err)
         }
@@ -83,13 +83,25 @@ export class CallHistory {
               // console.log('its a call');
               // console.log(prop, JSON.stringify(args) + ' -> ' + JSON.stringify(result));
             } else if (method === 'eth_sendRawTransaction') {
-              console.log('raw tx')
+              console.log('eth_sendRawTransaction')
               const parsedTx = parseTransaction(args[0]?.params?.[0]);
 
               callHistory.recordedCalls.push(toRecordedCall(parsedTx));
-              console.log(callHistory.recordedCalls.length)
+            } else if (method === 'eth_estimateGas') {
+              console.log('eth_estimateGas')
+              return (async () => {
+                try {
+                  const estimation = await result;
+                  console.log({estimation})
+                  return estimation
+               } catch(e) {
+                 console.error(e);
+                 return '0xE4E1C0' // 15_000_000
+               }
+              })();
+              
             } else {
-              console.log('method', method)
+              // console.log('method', method)
             }
           } else if (prop !== 'request') {
             // console.log('different prop: ', prop);
