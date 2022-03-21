@@ -38,28 +38,31 @@
     "node": ">=10.0"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/bytes": "^5.0.0",
+    "@ethersproject/providers": "^5.0.0",
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
     "@typechain/ethers-v5": "^9.0.0",
     "@types/mkdirp": "^0.5.2",
-    "@types/node-fetch": "^2.5.5",
+    "@types/node-fetch": "^2.6.1",
     "mkdirp": "^0.5.1",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "4.0.0-alpha.0",
     "@ethereum-waffle/provider": "4.0.0-alpha.0",
     "@openzeppelin/contracts": "3.0.1",
     "@types/fs-extra": "^9.0.4",
+    "ethers": "^5.5.4",
     "fs-extra": "^9.0.1",
     "openzeppelin-solidity": "2.3.0",
-    "ethers": "^5.5.4",
-    "typechain": "^7.0.0",
-    "solc": "^0.6.3"
+    "solc": "^0.6.3",
+    "typechain": "^7.0.0"
   },
   "peerDependencies": {
-    "typechain": "^7.0.0",
     "ethers": "^5.5.4",
-    "solc": "*"
+    "solc": "*",
+    "typechain": "^7.0.0"
   }
 }
