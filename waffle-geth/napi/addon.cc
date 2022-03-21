@@ -45,10 +45,28 @@ Napi::Value bindCountLines(const Napi::CallbackInfo& info) {
   return num;
 }
 
+Napi::Value bindToUpper(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+
+  if (info.Length() != 1) {
+    Napi::TypeError::New(env, "Wrong number of arguments")
+        .ThrowAsJavaScriptException();
+    return env.Null();
+  }
+
+  std::string arg = (std::string)info[0].As<Napi::String>().ToString();
+
+  const char* res = toUpper((char*)arg.c_str());
+
+  Napi::String num = Napi::String::New(env, res);
+  return num;
+}
+
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
   exports.Set(Napi::String::New(env, "add"), Napi::Function::New(env, Add));
   exports.Set(Napi::String::New(env, "cgoCurrentMillis"), Napi::Function::New(env, bindCgoCurrentMillis));
   exports.Set(Napi::String::New(env, "countLines"), Napi::Function::New(env, bindCountLines));
+  exports.Set(Napi::String::New(env, "toUpper"), Napi::Function::New(env, bindToUpper));
   return exports;
 }
 

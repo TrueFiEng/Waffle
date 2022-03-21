@@ -256,3 +256,10 @@ func countLines(str *C.char) int32 {
 	n := strings.Count(go_str, "\n")
 	return int32(n)
 }
+
+//export toUpper
+func toUpper(str *C.char) *C.char {
+	go_str := C.GoString(str)
+	upper := strings.ToUpper(go_str)
+	return C.CString(upper)
+}

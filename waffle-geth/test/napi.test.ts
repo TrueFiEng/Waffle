@@ -7,10 +7,12 @@ import {readFileSync} from 'fs'
 
 const libFfi = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
   countLines: ['int', ['string']],
+  toUpper: ['string', ['string']],
 });
 
 const TEXT = readFileSync(join(__dirname, '../../yarn.lock'), { encoding: 'utf-8' })
 const LINES = TEXT.split('\n').length - 1;
+const TEXT_UPPER = TEXT.toUpperCase();
 
 describe('napi', () => {
   it('cgoCurrentMillis', () => {
@@ -33,18 +35,44 @@ describe('napi', () => {
     })    
   })
 
-  describe.only('bench count lines', () => {
+  describe('bench count lines', () => {
     it('napi', () => {
       formatBench(bench(() => {
         const lines = libNapi.countLines(TEXT);
-        expect(lines).to.eq(LINES);
       }))
     })
 
     it('ffi', () => {
       formatBench(bench(() => {
         const lines = libFfi.countLines(TEXT);
-        expect(lines).to.eq(LINES);
+      }))
+    })    
+  })
+
+  describe('to upper', () => {
+    it('napi', () => {
+      const upper = libNapi.toUpper(TEXT);
+      expect(upper).to.eq(TEXT_UPPER);
+    })
+
+    it('ffi', () => {
+      const upper = libFfi.toUpper(TEXT);
+      expect(upper).to.eq(TEXT_UPPER);
+    })    
+  })
+
+  describe.only('bench to upper', () => {
+    it('napi', () => {
+      formatBench(bench(() => {
+        const upper = libNapi.toUpper(TEXT);
+        expect(upper).to.eq(TEXT_UPPER);
+      }))
+    })
+
+    it('ffi', () => {
+      formatBench(bench(() => {
+        const upper = libFfi.toUpper(TEXT);
+      expect(upper).to.eq(TEXT_UPPER);
       }))
     })    
   })
