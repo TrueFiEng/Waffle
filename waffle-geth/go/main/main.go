@@ -9,6 +9,7 @@ import (
 	"math/big"
 	"math/rand"
 	"strconv"
+	"strings"
 	"time"
 
 	"C"
@@ -60,13 +61,13 @@ func getBlockNumber(simID C.int) *C.char {
 
 //export getCode
 func getCode(simID C.int, account *C.char) *C.char {
-  sim := getSimulator(simID)
+	sim := getSimulator(simID)
 	code, err := sim.Backend.CodeAt(context.Background(), common.HexToAddress(C.GoString(account)), nil)
-  if err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 
-  return C.CString(common.Bytes2Hex(code))
+	return C.CString(common.Bytes2Hex(code))
 }
 
 //export getChainID
@@ -247,4 +248,11 @@ func cgoSeed(m C.long) {
 //export cgoRandom
 func cgoRandom(m C.int) C.int {
 	return C.int(rand.Intn(int(m)))
+}
+
+//export countLines
+func countLines(str *C.char) int32 {
+	go_str := C.GoString(str)
+	n := strings.Count(go_str, "\n")
+	return int32(n)
 }
