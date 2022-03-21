@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-const libNapi = require('../build/Release/addon.node');
+const libNapi = require('../go/build/wafflegeth-napi.node');
 
 import ffi from 'ffi-napi';
 import {join} from 'path';
