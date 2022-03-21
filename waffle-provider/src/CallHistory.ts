@@ -1,5 +1,5 @@
 import {utils} from 'ethers';
-import { parseTransaction } from 'ethers/lib/utils';
+import {parseTransaction} from 'ethers/lib/utils';
 import type {Provider} from 'ganache';
 
 export interface RecordedCall {
@@ -7,11 +7,15 @@ export interface RecordedCall {
   readonly data: string;
 }
 
+/**
+ * CallHistory gathers a log of queries and transactions
+ * sent to a blockchain provider.
+ * It is used by the `calledOnContract` matcher.
+ */
 export class CallHistory {
   private recordedCalls: RecordedCall[] = []
 
   clear() {
-    console.log('clearing...')
     this.recordedCalls = [];
   }
 
@@ -20,142 +24,98 @@ export class CallHistory {
   }
 
   record(provider: Provider): Provider {
+    // Required for the Proxy object.
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const callHistory = this;
 
-
-    // WRITE A GOOD COMMENT HERE
+    /**
+     * One needs to register any `ganache:*` event handler
+     * after a `connect` event is emitted.
+     * After that we can consider the provider to be initialized.
+     * Otherwise some internal object might not have been created yet,
+     * and there is a silently ignored error deep in ganache / ethereum VM.
+     */
     (provider as any).on('connect', () => {
+      /**
+       * A single step over a single opcode inside the EVM.
+       * We use it to intercept `CALL` opcodes,
+       * and track a history of internal calls between smart contracts.
+       */
       (provider as any).on('ganache:vm:tx:step', (args: any) => {
         try {
+          if (args.data.opcode.name === 'CALL') {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars, max-len
+            const [gas, addr, value, argsOffset, argsLength, retOffset, retLength]: Buffer[] = [...args.data.stack].reverse(); // Source: ethervm.io
 
-          if(args.data.opcode.name === 'CALL') {
-            const [gas, addr, value, argsOffset, argsLength, retOffset, retLength]: Buffer[] = [...args.data.stack].reverse();
-
-            const calldata = args.data.memory.slice(decodeNumber(argsOffset), decodeNumber(argsOffset)+decodeNumber(argsLength));
+            const calldata = args.data.memory
+              .slice(decodeNumber(argsOffset), decodeNumber(argsOffset) + decodeNumber(argsLength));
             callHistory.recordedCalls.push(toRecordedCall({
               to: addr,
-              data: calldata,
+              data: calldata
             }));
-
           }
-          // else {
-          //   console.log(args.data.opcode.name)
-          // }
-        } catch(err) {
-          console.log(err)
+        } catch (err) {
+          console.log(err);
         }
-        // console.log('ganache:vm:tx:step')
       });
-      // (provider as any).on('ganache:vm:tx:before', (args: any) => {
-      //   console.log('ganache:vm:tx:before')
-      //   console.log(args)
-      // });
-      // (provider as any).on('ganache:vm:tx:after', (args: any) => {
-      //   console.log('ganache:vm:tx:after')
-      //   console.log(args)
-      // });
-      // (provider as any).on('message', (args: any) => {
-      //   console.log('message')
-      //   console.log(args)
-      // });
-      // (provider as any).on('data', (args: any) => {
-      //   console.log('data')
-      //   console.log(args)
-      // });
     });
 
-    const ganacheProviderProxy = new Proxy(provider, {
+    /**
+     * We override the ganache provider with a proxy,
+     * that hooks into a `provider.request()` method.
+     *
+     * All other methods and properties are left intact.
+     */
+    return new Proxy(provider, {
       get(target, prop, receiver) {
         const original = (target as any)[prop as any];
         if (typeof original !== 'function') {
+          // Some non-method property - returned as-is.
           return original;
         }
+        // Return a function override.
         return function (...args: any[]) {
-          const result = original.apply(target, args);
-          if (prop === 'request') {
-            const method = args[0]?.method;
-            // console.log('we have a request');
-            // console.log(JSON.stringify(args));
-            if (method === 'eth_call') { // query
-              // Gas estimate is followed by a `eth_sendRawTransaction`.
-              // It is easier to decode gas estimation args than decode eth_sendRawTransaction
-              callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
-              // console.log('its a call');
-              // console.log(prop, JSON.stringify(args) + ' -> ' + JSON.stringify(result));
-            } else if (method === 'eth_sendRawTransaction') {
-              console.log('eth_sendRawTransaction')
-              const parsedTx = parseTransaction(args[0]?.params?.[0]);
+          // Get a function result from the original provider.
+          const originalResult = original.apply(target, args);
 
-              callHistory.recordedCalls.push(toRecordedCall(parsedTx));
-            } else if (method === 'eth_estimateGas') {
-              console.log('eth_estimateGas')
-              return (async () => {
-                try {
-                  const estimation = await result;
-                  console.log({estimation})
-                  return estimation
-               } catch(e) {
-                 console.error(e);
-                 return '0xE4E1C0' // 15_000_000
-               }
-              })();
-              
-            } else {
-              // console.log('method', method)
-            }
-          } else if (prop !== 'request') {
-            // console.log('different prop: ', prop);
-            // console.log(JSON.stringify(args));
+          // Every method other than `provider.request()` left intact.
+          if (prop !== 'request') return originalResult;
+
+          const method = args[0]?.method;
+          /**
+           * A method can be:
+           * - `eth_call` - a query to the node,
+           * - `eth_sendRawTransaction` - a transaction,
+           * - `eth_estimateGas` - gas estimation, typically precedes `eth_sendRawTransaction`.
+           */
+          if (method === 'eth_call') { // Record a query.
+            callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
+          } else if (method === 'eth_sendRawTransaction') { // Record a transaction.
+            const parsedTx = parseTransaction(args[0]?.params?.[0]);
+            callHistory.recordedCalls.push(toRecordedCall(parsedTx));
+          } else if (method === 'eth_estimateGas') {
+            /**
+             * Ethers executes a gas estimation before sending the transaction to the blockchain.
+             * This poses a problem for Waffle - we cannot track sent transactions which eventually revert.
+             * This is a common use case for testing, but such transaction never gets sent.
+             * A failed gas estimation prevents it from being sent.
+             *
+             * In test environment, we replace the gas estimation with an always-succeeding method.
+             * If a transaction is meant to be reverted, it will do so after it is actually send and mined.
+             */
+            return (async () => {
+              try {
+                return await originalResult;
+              } catch (e) {
+                return '0xE4E1C0'; // 15_000_000
+              }
+            })();
           }
-
-          return result;
+          return originalResult; // Fallback for any other method.
         };
       }
     });
-
-    return ganacheProviderProxy;
-
-    // addVmListener(provider, 'beforeMessage', (message) => {
-    //   this.recordedCalls.push(toRecordedCall(message));
-    // });
   }
-}
-
-function addVmListener(
-  provider: Provider,
-  event: string,
-  handler: (value: any) => void
-) {
-
-  // const prov: any = provider.provider;
-
-  // console.log({prov});
-  // prov.on('ganache:vm:tx:before', (...args: any[]) => {
-  //   console.log('ganache:vm:tx:before')
-  //   console.log(args)
-  // });
-  // prov.on('ganache:vm:tx:step', (...args: any[]) => {
-  //   console.log('ganache:vm:tx:step')
-  //   console.log(args)
-  // });
-  // prov.on('ganache:vm:tx:after', (...args: any[]) => {
-  //   console.log('ganache:vm:tx:after')
-  //   console.log(args)
-  // });
-
-  // provider = new Proxy(provider, {
-  //   get(target, prop, receiver) {
-  //     console.log('prop: ', prop)
-  //   }
-  // })
-
-  // const {blockchain} = prov.engine.manager.state;
-  // const createVMFromStateTrie = blockchain.createVMFromStateTrie;
-  // blockchain.createVMFromStateTrie = function (...args: any[]) {
-  //   const vm = createVMFromStateTrie.apply(this, args);
-  //   vm.on(event, handler);
-  //   return vm;
-  // };
 }
 
 function toRecordedCall(message: any): RecordedCall {
@@ -165,7 +125,11 @@ function toRecordedCall(message: any): RecordedCall {
   };
 }
 
-function decodeNumber(data: Buffer) {
-  const newData = Buffer.concat([data, Buffer.alloc(32, 0)])
-  return newData.readUInt32LE()
-} 
+/**
+ * Decodes a number taken from EVM execution step
+ * into a JS number.
+ */
+function decodeNumber(data: Buffer): number {
+  const newData = Buffer.concat([data, Buffer.alloc(32, 0)]);
+  return newData.readUInt32LE();
+}

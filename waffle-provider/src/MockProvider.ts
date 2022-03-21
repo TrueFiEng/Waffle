@@ -23,7 +23,7 @@ export class MockProvider extends providers.Web3Provider {
       logging: {quiet: true},
       miner: {defaultTransactionGasLimit: 90_000},
       ...options?.ganacheOptions
-    }
+    };
     const ganacheProvider: Provider = require('ganache').provider(mergedOptions);
     const callHistory = new CallHistory();
     const recordedGanacheProvider = callHistory.record(ganacheProvider);

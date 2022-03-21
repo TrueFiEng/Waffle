@@ -80,7 +80,7 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
     const token = await deployToken(wallet, 10);
 
     provider.clearCallHistory();
-    const transferTx = await token.transfer(wallet.address, 20)
+    const transferTx = await token.transfer(wallet.address, 20);
     await expect(transferTx.wait()).to.be.eventually.rejected;
 
     expect(provider.callHistory).to.deep.include({
