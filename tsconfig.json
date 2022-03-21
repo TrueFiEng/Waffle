@@ -11,6 +11,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2018"
+    "target": "ESNEXT"
   }
 }
