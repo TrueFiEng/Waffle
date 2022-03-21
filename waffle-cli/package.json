@@ -45,10 +45,10 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/chai": "4.0.0-alpha.0",
-    "@ethereum-waffle/compiler": "4.0.0-alpha.0",
-    "@ethereum-waffle/mock-contract": "4.0.0-alpha.0",
-    "@ethereum-waffle/provider": "4.0.0-alpha.0",
+    "@ethereum-waffle/chai": "workspace:*",
+    "@ethereum-waffle/compiler": "workspace:*",
+    "@ethereum-waffle/mock-contract": "workspace:*",
+    "@ethereum-waffle/provider": "workspace:*",
     "ethers": "^5.5.4",
     "solc": "^0.6.3",
     "typechain": "^7.0.0"
