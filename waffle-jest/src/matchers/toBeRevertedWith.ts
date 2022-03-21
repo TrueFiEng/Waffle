@@ -9,7 +9,7 @@ export async function toBeRevertedWith(
       message: () => 'Expected transaction to be reverted'
     };
   } catch (error) {
-    const message = error instanceof Object && 'message' in error ? error.message : JSON.stringify(error);
+    const message = error instanceof Object && 'message' in error ? (error as any).message : JSON.stringify(error);
 
     const isReverted = message.search('revert') >= 0 && message.search(revertReason) >= 0;
     const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
