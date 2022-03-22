@@ -21,7 +21,9 @@ export class MockProvider extends providers.Web3Provider {
         accounts: defaultAccounts
       },
       logging: {quiet: true},
-      miner: {defaultTransactionGasLimit: 90_000},
+      chain: {
+        hardfork: 'berlin'
+      },
       ...options?.ganacheOptions
     };
     const ganacheProvider: Provider = require('ganache').provider(mergedOptions);
