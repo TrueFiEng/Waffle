@@ -47,10 +47,10 @@
     "ethers": "^5.5.4"
   },
   "devDependencies": {
-    "@ethereum-waffle/chai": "4.0.0-alpha.0",
-    "@ethereum-waffle/compiler": "4.0.0-alpha.0",
+    "@ethereum-waffle/chai": "workspace:*",
+    "@ethereum-waffle/compiler": "workspace:*",
     "solc": "^0.6.3",
-    "@ethereum-waffle/provider": "4.0.0-alpha.0",
+    "@ethereum-waffle/provider": "workspace:*",
     "typechain": "^7.0.0"
   }
 }
