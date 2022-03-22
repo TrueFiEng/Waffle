@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@ethereum-waffle/ens": "workspace:*",
-    "ethers": "^5.5.4",
+    "ethers": "^5.6.1",
     "ganache": "^7.0.3",
     "postinstall-postinstall": "^2.1.0",
     "patch-package": "^6.2.2"
