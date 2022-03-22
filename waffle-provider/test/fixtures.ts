@@ -3,12 +3,6 @@ import {BigNumber, utils, Wallet, ContractFactory} from 'ethers';
 import {MockProvider, loadFixture, createFixtureLoader} from '../src';
 import {TOKEN_ABI, TOKEN_BYTECODE} from './BasicToken';
 
-/**
- * Minimum coming form the block baseFeePerGas.
- * `baseFeePerGas` is currently not configurable in ganache.
- */
-const maxFeePerGas = 875000000;
-
 describe('Integration: Fixtures', () => {
   describe('correctly restores state', () => {
     async function tokenFixture([sender, recipient]: Wallet[], provider: MockProvider) {
@@ -88,7 +82,7 @@ describe('Integration: Fixtures', () => {
         value: utils.parseEther('1'),
         to: to.address,
         gasLimit: BigNumber.from(21000),
-        maxFeePerGas
+        gasPrice: BigNumber.from(1)
       });
     }
 
@@ -106,8 +100,7 @@ describe('Integration: Fixtures', () => {
       const fromBalance = await from.getBalance();
       const toBalance = await to.getBalance();
 
-      const gasFees = BigNumber.from(21000).mul(BigNumber.from(maxFeePerGas));
-      const diff = utils.parseEther('2').add(gasFees).toString();
+      const diff = utils.parseEther('2').add(21000).toString();
       expect(toBalance.sub(fromBalance).toString()).to.equal(diff);
     }
 
