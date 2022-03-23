@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/provider",
   "description": "A mock provider for your blockchain testing needs.",
-  "version": "3.4.1",
+  "version": "3.4.4",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -38,7 +38,7 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/ens": "^3.3.1",
+    "@ethereum-waffle/ens": "^3.4.4",
     "ethers": "^5.5.2",
     "ganache-core": "^2.13.2",
     "patch-package": "^6.2.2",

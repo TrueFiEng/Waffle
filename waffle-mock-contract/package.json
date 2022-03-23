@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/mock-contract",
   "description": "Mock smart contracts in a smart way.",
-  "version": "3.3.1",
+  "version": "3.4.4",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -47,8 +47,8 @@
     "ethers": "^5.5.2"
   },
   "devDependencies": {
-    "@ethereum-waffle/chai": "^3.4.2",
-    "@ethereum-waffle/compiler": "^3.4.0",
-    "@ethereum-waffle/provider": "^3.4.1"
+    "@ethereum-waffle/chai": "^3.4.4",
+    "@ethereum-waffle/compiler": "^3.4.4",
+    "@ethereum-waffle/provider": "^3.4.4"
   }
 }
