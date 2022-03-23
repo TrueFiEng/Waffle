@@ -32,6 +32,23 @@ export class MockProvider extends providers.Web3Provider {
 
     super(recordedGanacheProvider as any);
     this._callHistory = callHistory;
+
+    /**
+     * The override to the provider's formatter allows us to inject
+     * additional values to a transaction receipt.
+     * We inject a `revertString` in overriden `eth_getTransactionReceipt` handler.
+     * Ethers do not bubble up a revert error message when a transaction reverts,
+     * but it does bubble it up when a call (query) reverts.
+     * In order to make the revert string accessible for matchers like `revertedWith`,
+     * we need to simulate transactions as queries and add the revert string to the receipt.
+     */
+    (this.formatter as any).formats = {
+      ...this.formatter.formats,
+      receipt: {
+        ...this.formatter.formats.receipt,
+        revertString: (val: any) => val
+      }
+    };
   }
 
   getWallets() {
