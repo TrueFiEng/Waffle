@@ -299,7 +299,7 @@ importers:
       '@ethereum-waffle/provider': workspace:*
       '@ethersproject/abi': ^5.6.0
       '@ethersproject/bytes': ^5.6.0
-      '@ethersproject/providers': ^5.6.0
+      '@ethersproject/providers': ^5.6.1
       '@openzeppelin/contracts': 3.0.1
       '@resolver-engine/imports': ^0.3.3
       '@resolver-engine/imports-fs': ^0.3.3

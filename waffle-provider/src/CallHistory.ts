@@ -1,7 +1,6 @@
-import {providers, utils} from 'ethers';
+import {utils} from 'ethers';
 import {parseTransaction} from 'ethers/lib/utils';
 import type {Provider} from 'ganache';
-import {decodeRevertString} from './revertString';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -94,41 +93,8 @@ export class CallHistory {
           } else if (method === 'eth_sendRawTransaction') { // Record a transaction.
             const parsedTx = parseTransaction(args[0]?.params?.[0]);
             callHistory.recordedCalls.push(toRecordedCall(parsedTx));
-          } else if (method === 'eth_estimateGas') {
-            /**
-             * Ethers executes a gas estimation before sending the transaction to the blockchain.
-             * This poses a problem for Waffle - we cannot track sent transactions which eventually revert.
-             * This is a common use case for testing, but such transaction never gets sent.
-             * A failed gas estimation prevents it from being sent.
-             *
-             * In test environment, we replace the gas estimation with an always-succeeding method.
-             * If a transaction is meant to be reverted, it will do so after it is actually send and mined.
-             */
-            return (async () => {
-              try {
-                return await originalResult;
-              } catch (e) {
-                return '0xE4E1C0'; // 15_000_000
-              }
-            })();
-          } else if (method === 'eth_getTransactionReceipt') {
-            return (async () => {
-              const receipt = await originalResult;
-              if (parseInt(receipt.status) === 0) {
-                // A reverted transaction. We try to add a revert string to the receipt.
-                try {
-                  const etherProvider = new providers.Web3Provider(provider as any);
-                  const tx = await etherProvider.getTransaction(receipt.transactionHash);
-                  // Run the transaction as a query. It works differently in Ethers, a revert code is included.
-                  await etherProvider.call(tx as any, tx.blockNumber);
-                } catch (error: any) {
-                  receipt.revertString = decodeRevertString(error);
-                }
-              }
-              return receipt;
-            })();
           }
-          return originalResult; // Fallback for any other method.
+          return originalResult;
         };
       }
     });

@@ -1,5 +1,4 @@
-import { toUtf8String } from "ethers/lib/utils";
-import { decodeRevertString } from "@ethereum-waffle/provider";
+import {decodeRevertString} from '@ethereum-waffle/provider';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
@@ -8,7 +7,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     const onSuccess = (value: any) => {
       if ('wait' in value) {
         // Sending the transaction succeeded, but we wait to see if it will revert on-chain.
-        return value.wait().then((newValue: any) => newValue, onError)
+        return value.wait().then((newValue: any) => newValue, onError);
       }
       this.assert(
         false,
@@ -30,7 +29,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
           `Transaction reverted with ${revertReason}.`,
           error
         );
-        return error
+        return error;
       }
 
       // See https://github.com/ethers-io/ethers.js/issues/829

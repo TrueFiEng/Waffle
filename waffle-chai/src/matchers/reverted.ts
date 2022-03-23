@@ -18,7 +18,7 @@ export function supportReverted(Assertion: Chai.AssertionStatic) {
     const onSuccess = (value: any) => {
       if ('wait' in value) {
         // Sending the transaction succeeded, but we wait to see if it will revert on-chain.
-        return value.wait().then((newValue: any) => newValue, onError)
+        return value.wait().then((newValue: any) => newValue, onError);
       }
       this.assert(
         false,

@@ -4,6 +4,7 @@ import {defaultAccounts} from './defaultAccounts';
 import type {EthereumProviderOptions, Provider} from 'ganache';
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
+import {injectRevertString} from './revertString';
 
 export {RecordedCall};
 
@@ -26,11 +27,11 @@ export class MockProvider extends providers.Web3Provider {
       },
       ...options?.ganacheOptions
     };
-    const ganacheProvider: Provider = require('ganache').provider(mergedOptions);
+    const provider: Provider = require('ganache').provider(mergedOptions);
     const callHistory = new CallHistory();
-    const recordedGanacheProvider = callHistory.record(ganacheProvider);
+    const patchedProvider = injectRevertString(callHistory.record(provider));
 
-    super(recordedGanacheProvider as any);
+    super(patchedProvider as any);
     this._callHistory = callHistory;
 
     /**
