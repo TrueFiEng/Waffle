@@ -264,6 +264,53 @@ We updated the following dependencies:
 - :code:`typechain` - bumped version from ^2.0.0 to ^9.0.0. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install  :code:`typechain` manually when using Waffle.
 - :code:`ethers` - bumped version from to ^5.5.4. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install :code:`ethers` manually when using Waffle.
 - :code:`solc` - the package is used by :code:`waffle-compiler` package to provide the default option for compiling Soldity code. Was moved to the :code:`peerDependencies` section and has no version restrictions - you now have to install :code:`solc` manually when using Waffle.
+- Deprecated :code:`ganache-core` package has been replaced with :code:`ganache` version ^7.0.3. It causes slight differences in the parameters of :code:`MockProvider` from :code:`@ethereum-waffle/provider`. Now the :code:`MockProvider` uses :code:`berlin` hardfork by default.
+
+Changes to :code:`MockProvider` parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Previous (optional) parameters of :code:`MockProvider` included override options for the Ganache provider:
+
+.. code-block:: ts
+
+  interface MockProviderOptions {
+    ganacheOptions: {
+      account_keys_path?: string;
+      accounts?: object[];
+      allowUnlimitedContractSize?: boolean;
+      blockTime?: number;
+      db_path?: string;
+      debug?: boolean;
+      default_balance_ether?: number;
+      fork?: string | object;
+      fork_block_number?: string | number;
+      forkCacheSize?: number;
+      gasLimit?: string | number;
+      gasPrice?: string;
+      hardfork?: "byzantium" | "constantinople" | "petersburg" | "istanbul" | "muirGlacier";
+      hd_path?: string;
+      locked?: boolean;
+      logger?: {
+        log(msg: string): void;
+      };
+      mnemonic?: string;
+      network_id?: number;
+      networkId?: number;
+      port?: number;
+      seed?: any;
+      time?: Date;
+      total_accounts?: number;
+      unlocked_accounts?: string[];
+      verbose?: boolean;
+      vmErrorsOnRPCResponse?: boolean;
+      ws?: boolean;
+    }
+  }
+
+Current :code:`ganacheOptions` parameter are documented `here <https://github.com/trufflesuite/ganache/blob/386771d84a9985f6d4b61b262f2be3cda896162e/src/chains/ethereum/options/src/index.ts#L22-L29>`_.
+
+Typechain changes
+~~~~~~~~~~~~~~~~~
 
 If you used type generation (:code:`typechainEnabled` option set to :code:`true` in :code:`waffle.json`), you need to update your code to conform to the new naming convention used by :code:`typechain`. Contract factories now have postfix :code:`__factory` instead of :code:`Factory`. For example, :code:`MyContractFactory` becomes :code:`MyContract__factory`. Example refactoring:
 

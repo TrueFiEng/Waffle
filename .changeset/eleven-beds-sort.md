@@ -1,5 +1,4 @@
 ---
-"@ethereum-waffle/chai": patch
 "@ethereum-waffle/provider": patch
 ---
 
