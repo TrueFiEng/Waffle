@@ -6,10 +6,10 @@
 
 - 4c4b2d6: v4.0.0-alpha.1
 - Updated dependencies [4c4b2d6]
-  - @ethereum-waffle/chai@4.0.0
-  - @ethereum-waffle/compiler@4.0.0
-  - @ethereum-waffle/mock-contract@4.0.0
-  - @ethereum-waffle/provider@4.0.0
+  - @ethereum-waffle/chai@4.0.0-alpha.1
+  - @ethereum-waffle/compiler@4.0.0-alpha.1
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.1
+  - @ethereum-waffle/provider@4.0.0-alpha.1
 
 ## 4.0.0-alpha.0
 
