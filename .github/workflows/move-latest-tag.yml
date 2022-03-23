@@ -1,0 +1,23 @@
+name: Move last tag to 3.4.0
+on:
+  push:
+
+jobs:
+  move-tag:
+    name: Move tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@master
+        with:
+          node-version: 16.x
+      - name: Move tag
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm dist-tags add @ethereum-waffle/ens@3.4.0 latest
+          npm dist-tags add @ethereum-waffle/provider@3.4.0 latest
+          npm dist-tags add @ethereum-waffle/chai@3.4.0 latest
+          npm dist-tags add @ethereum-waffle/compiler@3.4.0 latest
+          npm dist-tags add @ethereum-waffle/mock-contract@3.4.0 latest
+          npm dist-tags add ethereum-waffle@3.4.0 latest
