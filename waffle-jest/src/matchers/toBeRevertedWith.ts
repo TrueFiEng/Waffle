@@ -1,4 +1,4 @@
-import { decodeRevertString } from "@ethereum-waffle/provider";
+import {decodeRevertString} from '@ethereum-waffle/provider';
 
 export async function toBeRevertedWith(
   promise: Promise<any>,
@@ -13,13 +13,13 @@ export async function toBeRevertedWith(
     };
   } catch (error: any) {
     const revertString = error?.receipt?.revertString ?? decodeRevertString(error);
-      if (revertString) {
-        return {
-          pass: revertString === revertReason,
-          message: () =>
-            `Expected transaction to be reverted with ${revertReason}, but other reason was found: ${revertString}`
-        };
-      }
+    if (revertString) {
+      return {
+        pass: revertString === revertReason,
+        message: () =>
+          `Expected transaction to be reverted with ${revertReason}, but other reason was found: ${revertString}`
+      };
+    }
 
     const message = error instanceof Object && 'message' in error ? (error as any).message : JSON.stringify(error);
 
