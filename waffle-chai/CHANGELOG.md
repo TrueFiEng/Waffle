@@ -1,6 +1,6 @@
 # @ethereum-waffle/chai
 
-## 4.0.0
+## 4.0.0-alpha.1
 
 ### Patch Changes
 

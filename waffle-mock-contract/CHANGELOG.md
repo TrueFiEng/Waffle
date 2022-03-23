@@ -1,6 +1,6 @@
 # @ethereum-waffle/mock-contract
 
-## 4.0.0
+## 4.0.0-alpha.1
 
 ### Patch Changes
 
