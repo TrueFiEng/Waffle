@@ -38,24 +38,16 @@ export class CallHistory {
     (provider as any).on('connect', () => {
       /**
        * A single step over a single opcode inside the EVM.
-       * We use it to intercept `CALL` opcodes,
+       * We use it to intercept `CALL` and `STATICCALL` opcodes,
        * and track a history of internal calls between smart contracts.
        */
       (provider as any).on('ganache:vm:tx:step', (args: any) => {
-        try {
-          if (args.data.opcode.name === 'CALL') {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars, max-len
-            const [gas, addr, value, argsOffset, argsLength, retOffset, retLength]: Buffer[] = [...args.data.stack].reverse(); // Source: ethervm.io
-
-            const calldata = args.data.memory
-              .slice(decodeNumber(argsOffset), decodeNumber(argsOffset) + decodeNumber(argsLength));
-            callHistory.recordedCalls.push(toRecordedCall({
-              to: addr,
-              data: calldata
-            }));
+        if (['CALL', 'STATICCALL'].includes(args.data.opcode.name)) {
+          try {
+            callHistory.recordedCalls.push(toRecordedCall(decodeCallData(args.data)));
+          } catch (err) {
+            console.log(err);
           }
-        } catch (err) {
-          console.log(err);
         }
       });
     });
@@ -106,6 +98,29 @@ function toRecordedCall(message: any): RecordedCall {
     address: message.to ? utils.getAddress(utils.hexlify(message.to)) : undefined,
     data: message.data ? utils.hexlify(message.data) : '0x'
   };
+}
+
+/**
+ * Decodes the arguments of CALLs and STATICCALLs taken from a traced step in EVM execution.
+ * Source of the arguments: ethervm.io
+ */
+function decodeCallData(callData: any) {
+  let addr: Buffer, argsOffset: Buffer, argsLength: Buffer;
+  if (callData.opcode.name === 'CALL') {
+    [, addr, , argsOffset, argsLength] = [...callData.stack].reverse();
+  } else if (callData.opcode.name === 'STATICCALL') {
+    [, addr, argsOffset, argsLength] = [...callData.stack].reverse(); 
+  } else {
+    throw new Error(`Unsupported call type for decoding call data: ${callData.opcode.name}`)
+  }
+
+  const decodedCallData = callData.memory
+    .slice(decodeNumber(argsOffset), decodeNumber(argsOffset) + decodeNumber(argsLength));
+
+  return {
+    to: addr,
+    data: decodedCallData
+  }
 }
 
 /**
