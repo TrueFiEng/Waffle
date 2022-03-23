@@ -1,6 +1,18 @@
 export async function toBeReverted(promise: Promise<any>) {
   try {
-    await promise;
+    const tx = await promise;
+    if ('wait' in tx) {
+      // Sending the transaction succeeded, but we wait to see if it will revert on-chain.
+      try {
+        await tx.wait();
+      } catch(e) {
+        return {
+          pass: true,
+          message: () => 'Expected transaction to be reverted'
+        };
+      }
+    }
+
     return {
       pass: false,
       message: () => 'Expected transaction to be reverted'
