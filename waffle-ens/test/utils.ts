@@ -7,7 +7,7 @@ export const getWallet = (): Wallet => {
 
   const defaultAccount = [{balance, secretKey}];
 
-  const ganacheProvider = Ganache.provider({accounts: defaultAccount, logging: {quiet: true}})
+  const ganacheProvider = Ganache.provider({accounts: defaultAccount, logging: {quiet: true}});
   const provider = new providers.Web3Provider(ganacheProvider as any);
   return new Wallet(defaultAccount[0].secretKey, provider);
 };
