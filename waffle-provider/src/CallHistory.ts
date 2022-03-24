@@ -109,9 +109,9 @@ function decodeCallData(callData: any) {
   if (callData.opcode.name === 'CALL') {
     [, addr, , argsOffset, argsLength] = [...callData.stack].reverse();
   } else if (callData.opcode.name === 'STATICCALL') {
-    [, addr, argsOffset, argsLength] = [...callData.stack].reverse(); 
+    [, addr, argsOffset, argsLength] = [...callData.stack].reverse();
   } else {
-    throw new Error(`Unsupported call type for decoding call data: ${callData.opcode.name}`)
+    throw new Error(`Unsupported call type for decoding call data: ${callData.opcode.name}`);
   }
 
   const decodedCallData = callData.memory
@@ -120,7 +120,7 @@ function decodeCallData(callData: any) {
   return {
     to: addr,
     data: decodedCallData
-  }
+  };
 }
 
 /**
