@@ -33,6 +33,7 @@ jobs:
           version: pnpm run version
           commit: "🎉 Release new version"
           title: "🎉 Release new version"
+          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
