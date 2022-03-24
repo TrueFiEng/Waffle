@@ -1,8 +1,14 @@
+import {decodeRevertString} from '@ethereum-waffle/provider';
+
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
     const promise = this._obj;
 
     const onSuccess = (value: any) => {
+      if ('wait' in value) {
+        // Sending the transaction succeeded, but we wait to see if it will revert on-chain.
+        return value.wait().then((newValue: any) => newValue, onError);
+      }
       this.assert(
         false,
         'Expected transaction to be reverted',
@@ -14,6 +20,18 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     };
 
     const onError = (error: any) => {
+      const revertString = error?.receipt?.revertString ?? decodeRevertString(error);
+      if (revertString) {
+        this.assert(
+          revertString === revertReason,
+          `Expected transaction to be reverted with ${revertReason}, but other reason was found: ${revertString}`,
+          `Expected transaction NOT to be reverted with ${revertReason}`,
+          `Transaction reverted with ${revertReason}.`,
+          error
+        );
+        return error;
+      }
+
       // See https://github.com/ethers-io/ethers.js/issues/829
       const isEstimateGasError =
         error instanceof Object &&

@@ -1,0 +1,13 @@
+diff --git a/node_modules/ganache/dist/ganache.d.ts b/node_modules/ganache/dist/ganache.d.ts
+index d5884c2..56b7392 100644
+--- a/node_modules/ganache/dist/ganache.d.ts
++++ b/node_modules/ganache/dist/ganache.d.ts
+@@ -7061,7 +7061,7 @@ declare class EthereumProvider_2 extends Emittery<{
+     disconnect: () => Promise<void>;
+ }
+ 
+-declare type EthereumProviderOptions = Partial<{
++export declare type EthereumProviderOptions = Partial<{
+     [K in keyof EthereumConfig]: ExternalConfig<EthereumConfig[K]>;
+ }>;
+ 
