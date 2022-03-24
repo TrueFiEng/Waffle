@@ -1,10 +1,10 @@
 {
   "name": "@ethereum-waffle/jest",
   "description": "A sweet set of jest matchers for your blockchain testing needs.",
-  "version": "3.3.1",
+  "version": "3.3.0",
   "author": "Adrian Li <li.adrianmc@gmail.com>",
   "repository": "git@github.com:EthWorks/Waffle.git",
-  "private": false,
+  "private": true,
   "license": "MIT",
   "publishConfig": {
     "access": "public"
