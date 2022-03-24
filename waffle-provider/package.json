@@ -28,7 +28,6 @@
   "types": "dist/esm/index.d.ts",
   "scripts": {
     "postinstall": "patch-package",
-    "prepublishOnly": "yarn build",
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",

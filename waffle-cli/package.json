@@ -31,7 +31,6 @@
     "waffle": "./bin/waffle"
   },
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test:buildonly": "ts-node -T buildTestContracts",
     "test:nobuild": "mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
