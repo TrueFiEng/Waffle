@@ -1,0 +1,23 @@
+name: Unpublish
+
+on:
+  push:
+
+jobs:
+  release:
+    name: Unpublish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3.0.0
+        with:
+          node-version: 16.x
+
+      - name: Unpublish
+        run: |
+          npm unpublish @ethereum-waffle/chai@4.0.0
+          npm unpublish ethereum-waffle@4.0.0
+          npm unpublish @ethereum-waffle/jest@3.3.1
+          npm unpublish @ethereum-waffle/provider@4.0.0
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
