@@ -29,7 +29,6 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test": "export NODE_ENV=test && yarn test:build && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
