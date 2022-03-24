@@ -1,5 +1,12 @@
 # @ethereum-waffle/chai
 
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [ede638e]
+  - @ethereum-waffle/provider@4.0.0
+
 ## 4.0.0-alpha.1
 
 ### Patch Changes
