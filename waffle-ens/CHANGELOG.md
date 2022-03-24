@@ -1,5 +1,11 @@
 # @ethereum-waffle/ens
 
+## 4.0.0-alpha.2
+
+### Patch Changes
+
+- ede638e: v4.0.0-alpha.2
+
 ## 4.0.0-alpha.1
 
 ### Patch Changes

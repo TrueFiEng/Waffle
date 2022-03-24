@@ -1,10 +1,12 @@
 # @ethereum-waffle/provider
 
-## 4.0.0
+## 4.0.0-alpha.2
 
 ### Patch Changes
 
 - ede638e: Replaced deprecated `ganache-core` package with `ganache`.
+- Updated dependencies [ede638e]
+  - @ethereum-waffle/ens@4.0.0-alpha.1
 
 ## 4.0.0-alpha.1
 
