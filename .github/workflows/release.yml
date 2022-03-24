@@ -24,6 +24,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Set git user
+        run: |
+          git config user.name truefi-bot
+          git config user.email truefi-bot@trusttoken.com
+
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@master
