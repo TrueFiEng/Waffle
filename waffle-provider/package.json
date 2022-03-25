@@ -30,8 +30,7 @@
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
-    "prebuild": "",
-    "build": "rimraf ./dist && yarn prebuild && yarn build:esm && yarn build:cjs",
+    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false"
   },
@@ -40,8 +39,9 @@
   },
   "dependencies": {
     "@ethereum-waffle/ens": "workspace:*",
+    "@ganache/ethereum-options": "0.1.4",
     "ethers": "^5.6.1",
-    "ganache": "^7.0.3"
+    "ganache": "7.0.3"
   },
   "resolutions": {
     "web3": "1.2.4"
