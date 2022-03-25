@@ -404,17 +404,14 @@ importers:
   waffle-provider:
     specifiers:
       '@ethereum-waffle/ens': workspace:*
-      '@ganache/ethereum-options': ^0.1.4
+      '@ganache/ethereum-options': 0.1.4
       ethers: ^5.6.1
-      ganache: ^7.0.3
-      url: ^0.11.0
+      ganache: 7.0.3
     dependencies:
       '@ethereum-waffle/ens': link:../waffle-ens
       '@ganache/ethereum-options': 0.1.4
       ethers: 5.6.1
       ganache: 7.0.3
-    devDependencies:
-      url: 0.11.0
 
 packages:
 
@@ -1000,7 +997,7 @@ packages:
     resolution: {integrity: sha512-Cq2qS0FTu6O2VU1sgg+WyU9Ps0M6j/BEMHN+hRaECXCV/r0aI78u4N6p52QW/BDVhwWZpCdrvG8X7NJdzlpNUA==}
     dependencies:
       crc-32: 1.2.1
-      ethereumjs-util: 7.1.3
+      ethereumjs-util: 7.1.4
     dev: false
 
   /@ethereumjs/common/2.6.3:
@@ -1023,8 +1020,8 @@ packages:
   /@ethereumjs/tx/3.4.0:
     resolution: {integrity: sha512-WWUwg1PdjHKZZxPPo274ZuPsJCWV3SqATrEKQP1n2DrVYVP1aZIYpo/mFaA0BDoE0tIQmBeimRCEA0Lgil+yYw==}
     dependencies:
-      '@ethereumjs/common': 2.6.0
-      ethereumjs-util: 7.1.3
+      '@ethereumjs/common': 2.6.3
+      ethereumjs-util: 7.1.4
     dev: false
 
   /@ethereumjs/tx/3.5.1:
@@ -1039,12 +1036,12 @@ packages:
     dependencies:
       '@ethereumjs/block': 3.6.2
       '@ethereumjs/blockchain': 5.5.2
-      '@ethereumjs/common': 2.6.0
-      '@ethereumjs/tx': 3.4.0
+      '@ethereumjs/common': 2.6.3
+      '@ethereumjs/tx': 3.5.1
       async-eventemitter: 0.2.4
       core-js-pure: 3.21.1
       debug: 2.6.9
-      ethereumjs-util: 7.1.3
+      ethereumjs-util: 7.1.4
       functional-red-black-tree: 1.0.1
       mcl-wasm: 0.7.9
       merkle-patricia-tree: 4.2.4
@@ -6876,6 +6873,7 @@ packages:
 
   /punycode/1.3.2:
     resolution: {integrity: sha1-llOgNvt8HuQjQvIyXM7v6jkmxI0=}
+    dev: false
 
   /punycode/2.1.0:
     resolution: {integrity: sha1-X4Y+3Im5bbCQdLrXlHvwkFbKTn0=}
@@ -6904,6 +6902,7 @@ packages:
     resolution: {integrity: sha1-sgmEkgO7Jd+CDadW50cAWHhSFiA=}
     engines: {node: '>=0.4.x'}
     deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+    dev: false
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -8217,6 +8216,7 @@ packages:
     dependencies:
       punycode: 1.3.2
       querystring: 0.2.0
+    dev: false
 
   /use/3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}

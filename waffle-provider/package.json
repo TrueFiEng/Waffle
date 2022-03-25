@@ -46,7 +46,5 @@
   "resolutions": {
     "web3": "1.2.4"
   },
-  "devDependencies": {
-    "url": "^0.11.0"
-  }
+  "devDependencies": {}
 }
