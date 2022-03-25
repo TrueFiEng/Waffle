@@ -1,4 +1,4 @@
-const balance = '10000000000000000000000000000000000';
+const balance = '0x1ED09BEAD87C0378D8E6400000000'; // 10^34
 
 const privateKeys = [
   '0x29f3edee0ad3abf8e2699402e0e28cd6492c9be7eaab00d732a791c33552f797',

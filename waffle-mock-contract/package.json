@@ -1,13 +1,14 @@
 {
   "name": "@ethereum-waffle/mock-contract",
   "description": "Mock smart contracts in a smart way.",
-  "version": "3.3.0",
+  "version": "4.0.0-alpha.4",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   },
   "keywords": [
     "ethereum",
@@ -28,7 +29,6 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test": "export NODE_ENV=test && yarn test:build && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
@@ -43,12 +43,14 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.1",
-    "ethers": "^5.0.1"
+    "@ethersproject/abi": "^5.6.0",
+    "ethers": "^5.6.1"
   },
   "devDependencies": {
-    "@ethereum-waffle/chai": "^3.4.0",
-    "@ethereum-waffle/compiler": "^3.4.0",
-    "@ethereum-waffle/provider": "^3.4.0"
+    "@ethereum-waffle/chai": "workspace:*",
+    "@ethereum-waffle/compiler": "workspace:*",
+    "solc": "^0.6.3",
+    "@ethereum-waffle/provider": "workspace:*",
+    "typechain": "^8.0.0"
   }
 }

@@ -1,5 +1,38 @@
 # @ethereum-waffle/provider
 
+## 4.0.0
+
+### Patch Changes
+
+- ede638e: Replaced deprecated `ganache-core` package with `ganache`.
+
+## 4.0.0-alpha.1
+
+### Patch Changes
+
+- 4c4b2d6: v4.0.0-alpha.1
+- Updated dependencies [4c4b2d6]
+  - @ethereum-waffle/ens@4.0.0-alpha.1
+
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- Bump typechain and ethers to the latest versions. Move them to peer deps.
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - @ethereum-waffle/ens@4.0.0-alpha.0
+
+## 3.4.1
+
+### Patch Changes
+
+- 71417c7: Provider compatibility with London hardfork
+- Updated dependencies [71417c7]
+  - @ethereum-waffle/ens@3.3.1
+
 ## 3.4.0
 
 ### Minor Changes

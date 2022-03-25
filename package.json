@@ -7,16 +7,17 @@
     "node": ">=10.0"
   },
   "workspaces": [
-    "waffle-*"
+    "waffle-*",
+    "examples/*"
   ],
   "scripts": {
-    "postinstall": "patch-package",
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
-    "test": "wsrun -c test",
-    "test:others": "wsrun -x @ethereum-waffle/jest -c test",
+    "test": "wsrun -e -s -c test",
+    "test:others": "wsrun -e -s -x @ethereum-waffle/jest -c test",
     "test:jest": "wsrun -p @ethereum-waffle/jest -c test",
-    "release": "yarn build && yarn changeset publish"
+    "release": "pnpm run build && pnpm changeset publish",
+    "version": "pnpm changeset version && pnpm install"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
@@ -26,8 +27,8 @@
     "@types/rimraf": "^3.0.0",
     "@types/sinon": "^9.0.9",
     "@types/sinon-chai": "^3.2.5",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "chai-string": "^1.5.0",
@@ -38,11 +39,11 @@
     "sinon": "^9.2.1",
     "sinon-chai": "^3.5.0",
     "ts-node": "^9.0.0",
-    "typescript": "^4.1.2",
+    "typescript": "^4.6.2",
     "wsrun": "^5.2.0"
   },
   "dependencies": {
-    "@changesets/cli": "^2.13.1"
+    "@changesets/cli": "^2.21.1"
   },
   "resolutions": {
     "underscore": ">=1.12.1",
