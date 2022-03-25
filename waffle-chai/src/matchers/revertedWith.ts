@@ -27,9 +27,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
           : revertString === revertReason;
         this.assert(
           isReverted,
-          `Expected transaction to be reverted with ${revertReason}, but other reason was found: ${revertString}`,
-          `Expected transaction NOT to be reverted with ${revertReason}`,
-          `Transaction reverted with ${revertReason}.`,
+          `Expected transaction to be reverted with "${revertReason}", but other reason was found: "${revertString}"`,
+          `Expected transaction NOT to be reverted with "${revertReason}"`,
+          `Transaction reverted with "${revertReason}."`,
           error
         );
         return error;
