@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "evmVersion": "constantinople"
+  },
+  "compilerVersion": "0.5.9",
+  "typechainEnabled": true
+}

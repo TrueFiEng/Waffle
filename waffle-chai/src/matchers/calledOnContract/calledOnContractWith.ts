@@ -1,3 +1,4 @@
+import {MockProvider} from '../../../../waffle-provider/dist/esm';
 import {validateContract, validateFnName, validateMockProvider} from './calledOnContractValidators';
 
 export function supportCalledOnContractWith(Assertion: Chai.AssertionStatic) {
@@ -11,7 +12,7 @@ export function supportCalledOnContractWith(Assertion: Chai.AssertionStatic) {
     const funCallData = contract.interface.encodeFunctionData(fnName, parameters);
 
     this.assert(
-      contract.provider.callHistory.some(
+      (contract.provider as unknown as MockProvider).callHistory.some(
         call => call.address === contract.address && call.data === funCallData
       ),
       'Expected contract function with parameters to be called',

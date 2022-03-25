@@ -10,6 +10,7 @@ declare namespace Chai {
     revertedWith(reason: string): AsyncAssertion;
     emit(contract: any, eventName: string): EmitAssertion;
     properHex(length: number): void;
+    hexEqual(other: string): void;
     properPrivateKey: void;
     properAddress: void;
     /**
@@ -32,8 +33,11 @@ declare namespace Chai {
     (value: any, message?: string): Assertion;
   }
 
-  interface AsyncAssertion extends Assertion, Promise<void> {
+  interface CloseTo {
+    (expected: any, delta: any, message?: string): Assertion;
   }
+
+  interface AsyncAssertion extends Assertion, Promise<void> {}
 
   interface EmitAssertion extends AsyncAssertion {
     withArgs(...args: any[]): AsyncAssertion;

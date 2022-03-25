@@ -23,6 +23,20 @@ export async function flattenAndSave(input: InputConfig) {
   await saveToFile(output, config);
 }
 
+const getFileName = (rootContract: GatheredContractInterface) => path.parse(rootContract.url).base;
+
+const getFilePath = (fileName: string, outputDirectory: string) => path.join(outputDirectory, fileName);
+
+export async function flattenSingleFile(input: InputConfig, name: string) {
+  const config = inputToConfig(input);
+  const output = await getContractDependency(config);
+  const contract = output.find((contracts) => getFileName(contracts[contracts.length - 1]) === name);
+  if (!contract) {
+    return null;
+  }
+  return getFlattenedSource(contract, '').sourceWithNormalizedLicences;
+}
+
 async function getContractDependency(config: Config): Promise<GatheredContractInterface[][]> {
   const resolver = ImportsFsEngine().addResolver(
     resolvers.BacktrackFsResolver(config.nodeModulesDirectory)
@@ -44,6 +58,17 @@ const fsOps = {
 
 const unique = <T>(arr: T[]) => [...new Set(arr)];
 
+function getFlattenedSource(contract: Array<GatheredContractInterface>, outputDirectory: string) {
+  const rootContract = contract[contract.length - 1];
+  const fileName = getFileName(rootContract);
+  const filePath = getFilePath(fileName, outputDirectory);
+
+  const contractsWithCommentedDirectives = contract.map(replaceDirectivesWithComments(rootContract));
+  const source = ''.concat(...unique(contractsWithCommentedDirectives));
+  const sourceWithNormalizedLicences = normalizeSpdxLicenceIdentifiers(source, fileName);
+  return {filePath, sourceWithNormalizedLicences};
+}
+
 function saveToFile(
   output: GatheredContractInterface[][],
   config: Config,
@@ -54,27 +79,21 @@ function saveToFile(
   fileSystem.createDirectory(outputDirectory);
 
   output.map((contract: Array<GatheredContractInterface>) => {
-    const rootContract = contract[contract.length - 1];
-    const fileName = path.parse(rootContract.url).base;
-    const filePath = path.join(outputDirectory, fileName);
-
-    const contractsWithCommentedDirectives = contract.map(replaceDirectivesWithComments(rootContract));
-    const source = ''.concat(...unique(contractsWithCommentedDirectives));
-    const sourceWithNormalizedLicences = normalizeSpdxLicenceIdentifiers(source, fileName);
+    const {filePath, sourceWithNormalizedLicences} = getFlattenedSource(contract, outputDirectory);
 
     fileSystem.writeFile(filePath, sourceWithNormalizedLicences);
   });
 }
 
 function replaceDirectivesWithComments(rootContract: GatheredContractInterface) {
-  const IMPORT_SOLIDITY_REGEX = /import/gi;
+  const IMPORT_SOLIDITY_REGEX = /^[ \t]*import[^=]+?$/gm;
   const IMPORT_NODE_MODULES_REGEX = /(import.*").*node_modules\/(.*\n)/gi;
   const PRAGMA_SOLIDITY_REGEX = /pragma solidity/gi;
   const NODE_MODULES_REGEX = /^.*\/node_modules\//gi;
 
   return (dependency: GatheredContractInterface) => {
     const sourceWithImportsWithRelativeImports = dependency.source.replace(IMPORT_NODE_MODULES_REGEX, '$1$2');
-    const sourceWithCommentedImports = sourceWithImportsWithRelativeImports.replace(IMPORT_SOLIDITY_REGEX, '// import');
+    const sourceWithCommentedImports = sourceWithImportsWithRelativeImports.replace(IMPORT_SOLIDITY_REGEX, '// $&');
     const filePath = dependency.url.replace(NODE_MODULES_REGEX, '');
 
     if (dependency === rootContract) {

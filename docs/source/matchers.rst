@@ -20,7 +20,12 @@ Testing equality of big numbers:
 
   expect(await token.balanceOf(wallet.address)).to.equal(993);
 
-Available matchers for BigNumbers are: `equal`, `eq`, `above`, `gt`, `gte`, `below`, `lt`, `lte`, `least`, `most`.
+Available matchers for BigNumbers are: `equal`, `eq`, `above`, `gt`, `gte`, `below`, `lt`, `lte`, `least`, `most`, `within`, `closeTo`.
+
+.. code-block:: ts
+
+  expect(BigNumber.from(100)).to.be.within(BigNumber.from(99), BigNumber.from(101));
+  expect(BigNumber.from(100)).to.be.closeTo(BigNumber.from(101), 10);
 
 Emitting events
 ---------------
@@ -32,6 +37,25 @@ Testing what events were emitted with what arguments:
   await expect(token.transfer(walletTo.address, 7))
     .to.emit(token, 'Transfer')
     .withArgs(wallet.address, walletTo.address, 7);
+
+.. note::
+
+  The matcher will match :code:`indexed` event parameters of type :code:`string` or :code:`bytes`
+  even if the expected argument is not hashed using :code:`keccack256` first.
+
+Testing with indexed bytes or string parameters. These two examples are equivalent
+
+.. code-block:: ts
+
+  await expect(contract.addAddress("street", "city"))
+    .to.emit(contract, 'AddAddress')
+    .withArgs("street", "city");
+
+  const hashedStreet = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("street"));
+  const hashedCity = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("city"));
+  await expect(contract.addAddress(street, city))
+    .to.emit(contract, 'AddAddress')
+    .withArgs(hashedStreet, hashedCity);
 
 Called on contract
 ------------------
@@ -177,6 +201,14 @@ Testing if a string is a proper hex value of given length:
 .. code-block:: ts
 
   expect('0x70').to.be.properHex(2);
+
+Hex Equal
+----------
+Testing if a string is a proper hex with value equal to the given hex value. Case insensitive and strips leading zeros:
+
+.. code-block:: ts
+
+  expect('0x00012AB').to.hexEqual('0x12ab');
 
 Deprecated matchers
 ===================

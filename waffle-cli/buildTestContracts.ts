@@ -1,4 +1,8 @@
-import {compileAndSave} from '@ethereum-waffle/compiler';
+import {
+  compileAndSave,
+  generateTypes,
+  inputToConfig
+} from '@ethereum-waffle/compiler';
 
 const buildExampleContracts = async () => {
   console.log('Building example contracts...');
@@ -15,5 +19,18 @@ const buildExampleContracts = async () => {
     compilerVersion
   });
 };
+const buildExampleTypes = async () => {
+  console.log('Building example types...');
+  await generateTypes(
+    inputToConfig({
+      outputDirectory: './test/example/build',
+      typechainEnabled: true,
+      typechainOutputDir: '../../../build'
+    })
+  );
+};
 
-buildExampleContracts();
+(async function () {
+  await buildExampleContracts();
+  await buildExampleTypes();
+})().catch(console.error);

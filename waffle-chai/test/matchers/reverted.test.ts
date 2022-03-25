@@ -82,6 +82,18 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     await expect(matchers.doRevertAndModify()).to.be.revertedWith('Revert cause');
   });
 
+  it('Revert with modification: fail when not full message match', async () => {
+    await expect(
+      expect(matchers.doRevertAndModify()).to.be.revertedWith('cause')
+    ).to.eventually.be.rejected;
+  });
+
+  it('Revert with modification: fail when empty string', async () => {
+    await expect(
+      expect(matchers.doRevertAndModify()).to.be.revertedWith('')
+    ).to.eventually.be.rejected;
+  });
+
   it('Revert with modification: fail when different message was thrown', async () => {
     await expect(
       expect(matchers.doRevertAndModify()).to.be.revertedWith('Different message')
@@ -113,6 +125,11 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
 
   it('Revert: success', async () => {
     await expect(matchers.doRevert()).to.be.revertedWith('Revert cause');
+  });
+
+  it('Revert: success when message includes special symbols', async () => {
+    await expect(matchers.doRevertWithComplexReason())
+      .to.be.revertedWith('Revert cause (with complex reason)');
   });
 
   it('Revert: fail when different message was thrown', async () => {

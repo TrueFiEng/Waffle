@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/EthWorks/Waffle.svg?style=svg)](https://circleci.com/gh/EthWorks/Waffle)
+![CI](https://github.com/EthWorks/Waffle/workflows/CI/badge.svg)
 [![](https://img.shields.io/npm/v/ethereum-waffle.svg)](https://www.npmjs.com/package/ethereum-waffle)
 
 ![Ethereum Waffle](https://raw.githubusercontent.com/EthWorks/Waffle/master/docs/source/logo.png)
@@ -19,7 +19,7 @@ Sweeter, simpler and faster.
 ## Features:
 * Sweet set of chai matchers, e.g.:
   * `expect(...).to.be.revertedWith('Error message')`
-  * `expect(...).to.emit(contract, 'EventName).withArgs(...)`)
+  * `expect(...).to.emit(contract, 'EventName').withArgs(...)`)
 * Importing contracts from npm modules working out of the box, e.g.:
   * `import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";`
 * Fixtures that help write fast and maintainable test suites, e.g.:
@@ -31,6 +31,7 @@ Sweeter, simpler and faster.
   * use native solc binary for fast compilation in CI environment
   * use solc-js based on contract versions detected (async)
 * Support for TypeScript
+* Type-safe contract deployment and interactions with TypeChain
 * [Documentation](https://ethereum-waffle.readthedocs.io/en/latest/)
 
 ## Documentation
@@ -176,6 +177,13 @@ Example configuration file looks like this (all fields optional):
 }
 ```
 
+To enable generation of [typechain](https://github.com/ethereum-ts/TypeChain) artifacts:
+```json
+{
+  "typechainEnabled": true
+}
+```
+
 ### Flattener
 To flat your smart contracts run:
 
@@ -255,7 +263,7 @@ make html
 
 Before building documentation for the first time you may have to install required python packages:
 ```sh
-pip install -r docs/requirements.txt
+pip3 install -r docs/requirements.txt
 ```
 
 ## Roadmap
