@@ -8,7 +8,7 @@ import {injectRevertString} from './revertString';
 
 export {RecordedCall};
 
-interface MockProviderOptions {
+export interface MockProviderOptions {
   ganacheOptions: EthereumProviderOptions;
 }
 
