@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3.0.0
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3.0.0
+        with:
+          node-version: 16.x
+      - name: Deprecate @ethereum-waffle/jest
+        run: npm deprecate @ethereum-waffle/jest
+        env:
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
