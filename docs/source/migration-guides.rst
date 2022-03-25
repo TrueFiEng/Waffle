@@ -253,7 +253,7 @@ so we decided not to use this field. Now we support just :code:`contract.abi`.
 
 
 Migration from Waffle 3.4.0 to Waffle 4.0.0-alpha
------------------------------------------------
+-------------------------------------------------
 
 Dependencies upgrades
 ~~~~~~~~~~~~~~~~~~~~~
@@ -319,3 +319,53 @@ If you used type generation (:code:`typechainEnabled` option set to :code:`true`
   const contractConstructorArgs: [string, string] = [bob.address, charlie.address];
   -const contract = await deployContract(alice, MyContractFactory, contractConstructorArgs);
   +const contract = await deployContract(alice, MyContract__factory, contractConstructorArgs);
+
+:code:`@ethereum-waffle/jest` deprecated
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We stopped supporting :code:`@ethereum-waffle/jest`. From now on the package is deprecated and will be removed in the future. The suggested test framework to use with :code:`Waffle` is :code:`mocha` combined with :code:`chai` and :code:`@ethereum-waffle/chai` package. If you want to migrate from `jest` to `mocha` in your project, please follow the guide below.
+
+1. Setup :code:`mocha` - this may include the following steps:
+
+  - installing :code:`mocha` and :code:`chai` packages.
+  - if you are using :code:`typescript`, installing :code:`@types/mocha`, :code:`@types/chai` and :code:`ts-node` packages.
+  - updating your :code:`test` script (the common pattern for typescript is :code:`"test": "mocha -r ts-node/register/transpile-only 'test/**/*.test.ts'"`).
+  - updating your tests to use :code:`mocha` syntax.
+
+2.  Replace :code:`@ethereum-waffle/jest` with :code:`@ethereum-waffle/chai`. Below is little table that contains the list of all the matchers provided by :code:`@ethereum-waffle/jest` and their replacements in :code:`@ethereum-waffle/chai`.
+
+.. list-table:: Matchers replacements
+   :widths: 50 50
+   :header-rows: 1
+
+   * - @ethereum-waffle/jest
+     - @ethereum-waffle/chai
+   * - :code:`.toChangeBalance(wallet, balanceChange)`
+     - :code:`.to.changeEtherBalance(wallet, balanceChange)`
+   * - :code:`.toChangeBalances(wallets, balanceChanges)`
+     - :code:`.to.changeEtherBalances(wallets, balanceChanges)`
+   * - :code:`.toBeGtBN(value)`
+     - :code:`.to.be.gt(value)`
+   * - :code:`.toBeLtBN(value)`
+     - :code:`.to.be.lt(value)`
+   * - :code:`.toBeGteBN(value)`
+     - :code:`.to.be.gte(value)`
+   * - :code:`.toBeLteBN(value)`
+     - :code:`.to.be.lte(value)`
+   * - :code:`.toEqBN(value)`
+     - :code:`.to.equal(value)`
+   * - :code:`.toHaveEmitted(contract, eventName)`
+     - :code:`.to.emit(contract, eventName)`
+   * - :code:`.toHaveEmittedWith(contract, eventName, args)`
+     - :code:`.to.emit(contract, eventName).withArgs(...args)`
+   * - :code:`.toThrowErrorMatchingSnapshot()`
+     - :code:`.to.be.eventually.rejectedWith(expected, message)`
+   * - :code:`.toBeProperPrivateKey()`
+     - :code:`.to.be.properPrivateKey`
+   * - :code:`.toBeProperAddress()`
+     - :code:`.to.be.properAddress`
+   * - :code:`.toBeReverted()`
+     - :code:`.to.be.reverted`
+   * - :code:`.toBeRevertedWith(revertReason)`
+     - :code:`.to.be.revertedWith(reason)`
+
