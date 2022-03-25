@@ -9,7 +9,7 @@ export function supportReverted(Assertion: Chai.AssertionStatic) {
       this.assert(
         isReverted || isThrown || isError,
         `Expected transaction to be reverted, but other exception was thrown: ${error}`,
-        'Expected transaction NOT to be reverted',
+        `Expected transaction NOT to be reverted, but it was reverted with "${message}"`,
         'Transaction reverted.',
         error
       );
