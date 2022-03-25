@@ -1,14 +1,16 @@
 import path from 'path';
-import {tsGenerator} from 'ts-generator';
-import {TypeChain} from 'typechain/dist/TypeChain';
+import {runTypeChain, glob} from 'typechain';
 import {Config} from './config';
 
 export async function generateTypes(config: Config) {
-  await tsGenerator(
-    {cwd: config.outputDirectory},
-    new TypeChain({
-      cwd: config.outputDirectory,
-      rawConfig: {files: '*.json', outDir: config.typechainOutputDir, target: 'ethers-v5'}
-    }));
+  const cwd = config.outputDirectory;
+  const allFiles = glob(cwd, ['*.json']);
+  await runTypeChain({
+    cwd,
+    allFiles,
+    filesToProcess: allFiles,
+    target: 'ethers-v5',
+    outDir: config.typechainOutputDir
+  });
   return path.join(config.outputDirectory, config.typechainOutputDir);
 }
