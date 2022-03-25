@@ -61,7 +61,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       actualArgs.length
     );
     for (let index = 0; index < expectedArgs.length; index++) {
-      if (expectedArgs[index] !== undefined && expectedArgs[index].length !== undefined && typeof expectedArgs[index] !== 'string') {
+      if (expectedArgs[index]?.length !== undefined && typeof expectedArgs[index] !== 'string') {
         for (let j = 0; j < expectedArgs[index].length; j++) {
           new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
         }
