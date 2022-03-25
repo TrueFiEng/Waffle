@@ -111,6 +111,13 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
   });
 
+  it('Throw with modification: success, properly handle common substring', async () => {
+    // https://github.com/NomicFoundation/hardhat/issues/2234#issuecomment-1045974424
+    await expect(
+      expect(matchers.doThrowAndModify()).to.be.revertedWith('fa')
+    ).to.eventually.be.rejectedWith('Expected transaction to be reverted with "fa", but other reason was found: ""');
+  });
+
   it('Throw with modification: fail when message is expected', async () => {
     await expect(
       expect(matchers.doThrowAndModify()).to.be.revertedWith('Message other than empty string')
