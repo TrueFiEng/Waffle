@@ -245,7 +245,7 @@ importers:
       mocha: ^7.1.2
       solc: ^0.8.13
       ts-node: ^8.9.1
-      typechain: ^7.0.1
+      typechain: ^8.0.0
       typescript: ^4.6.2
     devDependencies:
       '@openzeppelin/contracts': 3.4.2
@@ -261,7 +261,7 @@ importers:
       mocha: 7.2.0
       solc: 0.8.13
       ts-node: 8.10.2_typescript@4.6.2
-      typechain: 7.0.1_typescript@4.6.2
+      typechain: 8.0.0_typescript@4.6.2
       typescript: 4.6.2
 
   waffle-chai:
@@ -281,7 +281,7 @@ importers:
       ethers: ^5.6.1
       openzeppelin-solidity: 2.3.0
       solc: ^0.6.3
-      typechain: ^7.0.0
+      typechain: ^8.0.0
     dependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/compiler': link:../waffle-compiler
@@ -289,7 +289,7 @@ importers:
       '@ethereum-waffle/provider': link:../waffle-provider
       ethers: 5.6.1
       solc: 0.6.12
-      typechain: 7.0.1_typescript@4.6.2
+      typechain: 8.0.0_typescript@4.6.2
     devDependencies:
       openzeppelin-solidity: 2.3.0
 
@@ -343,14 +343,14 @@ importers:
       '@ethereum-waffle/provider': workspace:*
       ethers: ^5.6.1
       solc: ^0.6.3
-      typechain: ^7.0.0
+      typechain: ^8.0.0
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       ethers: 5.6.1
       solc: 0.6.12
-      typechain: 7.0.1_typescript@4.6.2
+      typechain: 8.0.0_typescript@4.6.2
 
   waffle-ens:
     specifiers:
@@ -390,7 +390,7 @@ importers:
       '@ethersproject/abi': ^5.6.0
       ethers: ^5.6.1
       solc: ^0.6.3
-      typechain: ^7.0.0
+      typechain: ^8.0.0
     dependencies:
       '@ethersproject/abi': 5.6.0
       ethers: 5.6.1
@@ -399,7 +399,7 @@ importers:
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       solc: 0.6.12
-      typechain: 7.0.1_typescript@4.6.2
+      typechain: 8.0.0_typescript@4.6.2
 
   waffle-provider:
     specifiers:
@@ -3248,6 +3248,7 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: true
 
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -4438,7 +4439,6 @@ packages:
       minimatch: 3.0.4
       once: 1.4.0
       path-is-absolute: 1.0.1
-    dev: true
 
   /glob/7.2.0:
     resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
@@ -8096,26 +8096,6 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
-  /typechain/7.0.1_typescript@4.6.2:
-    resolution: {integrity: sha512-4c+ecLW4mTiKwTDdofiN8ToDp7TkFC2Bzp2Pt/+qeKzkmELWzy2eDjCiv0IWHswAZhE2y9KXBhTmShzhIzD+LQ==}
-    hasBin: true
-    peerDependencies:
-      typescript: '>=4.1.0'
-    dependencies:
-      '@types/prettier': 2.3.0
-      debug: 4.3.1
-      fs-extra: 7.0.1
-      glob: 7.2.0
-      js-sha3: 0.8.0
-      lodash: 4.17.21
-      mkdirp: 1.0.4
-      prettier: 2.3.1
-      ts-command-line-args: 2.2.1
-      ts-essentials: 7.0.3_typescript@4.6.2
-      typescript: 4.6.2
-    transitivePeerDependencies:
-      - supports-color
-
   /typechain/8.0.0_typescript@4.6.2:
     resolution: {integrity: sha512-rqDfDYc9voVAhmfVfAwzg3VYFvhvs5ck1X9T/iWkX745Cul4t+V/smjnyqrbDzWDbzD93xfld1epg7Y/uFAesQ==}
     hasBin: true
@@ -8135,7 +8115,6 @@ packages:
       typescript: 4.6.2
     transitivePeerDependencies:
       - supports-color
-    dev: true
 
   /typedarray-to-buffer/3.1.5:
     resolution: {integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==}
