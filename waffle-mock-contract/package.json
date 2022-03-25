@@ -51,6 +51,6 @@
     "@ethereum-waffle/compiler": "workspace:*",
     "solc": "^0.6.3",
     "@ethereum-waffle/provider": "workspace:*",
-    "typechain": "^7.0.0"
+    "typechain": "^8.0.0"
   }
 }
