@@ -1,13 +1,14 @@
 {
   "name": "@ethereum-waffle/provider",
   "description": "A mock provider for your blockchain testing needs.",
-  "version": "3.4.1",
+  "version": "4.0.0-alpha.4",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   },
   "keywords": [
     "ethereum",
@@ -26,7 +27,6 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
@@ -38,11 +38,10 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/ens": "^3.3.1",
-    "ethers": "^5.5.2",
-    "ganache-core": "^2.13.2",
-    "patch-package": "^6.2.2",
-    "postinstall-postinstall": "^2.1.0"
+    "@ethereum-waffle/ens": "workspace:*",
+    "@ganache/ethereum-options": "0.1.4",
+    "ethers": "^5.6.1",
+    "ganache": "7.0.3"
   },
   "resolutions": {
     "web3": "1.2.4"

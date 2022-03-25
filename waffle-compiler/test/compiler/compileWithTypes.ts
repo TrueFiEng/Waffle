@@ -11,7 +11,7 @@ describe('E2E: Compile with types', () => {
 
   it('compiles with generation types using typechain', async () => {
     await compileProject('config.json');
-    const filePath = join('./build/types', 'Constantinople.d.ts');
+    const filePath = join('./build/types', 'Constantinople.ts');
     expect(isFile(filePath), `Expected compilation artefact "${filePath}" to exist.`).to.equal(true);
   });
 

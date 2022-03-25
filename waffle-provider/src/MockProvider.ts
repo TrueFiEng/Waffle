@@ -1,13 +1,16 @@
 import {providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import type Ganache from 'ganache-core';
+import type {Provider} from 'ganache';
+import type {EthereumProviderOptions} from '@ganache/ethereum-options';
+
 import {deployENS, ENS} from '@ethereum-waffle/ens';
+import {injectRevertString} from './revertString';
 
 export {RecordedCall};
 
-interface MockProviderOptions {
-  ganacheOptions: Ganache.IProviderOptions;
+export interface MockProviderOptions {
+  ganacheOptions: EthereumProviderOptions;
 }
 
 export class MockProvider extends providers.Web3Provider {
@@ -15,13 +18,43 @@ export class MockProvider extends providers.Web3Provider {
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    super(require('ganache-core').provider({accounts: defaultAccounts, ...options?.ganacheOptions}) as any);
-    this._callHistory = new CallHistory();
-    this._callHistory.record(this);
+    const mergedOptions: EthereumProviderOptions = {
+      wallet: {
+        accounts: defaultAccounts
+      },
+      logging: {quiet: true},
+      chain: {
+        hardfork: 'berlin'
+      },
+      ...options?.ganacheOptions
+    };
+    const provider: Provider = require('ganache').provider(mergedOptions);
+    const callHistory = new CallHistory();
+    const patchedProvider = injectRevertString(callHistory.record(provider));
+
+    super(patchedProvider as any);
+    this._callHistory = callHistory;
+
+    /**
+     * The override to the provider's formatter allows us to inject
+     * additional values to a transaction receipt.
+     * We inject a `revertString` in overriden `eth_getTransactionReceipt` handler.
+     * Ethers do not bubble up a revert error message when a transaction reverts,
+     * but it does bubble it up when a call (query) reverts.
+     * In order to make the revert string accessible for matchers like `revertedWith`,
+     * we need to simulate transactions as queries and add the revert string to the receipt.
+     */
+    (this.formatter as any).formats = {
+      ...this.formatter.formats,
+      receipt: {
+        ...this.formatter.formats.receipt,
+        revertString: (val: any) => val
+      }
+    };
   }
 
   getWallets() {
-    const items = this.options?.ganacheOptions.accounts ?? defaultAccounts;
+    const items = this.options?.ganacheOptions.wallet?.accounts ?? defaultAccounts;
     return items.map((x: any) => new Wallet(x.secretKey, this));
   }
 

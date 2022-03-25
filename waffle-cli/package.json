@@ -1,13 +1,14 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "3.4.0",
+  "version": "4.0.0-alpha.4",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   },
   "keywords": [
     "ethereum",
@@ -30,7 +31,6 @@
     "waffle": "./bin/waffle"
   },
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test:buildonly": "ts-node -T buildTestContracts",
     "test:nobuild": "mocha",
     "test": "yarn test:buildonly && yarn test:nobuild",
@@ -45,11 +45,15 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/chai": "^3.4.0",
-    "@ethereum-waffle/compiler": "^3.4.0",
-    "@ethereum-waffle/mock-contract": "^3.3.0",
-    "@ethereum-waffle/provider": "^3.4.0",
-    "ethers": "^5.0.1"
+    "@ethereum-waffle/chai": "workspace:*",
+    "@ethereum-waffle/compiler": "workspace:*",
+    "@ethereum-waffle/mock-contract": "workspace:*",
+    "@ethereum-waffle/provider": "workspace:*",
+    "ethers": "^5.6.1",
+    "solc": "^0.6.3",
+    "typechain": "^8.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "openzeppelin-solidity": "2.3.0"
+  }
 }
