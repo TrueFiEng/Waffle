@@ -1,7 +1,8 @@
 import {providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import type {EthereumProviderOptions, Provider} from 'ganache';
+import type {Provider} from 'ganache';
+import type {EthereumProviderOptions} from '@ganache/ethereum-options';
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
 import {injectRevertString} from './revertString';
