@@ -58,11 +58,11 @@
     "fs-extra": "^9.0.1",
     "openzeppelin-solidity": "2.3.0",
     "solc": "^0.6.3",
-    "typechain": "^7.0.0"
+    "typechain": "^8.0.0"
   },
   "peerDependencies": {
     "ethers": "^5.6.1",
     "solc": "*",
-    "typechain": "^7.0.0"
+    "typechain": "^8.0.0"
   }
 }
