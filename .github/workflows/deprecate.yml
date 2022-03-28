@@ -20,7 +20,7 @@ jobs:
           node-version: 16.x
       - name: Deprecate @ethereum-waffle/jest
         run: |
-          curl https://registry.npmjs.org/@ethereum-waffle%2fjest
+          cd waffle-jest 
           npm deprecate @ethereum-waffle/jest 'Please use @ethereum-waffle/chai'
         env:
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
