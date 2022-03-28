@@ -40,7 +40,7 @@
   "dependencies": {
     "@ethereum-waffle/provider": "workspace:*",
     "debug": "^4.3.4",
-    "ethers": "^5.6.1"
+    "ethers": "5.6.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.7"
