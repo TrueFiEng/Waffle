@@ -1,1 +1,1 @@
-cmd_Release/addon.node := c++ -bundle -undefined dynamic_lookup -Wl,-search_paths_first -mmacosx-version-min=10.13 -arch arm64 -L./Release -stdlib=libc++  -o Release/addon.node Release/obj.target/addon/napi/addon.o /Users/dmytro/Projects/work/Waffle/waffle-geth/go/build/wafflegeth.a
+cmd_Release/addon.node := c++ -bundle -undefined dynamic_lookup -Wl,-search_paths_first -mmacosx-version-min=10.13 -arch x86_64 -L./Release -stdlib=libc++  -o Release/addon.node Release/obj.target/addon/napi/addon.o /Users/dmytro/Projects/work/Waffle/waffle-geth/go/build/wafflegeth.a

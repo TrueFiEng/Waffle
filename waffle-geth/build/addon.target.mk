@@ -26,7 +26,7 @@ CFLAGS_Debug := \
 	-O0 \
 	-gdwarf-2 \
 	-mmacosx-version-min=10.13 \
-	-arch arm64 \
+	-arch x86_64 \
 	-Wall \
 	-Wendif-labels \
 	-W \
@@ -51,14 +51,14 @@ CFLAGS_OBJC_Debug :=
 CFLAGS_OBJCC_Debug :=
 
 INCS_Debug := \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/include/node \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/src \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/openssl/config \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/openssl/openssl/include \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/uv/include \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/zlib \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/v8/include \
-	-I/Users/dmytro/Projects/work/Waffle/waffle-geth/node_modules/node-addon-api
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/include/node \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/src \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/openssl/config \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/openssl/openssl/include \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/uv/include \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/zlib \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/v8/include \
+	-I/Users/dmytro/Projects/work/Waffle/node_modules/.pnpm/node-addon-api@4.3.0/node_modules/node-addon-api
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=addon' \
@@ -81,7 +81,7 @@ CFLAGS_Release := \
 	-O3 \
 	-gdwarf-2 \
 	-mmacosx-version-min=10.13 \
-	-arch arm64 \
+	-arch x86_64 \
 	-Wall \
 	-Wendif-labels \
 	-W \
@@ -106,14 +106,14 @@ CFLAGS_OBJC_Release :=
 CFLAGS_OBJCC_Release :=
 
 INCS_Release := \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/include/node \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/src \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/openssl/config \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/openssl/openssl/include \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/uv/include \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/zlib \
-	-I/Users/dmytro/Library/Caches/node-gyp/16.13.0/deps/v8/include \
-	-I/Users/dmytro/Projects/work/Waffle/waffle-geth/node_modules/node-addon-api
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/include/node \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/src \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/openssl/config \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/openssl/openssl/include \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/uv/include \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/zlib \
+	-I/Users/dmytro/Library/Caches/node-gyp/16.14.0/deps/v8/include \
+	-I/Users/dmytro/Projects/work/Waffle/node_modules/.pnpm/node-addon-api@4.3.0/node_modules/node-addon-api
 
 OBJS := \
 	$(obj).target/$(TARGET)/napi/addon.o
@@ -148,7 +148,7 @@ LDFLAGS_Debug := \
 	-undefined dynamic_lookup \
 	-Wl,-search_paths_first \
 	-mmacosx-version-min=10.13 \
-	-arch arm64 \
+	-arch x86_64 \
 	-L$(builddir) \
 	-stdlib=libc++
 
@@ -160,7 +160,7 @@ LDFLAGS_Release := \
 	-undefined dynamic_lookup \
 	-Wl,-search_paths_first \
 	-mmacosx-version-min=10.13 \
-	-arch arm64 \
+	-arch x86_64 \
 	-L$(builddir) \
 	-stdlib=libc++
 
