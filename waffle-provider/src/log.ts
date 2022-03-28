@@ -1,5 +1,5 @@
 import debug from 'debug';
 
-const log = debug('waffle:waffle-provider')
+const log = debug('waffle:waffle-provider');
 
-export {log}
+export {log};
