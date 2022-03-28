@@ -1,7 +1,7 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
-  Assertion.addMethod('revertedWith', function (this: any, revertReason: string) {
+  Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
     const promise = this._obj;
 
     const onSuccess = (value: any) => {
@@ -22,11 +22,14 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     const onError = (error: any) => {
       const revertString = error?.receipt?.revertString ?? decodeRevertString(error);
       if (revertString !== undefined) {
+        const isReverted = revertReason instanceof RegExp
+          ? revertReason.test(revertString)
+          : revertString === revertReason;
         this.assert(
-          revertString === revertReason,
+          isReverted,
           `Expected transaction to be reverted with "${revertReason}", but other reason was found: "${revertString}"`,
           `Expected transaction NOT to be reverted with "${revertReason}"`,
-          `Transaction reverted with "${revertReason}".`,
+          `Transaction reverted with "${revertReason}"`,
           error
         );
         return error;
@@ -45,8 +48,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
       const reasonsList = error.results && Object.values(error.results).map((o: any) => o.reason);
       const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
       const isReverted = reasonsList
-        ? reasonsList.some((r: string) => r === revertReason)
-        : message.includes('revert') && message.includes(revertReason);
+        ? reasonsList.some((r: string) => revertReason instanceof RegExp ? revertReason.test(r) : r === revertReason)
+        : message.includes('revert') &&
+          (revertReason instanceof RegExp ? revertReason.test(message) : message.includes(revertReason));
       const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
 
       this.assert(
