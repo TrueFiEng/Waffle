@@ -40,11 +40,14 @@
   "dependencies": {
     "@ethereum-waffle/ens": "workspace:*",
     "@ganache/ethereum-options": "0.1.4",
+    "debug": "^4.3.4",
     "ethers": "^5.6.1",
     "ganache": "7.0.3"
   },
   "resolutions": {
     "web3": "1.2.4"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/debug": "^4.1.7"
+  }
 }

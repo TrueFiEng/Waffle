@@ -267,10 +267,15 @@ importers:
   waffle-chai:
     specifiers:
       '@ethereum-waffle/provider': workspace:*
+      '@types/debug': ^4.1.7
+      debug: ^4.3.4
       ethers: ^5.6.1
     dependencies:
       '@ethereum-waffle/provider': link:../waffle-provider
+      debug: 4.3.4
       ethers: 5.6.1
+    devDependencies:
+      '@types/debug': 4.1.7
 
   waffle-cli:
     specifiers:
@@ -405,13 +410,18 @@ importers:
     specifiers:
       '@ethereum-waffle/ens': workspace:*
       '@ganache/ethereum-options': 0.1.4
+      '@types/debug': ^4.1.7
+      debug: ^4.3.4
       ethers: ^5.6.1
       ganache: 7.0.3
     dependencies:
       '@ethereum-waffle/ens': link:../waffle-ens
       '@ganache/ethereum-options': 0.1.4
+      debug: 4.3.4
       ethers: 5.6.1
       ganache: 7.0.3
+    devDependencies:
+      '@types/debug': 4.1.7
 
 packages:
 
@@ -1800,6 +1810,12 @@ packages:
     resolution: {integrity: sha512-G+ITQPXkwTrslfG5L/BksmbLUA0M1iybEsmCWPqzSxsRRhJZimBKJkoMi8fr/CPygPTj4zO5pJH7I2/cm9M7SQ==}
     dev: true
 
+  /@types/debug/4.1.7:
+    resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
+    dependencies:
+      '@types/ms': 0.7.31
+    dev: true
+
   /@types/fs-extra/9.0.11:
     resolution: {integrity: sha512-mZsifGG4QeQ7hlkhO56u7zt/ycBgGxSVsFI/6lGTU34VtwkiqrrSDgw0+ygs8kFGWcXnFQWMrzF2h7TtDFNixA==}
     dependencies:
@@ -1892,6 +1908,10 @@ packages:
 
   /@types/mocha/8.2.0:
     resolution: {integrity: sha512-/Sge3BymXo4lKc31C8OINJgXLaw+7vL1/L1pGiBNpGrBiT8FQiaFpSYV0uhTaG4y78vcMBTMFsWaHDvuD+xGzQ==}
+    dev: true
+
+  /@types/ms/0.7.31:
+    resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
   /@types/node-fetch/2.6.1:

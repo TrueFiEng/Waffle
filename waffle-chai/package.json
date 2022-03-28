@@ -38,8 +38,11 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "ethers": "^5.6.1",
-    "@ethereum-waffle/provider": "workspace:*"
+    "@ethereum-waffle/provider": "workspace:*",
+    "debug": "^4.3.4",
+    "ethers": "^5.6.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/debug": "^4.1.7"
+  }
 }

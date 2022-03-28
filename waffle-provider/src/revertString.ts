@@ -1,6 +1,7 @@
 import {providers} from 'ethers';
 import {toUtf8String} from 'ethers/lib/utils';
 import {Provider} from 'ganache';
+import {log} from './log'
 
 /* eslint-disable no-control-regex */
 
@@ -69,14 +70,18 @@ export const injectRevertString = (provider: Provider): Provider => {
           return (async () => {
             const receipt = await originalResult;
             if (parseInt(receipt.status) === 0) {
+              log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.')
               // A reverted transaction. We try to add a revert string to the receipt.
               try {
                 const etherProvider = new providers.Web3Provider(provider as any);
                 const tx = await etherProvider.getTransaction(receipt.transactionHash);
+                log(`Running tx "${tx.hash}" as a call.`)
                 // Run the transaction as a query. It works differently in Ethers, a revert code is included.
                 await etherProvider.call(tx as any, tx.blockNumber);
               } catch (error: any) {
+                log('Caught error, attempting to extract revert string.')
                 receipt.revertString = decodeRevertString(error);
+                log(`Extracted revert string: "${receipt.revertString}"`)
               }
             }
             return receipt;
