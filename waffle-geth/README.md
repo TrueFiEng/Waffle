@@ -26,8 +26,10 @@ Faster than `ffi-napi`.
 
 ## `./rust-nj` - Builds NAPI package from Rust using [node-bindgen](https://github.com/infinyon/node-bindgen)
 
+NAPI exports are behind a feature to make `cargo test` work.
+
 ```bash
-nj-cli build
+nj-cli build -- --feature napi
 ```
 
 To build for different arch:
