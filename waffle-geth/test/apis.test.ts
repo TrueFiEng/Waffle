@@ -51,7 +51,7 @@ describe.only('napi', () => {
     })    
   })
 
-  describe('node-bindgen', () => {
+  describe.only('node-bindgen', () => {
     it('add', () => {
       expect(libNodeBindgen.sum(1, 2)).to.eq(3);
     })
@@ -62,6 +62,11 @@ describe.only('napi', () => {
       console.log({ millis });
   
       expect(millis).to.be.a('number');
+    })
+
+    it('toUpper', () => {
+      const upper = libNodeBindgen.toUpper(TEXT);
+      expect(upper).to.eq(TEXT_UPPER)
     })
   })
 
