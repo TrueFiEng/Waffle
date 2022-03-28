@@ -51,7 +51,7 @@ describe.only('napi', () => {
     })    
   })
 
-  describe.only('node-bindgen', () => {
+  describe('node-bindgen', () => {
     it('add', () => {
       expect(libNodeBindgen.sum(1, 2)).to.eq(3);
     })
@@ -82,7 +82,7 @@ describe.only('napi', () => {
     })    
   })
 
-  describe('bench to upper', () => {
+  describe.only('bench to upper', () => {
     it('napi', () => {
       formatBench(bench(() => {
         const upper = libNapi.toUpper(TEXT);
@@ -93,7 +93,14 @@ describe.only('napi', () => {
     it('ffi', () => {
       formatBench(bench(() => {
         const upper = libFfi.toUpper(TEXT);
-      expect(upper).to.eq(TEXT_UPPER);
+        expect(upper).to.eq(TEXT_UPPER);
+      }))
+    })    
+
+    it('node-bindgen', () => {
+      formatBench(bench(() => {
+        const upper = libNodeBindgen.toUpper(TEXT);
+        expect(upper).to.eq(TEXT_UPPER);
       }))
     })    
   })
