@@ -19,7 +19,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
     "ethereum-waffle": "workspace:*",
-    "ethers": "^5.6.1",
+    "ethers": "5.6.1",
     "mocha": "^7.1.2",
     "solc": "^0.8.13",
     "ts-node": "^8.9.1",
