@@ -51,9 +51,17 @@ describe.only('napi', () => {
     })    
   })
 
-  describe.only('node-bindgen', () => {
+  describe('node-bindgen', () => {
     it('add', () => {
       expect(libNodeBindgen.sum(1, 2)).to.eq(3);
+    })
+
+    it('cgoCurrentMillis', () => {
+      const millis = libNodeBindgen.cgoCurrentMillis();
+  
+      console.log({ millis });
+  
+      expect(millis).to.be.a('number');
     })
   })
 
