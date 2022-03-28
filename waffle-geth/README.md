@@ -7,10 +7,10 @@
 
 **Tested on Intel cpus: make sure native libraries and installed node_modules match desired architecture**
 
-# `./go`
+## `./go`
 Go implementation of the node.
 
-## `./go/main` - C API.
+### `./go/main` - C API.
 
 `make build` to build. Builds both statically and dynamically linked binaries. **Watch out for the arch of the binary.**
 
@@ -18,8 +18,21 @@ Go implementation of the node.
 
 Can be also loaded though `ffi-napi` package but slow.
 
-# `./napi` - Bindings between NAPI (Node.JS) and GO's C API.
+## `./napi` - Bindings between NAPI (Node.JS) and GO's C API.
 
 `yarn node-gyp configure build` to build.
 Builds `*.node` file which can be `require`d.
 Faster than `ffi-napi`.
+
+## `./rust-nj` - Builds NAPI package from Rust using [node-bindgen](https://github.com/infinyon/node-bindgen)
+
+```bash
+nj-cli build
+```
+
+To build for different arch:
+
+```
+rustup toolchain install stable-x86_64-apple-darwin
+rustup default stable-x86_64-apple-darwin  
+```

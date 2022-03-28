@@ -10,6 +10,8 @@ const libFfi = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
   toUpper: ['string', ['string']],
 });
 
+const libNodeBindgen = require('../rust-nj/dist/index.node');
+
 const TEXT = readFileSync(join(__dirname, '../../pnpm-lock.yaml'), { encoding: 'utf-8' })
 const LINES = TEXT.split('\n').length - 1;
 const TEXT_UPPER = TEXT.toUpperCase();
@@ -49,6 +51,12 @@ describe.only('napi', () => {
     })    
   })
 
+  describe.only('node-bindgen', () => {
+    it('add', () => {
+      expect(libNodeBindgen.sum(1, 2)).to.eq(3);
+    })
+  })
+
   describe('to upper', () => {
     it('napi', () => {
       const upper = libNapi.toUpper(TEXT);
@@ -61,7 +69,7 @@ describe.only('napi', () => {
     })    
   })
 
-  describe.only('bench to upper', () => {
+  describe('bench to upper', () => {
     it('napi', () => {
       formatBench(bench(() => {
         const upper = libNapi.toUpper(TEXT);
