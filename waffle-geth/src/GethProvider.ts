@@ -1,4 +1,5 @@
-import {BigNumber, BigNumberish, providers, utils} from 'ethers';
+import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
+import * as providers from '@ethersproject/providers';
 import type {
   Block,
   BlockTag,
@@ -15,6 +16,8 @@ import type {
 import type {Network} from '@ethersproject/networks';
 import {Simulator} from './native';
 import {resolveProperties} from '@ethersproject/properties';
+import { Deferrable } from '@ethersproject/properties';
+import { isAddress } from '@ethersproject/address';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
@@ -31,7 +34,7 @@ export class GethProvider extends providers.Provider {
   }
 
   async call(
-    transaction: utils.Deferrable<TransactionRequest>,
+    transaction: Deferrable<TransactionRequest>,
     blockTag?: BlockTag | Promise<BlockTag>
   ): Promise<string> {
     await noBlockTag(blockTag);
@@ -42,7 +45,7 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  estimateGas(transaction: utils.Deferrable<TransactionRequest>): Promise<BigNumber> {
+  estimateGas(transaction: Deferrable<TransactionRequest>): Promise<BigNumber> {
     throw new Error('Not implemented');
   }
 
@@ -52,7 +55,7 @@ export class GethProvider extends providers.Provider {
   ): Promise<BigNumber> {
     await noBlockTag(blockTag);
     const address = await addressOrName;
-    if (!utils.isAddress(address)) {
+    if (!isAddress(address)) {
       throw new Error('Not implemented: ENS');
     }
     return BigNumber.from(this.sim.getBalance(address));
