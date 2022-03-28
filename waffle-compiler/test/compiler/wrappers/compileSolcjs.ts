@@ -134,7 +134,7 @@ describe('INTEGRATION: loadCompiler', () => {
   describe('when a path is given', () => {
     it('loads compiler if path exists', async () => {
       const solcLoaded = await loadCompiler(
-        {compilerVersion: '../node_modules/solc'} as Config
+        {compilerVersion: './node_modules/solc'} as Config
       );
       expect(solcLoaded.version()).to.equal(solc.version());
     });

@@ -1,13 +1,14 @@
 {
   "name": "@ethereum-waffle/compiler",
   "description": "Compile solidity without the hassle.",
-  "version": "3.4.0",
+  "version": "4.0.0-alpha.6",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   },
   "keywords": [
     "ethereum",
@@ -26,7 +27,6 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
@@ -38,24 +38,31 @@
     "node": ">=10.0"
   },
   "dependencies": {
+    "@ethersproject/abi": "^5.6.0",
+    "@ethersproject/bytes": "^5.6.0",
+    "@ethersproject/providers": "^5.6.1",
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
-    "@typechain/ethers-v5": "^2.0.0",
+    "@typechain/ethers-v5": "^10.0.0",
     "@types/mkdirp": "^0.5.2",
-    "@types/node-fetch": "^2.5.5",
-    "ethers": "^5.0.1",
+    "@types/node-fetch": "^2.6.1",
     "mkdirp": "^0.5.1",
-    "node-fetch": "^2.6.1",
-    "solc": "^0.6.3",
-    "ts-generator": "^0.1.1",
-    "typechain": "^3.0.0"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
-    "@ethereum-waffle/chai": "^3.4.0",
-    "@ethereum-waffle/provider": "^3.4.0",
+    "@ethereum-waffle/chai": "workspace:*",
+    "@ethereum-waffle/provider": "workspace:*",
     "@openzeppelin/contracts": "3.0.1",
     "@types/fs-extra": "^9.0.4",
+    "ethers": "^5.6.1",
     "fs-extra": "^9.0.1",
-    "openzeppelin-solidity": "2.3.0"
+    "openzeppelin-solidity": "2.3.0",
+    "solc": "^0.6.3",
+    "typechain": "^8.0.0"
+  },
+  "peerDependencies": {
+    "ethers": "^5.6.1",
+    "solc": "*",
+    "typechain": "^8.0.0"
   }
 }

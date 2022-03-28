@@ -1,17 +1,30 @@
+import {decodeRevertString} from '@ethereum-waffle/provider';
+
 export async function toBeRevertedWith(
   promise: Promise<any>,
-  revertReason: string
+  revertReason: string | RegExp
 ) {
   try {
-    await promise;
+    const tx = await promise;
+    await tx.wait();
     return {
       pass: false,
       message: () => 'Expected transaction to be reverted'
     };
-  } catch (error) {
-    const message = error instanceof Object && 'message' in error ? error.message : JSON.stringify(error);
+  } catch (error: any) {
+    const revertString = error?.receipt?.revertString ?? decodeRevertString(error);
+    if (revertString) {
+      return {
+        pass: revertString === revertReason,
+        message: () =>
+          `Expected transaction to be reverted with ${revertReason}, but other reason was found: ${revertString}`
+      };
+    }
 
-    const isReverted = message.search('revert') >= 0 && message.search(revertReason) >= 0;
+    const message = error instanceof Object && 'message' in error ? (error as any).message : JSON.stringify(error);
+
+    const isReverted = message.search('revert') >= 0 &&
+      (revertReason instanceof RegExp ? revertReason.test(message) : message.search(revertReason) >= 0);
     const isThrown = message.search('invalid opcode') >= 0 && revertReason === '';
     const isError = message.search('code=') >= 0;
 

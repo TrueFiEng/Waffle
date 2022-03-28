@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/EthWorks/Waffle.svg?style=svg)](https://circleci.com/gh/EthWorks/Waffle)
+![CI](https://github.com/EthWorks/Waffle/workflows/CI/badge.svg)
 [![](https://img.shields.io/npm/v/@ethereum-waffle/compiler.svg)](https://www.npmjs.com/package/@ethereum-waffle/compiler)
 
 ![Ethereum Waffle](https://raw.githubusercontent.com/EthWorks/Waffle/master/docs/source/logo.png)

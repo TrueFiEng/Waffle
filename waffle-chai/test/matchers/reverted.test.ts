@@ -12,6 +12,16 @@ describe('INTEGRATION: Matchers: reverted', () => {
     matchers = await factory.deploy();
   });
 
+  it('Modify: Success', async () => {
+    await expect(matchers.doModify()).not.to.be.reverted;
+  });
+
+  it('Modify: Fail', async () => {
+    await expect(
+      expect(matchers.doModify()).to.be.reverted
+    ).to.be.eventually.rejectedWith('Expected transaction to be reverted');
+  });
+
   it('Throw: success', async () => {
     await expect(matchers.doThrow()).to.be.reverted;
   });
@@ -41,7 +51,8 @@ describe('INTEGRATION: Matchers: reverted', () => {
   it('Not to revert: fail', async () => {
     await expect(
       expect(matchers.doThrow()).not.to.be.reverted
-    ).to.be.eventually.rejected;
+      // eslint-disable-next-line max-len
+    ).to.be.eventually.rejectedWith('Expected transaction NOT to be reverted, but it was reverted with "VM Exception while processing transaction: invalid opcode"');
   });
 
   it('Revert: fail, random exception', async () => {
@@ -62,6 +73,16 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   beforeEach(async () => {
     const factory = new ContractFactory(MATCHERS_ABI, MATCHERS_BYTECODE, wallet);
     matchers = await factory.deploy();
+  });
+
+  it('Modify: Success', async () => {
+    await expect(matchers.doModify()).not.to.be.revertedWith('Revert cause');
+  });
+
+  it('Modify: Fail', async () => {
+    await expect(
+      expect(matchers.doModify()).to.be.revertedWith('reverted cause')
+    ).to.be.eventually.rejectedWith('Expected transaction to be reverted');
   });
 
   it('Throw: success', async () => {
@@ -110,6 +131,13 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
   });
 
+  it('Throw with modification: success, properly handle common substring', async () => {
+    // https://github.com/NomicFoundation/hardhat/issues/2234#issuecomment-1045974424
+    await expect(
+      expect(matchers.doThrowAndModify()).to.be.revertedWith('fa')
+    ).to.eventually.be.rejectedWith('Expected transaction to be reverted with "fa", but other reason was found: ""');
+  });
+
   it('Throw with modification: fail when message is expected', async () => {
     await expect(
       expect(matchers.doThrowAndModify()).to.be.revertedWith('Message other than empty string')
@@ -132,9 +160,20 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
       .to.be.revertedWith('Revert cause (with complex reason)');
   });
 
+  it('Revert: success when message matches to the pattern', async () => {
+    await expect(matchers.doRevertWithComplexReason())
+      .to.be.revertedWith(/complex reason/);
+  });
+
   it('Revert: fail when different message was thrown', async () => {
     await expect(
       expect(matchers.doRevert()).to.be.revertedWith('Different message')
+    ).to.be.eventually.rejected;
+  });
+
+  it('Revert: fail when message does not match to the pattern', async () => {
+    await expect(
+      expect(matchers.doRevert()).to.be.revertedWith(/Different message/)
     ).to.be.eventually.rejected;
   });
 
