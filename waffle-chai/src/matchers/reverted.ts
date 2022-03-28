@@ -15,18 +15,24 @@ export function supportReverted(Assertion: Chai.AssertionStatic) {
       );
       return error;
     };
+
+    const assertNotReverted = () => this.assert(
+      false,
+      'Expected transaction to be reverted',
+      'Expected transaction NOT to be reverted',
+      'Transaction reverted.',
+      'Transaction NOT reverted.'
+    );
+
     const onSuccess = (value: any) => {
       if ('wait' in value) {
         // Sending the transaction succeeded, but we wait to see if it will revert on-chain.
-        return value.wait().then((newValue: any) => newValue, onError);
+        return value.wait().then((newValue: any) => {
+          assertNotReverted();
+          return newValue;
+        }, onError);
       }
-      this.assert(
-        false,
-        'Expected transaction to be reverted',
-        'Expected transaction NOT to be reverted',
-        'Transaction reverted.',
-        'Transaction NOT reverted.'
-      );
+      assertNotReverted();
       return value;
     };
     const derivedPromise = promise.then(onSuccess, onError);

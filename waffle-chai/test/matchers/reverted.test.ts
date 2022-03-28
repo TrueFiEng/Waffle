@@ -12,6 +12,16 @@ describe('INTEGRATION: Matchers: reverted', () => {
     matchers = await factory.deploy();
   });
 
+  it('Modify: Success', async () => {
+    await expect(matchers.doModify()).not.to.be.reverted;
+  });
+
+  it('Modify: Fail', async () => {
+    await expect(
+      expect(matchers.doModify()).to.be.reverted
+    ).to.be.eventually.rejectedWith('Expected transaction to be reverted');
+  });
+
   it('Throw: success', async () => {
     await expect(matchers.doThrow()).to.be.reverted;
   });
@@ -63,6 +73,16 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
   beforeEach(async () => {
     const factory = new ContractFactory(MATCHERS_ABI, MATCHERS_BYTECODE, wallet);
     matchers = await factory.deploy();
+  });
+
+  it('Modify: Success', async () => {
+    await expect(matchers.doModify()).not.to.be.revertedWith('Revert cause');
+  });
+
+  it('Modify: Fail', async () => {
+    await expect(
+      expect(matchers.doModify()).to.be.revertedWith('reverted cause')
+    ).to.be.eventually.rejectedWith('Expected transaction to be reverted');
   });
 
   it('Throw: success', async () => {
