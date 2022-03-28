@@ -20,7 +20,6 @@ jobs:
           node-version: 16.x
       - name: Deprecate @ethereum-waffle/jest
         run: |
-          npm deprecate @ethereum-waffle/jest 'Please use @ethereum-waffle/chai'
-          cat /home/runner/.npm/_logs/*.log
+          `npm deprecate @ethereum-waffle/jest 'Please use @ethereum-waffle/chai'` || `cat /home/runner/.npm/_logs/*.log`
         env:
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
