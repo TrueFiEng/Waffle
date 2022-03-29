@@ -70,14 +70,14 @@ impl<'a> JSValue<'a> for InputStruct {
 #[cfg(feature = "napi")]
 fn sumProduct(input: InputStruct) -> OutputStruct {
     unsafe {
-        let res = sys::sumProduct(&mut sys::InputStruct {
+        let res = sys::sumProduct(sys::InputStruct {
             A: input.a,
             B: input.b
-        } as *mut _);
+        });
 
         OutputStruct {
-            sum: (*res).Sum,
-            product: (*res).Product
+            sum: res.Sum,
+            product: res.Product
         }
     }
 }

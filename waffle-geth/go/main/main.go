@@ -274,8 +274,8 @@ type InputStruct = C.InputStruct
 type OutputStruct = C.OutputStruct
 
 //export sumProduct
-func sumProduct(intput *InputStruct) *OutputStruct {
-	return &OutputStruct{
+func sumProduct(intput InputStruct) OutputStruct {
+	return OutputStruct{
 		Sum:     intput.A + intput.B,
 		Product: intput.A * intput.B,
 	}
