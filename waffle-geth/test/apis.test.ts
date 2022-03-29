@@ -68,6 +68,17 @@ describe.only('napi', () => {
       const upper = libNodeBindgen.toUpper(TEXT);
       expect(upper).to.eq(TEXT_UPPER)
     })
+
+    it.only('sumProduct', () => {
+      const res = libNodeBindgen.sumProduct({
+        a: 2,
+        b: 3,
+      });
+      expect(res).to.deep.eq({
+        sum: 5,
+        product: 6,
+      });
+    })
   })
 
   describe('to upper', () => {
@@ -82,7 +93,7 @@ describe.only('napi', () => {
     })    
   })
 
-  describe.only('bench to upper', () => {
+  describe('bench to upper', () => {
     it('napi', () => {
       formatBench(bench(() => {
         const upper = libNapi.toUpper(TEXT);

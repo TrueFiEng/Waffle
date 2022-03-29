@@ -8,6 +8,11 @@ mod sys {
 }
 
 use node_bindgen::derive::node_bindgen;
+use node_bindgen::core::val::JsEnv;
+use node_bindgen::core::val::JsObject;
+use node_bindgen::core::NjError;
+use node_bindgen::core::JSValue;
+use node_bindgen::sys::napi_value;
 use std::ffi::CString;
 
 /// add two integer
@@ -34,4 +39,45 @@ fn toUpper(s: String) -> String {
     let res = unsafe { CString::from_raw(sys::toUpper(CString::new(s).unwrap().as_ptr() as *mut i8)) };
 
     res.into_string().unwrap()
+}
+
+#[node_bindgen]
+struct InputStruct {
+    pub a: i32,
+    pub b: i32,
+}
+
+#[node_bindgen]
+struct OutputStruct {
+    pub sum: i32,
+    pub product: i32
+}
+
+impl<'a> JSValue<'a> for InputStruct {
+    fn convert_to_rust(env: &JsEnv,js_value: napi_value) -> Result<Self,NjError> {
+        let obj = JsObject::new(*env, js_value);
+        let a = obj.get_property("a").unwrap().unwrap().as_value::<i32>()?;
+        let b = obj.get_property("b").unwrap().unwrap().as_value::<i32>()?;
+
+        Ok(InputStruct {
+            a,
+            b
+        })
+    }
+}
+
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn sumProduct(input: InputStruct) -> OutputStruct {
+    unsafe {
+        let res = sys::sumProduct(&mut sys::InputStruct {
+            A: input.a,
+            B: input.b
+        } as *mut _);
+
+        OutputStruct {
+            sum: (*res).Sum,
+            product: (*res).Product
+        }
+    }
 }

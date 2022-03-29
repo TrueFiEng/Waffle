@@ -12,13 +12,19 @@ import (
 	"strings"
 	"time"
 
-	"C"
-
 	"github.com/Ethworks/Waffle/simulator"
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 )
+
+/*
+// C code written here would be compiled together with Go code.
+
+#include "main.h"
+
+*/
+import "C"
 
 type TransactionRequest struct {
 	To    *string `json:"to"`
@@ -262,4 +268,15 @@ func toUpper(str *C.char) *C.char {
 	go_str := C.GoString(str)
 	upper := strings.ToUpper(go_str)
 	return C.CString(upper)
+}
+
+type InputStruct = C.InputStruct
+type OutputStruct = C.OutputStruct
+
+//export sumProduct
+func sumProduct(intput *InputStruct) *OutputStruct {
+	return &OutputStruct{
+		Sum:     intput.A + intput.B,
+		Product: intput.A * intput.B,
+	}
 }

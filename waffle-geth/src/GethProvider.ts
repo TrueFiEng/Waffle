@@ -1,6 +1,6 @@
 import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
 import * as providers from '@ethersproject/providers';
-import type {
+import {
   Block,
   BlockTag,
   BlockWithTransactions,
@@ -18,6 +18,7 @@ import {Simulator} from './native';
 import {resolveProperties} from '@ethersproject/properties';
 import { Deferrable } from '@ethersproject/properties';
 import { isAddress } from '@ethersproject/address';
+import { providers } from 'ethers';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
