@@ -21,11 +21,10 @@ export const decodeRevertString = (callRevertError: any): string => {
     .replace(/\x00/g, ''); // Trim null characters.
 };
 
-const appendRevertString = async (provider: Provider, receipt: any) => {
+const appendRevertString = async (etherProvider: providers.Web3Provider, receipt: any) => {
   if (parseInt(receipt.status) === 0) {
     log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.');
     try {
-      const etherProvider = new providers.Web3Provider(provider as any);
       const tx = await etherProvider.getTransaction(receipt.transactionHash);
       log('Running transaction as a call:');
       log(tx);
@@ -54,6 +53,7 @@ const appendRevertString = async (provider: Provider, receipt: any) => {
  * read a revert string, so we patch it and include it using a query to the blockchain.
  */
 export const injectRevertString = (provider: Provider): Provider => {
+  const etherProvider = new providers.Web3Provider(provider as any);
   return new Proxy(provider, {
     get(target, prop, receiver) {
       const original = (target as any)[prop as any];
@@ -93,13 +93,12 @@ export const injectRevertString = (provider: Provider): Provider => {
            */
           return (async () => {
             const transactionHash = await originalResult;
-            const etherProvider = new providers.Web3Provider(provider as any);
             const tx = await etherProvider.getTransaction(transactionHash);
             try {
               await tx.wait(); // Will end in an exception if the transaction is failing.
             } catch (e: any) {
               log('Transaction failed after sending and waiting.');
-              await appendRevertString(provider, e.receipt);
+              await appendRevertString(etherProvider, e.receipt);
               throw e;
             }
             return transactionHash;
@@ -107,7 +106,7 @@ export const injectRevertString = (provider: Provider): Provider => {
         } else if (method === 'eth_getTransactionReceipt') {
           return (async () => {
             const receipt = await originalResult;
-            await appendRevertString(provider, receipt);
+            await appendRevertString(etherProvider, receipt);
             return receipt;
           })();
         }
