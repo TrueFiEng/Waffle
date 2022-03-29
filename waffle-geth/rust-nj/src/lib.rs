@@ -53,15 +53,25 @@ struct OutputStruct {
     pub product: i32
 }
 
-impl<'a> JSValue<'a> for InputStruct {
-    fn convert_to_rust(env: &JsEnv,js_value: napi_value) -> Result<Self,NjError> {
-        let obj = JsObject::new(*env, js_value);
-        Ok(InputStruct {
-            a: obj.get_property("a")?.ok_or(NjError::Other("Expected property `a` on type `InputStruct`".to_owned()))?.as_value()?,
-            b: obj.get_property("b")?.ok_or(NjError::Other("Expected property `b` on type `InputStruct`".to_owned()))?.as_value()?,
-        })
+macro_rules! impl_js_struct {
+    ($name:ident, { $($field:ident),+ }) => {
+        impl<'a> JSValue<'a> for $name {
+            fn convert_to_rust(env: &JsEnv,js_value: napi_value) -> Result<Self,NjError> {
+                let obj = JsObject::new(*env, js_value);
+                Ok($name {
+                    $(
+                        $field: obj
+                            .get_property(stringify!($field))?
+                            .ok_or(NjError::Other(format!("Expected property `{}` on type `{}`", stringify!($field), stringify!($name))))?
+                            .as_value()?,
+                    )+
+                })
+            }
+        }
     }
 }
+
+impl_js_struct!(InputStruct, { a, b });
 
 #[node_bindgen]
 #[cfg(feature = "napi")]
