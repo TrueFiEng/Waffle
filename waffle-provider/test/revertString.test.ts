@@ -11,9 +11,8 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
 
     const token = await deployToken(wallet, 10);
 
-    const transferTx = await token.transfer(constants.AddressZero, 1);
     try {
-      await transferTx.wait();
+      await token.transfer(constants.AddressZero, 1);
     } catch (transactionError: any) {
       const receipt = transactionError.receipt;
       const revertedTx = await provider.getTransaction(receipt.transactionHash);

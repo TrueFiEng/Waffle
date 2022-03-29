@@ -66,6 +66,19 @@ export const injectRevertString = (provider: Provider): Provider => {
               return '0xE4E1C0'; // 15_000_000
             }
           })();
+        } else if (method === 'eth_sendRawTransaction') {
+          /**
+           * Because we have overriden the gas estimation not to be failing on reverts,
+           * we add a wait during transaction sending to retain original behaviour of
+           * having an exception when sending a failing transaction.
+           */
+          return (async () => {
+            const transactionHash = await originalResult;
+            const etherProvider = new providers.Web3Provider(provider as any);
+            const tx = await etherProvider.getTransaction(transactionHash);
+            await tx.wait(); // Will end in an exception if the transaction is failing.
+            return transactionHash;
+          })();
         } else if (method === 'eth_getTransactionReceipt') {
           return (async () => {
             const receipt = await originalResult;
@@ -75,11 +88,13 @@ export const injectRevertString = (provider: Provider): Provider => {
               try {
                 const etherProvider = new providers.Web3Provider(provider as any);
                 const tx = await etherProvider.getTransaction(receipt.transactionHash);
-                log(`Running tx "${tx.hash}" as a call.`);
+                log(`Running transaction as a call:`);
+                log(tx);
                 // Run the transaction as a query. It works differently in Ethers, a revert code is included.
                 await etherProvider.call(tx as any, tx.blockNumber);
               } catch (error: any) {
-                log('Caught error, attempting to extract revert string.');
+                log('Caught error, attempting to extract revert string from:');
+                log(error)
                 receipt.revertString = decodeRevertString(error);
                 log(`Extracted revert string: "${receipt.revertString}"`);
               }
