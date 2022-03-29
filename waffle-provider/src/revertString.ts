@@ -39,7 +39,7 @@ const appendRevertString = async (provider: Provider, receipt: any) => {
       log(`Extracted revert string: "${receipt.revertString}"`);
     }
   }
-}
+};
 
 /**
  * Ethers executes a gas estimation before sending the transaction to the blockchain.
@@ -99,8 +99,8 @@ export const injectRevertString = (provider: Provider): Provider => {
             try {
               await tx.wait(); // Will end in an exception if the transaction is failing.
             } catch (e: any) {
-              log('Transaction failed after sending and waiting.')
-              await appendRevertString(provider, e.receipt)
+              log('Transaction failed after sending and waiting.');
+              await appendRevertString(provider, e.receipt);
               throw e;
             }
             return transactionHash;
