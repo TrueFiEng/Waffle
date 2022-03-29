@@ -21,6 +21,26 @@ export const decodeRevertString = (callRevertError: any): string => {
     .replace(/\x00/g, ''); // Trim null characters.
 };
 
+const appendRevertString = async (provider: Provider, receipt: any) => {
+  if (parseInt(receipt.status) === 0) {
+    log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.');
+    // A reverted transaction. We try to add a revert string to the receipt.
+    try {
+      const etherProvider = new providers.Web3Provider(provider as any);
+      const tx = await etherProvider.getTransaction(receipt.transactionHash);
+      log('Running transaction as a call:');
+      log(tx);
+      // Run the transaction as a query. It works differently in Ethers, a revert code is included.
+      await etherProvider.call(tx as any, tx.blockNumber);
+    } catch (error: any) {
+      log('Caught error, attempting to extract revert string from:');
+      log(error);
+      receipt.revertString = decodeRevertString(error);
+      log(`Extracted revert string: "${receipt.revertString}"`);
+    }
+  }
+}
+
 /**
  * Ethers executes a gas estimation before sending the transaction to the blockchain.
  * This poses a problem for Waffle - we cannot track sent transactions which eventually revert.
@@ -76,29 +96,19 @@ export const injectRevertString = (provider: Provider): Provider => {
             const transactionHash = await originalResult;
             const etherProvider = new providers.Web3Provider(provider as any);
             const tx = await etherProvider.getTransaction(transactionHash);
-            await tx.wait(); // Will end in an exception if the transaction is failing.
+            try {
+              await tx.wait(); // Will end in an exception if the transaction is failing.
+            } catch (e: any) {
+              log('Transaction failed after sending and waiting.')
+              await appendRevertString(provider, e.receipt)
+              throw e;
+            }
             return transactionHash;
           })();
         } else if (method === 'eth_getTransactionReceipt') {
           return (async () => {
             const receipt = await originalResult;
-            if (parseInt(receipt.status) === 0) {
-              log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.');
-              // A reverted transaction. We try to add a revert string to the receipt.
-              try {
-                const etherProvider = new providers.Web3Provider(provider as any);
-                const tx = await etherProvider.getTransaction(receipt.transactionHash);
-                log('Running transaction as a call:');
-                log(tx);
-                // Run the transaction as a query. It works differently in Ethers, a revert code is included.
-                await etherProvider.call(tx as any, tx.blockNumber);
-              } catch (error: any) {
-                log('Caught error, attempting to extract revert string from:');
-                log(error);
-                receipt.revertString = decodeRevertString(error);
-                log(`Extracted revert string: "${receipt.revertString}"`);
-              }
-            }
+            await appendRevertString(provider, receipt);
             return receipt;
           })();
         }
