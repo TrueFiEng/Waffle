@@ -14,7 +14,7 @@ import {
   Provider
 } from '@ethersproject/abstract-provider';
 import type {Network} from '@ethersproject/networks';
-import {Simulator} from './native';
+import {Simulator} from './simulator';
 import {resolveProperties} from '@ethersproject/properties';
 import { Deferrable } from '@ethersproject/properties';
 import { isAddress } from '@ethersproject/address';

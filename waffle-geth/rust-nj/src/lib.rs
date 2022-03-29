@@ -88,3 +88,25 @@ fn sumProduct(input: InputStruct) -> OutputStruct {
         }
     }
 }
+
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn new_simulator() -> i32 {
+    unsafe { sys::newSimulator() }
+}
+
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn get_block_number(simulator: i32) -> String {
+    let res = unsafe { CString::from_raw(sys::getBlockNumber(simulator)) };
+
+    res.into_string().unwrap()
+}
+
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn send_transaction(simulator: i32, tx_json: &str) -> String {
+    let res = unsafe { CString::from_raw(sys::sendTransaction(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8)) };
+
+    res.into_string().unwrap()
+}

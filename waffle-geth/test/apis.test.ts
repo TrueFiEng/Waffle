@@ -16,7 +16,7 @@ const TEXT = readFileSync(join(__dirname, '../../pnpm-lock.yaml'), { encoding: '
 const LINES = TEXT.split('\n').length - 1;
 const TEXT_UPPER = TEXT.toUpperCase();
 
-describe.only('napi', () => {
+describe('napi', () => {
   it('cgoCurrentMillis', () => {
     const millis = libNapi.cgoCurrentMillis();
 
@@ -69,7 +69,7 @@ describe.only('napi', () => {
       expect(upper).to.eq(TEXT_UPPER)
     })
 
-    it.only('sumProduct', () => {
+    it('sumProduct', () => {
       const res = libNodeBindgen.sumProduct({
         a: 2,
         b: 3,

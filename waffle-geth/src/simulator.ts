@@ -1,20 +1,6 @@
-import ffi from 'ffi-napi';
-import {join} from 'path';
 import type {TransactionRequest, Filter} from '@ethersproject/abstract-provider';
 
-export const library = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
-  cgoCurrentMillis: ['int', []],
-  newSimulator: ['int', []],
-  getBlockNumber: ['string', ['int']],
-  getChainID: ['string', ['int']],
-  sendTransaction: ['string', ['int', 'string']],
-  getBalance: ['string', ['int', 'string']],
-  call: ['string', ['int', 'string']],
-  getTransactionCount: ['int', ['int', 'string']],
-  getLogs: ['string', ['int', 'string']],
-  getTransaction: ['string', ['int', 'string']],
-  getCode: ['string', ['int', 'string']]
-});
+const library = require('../rust-nj/dist/index.node');
 
 export function cgoCurrentMillis() {
   return library.cgoCurrentMillis();
