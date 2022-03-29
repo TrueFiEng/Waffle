@@ -56,12 +56,9 @@ struct OutputStruct {
 impl<'a> JSValue<'a> for InputStruct {
     fn convert_to_rust(env: &JsEnv,js_value: napi_value) -> Result<Self,NjError> {
         let obj = JsObject::new(*env, js_value);
-        let a = obj.get_property("a").unwrap().unwrap().as_value::<i32>()?;
-        let b = obj.get_property("b").unwrap().unwrap().as_value::<i32>()?;
-
         Ok(InputStruct {
-            a,
-            b
+            a: obj.get_property("a")?.ok_or(NjError::Other("Expected property `a` on type `InputStruct`".to_owned()))?.as_value()?,
+            b: obj.get_property("b")?.ok_or(NjError::Other("Expected property `b` on type `InputStruct`".to_owned()))?.as_value()?,
         })
     }
 }
