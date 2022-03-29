@@ -105,7 +105,7 @@ fn get_block_number(simulator: i32) -> String {
 
 #[node_bindgen]
 #[cfg(feature = "napi")]
-fn send_transaction(simulator: i32, tx_json: &str) -> String {
+fn send_transaction(simulator: i32, tx_json: String) -> String {
     let res = unsafe { CString::from_raw(sys::sendTransaction(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8)) };
 
     res.into_string().unwrap()
