@@ -369,3 +369,17 @@ We stopped supporting :code:`@ethereum-waffle/jest`. From now on the package is 
    * - :code:`.toBeRevertedWith(revertReason)`
      - :code:`.to.be.revertedWith(reason)`
 
+Time-based tests
+~~~~~~~~~~~~~~~~
+
+If your tests rely on manually setting timestamp on the blockchain using `evm_mine`, you need to use `evm_setTime` alongside.
+
+For example:
+
+.. code-block:: diff
+
+  export async function mineBlock(provider: providers.Web3Provider, timestamp: number) {
+    +provider.send('evm_setTime', [timestamp * 1000])
+    await provider.send('evm_mine', [timestamp])
+  }
+
