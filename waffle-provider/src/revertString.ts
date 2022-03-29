@@ -88,13 +88,13 @@ export const injectRevertString = (provider: Provider): Provider => {
               try {
                 const etherProvider = new providers.Web3Provider(provider as any);
                 const tx = await etherProvider.getTransaction(receipt.transactionHash);
-                log(`Running transaction as a call:`);
+                log('Running transaction as a call:');
                 log(tx);
                 // Run the transaction as a query. It works differently in Ethers, a revert code is included.
                 await etherProvider.call(tx as any, tx.blockNumber);
               } catch (error: any) {
                 log('Caught error, attempting to extract revert string from:');
-                log(error)
+                log(error);
                 receipt.revertString = decodeRevertString(error);
                 log(`Extracted revert string: "${receipt.revertString}"`);
               }
