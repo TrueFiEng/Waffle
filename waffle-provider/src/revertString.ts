@@ -24,7 +24,6 @@ export const decodeRevertString = (callRevertError: any): string => {
 const appendRevertString = async (provider: Provider, receipt: any) => {
   if (parseInt(receipt.status) === 0) {
     log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.');
-    // A reverted transaction. We try to add a revert string to the receipt.
     try {
       const etherProvider = new providers.Web3Provider(provider as any);
       const tx = await etherProvider.getTransaction(receipt.transactionHash);
