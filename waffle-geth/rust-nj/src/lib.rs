@@ -104,9 +104,39 @@ fn get_block_number(simulator: i32) -> String {
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
-fn send_transaction(simulator: i32, tx_json: String) -> String {
-    let res = unsafe { CString::from_raw(sys::sendTransaction(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8)) };
+struct TransactionReceipt {
+    pub Type: i32,
+    pub Status: i64,
+    pub CumulativeGasUsed: i64,
+    pub TxHash: String,
+    pub ContractAddress: String,
+    pub GasUsed: i64,
+    pub BlockHash: String,
+    pub BlockNumber: String,
+    pub TransactionIndex: i32,
+}
 
-    res.into_string().unwrap()
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn send_transaction(simulator: i32, tx_json: String) -> TransactionReceipt {
+    let receipt = unsafe { sys::sendTransaction(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8) };
+    // TODO: free returned pointer
+
+    TransactionReceipt {
+        Type: receipt.Type as i32,
+        Status: receipt.Status as i64,
+        CumulativeGasUsed: receipt.CumulativeGasUsed as i64,
+        TxHash: c_str_to_string(receipt.TxHash),
+        ContractAddress: c_str_to_string(receipt.ContractAddress),
+        GasUsed: receipt.GasUsed as i64,
+        BlockHash: c_str_to_string(receipt.BlockHash),
+        BlockNumber: c_str_to_string(receipt.BlockNumber),
+        TransactionIndex: receipt.TransactionIndex as i32,
+    }
+}
+
+fn c_str_to_string(string: *mut ::std::os::raw::c_char) -> String {
+    // This is very unsafe and will lead to allocator corruption.
+    // https://doc.rust-lang.org/std/ffi/struct.CString.html#method.from_raw
+    unsafe { CString::from_raw(string).into_string().unwrap() }
 }

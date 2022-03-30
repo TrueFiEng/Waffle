@@ -62,6 +62,7 @@ func newSimulator() C.int {
 func getBlockNumber(simID C.int) *C.char {
 	sim := getSimulator(simID)
 	bn := sim.GetLatestBlockNumber()
+	// TODO: Convert to base 16?
 	return C.CString(bn.String())
 }
 
@@ -197,8 +198,10 @@ func getTransaction(simID C.int, txHash *C.char) *C.char {
 	return C.CString(string(stringified[:]))
 }
 
+type TransactionReceipt = C.TransactionReceipt
+
 //export sendTransaction
-func sendTransaction(simID C.int, txData *C.char) *C.char {
+func sendTransaction(simID C.int, txData *C.char) TransactionReceipt {
 	sim := getSimulator(simID)
 
 	bytes, err := hex.DecodeString(C.GoString(txData)[2:])
@@ -224,12 +227,17 @@ func sendTransaction(simID C.int, txData *C.char) *C.char {
 		log.Fatal(err)
 	}
 
-	receiptJson, err := json.Marshal(receipt)
-	if err != nil {
-		log.Fatal(err)
+	return TransactionReceipt{
+		Type:              C.uchar(receipt.Type),
+		Status:            C.ulonglong(receipt.Status),
+		CumulativeGasUsed: C.ulonglong(receipt.CumulativeGasUsed),
+		TxHash:            C.CString(receipt.TxHash.String()),
+		ContractAddress:   C.CString(receipt.ContractAddress.String()),
+		GasUsed:           C.ulonglong(receipt.GasUsed),
+		BlockHash:         C.CString(receipt.BlockHash.String()),
+		BlockNumber:       C.CString(receipt.BlockNumber.Text(16)),
+		TransactionIndex:  C.uint(receipt.TransactionIndex),
 	}
-
-	return C.CString(string(receiptJson))
 }
 
 func getSimulator(simID C.int) *simulator.Simulator {

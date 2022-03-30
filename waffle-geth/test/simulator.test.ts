@@ -34,10 +34,10 @@ describe.only('Simulator', () => {
     });
     const txParsed = utils.parseTransaction(tx);
 
-    const receipt = JSON.parse(simulator.sendTransaction(tx));
-    expect(receipt.transactionHash).to.eq(txParsed.hash);
-    expect(receipt.status).to.eq('0x1');
-    expect(receipt.blockNumber).to.eq('0x1');
-    expect(receipt.transactionIndex).to.eq('0x0');
+    const receipt = simulator.sendTransaction(tx);
+    expect(receipt.txHash).to.eq(txParsed.hash);
+    expect(receipt.status).to.eq(1);
+    expect(receipt.blockNumber).to.eq('1');
+    expect(receipt.transactionIndex).to.eq(0);
   });
 })

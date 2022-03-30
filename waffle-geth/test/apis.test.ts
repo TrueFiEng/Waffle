@@ -1,10 +1,11 @@
 import {expect} from 'chai';
-const libNapi = require('../build/Release/addon.node');
+// const libNapi = require('../build/Release/addon.node');
 
 import ffi from 'ffi-napi';
 import {join} from 'path';
 import {readFileSync} from 'fs'
 
+// wafflegeth symbols are dynamically loaded by rust lib so this actually is required even tho the library is not used directly
 const libFfi = ffi.Library(join(__dirname, '../go/build/wafflegeth.dylib'), {
   countLines: ['int', ['string']],
   toUpper: ['string', ['string']],
@@ -17,32 +18,32 @@ const LINES = TEXT.split('\n').length - 1;
 const TEXT_UPPER = TEXT.toUpperCase();
 
 describe('napi', () => {
-  it('cgoCurrentMillis', () => {
-    const millis = libNapi.cgoCurrentMillis();
+  // it('cgoCurrentMillis', () => {
+  //   const millis = libNapi.cgoCurrentMillis();
 
-    console.log({ millis });
+  //   console.log({ millis });
 
-    expect(millis).to.be.a('number');
-  })
+  //   expect(millis).to.be.a('number');
+  // })
 
-  describe('count lines', () => {
-    it('napi', () => {
-      const lines = libNapi.countLines(TEXT);
-      expect(lines).to.eq(LINES);
-    })
+  // describe('count lines', () => {
+  //   it('napi', () => {
+  //     const lines = libNapi.countLines(TEXT);
+  //     expect(lines).to.eq(LINES);
+  //   })
 
-    it('ffi', () => {
-      const lines = libFfi.countLines(TEXT);
-      expect(lines).to.eq(LINES);
-    })    
-  })
+  //   it('ffi', () => {
+  //     const lines = libFfi.countLines(TEXT);
+  //     expect(lines).to.eq(LINES);
+  //   })    
+  // })
 
   describe('bench count lines', () => {
-    it('napi', () => {
-      formatBench(bench(() => {
-        const lines = libNapi.countLines(TEXT);
-      }))
-    })
+  //   it('napi', () => {
+  //     formatBench(bench(() => {
+  //       const lines = libNapi.countLines(TEXT);
+  //     }))
+    // })
 
     it('ffi', () => {
       formatBench(bench(() => {
@@ -82,10 +83,10 @@ describe('napi', () => {
   })
 
   describe('to upper', () => {
-    it('napi', () => {
-      const upper = libNapi.toUpper(TEXT);
-      expect(upper).to.eq(TEXT_UPPER);
-    })
+    // it('napi', () => {
+    //   const upper = libNapi.toUpper(TEXT);
+    //   expect(upper).to.eq(TEXT_UPPER);
+    // })
 
     it('ffi', () => {
       const upper = libFfi.toUpper(TEXT);
@@ -94,12 +95,12 @@ describe('napi', () => {
   })
 
   describe('bench to upper', () => {
-    it('napi', () => {
-      formatBench(bench(() => {
-        const upper = libNapi.toUpper(TEXT);
-        expect(upper).to.eq(TEXT_UPPER);
-      }))
-    })
+    // it('napi', () => {
+    //   formatBench(bench(() => {
+    //     const upper = libNapi.toUpper(TEXT);
+    //     expect(upper).to.eq(TEXT_UPPER);
+    //   }))
+    // })
 
     it('ffi', () => {
       formatBench(bench(() => {
