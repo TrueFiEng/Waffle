@@ -70,4 +70,26 @@ describe.only('Simulator', () => {
     // const balance = sim.getBalance(address);
     // expect(balance).to.eq(value);
   });
+
+  it('can deploy WETH and call it', async () => {
+    const simulator = new Simulator();
+
+    const contractInterface = new utils.Interface(WETH.abi);
+    const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
+    const deployTx = weth.getDeployTransaction();
+    simulator.sendTransaction(await wallet.signTransaction({
+      ...deployTx,
+      gasPrice: 875000000,
+      gasLimit: 1000000,
+      nonce: 0,
+    }))
+
+    const address = utils.getContractAddress({from: wallet.address, nonce: 0});
+    const res = simulator.call({
+      to: address,
+      data: contractInterface.encodeFunctionData('name'),
+    })
+    const [name] = contractInterface.decodeFunctionResult('name', res)
+    expect(name).to.equal('Wrapped Ether')
+  });
 })

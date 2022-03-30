@@ -135,6 +135,12 @@ fn send_transaction(simulator: i32, tx_json: String) -> TransactionReceipt {
     }
 }
 
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn call(simulator: i32, tx_json: String) -> String {
+    unsafe { c_str_to_string(sys::call(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8)) }
+}
+
 fn c_str_to_string(string: *mut ::std::os::raw::c_char) -> String {
     // This is very unsafe and will lead to allocator corruption.
     // https://doc.rust-lang.org/std/ffi/struct.CString.html#method.from_raw

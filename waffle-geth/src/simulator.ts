@@ -20,6 +20,17 @@ export interface TransactionReceipt {
   transactionIndex: number,
 }
 
+export interface TransactionRequest {
+  to:     string,
+	from?:   string,
+	nonce?:  string,
+	gasLimit?:  string,
+	gasPrice?:  string,
+	data?:     string,
+	value?:    string,
+	chainId?:  number,
+}
+
 export class Simulator {
   id: number
 
@@ -32,9 +43,9 @@ export class Simulator {
     return library.getBlockNumber(this.id)!;
   }
 
-  // call(msg: TransactionRequest): string {
-  //   return '0x' + library.call(this.id, JSON.stringify(msg));
-  // }
+  call(msg: TransactionRequest): string {
+    return '0x' + library.call(this.id, JSON.stringify(msg));
+  }
 
   getBalance(address: string): string {
     return library.getBalance(this.id, address)!;
