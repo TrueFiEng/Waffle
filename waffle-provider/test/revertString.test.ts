@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {constants} from 'ethers';
 import {appendRevertString} from '../src/revertString';
 import {deployToken} from './BasicToken';
-import {describeMockProviderCases} from './MockProviderCases.test';
+import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) => {
   it('decodes revert strings from calls', async () => {

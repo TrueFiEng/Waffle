@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {BigNumber, constants, utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
-import {describeMockProviderCases} from './MockProviderCases.test';
+import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   it('returns wallets', async () => {
