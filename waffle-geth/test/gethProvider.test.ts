@@ -4,7 +4,7 @@ import {Wallet} from '@ethersproject/wallet';
 import {Interface} from '@ethersproject/abi';
 import {Contract, ContractFactory} from '@ethersproject/contracts';
 import WETH from './contracts/WETH9.json'
-import {utils} from 'ethers';
+import {BigNumber, utils} from 'ethers';
 
 describe('GethProvider', () => {
   let provider: GethProvider
@@ -17,6 +17,14 @@ describe('GethProvider', () => {
 
   it('getBlockNumber', async () => {
     expect(await provider.getBlockNumber()).to.equal(0);
+  });
+
+  it('getBlock', async () => {
+    const block = await provider.getBlock('0');
+    expect(block.timestamp).to.be.a('number')
+    expect(block.difficulty).to.be.a('number')
+    expect(block.hash).to.be.a('string')
+    expect(block.number).to.be.equal(0)
   });
 
   it.skip('getNetwork', async () => {

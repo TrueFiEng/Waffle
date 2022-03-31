@@ -57,8 +57,24 @@ export class GethProvider extends providers.Provider {
     return BigNumber.from(this.sim.getBalance(address));
   }
 
-  getBlock(blockHashOrBlockTag: providers.BlockTag | string | Promise<providers.BlockTag | string>): Promise<providers.Block> {
-    throw new Error('Not implemented');
+  async getBlock(blockHashOrBlockTag: providers.BlockTag | string | Promise<providers.BlockTag | string>): Promise<providers.Block> {
+    const block = this.sim.getBlock((await blockHashOrBlockTag).toString())
+    const difficulty = BigNumber.from(block.difficulty)
+    return {
+      transactions: [], // TODO
+      difficulty: difficulty.toNumber(),
+      _difficulty: difficulty,
+      extraData: '',
+      gasLimit: BigNumber.from(block.gasLimit),
+      gasUsed: BigNumber.from(block.gasUsed),
+      hash: block.hash,
+      miner: block.miner,
+      nonce: block.nonce,
+      number: BigNumber.from(block.number).toNumber(),
+      parentHash: block.parentHash,
+      timestamp: BigNumber.from(block.timestamp).toNumber(),
+      baseFeePerGas: BigNumber.from(block.baseFeePerGas)
+    }
   }
 
   getBlockNumber(): Promise<number> {
