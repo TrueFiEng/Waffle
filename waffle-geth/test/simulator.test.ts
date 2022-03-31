@@ -92,4 +92,13 @@ describe('Simulator', () => {
     const [name] = contractInterface.decodeFunctionResult('name', res)
     expect(name).to.equal('Wrapped Ether')
   });
+
+  it('getBalance', () => {
+    const simulator = new Simulator();
+    const balance1 = simulator.getBalance('0x0000000000000000000000000000000000000000');
+    expect(balance1).to.eq('0');
+
+    const balance2 = simulator.getBalance(wallet.address);
+    expect(balance2).to.eq('100000000000000000000');
+  })
 })

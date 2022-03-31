@@ -173,12 +173,21 @@ fn call(simulator: i32, tx: TransactionRequest) -> String {
     unsafe { c_str_to_string(sys::call(simulator, tx_sys)) }
 }
 
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn get_balance(simulator: i32, address: String) -> String {
+    let address = CString::new(address).unwrap();
+    unsafe { c_str_to_string(sys::getBalance(simulator, address.as_ptr() as *mut _)) }
+}
+
 fn c_str_to_string(string: *mut ::std::os::raw::c_char) -> String {
     // This is very unsafe and will lead to allocator corruption.
     // https://doc.rust-lang.org/std/ffi/struct.CString.html#method.from_raw
     unsafe { CString::from_raw(string).into_string().unwrap() }
 }
 
+
+// WARN: this function is broken because cstr gets disposed before the *char string can be used.
 fn string_to_c_str(string: &str) -> *mut ::std::os::raw::c_char {
     let cstr = CString::new(string).unwrap();
     
