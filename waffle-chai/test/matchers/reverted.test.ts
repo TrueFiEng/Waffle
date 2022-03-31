@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
 import {Contract, ContractFactory} from 'ethers';
 import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
+import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: Matchers: reverted', () => {
-  const [wallet] = new MockProvider().getWallets();
+describeMockProviderCases('INTEGRATION: Matchers: reverted', (provider) => {
+  const [wallet] = provider.getWallets();
   let matchers: Contract;
 
   beforeEach(async () => {
@@ -66,8 +66,8 @@ describe('INTEGRATION: Matchers: reverted', () => {
   });
 });
 
-describe('INTEGRATION: Matchers: revertedWith', () => {
-  const [wallet] = new MockProvider().getWallets();
+describeMockProviderCases('INTEGRATION: Matchers: revertedWith', (provider) => {
+  const [wallet] = provider.getWallets();
   let matchers: Contract;
 
   beforeEach(async () => {

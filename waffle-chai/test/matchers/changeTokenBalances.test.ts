@@ -1,10 +1,9 @@
 import {expect, AssertionError} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
 import {Contract, ContractFactory} from 'ethers';
 import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
+import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: changeTokenBalances matcher', () => {
-  const provider = new MockProvider();
+describeMockProviderCases('INTEGRATION: changeTokenBalances matcher', (provider) => {
   const [sender, receiver] = provider.getWallets();
 
   const factory = new ContractFactory(MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE, sender);

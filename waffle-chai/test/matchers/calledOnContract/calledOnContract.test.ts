@@ -2,25 +2,25 @@ import {AssertionError, expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
+import {describeMockProviderCases} from '../MockProviderCases';
 
-async function setup() {
-  const provider = new MockProvider();
+async function setup(provider: MockProvider) {
   const [deployer] = provider.getWallets();
 
   const factory = new ContractFactory(CALLS_ABI, CALLS_BYTECODE, deployer);
   return {contract: await factory.deploy()};
 }
 
-describe('INTEGRATION: calledOnContract', () => {
+describeMockProviderCases('INTEGRATION: calledOnContract', (provider) => {
   it('checks that contract function was called', async () => {
-    const {contract} = await setup();
+    const {contract} = await setup(provider);
     await contract.callWithoutParameter();
 
     expect('callWithoutParameter').to.be.calledOnContract(contract);
   });
 
   it('throws assertion error when contract function was not called', async () => {
-    const {contract} = await setup();
+    const {contract} = await setup(provider);
 
     expect(
       () => expect('callWithoutParameter').to.be.calledOnContract(contract)
@@ -28,13 +28,13 @@ describe('INTEGRATION: calledOnContract', () => {
   });
 
   it('checks that contract function was not called', async () => {
-    const {contract} = await setup();
+    const {contract} = await setup(provider);
 
     expect('callWithoutParameter').not.to.be.calledOnContract(contract);
   });
 
   it('throws assertion error when contract function was called', async () => {
-    const {contract} = await setup();
+    const {contract} = await setup(provider);
     await contract.callWithoutParameter();
 
     expect(
@@ -45,8 +45,8 @@ describe('INTEGRATION: calledOnContract', () => {
   it(
     'checks that contract function was called on provided contract and not called on another deploy of this contract',
     async () => {
-      const {contract} = await setup();
-      const {contract: secondDeployContract} = await setup();
+      const {contract} = await setup(provider);
+      const {contract: secondDeployContract} = await setup(provider);
       await contract.callWithoutParameter();
 
       expect('callWithoutParameter').to.be.calledOnContract(contract);
