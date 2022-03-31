@@ -28,8 +28,8 @@ export class GethProvider extends providers.Provider {
     return this.sim.call({
       from: tx.from,
       to: tx.to!,
-      gas: BigNumber.from(tx.gasLimit).toNumber(),
-      gasPrice: BigNumber.from(tx.gasPrice).toHexString(),
+      gas: tx.gasLimit ? BigNumber.from(tx.gasLimit).toNumber() : undefined,
+      gasPrice: tx.gasPrice ? BigNumber.from(tx.gasPrice).toHexString() : undefined,
       // gasFeeCap: BigNumber.from(tx.gasFeeCap).toHexString(),
       // gasTipCap: BigNumber.from(tx.gasTipCap).toHexString(),
       value: tx.value ? BigNumber.from(tx.value).toHexString() : undefined,

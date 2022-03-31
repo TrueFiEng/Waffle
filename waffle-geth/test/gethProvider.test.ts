@@ -117,7 +117,7 @@ describe('GethProvider', () => {
     expect(balance).to.eq(value);
   });
 
-  it.skip('deploy WETH and call it', async () => {
+  it('deploy WETH and call it', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();

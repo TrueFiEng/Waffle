@@ -90,14 +90,14 @@ export class Simulator {
 
   call(msg: TransactionRequest): string {
     return '0x' + library.call(this.id, {
-      from: '',
-      gas: 0,
-      gasPrice: '',
-      gasFeeCap: '',
-      gasTipCap: '',
-      value: '',
-      data: '0x',
-      ...msg,
+      from: msg.from ?? '',
+      to: msg.to,
+      gas: msg.gas ?? 0,
+      gasPrice: msg.gasPrice ?? '',
+      gasFeeCap: msg.gasFeeCap ?? '',
+      gasTipCap: msg.gasTipCap ?? '',
+      value: msg.value ?? '',
+      data: msg.data ?? '0x',
     });
   }
 
