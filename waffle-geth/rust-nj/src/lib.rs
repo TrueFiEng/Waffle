@@ -116,6 +116,12 @@ fn get_block(simulator: i32, blockOrHash: String) -> String {
 }
 
 #[node_bindgen]
+#[cfg(feature = "napi")]
+fn get_chain_id(simulator: i32) -> String {
+    unsafe { c_str_to_string(sys::getChainID(simulator)) }
+}
+
+#[node_bindgen]
 struct TransactionReceipt {
     pub Type: i32,
     pub Status: i64,

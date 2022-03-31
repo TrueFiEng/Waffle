@@ -11,6 +11,11 @@ describe('Simulator', () => {
     expect(simulator.getBlockNumber()).to.eq('0');
   })
 
+  it('getChainID', async () => {
+    const simulator = new Simulator();
+    expect(simulator.getChainID()).to.eq('1337');
+  });
+
   it('block number is advanced by mined transactions', async () => {
     const simulator = new Simulator();
     const tx = await wallet.signTransaction({

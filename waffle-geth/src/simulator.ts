@@ -91,7 +91,7 @@ export class Simulator {
   }
 
   getChainID(): string {
-    return library.getChainID(this.id)!;
+    return library.getChainId(this.id)!;
   }
 
   getTransactionCount(address: string): number {

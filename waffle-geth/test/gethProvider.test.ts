@@ -54,7 +54,7 @@ describe('GethProvider', () => {
     expect(block.number).to.be.equal(0)
   });
 
-  it.skip('getNetwork', async () => {
+  it('getNetwork', async () => {
     const network = {
       name: 'undefined',
       chainId: 1337,
