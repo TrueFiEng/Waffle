@@ -3,7 +3,7 @@ import {ContractFactory} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
 import {CALLER_ABI, CALLER_BYTECODE, CALLED_ABI, CALLED_BYTECODE} from './Caller';
-import { describeMockProviderCases } from './MockProviderCases.test';
+import {describeMockProviderCases} from './MockProviderCases.test';
 
 describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) => {
   it('records blockchain calls', async () => {

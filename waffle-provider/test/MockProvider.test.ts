@@ -1,8 +1,8 @@
 import {expect} from 'chai';
-import {BigNumber, utils, Wallet} from 'ethers';
+import {BigNumber, constants, utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
-import { describeMockProviderCases } from './MockProviderCases.test';
+import {describeMockProviderCases} from './MockProviderCases.test';
 
 describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   it('returns wallets', async () => {
@@ -54,6 +54,18 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
     await contract.transfer(recipient.address, 3_141);
     const balance = await contract.balanceOf(recipient.address);
     expect(balance.eq(3_141)).to.equal(true);
+  });
+
+  it('breaks in a predictable way', async () => {
+    const [wallet] = provider.getWallets();
+
+    const token = await deployToken(wallet, 10);
+
+    try {
+      await token.transfer(constants.AddressZero, 1);
+    } catch (transactionError: any) {
+      expect(String(transactionError)).to.include('transaction failed');
+    }
   });
 
   describe('ENS', () => {
