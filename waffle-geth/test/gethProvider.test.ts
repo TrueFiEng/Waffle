@@ -133,7 +133,7 @@ describe('GethProvider', () => {
     expect(name).to.eq('Wrapped Ether')
   });
 
-  it.skip('gets transaction count', async () => {
+  it('gets transaction count', async () => {
     expect(await provider.getTransactionCount(Wallet.createRandom().address)).to.eq(0)
   })
 
