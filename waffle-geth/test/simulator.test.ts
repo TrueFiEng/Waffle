@@ -88,28 +88,27 @@ describe('Simulator', () => {
 
     const contractInterface = new utils.Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
-    const deployTx = weth.getDeployTransaction();
-    simulator.sendTransaction(await wallet.signTransaction({
-      ...deployTx,
+    const deployTx = simulator.sendTransaction(await wallet.signTransaction({
+      ...weth.getDeployTransaction(),
       gasPrice: 875000000,
       gasLimit: 1000000,
       nonce: 0,
     }))
+    expect(deployTx.contractAddress).to.eq(utils.getContractAddress({from: wallet.address, nonce: 0}))
 
     const depositData = contractInterface.encodeFunctionData('deposit');
-    const address = utils.getContractAddress({from: wallet.address, nonce: 1});
     const value = utils.parseEther('1');
     const receipt = simulator.sendTransaction(await wallet.signTransaction({
       data: depositData,
-      to: address,
+      to: deployTx.contractAddress,
       value,
       gasPrice: 875000000,
       gasLimit: 1000000,
       nonce: 1,
     }));
     expect(receipt.status).to.eq(1);
-    // const balance = sim.getBalance(address);
-    // expect(balance).to.eq(value);
+    const balance = simulator.getBalance(deployTx.contractAddress);
+    expect(balance).to.eq(value);
   });
 
   it('can deploy WETH and call it', async () => {
@@ -117,17 +116,15 @@ describe('Simulator', () => {
 
     const contractInterface = new utils.Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
-    const deployTx = weth.getDeployTransaction();
-    simulator.sendTransaction(await wallet.signTransaction({
-      ...deployTx,
+    const deployTx = simulator.sendTransaction(await wallet.signTransaction({
+      ...weth.getDeployTransaction(),
       gasPrice: 875000000,
       gasLimit: 1000000,
       nonce: 0,
     }))
 
-    const address = utils.getContractAddress({from: wallet.address, nonce: 0});
     const res = simulator.call({
-      to: address,
+      to: deployTx.contractAddress,
       data: contractInterface.encodeFunctionData('name'),
     })
     const [name] = contractInterface.decodeFunctionResult('name', res)
