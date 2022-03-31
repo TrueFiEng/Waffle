@@ -27,7 +27,7 @@ describe('GethProvider', () => {
     expect(await provider.getNetwork()).to.deep.equal(network);
   });
 
-  it.skip('getBalance', async () => {
+  it('getBalance', async () => {
     const to = Wallet.createRandom().address;
     expect(await provider.getBalance(to)).to.equal(0);
     const tx = await wallet.signTransaction({
