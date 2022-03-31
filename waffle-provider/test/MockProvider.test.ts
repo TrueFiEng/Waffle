@@ -2,10 +2,9 @@ import {expect} from 'chai';
 import {BigNumber, utils, Wallet} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
+import { describeMockProviderCases } from './MockProviderCases.test';
 
-describe('INTEGRATION: MockProvider', () => {
-  const provider = new MockProvider();
-
+describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   it('returns wallets', async () => {
     const wallets = provider.getWallets();
     expect(wallets.length).to.equal(10);

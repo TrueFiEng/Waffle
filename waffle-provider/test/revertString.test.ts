@@ -3,10 +3,10 @@ import {constants} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {decodeRevertString} from '../src/revertString';
 import {deployToken} from './BasicToken';
+import { describeMockProviderCases } from './MockProviderCases.test';
 
-describe('INTEGRATION: MockProvider.callHistory', () => {
+describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) => {
   it('decodes revert strings from calls', async () => {
-    const provider = new MockProvider();
     const [wallet] = provider.getWallets();
 
     const token = await deployToken(wallet, 10);
