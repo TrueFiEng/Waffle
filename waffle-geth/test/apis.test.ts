@@ -17,7 +17,7 @@ const TEXT = readFileSync(join(__dirname, '../../pnpm-lock.yaml'), { encoding: '
 const LINES = TEXT.split('\n').length - 1;
 const TEXT_UPPER = TEXT.toUpperCase();
 
-describe('napi', () => {
+describe.skip('napi', () => {
   // it('cgoCurrentMillis', () => {
   //   const millis = libNapi.cgoCurrentMillis();
 

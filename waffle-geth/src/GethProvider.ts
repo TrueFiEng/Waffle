@@ -1,24 +1,7 @@
-import {BigNumber, BigNumberish} from '@ethersproject/bignumber';
-import * as providers from '@ethersproject/providers';
-import {
-  Block,
-  BlockTag,
-  BlockWithTransactions,
-  EventType,
-  TransactionRequest,
-  TransactionResponse,
-  Log,
-  TransactionReceipt,
-  Filter,
-  Listener,
-  Provider
-} from '@ethersproject/abstract-provider';
-import type {Network} from '@ethersproject/networks';
+import { assert } from 'chai';
+import {BigNumber, BigNumberish, providers, utils} from 'ethers';
+import { BlockWithTransactions} from '@ethersproject/abstract-provider';
 import {Simulator} from './simulator';
-import {resolveProperties} from '@ethersproject/properties';
-import { Deferrable } from '@ethersproject/properties';
-import { isAddress } from '@ethersproject/address';
-import { providers } from 'ethers';
 
 async function noBlockTag(blockTag: any) {
   if (await blockTag) {
@@ -35,34 +18,46 @@ export class GethProvider extends providers.Provider {
   }
 
   async call(
-    transaction: Deferrable<TransactionRequest>,
-    blockTag?: BlockTag | Promise<BlockTag>
+    transaction: utils.Deferrable<providers.TransactionRequest>,
+    blockTag?: providers.BlockTag | Promise<providers.BlockTag>
   ): Promise<string> {
     await noBlockTag(blockTag);
-    return this.sim.call(await resolveProperties(transaction))!;
+    const tx = await utils.resolveProperties(transaction)
+
+    assert(tx.to, 'transaction.to is required');
+    return this.sim.call({
+      from: tx.from,
+      to: tx.to!,
+      gas: BigNumber.from(tx.gasLimit).toNumber(),
+      gasPrice: BigNumber.from(tx.gasPrice).toHexString(),
+      // gasFeeCap: BigNumber.from(tx.gasFeeCap).toHexString(),
+      // gasTipCap: BigNumber.from(tx.gasTipCap).toHexString(),
+      value: tx.value ? BigNumber.from(tx.value).toHexString() : undefined,
+      data: tx.data ? BigNumber.from(tx.data).toHexString() : undefined,
+    })!;
   }
 
-  emit(eventName: EventType, ...args: Array<any>): boolean {
+  emit(eventName: providers.EventType, ...args: Array<any>): boolean {
     throw new Error('Not implemented');
   }
 
-  estimateGas(transaction: Deferrable<TransactionRequest>): Promise<BigNumber> {
+  estimateGas(transaction: utils.Deferrable<providers.TransactionRequest>): Promise<BigNumber> {
     throw new Error('Not implemented');
   }
 
   async getBalance(
     addressOrName: string | Promise<string>,
-    blockTag?: BlockTag | Promise<BlockTag>
+    blockTag?: providers.BlockTag | Promise<providers.BlockTag>
   ): Promise<BigNumber> {
     await noBlockTag(blockTag);
     const address = await addressOrName;
-    if (!isAddress(address)) {
+    if (!utils.isAddress(address)) {
       throw new Error('Not implemented: ENS');
     }
     return BigNumber.from(this.sim.getBalance(address));
   }
 
-  getBlock(blockHashOrBlockTag: BlockTag | string | Promise<BlockTag | string>): Promise<Block> {
+  getBlock(blockHashOrBlockTag: providers.BlockTag | string | Promise<providers.BlockTag | string>): Promise<providers.Block> {
     throw new Error('Not implemented');
   }
 
@@ -71,12 +66,12 @@ export class GethProvider extends providers.Provider {
   }
 
   getBlockWithTransactions(
-    blockHashOrBlockTag: BlockTag | string | Promise<BlockTag | string>
+    blockHashOrBlockTag: providers.BlockTag | string | Promise<providers.BlockTag | string>
   ): Promise<BlockWithTransactions> {
     throw new Error('Not implemented');
   }
 
-  async getCode(addressOrName: string | Promise<string>, blockTag?: BlockTag | Promise<BlockTag>): Promise<string> {
+  async getCode(addressOrName: string | Promise<string>, blockTag?: providers.BlockTag | Promise<providers.BlockTag>): Promise<string> {
     return this.sim.getCode(await addressOrName);
   }
 
@@ -84,12 +79,12 @@ export class GethProvider extends providers.Provider {
     return BigNumber.from(8000000);
   }
 
-  async getLogs(filter: Filter): Promise<Log[]> {
-    return JSON.parse(this.sim.getLogs(filter));
+  async getLogs(filter: providers.Filter): Promise<providers.Log[]> {
+    throw new Error('Not implemented');
   }
 
-  getNetwork(): Promise<Network> {
-    const network: Network = {
+  getNetwork(): Promise<providers.Network> {
+    const network: providers.Network = {
       name: 'undefined',
       chainId: Number.parseInt(this.sim.getChainID())
     };
@@ -99,12 +94,12 @@ export class GethProvider extends providers.Provider {
   getStorageAt(
     addressOrName: string | Promise<string>,
     position: BigNumberish | Promise<BigNumberish>,
-    blockTag?: BlockTag | Promise<BlockTag>
+    blockTag?: providers.BlockTag | Promise<providers.BlockTag>
   ): Promise<string> {
     throw new Error('Not implemented');
   }
 
-  getTransaction(transactionHash: string): Promise<TransactionResponse> {
+  getTransaction(transactionHash: string): Promise<providers.TransactionResponse> {
     const {Tx} = JSON.parse(this.sim.getTransaction(transactionHash));
     return Promise.resolve({
       hash: Tx.hash,
@@ -130,20 +125,20 @@ export class GethProvider extends providers.Provider {
 
   async getTransactionCount(
     addressOrName: string | Promise<string>,
-    blockTag?: BlockTag | Promise<BlockTag>
+    blockTag?: providers.BlockTag | Promise<providers.BlockTag>
   ): Promise<number> {
     return this.sim.getTransactionCount(await addressOrName);
   }
 
-  getTransactionReceipt(transactionHash: string): Promise<TransactionReceipt> {
+  getTransactionReceipt(transactionHash: string): Promise<providers.TransactionReceipt> {
     throw new Error('Not implemented');
   }
 
-  listenerCount(eventName?: EventType): number {
+  listenerCount(eventName?: providers.EventType): number {
     throw new Error('Not implemented');
   }
 
-  listeners(eventName?: EventType): Array<Listener> {
+  listeners(eventName?: providers.EventType): Array<providers.Listener> {
     throw new Error('Not implemented');
   }
 
@@ -151,22 +146,21 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  off(eventName: EventType, listener?: Listener): Provider {
+  off(eventName: providers.EventType, listener?: providers.Listener): providers.Provider {
     throw new Error('Not implemented');
   }
 
-  on(eventName: EventType, listener: Listener): Provider {
+  on(eventName: providers.EventType, listener: providers.Listener): providers.Provider {
     throw new Error('Not implemented');
   }
 
-  once(eventName: EventType, listener: Listener): Provider;
-
+  once(eventName: providers.EventType, listener: providers.Listener): providers.Provider;
   once(eventName: 'block', handler: () => void): void;
-  once(eventName: EventType | 'block', listener: Listener | (() => void)): Provider | void {
+  once(eventName: providers.EventType | 'block', listener: providers.Listener | (() => void)): providers.Provider | void {
     throw new Error('Not implemented');
   }
 
-  removeAllListeners(eventName?: EventType): Provider {
+  removeAllListeners(eventName?: providers.EventType): providers.Provider {
     throw new Error('Not implemented');
   }
 
@@ -174,18 +168,71 @@ export class GethProvider extends providers.Provider {
     return name;
   }
 
-  async sendTransaction(signedTransaction: string | Promise<string>): Promise<TransactionResponse> {
+  async sendTransaction(signedTransaction: string | Promise<string>): Promise<providers.TransactionResponse> {
     const data = await signedTransaction;
-    const result = JSON.parse(this.sim.sendTransaction(data));
-    const receipt = await this.getTransaction(result.transactionHash);
-    return {
-      ...receipt,
-      blockNumber: Number.parseInt(result.blockNumber, 16),
-      blockHash: result.blockHash,
+    const receipt = this.sim.sendTransaction(data)
+
+    const ethersReceipt: providers.TransactionReceipt & providers.TransactionResponse = {
+      to: 'TODO',
+      from: 'TODO',
+      nonce: 0, // TODO
+
+      gasLimit: BigNumber.from(0), // TODO
+      gasPrice: BigNumber.from(0), // TODO
+
+      data: '0x', // TODO
+      value: BigNumber.from(0), // TODO
+      chainId: 1337, // TODO
+
+      // r?: string,
+      // s?: string,
+      // v?: number,
+
+      // Typed-Transaction features
+      // type?: number | null,
+
+      // EIP-2930; Type 1 & EIP-1559; Type 2
+      // accessList?: AccessList,
+
+      // EIP-1559; Type 2
+      // maxPriorityFeePerGas?: BigNumber,
+      // maxFeePerGas?: BigNumber,
+      hash: receipt.txHash,
+
+      // Only if a transaction has been mined
+      blockNumber: BigNumber.from(receipt.blockNumber).toNumber(),
+      blockHash: receipt.blockHash,
+      // timestamp?: number,
+  
+      confirmations: 1,
+  
+      // Not optional (as it is in Transaction)
+  
+      // The raw transaction
+      raw: data,
+  
+      // This function waits until the transaction has been mined
+      wait: async (confirmations?: number) => ethersReceipt,
+
+    
+      contractAddress: receipt.contractAddress,
+      transactionIndex: receipt.transactionIndex,
+      // root?: string,
+      gasUsed: BigNumber.from(receipt.gasUsed),
+      logsBloom: 'TODO',
+      transactionHash: receipt.txHash,
+      logs: [], // TODO
+      cumulativeGasUsed: BigNumber.from(receipt.cumulativeGasUsed),
+      effectiveGasPrice: BigNumber.from(10000), // TODO
+      byzantium: true,
+      type: receipt.type,
+      status: receipt.status,
     };
+
+    return ethersReceipt;
   }
 
-  waitForTransaction(transactionHash: string, confirmations?: number, timeout?: number): Promise<TransactionReceipt> {
+  waitForTransaction(transactionHash: string, confirmations?: number, timeout?: number): Promise<providers.TransactionReceipt> {
     throw new Error('Not implemented');
   }
 }

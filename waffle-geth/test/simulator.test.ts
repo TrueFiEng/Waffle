@@ -5,7 +5,7 @@ import WETH from './contracts/WETH9.json'
 
 const wallet = new Wallet('0xee79b5f6e221356af78cf4c36f4f7885a11b67dfcc81c34d80249947330c0f82');
 
-describe.only('Simulator', () => {
+describe('Simulator', () => {
   it('block number is 0 initially', () => {
     const simulator = new Simulator();
     expect(simulator.getBlockNumber()).to.eq('0');

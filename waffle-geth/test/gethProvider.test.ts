@@ -19,7 +19,7 @@ describe('GethProvider', () => {
     expect(await provider.getBlockNumber()).to.equal(0);
   });
 
-  it('getNetwork', async () => {
+  it.skip('getNetwork', async () => {
     const network = {
       name: 'undefined',
       chainId: 1337,
@@ -27,7 +27,7 @@ describe('GethProvider', () => {
     expect(await provider.getNetwork()).to.deep.equal(network);
   });
 
-  it('getBalance', async () => {
+  it.skip('getBalance', async () => {
     const to = Wallet.createRandom().address;
     expect(await provider.getBalance(to)).to.equal(0);
     const tx = await wallet.signTransaction({
@@ -44,7 +44,7 @@ describe('GethProvider', () => {
     expect(await provider.getBalance(to)).to.equal(123);
   });
 
-  it('send ETH transfer', async () => {
+  it.skip('send ETH transfer', async () => {
     const to = Wallet.createRandom().address;
 
     const tx = await wallet.sendTransaction({
@@ -59,7 +59,7 @@ describe('GethProvider', () => {
     expect(await provider.getBalance(to)).to.equal(123);
   })
 
-  it('deploy WETH', async () => {
+  it.skip('deploy WETH', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
@@ -82,7 +82,7 @@ describe('GethProvider', () => {
     expect(balance).to.eq(value);
   });
 
-  it('deploy WETH and call it', async () => {
+  it.skip('deploy WETH and call it', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
@@ -98,11 +98,11 @@ describe('GethProvider', () => {
     expect(name).to.eq('Wrapped Ether')
   });
 
-  it('gets transaction count', async () => {
+  it.skip('gets transaction count', async () => {
     expect(await provider.getTransactionCount(Wallet.createRandom().address)).to.eq(0)
   })
 
-  it('bench', async () => {
+  it.skip('bench', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
@@ -135,7 +135,7 @@ describe('GethProvider', () => {
 
   });
 
-  it('getLogs', async () => {
+  it.skip('getLogs', async () => {
     expect((await provider.getLogs({from: 0, to: 10})).length).to.eq(0)
     // deploy WETH
     const contractInterface = new Interface(WETH.abi);
@@ -164,7 +164,7 @@ describe('GethProvider', () => {
     expect(logs[0].transactionHash).to.eq(receipt.hash)
   })
 
-  it('getCode', async () => {
+  it.skip('getCode', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();
