@@ -19,7 +19,34 @@ describe('GethProvider', () => {
     expect(await provider.getBlockNumber()).to.equal(0);
   });
 
-  it('getBlock', async () => {
+  describe('getBlock', () => {
+    it('by number', async () => {
+      const block = await provider.getBlock('0');
+      expect(block.timestamp).to.be.a('number')
+      expect(block.difficulty).to.be.a('number')
+      expect(block.hash).to.be.a('string')
+      expect(block.number).to.be.equal(0)
+    });
+
+    it('latest', async () => {
+      const block = await provider.getBlock('latest');
+      expect(block.timestamp).to.be.a('number')
+      expect(block.difficulty).to.be.a('number')
+      expect(block.hash).to.be.a('string')
+      expect(block.number).to.be.equal(0)
+    });
+
+    it('by hash', async () => {
+      const {hash} = await provider.getBlock('0');
+      const block = await provider.getBlock(hash);
+      expect(block.timestamp).to.be.a('number')
+      expect(block.difficulty).to.be.a('number')
+      expect(block.hash).to.equal(hash)
+      expect(block.number).to.be.equal(0)
+    });
+  })
+
+  it('getBlock by number', async () => {
     const block = await provider.getBlock('0');
     expect(block.timestamp).to.be.a('number')
     expect(block.difficulty).to.be.a('number')

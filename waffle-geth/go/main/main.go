@@ -56,16 +56,27 @@ func getBlockNumber(simID C.int) *C.char {
 }
 
 //export getBlock
-func getBlock(simID C.int, hashOrTag *C.char) *C.char {
+func getBlock(simID C.int, c_hashOrTag *C.char) *C.char {
 	sim := getSimulator(simID)
+	hashOrTag := C.GoString(c_hashOrTag)
 
-	blockNumber, err := strconv.ParseInt(C.GoString(hashOrTag), 16, 64)
-	if err != nil {
-		log.Fatal(err)
+	var blockHeader *types.Header
+	if hashOrTag == "latest" {
+		blockHeader = sim.Backend.Blockchain().CurrentHeader()
+	} else if strings.HasPrefix(hashOrTag, "0x") && len(hashOrTag) == 66 {
+		hash := common.HexToHash(hashOrTag)
+		blockHeader = sim.Backend.Blockchain().GetHeaderByHash(hash)
+	} else {
+		blockNumber, err := strconv.ParseInt(hashOrTag, 16, 64)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		block := sim.Backend.Blockchain().GetBlockByNumber(uint64(blockNumber))
+		blockHeader = block.Header()
 	}
 
-	block := sim.Backend.Blockchain().GetBlockByNumber(uint64(blockNumber))
-	logsJson, err := json.Marshal(block.Header())
+	logsJson, err := json.Marshal(blockHeader)
 	if err != nil {
 		log.Fatal(err)
 	}
