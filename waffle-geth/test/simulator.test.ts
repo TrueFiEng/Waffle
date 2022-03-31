@@ -16,6 +16,22 @@ describe('Simulator', () => {
     expect(simulator.getChainID()).to.eq('1337');
   });
 
+  it('getTransactionCount', async () => {
+    const simulator = new Simulator();
+    expect(simulator.getTransactionCount(wallet.address)).to.eq(0);
+
+    const tx = await wallet.signTransaction({
+      data: '0x',
+      nonce: 0,
+      gasPrice: 875000000,
+      gasLimit: 1000000,
+      value: 0,
+    });
+    simulator.sendTransaction(tx);
+
+    expect(simulator.getTransactionCount(wallet.address)).to.eq(1);
+  });
+
   it('block number is advanced by mined transactions', async () => {
     const simulator = new Simulator();
     const tx = await wallet.signTransaction({

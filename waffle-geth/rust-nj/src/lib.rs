@@ -17,21 +17,18 @@ use std::ffi::CString;
 
 /// add two integer
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn sum(first: i32, second: i32) -> i32 {
     first + second
 }
 
 /// cgoCurrentMillis
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn cgoCurrentMillis() -> i64 {
     unsafe { sys::cgoCurrentMillis() }
 }
 
 /// toUpper
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn toUpper(s: String) -> String {
 
     // This is very unsafe and will lead to allocator corruption.
@@ -74,7 +71,6 @@ macro_rules! impl_js_struct {
 impl_js_struct!(InputStruct, { a, b });
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn sumProduct(input: InputStruct) -> OutputStruct {
     unsafe {
         let res = sys::sumProduct(sys::InputStruct {
@@ -90,13 +86,11 @@ fn sumProduct(input: InputStruct) -> OutputStruct {
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn new_simulator() -> i32 {
     unsafe { sys::newSimulator() }
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn get_block_number(simulator: i32) -> String {
     let res = unsafe { CString::from_raw(sys::getBlockNumber(simulator)) };
 
@@ -109,14 +103,12 @@ pub struct Block {
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn get_block(simulator: i32, blockOrHash: String) -> String {
     let blockOrHash = CString::new(blockOrHash).unwrap();
     unsafe { c_str_to_string(sys::getBlock(simulator, blockOrHash.as_ptr() as *mut _)) }
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn get_chain_id(simulator: i32) -> String {
     unsafe { c_str_to_string(sys::getChainID(simulator)) }
 }
@@ -135,7 +127,6 @@ struct TransactionReceipt {
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
 fn send_transaction(simulator: i32, tx_json: String) -> TransactionReceipt {
     let receipt = unsafe { sys::sendTransaction(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8) };
     // TODO: free returned pointer
@@ -167,9 +158,7 @@ pub struct TransactionRequest {
 
 impl_js_struct!(TransactionRequest, { from, to, gas, gasPrice, gasFeeCap, gasTipCap, value, data });
 
-#[node_bindgen]
-#[cfg(feature = "napi")]
-fn call(simulator: i32, tx: TransactionRequest) -> String {
+#[node_bindgen]fn call(simulator: i32, tx: TransactionRequest) -> String {
     let from = CString::new(tx.from).unwrap();
     let to = CString::new(tx.to).unwrap();
     let gasPrice = CString::new(tx.gasPrice).unwrap();
@@ -192,7 +181,12 @@ fn call(simulator: i32, tx: TransactionRequest) -> String {
 }
 
 #[node_bindgen]
-#[cfg(feature = "napi")]
+fn get_transaction_count(simulator: i32, address: String) -> i32 {
+    let address = CString::new(address).unwrap();
+    unsafe { sys::getTransactionCount(simulator, address.as_ptr() as *mut _) }
+}
+
+#[node_bindgen]
 fn get_balance(simulator: i32, address: String) -> String {
     let address = CString::new(address).unwrap();
     unsafe { c_str_to_string(sys::getBalance(simulator, address.as_ptr() as *mut _)) }

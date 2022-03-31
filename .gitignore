@@ -9,6 +9,7 @@ docs/venv
 .DS_Store
 build
 cache
+target
 
 # Auto-generated typechain files
 typechain

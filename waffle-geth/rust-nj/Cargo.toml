@@ -6,9 +6,6 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib"]
 
-[features]
-napi = []
-
 [dependencies]
 node-bindgen = { version = "4.0" }
 
