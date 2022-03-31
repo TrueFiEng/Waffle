@@ -1,14 +1,7 @@
 import {expect, AssertionError} from 'chai';
 import {BigNumber, Contract} from 'ethers';
-import { describeMockProviderCases } from './MockProviderCases';
-
-const TX_GAS = 21000; // Gas used by a single, non-contract transaction.
-/**
- * Hardfork London - baseFeePerGas is replacing gasPrice.
- * A default minimum in Ganache is this number.
- * It cannot be set to 0 at this time.
- */
-const BASE_FEE_PER_GAS = 875000000
+import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: changeBalance matcher', (provider) => {
   const [sender, receiver] = provider.getWallets();
