@@ -53,6 +53,25 @@ export interface Block {
   hash: string
 }
 
+export interface Transaction {
+  Tx: {
+    type: string,
+    nonce: string,
+    gasPrice: null | string,
+    maxPriorityFeePerGas: null | string,
+    maxFeePerGas: null | string,
+    gas: string,
+    value: string,
+    input: string,
+    v: string,
+    r: string,
+    s: string,
+    to: null,
+    hash: string
+  },
+  IsPending: boolean
+}
+
 export class Simulator {
   id: number
 
@@ -106,8 +125,8 @@ export class Simulator {
     return `0x${library.getCode(this.id, address)!}`;
   }
 
-  getTransaction(hash: string): string {
-    return library.getTransaction(this.id, hash)!;
+  getTransaction(hash: string): Transaction {
+    return JSON.parse(library.getTransaction(this.id, hash)!);
   }
 }
 

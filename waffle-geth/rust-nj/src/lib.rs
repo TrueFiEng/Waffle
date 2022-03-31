@@ -192,6 +192,12 @@ fn get_balance(simulator: i32, address: String) -> String {
     unsafe { c_str_to_string(sys::getBalance(simulator, address.as_ptr() as *mut _)) }
 }
 
+#[node_bindgen]
+fn get_transaction(simulator: i32, c_txHash: String) -> String {
+    let txHash = CString::new(c_txHash).unwrap();
+    unsafe { c_str_to_string(sys::getTransaction(simulator, txHash.as_ptr() as *mut _)) }
+}
+
 fn c_str_to_string(string: *mut ::std::os::raw::c_char) -> String {
     // This is very unsafe and will lead to allocator corruption.
     // https://doc.rust-lang.org/std/ffi/struct.CString.html#method.from_raw

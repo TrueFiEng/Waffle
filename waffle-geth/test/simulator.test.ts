@@ -32,6 +32,26 @@ describe('Simulator', () => {
     expect(simulator.getTransactionCount(wallet.address)).to.eq(1);
   });
 
+  it('getTransaction', async () => {
+    const simulator = new Simulator();
+    const tx = await wallet.signTransaction({
+      data: '0x',
+      nonce: 0,
+      gasPrice: 875000000,
+      gasLimit: 1000000,
+      value: 0,
+    });
+    const receipt = simulator.sendTransaction(tx);
+    const transaction = simulator.getTransaction(receipt.txHash);
+
+    const txParsed = utils.parseTransaction(tx);
+    expect(transaction.IsPending).to.eq(false);
+    expect(transaction.Tx.hash).to.eq(txParsed.hash);
+    expect(transaction.Tx.to).to.eq(txParsed.to)
+    expect(transaction.Tx.nonce).to.eq('0x0')
+    expect(transaction.Tx.value).to.eq('0x0')
+  });
+
   it('block number is advanced by mined transactions', async () => {
     const simulator = new Simulator();
     const tx = await wallet.signTransaction({
