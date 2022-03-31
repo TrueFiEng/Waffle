@@ -8,6 +8,7 @@ export function newSimulator(): number {
   return library.newSimulator();
 }
 
+// This type is declared in rust bindings.
 export interface TransactionReceipt {
   type: number,
   status: number,
@@ -20,6 +21,7 @@ export interface TransactionReceipt {
   transactionIndex: number,
 }
 
+// This type is declared in rust bindings.
 export interface TransactionRequest {
   from?: string,
   to: string,
@@ -29,6 +31,26 @@ export interface TransactionRequest {
   gasTipCap?: string,
   value?: string,
   data?: string,
+}
+
+export interface Block {
+  parentHash: string,
+  sha3Uncles: string,
+  miner: string,
+  stateRoot: string,
+  transactionsRoot: string,
+  receiptsRoot: string,
+  logsBloom: string,
+  difficulty: string,
+  number: string,
+  gasLimit: string,
+  gasUsed: string,
+  timestamp: string,
+  extraData: string,
+  mixHash: string,
+  nonce: string,
+  baseFeePerGas: string,
+  hash: string
 }
 
 export class Simulator {
@@ -41,6 +63,10 @@ export class Simulator {
 
   getBlockNumber(): string {
     return library.getBlockNumber(this.id)!;
+  }
+
+  getBlock(blockHashOrTag: string): Block {
+    return JSON.parse(library.getBlock(this.id, blockHashOrTag)!);
   }
 
   call(msg: TransactionRequest): string {

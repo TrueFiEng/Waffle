@@ -101,4 +101,25 @@ describe('Simulator', () => {
     const balance2 = simulator.getBalance(wallet.address);
     expect(balance2).to.eq('100000000000000000000');
   })
+
+  it('getBlock', async () => {
+    const simulator = new Simulator();
+
+    const tx = await wallet.signTransaction({
+      data: '0x',
+      nonce: 0,
+      gasPrice: 875000000,
+      gasLimit: 1000000,
+      value: 0,
+    });
+    simulator.sendTransaction(tx);
+    expect(simulator.getBlockNumber()).to.eq('1');
+
+    const block = simulator.getBlock('1');
+    expect(block.timestamp).to.be.a('string')
+    expect(block.difficulty).to.be.a('string')
+    expect(block.gasLimit).to.be.a('string')
+    expect(block.hash).to.be.a('string')
+    expect(block.number).to.be.equal('0x1')
+  })
 })

@@ -8,6 +8,7 @@ import (
 	"log"
 	"math/big"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 
@@ -52,6 +53,24 @@ func getBlockNumber(simID C.int) *C.char {
 	bn := sim.GetLatestBlockNumber()
 	// TODO: Convert to base 16?
 	return C.CString(bn.String())
+}
+
+//export getBlock
+func getBlock(simID C.int, hashOrTag *C.char) *C.char {
+	sim := getSimulator(simID)
+
+	blockNumber, err := strconv.ParseInt(C.GoString(hashOrTag), 16, 64)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	block := sim.Backend.Blockchain().GetBlockByNumber(uint64(blockNumber))
+	logsJson, err := json.Marshal(block.Header())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return C.CString(string(logsJson))
 }
 
 //export getCode

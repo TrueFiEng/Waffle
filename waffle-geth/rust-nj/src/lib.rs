@@ -104,6 +104,18 @@ fn get_block_number(simulator: i32) -> String {
 }
 
 #[node_bindgen]
+pub struct Block {
+
+}
+
+#[node_bindgen]
+#[cfg(feature = "napi")]
+fn get_block(simulator: i32, blockOrHash: String) -> String {
+    let blockOrHash = CString::new(blockOrHash).unwrap();
+    unsafe { c_str_to_string(sys::getBlock(simulator, blockOrHash.as_ptr() as *mut _)) }
+}
+
+#[node_bindgen]
 struct TransactionReceipt {
     pub Type: i32,
     pub Status: i64,
