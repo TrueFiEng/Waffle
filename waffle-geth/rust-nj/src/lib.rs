@@ -136,13 +136,51 @@ fn send_transaction(simulator: i32, tx_json: String) -> TransactionReceipt {
 }
 
 #[node_bindgen]
+pub struct TransactionRequest {
+    pub from: String,
+    pub to: String,
+    pub gas: i64,
+    pub gasPrice: String,
+    pub gasFeeCap: String,
+    pub gasTipCap: String,
+    pub value: String,
+    pub data: String,
+}
+
+impl_js_struct!(TransactionRequest, { from, to, gas, gasPrice, gasFeeCap, gasTipCap, value, data });
+
+#[node_bindgen]
 #[cfg(feature = "napi")]
-fn call(simulator: i32, tx_json: String) -> String {
-    unsafe { c_str_to_string(sys::call(simulator, CString::new(tx_json).unwrap().as_ptr() as *mut i8)) }
+fn call(simulator: i32, tx: TransactionRequest) -> String {
+    let from = CString::new(tx.from).unwrap();
+    let to = CString::new(tx.to).unwrap();
+    let gasPrice = CString::new(tx.gasPrice).unwrap();
+    let gasFeeCap = CString::new(tx.gasFeeCap).unwrap();
+    let gasTipCap = CString::new(tx.gasTipCap).unwrap();
+    let value = CString::new(tx.value).unwrap();
+    let data = CString::new(tx.data).unwrap();
+    let tx_sys = sys::TransactionRequest {
+        From: from.as_ptr() as *mut _,
+        To: to.as_ptr() as *mut _,
+        Gas: tx.gas as u64,
+        GasPrice: gasPrice.as_ptr() as *mut _,
+        GasFeeCap: gasFeeCap.as_ptr() as *mut _,
+        GasTipCap: gasTipCap.as_ptr() as *mut _,
+        Value: value.as_ptr() as *mut _,
+        Data: data.as_ptr() as *mut _,
+    };
+
+    unsafe { c_str_to_string(sys::call(simulator, tx_sys)) }
 }
 
 fn c_str_to_string(string: *mut ::std::os::raw::c_char) -> String {
     // This is very unsafe and will lead to allocator corruption.
     // https://doc.rust-lang.org/std/ffi/struct.CString.html#method.from_raw
     unsafe { CString::from_raw(string).into_string().unwrap() }
+}
+
+fn string_to_c_str(string: &str) -> *mut ::std::os::raw::c_char {
+    let cstr = CString::new(string).unwrap();
+    
+    cstr.as_ptr() as *mut _
 }

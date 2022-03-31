@@ -11,6 +11,36 @@ typedef struct _OutputStruct {
 	int Product;
 } OutputStruct;
 
+typedef struct _TransactionRequest
+{
+	// From      common.Address  // the sender of the 'transaction'
+	char* From;
+
+	// To        *common.Address // the destination contract (nil for contract creation)
+	char* To;
+
+	// Gas       uint64          // if 0, the call executes with near-infinite gas
+	unsigned long long Gas;
+
+	// GasPrice  *big.Int        // wei <-> gas exchange ratio
+	char* GasPrice;
+
+	// GasFeeCap *big.Int        // EIP-1559 fee cap per gas.
+	char* GasFeeCap;
+	
+	// GasTipCap *big.Int        // EIP-1559 tip per gas.
+	char* GasTipCap;
+
+	// Value     *big.Int        // amount of wei sent along with the call
+	char* Value;
+
+	// Data      []byte          // input data, usually an ABI-encoded contract method invocation
+	char* Data;
+
+	// AccessList types.AccessList // EIP-2930 access list.
+	// TODO
+} TransactionRequest;
+
 typedef struct _TransactionReceipt
 {
 	// Consensus fields: These fields are defined by the Yellow Paper

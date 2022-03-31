@@ -21,14 +21,14 @@ export interface TransactionReceipt {
 }
 
 export interface TransactionRequest {
-  to:     string,
-	from?:   string,
-	nonce?:  string,
-	gasLimit?:  string,
-	gasPrice?:  string,
-	data?:     string,
-	value?:    string,
-	chainId?:  number,
+  from?: string,
+  to: string,
+  gas?: number,
+  gasPrice?: string,
+  gasFeeCap?: string,
+  gasTipCap?: string,
+  value?: string,
+  data?: string,
 }
 
 export class Simulator {
@@ -44,7 +44,16 @@ export class Simulator {
   }
 
   call(msg: TransactionRequest): string {
-    return '0x' + library.call(this.id, JSON.stringify(msg));
+    return '0x' + library.call(this.id, {
+      from: '',
+      gas: 0,
+      gasPrice: '',
+      gasFeeCap: '',
+      gasTipCap: '',
+      value: '',
+      data: '0x',
+      ...msg,
+    });
   }
 
   getBalance(address: string): string {

@@ -8,7 +8,6 @@ import (
 	"log"
 	"math/big"
 	"math/rand"
-	"strconv"
 	"strings"
 	"time"
 
@@ -26,18 +25,7 @@ import (
 */
 import "C"
 
-type TransactionRequest struct {
-	To    *string `json:"to"`
-	From  *string `json:"from"`
-	Nonce *string `json:"nonce"`
-
-	GasLimit *string `json:"gasLimit"`
-	GasPrice *string `json:"gasPrice"`
-
-	Data    *string `json:"data"`
-	Value   *string `json:"value"`
-	ChainId *uint64 `json:"chainId"`
-}
+type TransactionRequest = C.TransactionRequest
 
 func main() {}
 
@@ -128,38 +116,40 @@ func getLogs(simID C.int, queryJson *C.char) *C.char {
 }
 
 //export call
-func call(simID C.int, msgJson *C.char) *C.char {
+func call(simID C.int, msg TransactionRequest) *C.char {
 	sim := getSimulator(simID)
-	var msg TransactionRequest
-
-	err := json.Unmarshal([]byte(C.GoString(msgJson)), &msg)
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	var callMsg ethereum.CallMsg
 
 	if msg.From != nil {
-		callMsg.From = common.HexToAddress(*msg.From)
+		callMsg.From = common.HexToAddress(C.GoString(msg.From))
 	}
 	if msg.To != nil {
-		temp := common.HexToAddress(*msg.To)
+		temp := common.HexToAddress(C.GoString(msg.To))
 		callMsg.To = &temp
 	}
-	if msg.GasLimit != nil {
-		value, err := strconv.ParseUint(*msg.GasLimit, 16, 64)
-		if err != nil {
-			log.Fatal(err)
-		}
+	callMsg.Gas = uint64(msg.Gas)
 
-		callMsg.Gas = value
-	}
-	if msg.GasPrice != nil {
+	gasPrice := C.GoString(msg.GasPrice)
+	if gasPrice != "" {
 		callMsg.GasPrice = big.NewInt(0)
-		callMsg.GasPrice.SetString(*msg.GasPrice, 16)
+		callMsg.GasPrice.SetString(gasPrice, 16)
 	}
+
+	gasFeeCap := C.GoString(msg.GasFeeCap)
+	if gasFeeCap != "" {
+		callMsg.GasFeeCap = big.NewInt(0)
+		callMsg.GasFeeCap.SetString(gasFeeCap, 16)
+	}
+
+	gasTipCap := C.GoString(msg.GasTipCap)
+	if gasTipCap != "" {
+		callMsg.GasTipCap = big.NewInt(0)
+		callMsg.GasTipCap.SetString(gasTipCap, 16)
+	}
+
 	if msg.Data != nil {
-		data, err := hex.DecodeString((*msg.Data)[2:])
+		data, err := hex.DecodeString(C.GoString(msg.Data)[2:])
 		if err != nil {
 			log.Fatal(err)
 		}
