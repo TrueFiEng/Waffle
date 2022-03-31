@@ -383,3 +383,37 @@ For example:
     await provider.send('evm_mine', [timestamp])
   }
 
+Tests relying on setting gasPrice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since `London hardfork <https://eips.ethereum.org/EIPS/eip-1559>`_, :code:`baseFeePerGas` is replacing :code:`gasPrice`.
+If your tests are relying on setting :code:`gasPrice`, you will have to update them.
+
+Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache` - so tests relying on that have to be updated:
+
+**Before**
+
+.. code-block:: javascript
+
+  await expect(() =>
+    sender.sendTransaction({
+      to: receiver.address,
+      gasPrice: 0,
+      value: 200
+    })
+  ).to.changeBalance(sender, -200);
+
+**After**
+
+.. code-block:: javascript
+
+  const TX_GAS = 21000;
+  const BASE_FEE_PER_GAS = 875000000
+  const gasFees = BASE_FEE_PER_GAS * TX_GAS;
+  await expect(() =>
+    sender.sendTransaction({
+      to: receiver.address,
+      gasPrice: BASE_FEE_PER_GAS,
+      value: 200
+    })
+  ).to.changeBalance(sender, -(gasFees + 200));
