@@ -387,9 +387,7 @@ Tests relying on setting gasPrice
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Since `London hardfork <https://eips.ethereum.org/EIPS/eip-1559>`_, :code:`baseFeePerGas` is replacing :code:`gasPrice`.
-If your tests are relying on setting :code:`gasPrice`, you will have to update them.
-
-Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache` - so tests relying on that have to be updated:
+If your tests are relying on setting :code:`gasPrice` with :code:`changeBalance` matcher, you will have to update them.
 
 **Before**
 
@@ -417,3 +415,6 @@ Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache
       value: 200
     })
   ).to.changeBalance(sender, -(gasFees + 200));
+
+Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache`.
+Instead of (deprecated) matcher :code:`changeBalance`, new matcher :code:`changeEtherBalance` can be used instead - which handles transaction fee calculation automatically.
