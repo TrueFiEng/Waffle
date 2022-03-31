@@ -115,28 +115,30 @@ export class GethProvider extends providers.Provider {
     throw new Error('Not implemented');
   }
 
-  getTransaction(transactionHash: string): Promise<providers.TransactionResponse> {
-    const {Tx} = JSON.parse(this.sim.getTransaction(transactionHash));
-    return Promise.resolve({
+  async getTransaction(transactionHash: string): Promise<providers.TransactionResponse> {
+    const {Tx} = this.sim.getTransaction(transactionHash);
+    return {
       hash: Tx.hash,
       to: Tx.to,
       nonce: Number.parseInt(Tx.nonce, 16),
 
       gasLimit: BigNumber.from(Tx.gas),
-      gasPrice: BigNumber.from(Tx.gasPrice),
+      // TODO
+      // gasPrice: BigNumber.from(Tx.gasPrice),
 
       data: Tx.input,
       value: BigNumber.from(Tx.value),
       chainId: Number.parseInt(this.sim.getChainID(), 16),
 
-      r: Tx.r,
-      s: Tx.s,
-      v: Tx.v,
+      // TODO
+      // r: Tx.r,
+      // s: Tx.s,
+      // v: Tx.v,
 
       confirmations: 0,
       from: '0x',
       wait: () => { throw new Error('Not implemented'); }
-    });
+    };
   }
 
   async getTransactionCount(

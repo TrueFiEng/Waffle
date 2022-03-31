@@ -79,7 +79,7 @@ describe('GethProvider', () => {
     expect(await provider.getBalance(to)).to.equal(123);
   });
 
-  it.skip('send ETH transfer', async () => {
+  it('send ETH transfer', async () => {
     const to = Wallet.createRandom().address;
 
     const tx = await wallet.sendTransaction({
@@ -94,7 +94,7 @@ describe('GethProvider', () => {
     expect(await provider.getBalance(to)).to.equal(123);
   })
 
-  it.skip('deploy WETH', async () => {
+  it('deploy WETH', async () => {
     const contractInterface = new Interface(WETH.abi);
     const weth = new ContractFactory(contractInterface, WETH.bytecode, wallet);
     const deployData = weth.getDeployTransaction();

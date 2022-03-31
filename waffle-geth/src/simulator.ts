@@ -66,7 +66,7 @@ export interface Transaction {
     v: string,
     r: string,
     s: string,
-    to: null,
+    to: string,
     hash: string
   },
   IsPending: boolean
