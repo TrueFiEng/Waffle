@@ -1,11 +1,9 @@
 import {expect, AssertionError} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
 import {BigNumber, Contract} from 'ethers';
 import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
 import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: changeEtherBalance matcher', () => {
-  const provider = new MockProvider();
+describeMockProviderCases('INTEGRATION: changeEtherBalance matcher', (provider) => {
   const [sender, receiver] = provider.getWallets();
   const contract = new Contract(receiver.address, [], provider);
   const txGasFees = BASE_FEE_PER_GAS * TX_GAS;
