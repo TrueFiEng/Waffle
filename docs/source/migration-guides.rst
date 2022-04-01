@@ -418,3 +418,20 @@ If your tests are relying on setting :code:`gasPrice` with :code:`changeBalance`
 
 Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache`.
 Instead of (deprecated) matcher :code:`changeBalance`, new matcher :code:`changeEtherBalance` can be used instead - which handles transaction fee calculation automatically.
+
+Custom wallet mnemonic
+~~~~~~~~~~~~~~~~~~~~~~
+
+Ganache has a build-in set of Wallets with positive Ether balance.
+In the new Ganache, you should not override the wallet config, otherwise you might end up with Wallets with no Ether balance.
+
+.. code-block:: javascript
+
+  const provider = new MockProvider({
+    ganacheOptions: {
+      // Remove this, if exists:
+      wallet: {
+        mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn'
+      }
+    }
+  })
