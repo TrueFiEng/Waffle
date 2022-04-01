@@ -26,8 +26,6 @@ import (
 */
 import "C"
 
-type TransactionRequest = C.TransactionRequest
-
 func main() {}
 
 var (
@@ -218,8 +216,6 @@ func getTransaction(simID C.int, txHash *C.char) *C.char {
 	return C.CString(string(stringified[:]))
 }
 
-type TransactionReceipt = C.TransactionReceipt
-
 //export sendTransaction
 func sendTransaction(simID C.int, txData *C.char) TransactionReceipt {
 	sim := getSimulator(simID)
@@ -297,9 +293,6 @@ func toUpper(str *C.char) *C.char {
 	upper := strings.ToUpper(go_str)
 	return C.CString(upper)
 }
-
-type InputStruct = C.InputStruct
-type OutputStruct = C.OutputStruct
 
 //export sumProduct
 func sumProduct(intput InputStruct) OutputStruct {

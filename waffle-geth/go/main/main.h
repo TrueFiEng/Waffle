@@ -1,3 +1,5 @@
+#ifndef WAFFLE_MAIN_H
+#define WAFFLE_MAIN_H
 
 // Remove
 typedef struct _InputStruct {
@@ -84,3 +86,5 @@ typedef struct _TransactionReceipt
 	// TransactionIndex uint        `json:"transactionIndex"`
 	unsigned int 	TransactionIndex;
 } TransactionReceipt;
+
+#endif
