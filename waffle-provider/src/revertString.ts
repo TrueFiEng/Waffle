@@ -86,7 +86,12 @@ export const injectRevertString = (provider: Provider): Provider => {
             try {
               return await originalResult;
             } catch (e) {
-              return '0xE4E1C0'; // 15_000_000
+              const blockGasLimit = (provider.getOptions().miner as any).blockGasLimit;
+              if (!blockGasLimit) {
+                log('Block gas limit not found for fallback eth_estimateGas value. Using default value of 15M.');
+                return '0xE4E1C0'; // 15_000_000
+              }
+              return blockGasLimit.toString();
             }
           })();
         } else if (method === 'eth_sendRawTransaction') {

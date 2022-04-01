@@ -42,5 +42,16 @@ export const describeMockProviderCases = (
       });
       testCases(provider);
     });
+
+    describe('with block gas limit', () => {
+      const provider = new MockProvider({
+        ganacheOptions: {
+          miner: {
+            blockGasLimit: 9_999_999
+          }
+        }
+      });
+      testCases(provider);
+    });
   });
 };
