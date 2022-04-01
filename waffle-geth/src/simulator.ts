@@ -10,6 +10,11 @@ export function newSimulator(): number {
 
 // This type is declared in rust bindings.
 export interface TransactionReceipt {
+  from: string
+  /**
+   * '' if missing.
+   */
+  to: string,
   type: number,
   status: number,
   cumulativeGasUsed: number,

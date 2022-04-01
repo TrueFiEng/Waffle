@@ -191,8 +191,9 @@ export class GethProvider extends providers.Provider {
     const receipt = this.sim.sendTransaction(data)
 
     const ethersReceipt: providers.TransactionReceipt & providers.TransactionResponse = {
-      to: 'TODO',
-      from: 'TODO',
+      // https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
+      to: receipt.to === '' ? null as any : receipt.to,
+      from: receipt.from,
       nonce: 0, // TODO
 
       gasLimit: BigNumber.from(0), // TODO

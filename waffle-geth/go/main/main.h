@@ -1,6 +1,8 @@
 #ifndef WAFFLE_MAIN_H
 #define WAFFLE_MAIN_H
 
+typedef unsigned char bool;
+
 // Remove
 typedef struct _InputStruct {
 	int A;
@@ -45,6 +47,10 @@ typedef struct _TransactionRequest
 
 typedef struct _TransactionReceipt
 {
+	char* From;
+
+	char* To;
+
 	// Consensus fields: These fields are defined by the Yellow Paper
 	// Type              uint8  `json:"type,omitempty"`
 	unsigned char Type;

@@ -66,8 +66,14 @@ func transactionRequestToCallMsg(msg *TransactionRequest) (*ethereum.CallMsg, er
 	return &callMsg, nil
 }
 
-func createTransactionReceipt(receipt *types.Receipt) (*TransactionReceipt, error) {
+func createTransactionReceipt(tx *types.Transaction, receipt *types.Receipt, signer types.Signer) (*TransactionReceipt, error) {
+	from, err := types.Sender(signer, tx)
+	if err != nil {
+		return nil, err
+	}
+
 	res := TransactionReceipt{
+		From:              C.CString(from.String()),
 		Type:              C.uchar(receipt.Type),
 		Status:            C.ulonglong(receipt.Status),
 		CumulativeGasUsed: C.ulonglong(receipt.CumulativeGasUsed),
@@ -77,6 +83,12 @@ func createTransactionReceipt(receipt *types.Receipt) (*TransactionReceipt, erro
 		BlockHash:         C.CString(receipt.BlockHash.String()),
 		BlockNumber:       C.CString(receipt.BlockNumber.Text(16)),
 		TransactionIndex:  C.uint(receipt.TransactionIndex),
+	}
+
+	if tx.To() != nil {
+		res.To = C.CString(tx.To().String())
+	} else {
+		res.To = C.CString("")
 	}
 
 	return &res, nil

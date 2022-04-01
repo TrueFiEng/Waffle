@@ -209,7 +209,8 @@ func sendTransaction(simID C.int, txData *C.char) TransactionReceipt {
 		log.Fatal(err)
 	}
 
-	res, err := createTransactionReceipt(receipt)
+	signer := types.MakeSigner(sim.Backend.Blockchain().Config(), sim.GetLatestBlockNumber())
+	res, err := createTransactionReceipt(tx, receipt, signer)
 	if err != nil {
 		log.Fatal(err)
 	}

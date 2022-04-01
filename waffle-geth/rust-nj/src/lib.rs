@@ -115,6 +115,8 @@ fn get_chain_id(simulator: i32) -> String {
 
 #[node_bindgen]
 struct TransactionReceipt {
+    pub From: String,
+    pub To: String,
     pub Type: i32,
     pub Status: i64,
     pub CumulativeGasUsed: i64,
@@ -132,6 +134,8 @@ fn send_transaction(simulator: i32, tx_json: String) -> TransactionReceipt {
     // TODO: free returned pointer
 
     TransactionReceipt {
+        From: c_str_to_string(receipt.From),
+        To: c_str_to_string(receipt.To),
         Type: receipt.Type as i32,
         Status: receipt.Status as i64,
         CumulativeGasUsed: receipt.CumulativeGasUsed as i64,
@@ -158,7 +162,8 @@ pub struct TransactionRequest {
 
 impl_js_struct!(TransactionRequest, { from, to, gas, gasPrice, gasFeeCap, gasTipCap, value, data });
 
-#[node_bindgen]fn call(simulator: i32, tx: TransactionRequest) -> String {
+#[node_bindgen]
+fn call(simulator: i32, tx: TransactionRequest) -> String {
     let from = CString::new(tx.from).unwrap();
     let to = CString::new(tx.to).unwrap();
     let gasPrice = CString::new(tx.gasPrice).unwrap();
