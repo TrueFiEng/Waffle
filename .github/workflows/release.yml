@@ -15,6 +15,10 @@ jobs:
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
+          # This allows the changesets/action step to override the default actions user,
+          # and allow CI jobs on commits coming from that step.
+          # https://github.com/changesets/action/issues/70
+          persist-credentials: false
 
       - name: Setup Node.js 16.x
         uses: actions/setup-node@v3.0.0
