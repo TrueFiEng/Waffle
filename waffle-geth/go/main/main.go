@@ -209,17 +209,12 @@ func sendTransaction(simID C.int, txData *C.char) TransactionReceipt {
 		log.Fatal(err)
 	}
 
-	return TransactionReceipt{
-		Type:              C.uchar(receipt.Type),
-		Status:            C.ulonglong(receipt.Status),
-		CumulativeGasUsed: C.ulonglong(receipt.CumulativeGasUsed),
-		TxHash:            C.CString(receipt.TxHash.String()),
-		ContractAddress:   C.CString(receipt.ContractAddress.String()),
-		GasUsed:           C.ulonglong(receipt.GasUsed),
-		BlockHash:         C.CString(receipt.BlockHash.String()),
-		BlockNumber:       C.CString(receipt.BlockNumber.Text(16)),
-		TransactionIndex:  C.uint(receipt.TransactionIndex),
+	res, err := createTransactionReceipt(receipt)
+	if err != nil {
+		log.Fatal(err)
 	}
+
+	return *res
 }
 
 func getSimulator(simID C.int) *simulator.Simulator {
