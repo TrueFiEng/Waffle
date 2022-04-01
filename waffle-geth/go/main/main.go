@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/big"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -147,45 +146,12 @@ func getLogs(simID C.int, queryJson *C.char) *C.char {
 func call(simID C.int, msg TransactionRequest) *C.char {
 	sim := getSimulator(simID)
 
-	var callMsg ethereum.CallMsg
-
-	if msg.From != nil {
-		callMsg.From = common.HexToAddress(C.GoString(msg.From))
-	}
-	if msg.To != nil {
-		temp := common.HexToAddress(C.GoString(msg.To))
-		callMsg.To = &temp
-	}
-	callMsg.Gas = uint64(msg.Gas)
-
-	gasPrice := C.GoString(msg.GasPrice)
-	if gasPrice != "" {
-		callMsg.GasPrice = big.NewInt(0)
-		callMsg.GasPrice.SetString(gasPrice, 16)
+	callMsg, err := transactionRequestToCallMsg(&msg)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	gasFeeCap := C.GoString(msg.GasFeeCap)
-	if gasFeeCap != "" {
-		callMsg.GasFeeCap = big.NewInt(0)
-		callMsg.GasFeeCap.SetString(gasFeeCap, 16)
-	}
-
-	gasTipCap := C.GoString(msg.GasTipCap)
-	if gasTipCap != "" {
-		callMsg.GasTipCap = big.NewInt(0)
-		callMsg.GasTipCap.SetString(gasTipCap, 16)
-	}
-
-	if msg.Data != nil {
-		data, err := hex.DecodeString(C.GoString(msg.Data)[2:])
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		callMsg.Data = data
-	}
-
-	res, err := sim.Backend.CallContract(context.Background(), callMsg, nil)
+	res, err := sim.Backend.CallContract(context.Background(), *callMsg, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
