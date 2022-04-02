@@ -32,6 +32,10 @@ Emitting events
 
 Testing what events were emitted with what arguments:
 
+.. note::
+
+  You must :code:`await` the :code:`expect` in order for the matcher to execute properly. Failing to :code:`await` will cause the assertion to pass whether or not the event is actually emitted! 
+
 .. code-block:: ts
 
   await expect(token.transfer(walletTo.address, 7))
