@@ -1,11 +1,12 @@
 import {expect, AssertionError} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
 import {BigNumber, Contract} from 'ethers';
+import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: changeEtherBalance matcher', () => {
-  const provider = new MockProvider();
+describeMockProviderCases('INTEGRATION: changeEtherBalance matcher', (provider) => {
   const [sender, receiver] = provider.getWallets();
   const contract = new Contract(receiver.address, [], provider);
+  const txGasFees = BASE_FEE_PER_GAS * TX_GAS;
 
   describe('Transaction Callback', () => {
     describe('Change balance, one account', () => {
@@ -31,17 +32,17 @@ describe('INTEGRATION: changeEtherBalance matcher', () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 1,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
-        ).to.changeEtherBalance(sender, -21200, {includeFee: true});
+        ).to.changeEtherBalance(sender, -(txGasFees + 200), {includeFee: true});
       });
 
       it('Should ignore fee if receiver\'s wallet is being checked and includeFee was set', async () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 1,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
         ).to.changeEtherBalance(receiver, 200, {includeFee: true});
@@ -51,7 +52,7 @@ describe('INTEGRATION: changeEtherBalance matcher', () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 420,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
         ).to.changeEtherBalance(sender, -200);
@@ -80,13 +81,13 @@ describe('INTEGRATION: changeEtherBalance matcher', () => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: 1,
+              gasPrice: BASE_FEE_PER_GAS,
               value: 200
             })
           ).to.changeEtherBalance(sender, -200, {includeFee: true})
         ).to.be.eventually.rejectedWith(
           AssertionError,
-          `Expected "${sender.address}" to change balance by -200 wei, but it has changed by -21200 wei`
+          `Expected "${sender.address}" to change balance by -200 wei, but it has changed by -18375000000200 wei`
         );
       });
 

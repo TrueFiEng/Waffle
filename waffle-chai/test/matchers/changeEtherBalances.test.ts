@@ -1,11 +1,12 @@
 import {AssertionError, expect} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
 import {Contract} from 'ethers';
+import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: changeEtherBalances matcher', () => {
-  const provider = new MockProvider();
+describeMockProviderCases('INTEGRATION: changeEtherBalances matcher', (provider) => {
   const [sender, receiver, contractWallet] = provider.getWallets();
   const contract = new Contract(contractWallet.address, [], provider);
+  const txGasFees = BASE_FEE_PER_GAS * TX_GAS;
 
   describe('Transaction Callback', () => {
     describe('Change balances, one account, one contract', () => {
@@ -24,7 +25,7 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 34,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
         ).to.changeEtherBalances([sender, receiver], ['-200', 200]);
@@ -34,20 +35,20 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 1,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
-        ).to.changeEtherBalances([sender, receiver, contract], [-21200, 200, 0], {includeFee: true});
+        ).to.changeEtherBalances([sender, receiver, contract], [-(txGasFees + 200), 200, 0], {includeFee: true});
       });
 
       it('Should pass when negated and numbers don\'t match', async () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 0,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
-        ).to.not.changeEtherBalances([sender, receiver], [-201, 200]);
+        ).to.not.changeEtherBalances([sender, receiver], [-(txGasFees + 201), 200]);
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
@@ -61,7 +62,7 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: 0,
+              gasPrice: BASE_FEE_PER_GAS,
               value: 200
             })
           ).to.changeEtherBalances([sender, receiver], [-200, 201])
@@ -74,7 +75,7 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: 0,
+              gasPrice: BASE_FEE_PER_GAS,
               value: 200
             })
           ).to.changeEtherBalances([sender, receiver], [-201, 200])
@@ -90,7 +91,7 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: 0,
+              gasPrice: BASE_FEE_PER_GAS,
               value: 200
             })
           ).to.not.changeEtherBalances([sender, receiver], [-200, 200])
@@ -118,19 +119,19 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
       it('Should pass when all expected balance changes are equal to actual values', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: 1,
+          gasPrice: BASE_FEE_PER_GAS,
           value: 200
         })
-        ).to.changeEtherBalances([sender, receiver], ['-21200', 200], {includeFee: true});
+        ).to.changeEtherBalances([sender, receiver], [(-(txGasFees + 200)).toString(), 200], {includeFee: true});
       });
 
       it('Should take into account transaction fee', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: 1,
+          gasPrice: BASE_FEE_PER_GAS,
           value: 200
         })
-        ).to.changeEtherBalances([sender, receiver, contract], [-21200, 200, 0], {includeFee: true});
+        ).to.changeEtherBalances([sender, receiver, contract], [-(txGasFees + 200), 200, 0], {includeFee: true});
       });
 
       it('Should pass when negated and numbers don\'t match', async () => {
@@ -151,14 +152,14 @@ describe('INTEGRATION: changeEtherBalances matcher', () => {
         await expect(
           expect(await sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 1,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
           ).to.changeEtherBalances([sender, receiver], [-200, 200], {includeFee: true})
         ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected ${sender.address},${receiver.address} to change balance ` +
-            'by -200,200 wei, but it has changed by -21200,200 wei'
+            'by -200,200 wei, but it has changed by -18375000000200,200 wei'
         );
       });
 

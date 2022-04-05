@@ -21,13 +21,17 @@ export const decodeRevertString = (callRevertError: any): string => {
     .replace(/\x00/g, ''); // Trim null characters.
 };
 
-const appendRevertString = async (etherProvider: providers.Web3Provider, receipt: any) => {
+export const appendRevertString = async (etherProvider: providers.Web3Provider, receipt: any) => {
   if (parseInt(receipt.status) === 0) {
     log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.');
     try {
       const tx = await etherProvider.getTransaction(receipt.transactionHash);
       log('Running transaction as a call:');
       log(tx);
+      if (tx.maxPriorityFeePerGas || tx.maxFeePerGas) {
+        log('London hardfork detected, stripping gasPrice');
+        delete tx['gasPrice'];
+      }
       // Run the transaction as a query. It works differently in Ethers, a revert code is included.
       await etherProvider.call(tx as any, tx.blockNumber);
     } catch (error: any) {
@@ -82,7 +86,12 @@ export const injectRevertString = (provider: Provider): Provider => {
             try {
               return await originalResult;
             } catch (e) {
-              return '0xE4E1C0'; // 15_000_000
+              const blockGasLimit = (provider.getOptions().miner as any).blockGasLimit;
+              if (!blockGasLimit) {
+                log('Block gas limit not found for fallback eth_estimateGas value. Using default value of 15M.');
+                return '0xE4E1C0'; // 15_000_000
+              }
+              return blockGasLimit.toString();
             }
           })();
         } else if (method === 'eth_sendRawTransaction') {
