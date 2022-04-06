@@ -9,5 +9,5 @@ describe('INTEGRATION: ethCalledValidators', () => {
     await provider.send('hardhat_reset', []);
   });
 
-  // calledOnContractValidatorsTest(provider);
+  calledOnContractValidatorsTest(provider);
 });

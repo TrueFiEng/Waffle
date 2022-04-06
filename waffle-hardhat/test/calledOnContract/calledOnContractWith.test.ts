@@ -9,5 +9,5 @@ describe('INTEGRATION: calledOnContractWith', () => {
     await provider.send('hardhat_reset', []);
   });
 
-  // calledOnContractWithTest(provider);
+  calledOnContractWithTest(provider);
 });

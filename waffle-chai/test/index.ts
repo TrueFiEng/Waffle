@@ -13,3 +13,5 @@ export {changeEtherBalancesTest} from './matchers/changeEtherBalancesTest';
 export {changeTokenBalanceTest} from './matchers/changeTokenBalanceTest';
 export {changeTokenBalancesTest} from './matchers/changeTokenBalancesTest';
 export {eventsTest} from './matchers/eventsTest';
+export {revertedTest} from './matchers/revertedTest';
+export {revertedWithTest} from './matchers/revertedWithTest';
