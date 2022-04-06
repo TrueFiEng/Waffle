@@ -6,3 +6,4 @@ chai.use(chaiAsPromised);
 chai.use(waffleChai);
 
 export {changeEtherBalanceTest} from './matchers/changeEtherBalanceTest';
+export {changeEtherBalancesTest} from './matchers/changeEtherBalancesTest';
