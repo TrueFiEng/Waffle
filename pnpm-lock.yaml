@@ -372,6 +372,7 @@ importers:
 
   waffle-hardhat:
     specifiers:
+      '@ethereum-waffle/chai': workspace:*
       '@nomiclabs/hardhat-ethers': ^2.0.3
       '@nomiclabs/hardhat-waffle': ^2.0.3
       chai-as-promised: ^7.1.1
@@ -379,6 +380,7 @@ importers:
       ethers: 5.6.1
       hardhat: ^2.9.2
     devDependencies:
+      '@ethereum-waffle/chai': link:../waffle-chai
       '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.1+hardhat@2.9.3
       '@nomiclabs/hardhat-waffle': 2.0.3_ab13490a7626e0adb2d5b4460e52f6b4
       chai-as-promised: 7.1.1_chai@4.2.0

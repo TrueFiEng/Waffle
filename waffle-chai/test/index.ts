@@ -4,3 +4,5 @@ import {waffleChai} from '../src';
 
 chai.use(chaiAsPromised);
 chai.use(waffleChai);
+
+export {changeEtherBalanceTest} from './matchers/changeEtherBalanceTest';
