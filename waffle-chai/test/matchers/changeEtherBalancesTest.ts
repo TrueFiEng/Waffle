@@ -1,6 +1,6 @@
 import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
-import {BigNumber, Contract, Wallet} from 'ethers';
+import {Contract, Wallet} from 'ethers';
 
 import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
 

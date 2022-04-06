@@ -7,3 +7,5 @@ chai.use(waffleChai);
 
 export {changeEtherBalanceTest} from './matchers/changeEtherBalanceTest';
 export {changeEtherBalancesTest} from './matchers/changeEtherBalancesTest';
+export {changeTokenBalanceTest} from './matchers/changeTokenBalanceTest';
+export {changeTokenBalancesTest} from './matchers/changeTokenBalancesTest';
