@@ -1,21 +1,23 @@
+import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {BigNumber, Contract, Wallet} from 'ethers';
 
-import {BASE_FEE_PER_GAS} from './constants';
+import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
 
-interface ChangeBalanceProps {
-  sender: Wallet,
-  receiver: Wallet,
-  contract: Contract,
-  txGasFees: number
-}
+export const changeEtherBalanceTest = (provider: MockProvider) => {
+  let sender: Wallet;
+  let receiver: Wallet;
+  let contract: Contract;
+  let txGasFees: number;
 
-export const changeEtherBalanceTest = ({
-  sender,
-  receiver,
-  contract,
-  txGasFees
-} : ChangeBalanceProps) => {
+  before(() => {
+    const wallets = provider.getWallets();
+    sender = wallets[0];
+    receiver = wallets[1];
+    contract = new Contract(receiver.address, [], provider);
+    txGasFees = BASE_FEE_PER_GAS * TX_GAS;
+  });
+
   describe('Transaction Callback', () => {
     describe('Change balance, one account', () => {
       it('Should pass when expected balance change is passed as string and is equal to an actual', async () => {
