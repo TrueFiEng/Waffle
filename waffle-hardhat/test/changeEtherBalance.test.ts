@@ -1,8 +1,11 @@
-import {expect, AssertionError} from 'chai';
+import chai, {expect, AssertionError} from 'chai';
 import {BigNumber, Contract, Wallet} from 'ethers';
-import {waffle} from 'hardhat'
+import {waffle} from 'hardhat';
 import {MockProvider} from 'ethereum-waffle';
+import chaiAsPromised from 'chai-as-promised';
 import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+
+chai.use(chaiAsPromised);
 
 describe('INTEGRATION: changeEtherBalance matcher', () => {
   const provider = waffle.provider as MockProvider;
@@ -13,7 +16,7 @@ describe('INTEGRATION: changeEtherBalance matcher', () => {
 
   before(async () => {
     await provider.send('hardhat_reset', []);
-    const wallets= provider.getWallets();
+    const wallets = provider.getWallets();
     sender = wallets[0];
     receiver = wallets[1];
     contract = new Contract(receiver.address, [], provider);

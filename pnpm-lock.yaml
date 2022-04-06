@@ -288,7 +288,7 @@ importers:
       solc: ^0.6.3
       typechain: ^8.0.0
     dependencies:
-      '@ethereum-waffle/chai': link:../waffle-hardhat
+      '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/mock-contract': link:../waffle-mock-contract
       '@ethereum-waffle/provider': link:../waffle-provider
@@ -331,7 +331,7 @@ importers:
       mkdirp: 0.5.5
       node-fetch: 2.6.7
     devDependencies:
-      '@ethereum-waffle/chai': link:../waffle-hardhat
+      '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/provider': link:../waffle-provider
       '@openzeppelin/contracts': 3.0.1
       '@types/fs-extra': 9.0.11
@@ -350,7 +350,7 @@ importers:
       solc: ^0.6.3
       typechain: ^8.0.0
     devDependencies:
-      '@ethereum-waffle/chai': link:../waffle-hardhat
+      '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       ethers: 5.6.1
@@ -374,12 +374,14 @@ importers:
     specifiers:
       '@nomiclabs/hardhat-ethers': ^2.0.3
       '@nomiclabs/hardhat-waffle': ^2.0.3
+      chai-as-promised: ^7.1.1
       ethereum-waffle: workspace:*
       ethers: 5.6.1
       hardhat: ^2.9.2
     devDependencies:
       '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.1+hardhat@2.9.3
       '@nomiclabs/hardhat-waffle': 2.0.3_ab13490a7626e0adb2d5b4460e52f6b4
+      chai-as-promised: 7.1.1_chai@4.2.0
       ethereum-waffle: link:../waffle-cli
       ethers: 5.6.1
       hardhat: 2.9.3
@@ -397,7 +399,7 @@ importers:
       '@ethersproject/abi': 5.6.0
       ethers: 5.6.1
     devDependencies:
-      '@ethereum-waffle/chai': link:../waffle-hardhat
+      '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       solc: 0.6.12
@@ -3667,7 +3669,7 @@ packages:
       aggregate-error: 3.1.0
       ansi-escapes: 4.3.2
       chalk: 2.4.2
-      chokidar: 3.5.3
+      chokidar: 3.4.3
       ci-info: 2.0.0
       debug: 4.3.4
       enquirer: 2.3.6
