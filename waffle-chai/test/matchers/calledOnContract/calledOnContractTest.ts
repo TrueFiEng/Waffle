@@ -1,6 +1,6 @@
 import {AssertionError, expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
-import {ContractFactory, Wallet} from 'ethers';
+import {ContractFactory} from 'ethers';
 
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
 
