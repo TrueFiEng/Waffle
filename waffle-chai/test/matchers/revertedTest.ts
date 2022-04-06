@@ -70,4 +70,4 @@ export const revertedTest = (provider: MockProvider) => {
       expect(Promise.reject('Always reject')).to.be.reverted
     ).to.be.eventually.rejected;
   });
-}
+};

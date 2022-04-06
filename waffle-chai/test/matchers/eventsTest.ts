@@ -313,4 +313,4 @@ export const eventsTest = (provider: MockProvider) => {
     const tx = await events.emitOne();
     await expect(tx.hash).to.emit(events, 'One');
   });
-}
+};

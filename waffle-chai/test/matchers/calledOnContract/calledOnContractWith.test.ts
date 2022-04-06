@@ -1,5 +1,5 @@
 import {describeMockProviderCases} from '../MockProviderCases';
-import { calledOnContractWithTest } from './calledOnContractWithTest';
+import {calledOnContractWithTest} from './calledOnContractWithTest';
 
 describeMockProviderCases('INTEGRATION: calledOnContractWith', (provider) => {
   calledOnContractWithTest(provider);

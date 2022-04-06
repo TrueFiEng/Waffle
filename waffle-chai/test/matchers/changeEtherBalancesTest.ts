@@ -216,4 +216,4 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
       });
     });
   });
-}
+};

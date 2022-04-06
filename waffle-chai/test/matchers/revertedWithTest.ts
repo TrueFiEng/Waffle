@@ -181,4 +181,4 @@ export const revertedWithTest = (provider: MockProvider) => {
       expect(Promise.reject('Always reject')).to.be.revertedWith('Always reject')
     ).to.be.eventually.rejected;
   });
-}
+};

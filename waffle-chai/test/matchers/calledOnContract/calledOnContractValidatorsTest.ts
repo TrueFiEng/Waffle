@@ -1,6 +1,6 @@
 import {expect} from 'chai';
-import { MockProvider } from "@ethereum-waffle/provider";
-import { constants, Contract, ContractFactory, getDefaultProvider, Wallet } from "ethers";
+import {MockProvider} from '@ethereum-waffle/provider';
+import {constants, Contract, ContractFactory, getDefaultProvider, Wallet} from 'ethers';
 
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
 import {validateMockProvider} from '../../../src/matchers/calledOnContract/calledOnContractValidators';
@@ -8,17 +8,10 @@ import {validateMockProvider} from '../../../src/matchers/calledOnContract/calle
 export const calledOnContractValidatorsTest = (provider: MockProvider) => {
   const setup = async (provider: MockProvider) => {
     const [deployer] = provider.getWallets();
-  
+
     const factory = new ContractFactory(CALLS_ABI, CALLS_BYTECODE, deployer);
     return {contract: await factory.deploy()};
-  }
-
-  let deployer: Wallet;
-
-  before(async () => {
-    const wallets = provider.getWallets();
-    deployer = wallets[0];
-  });
+  };
 
   it('throws type error when the argument is not a contract', async () => {
     expect(
@@ -59,13 +52,13 @@ export const calledOnContractValidatorsTest = (provider: MockProvider) => {
       expect(() => validateMockProvider(getDefaultProvider()))
         .to.throw('calledOnContract matcher requires provider that support call history');
     });
-  
+
     it('Incorrect type of call history in provider', async () => {
       const provider = {callHistory: 'invalidType'};
       expect(() => validateMockProvider(provider))
         .to.throw('calledOnContract matcher requires provider that support call history');
     });
-  
+
     it('Correct type of call history in provider', () => {
       const provider = {callHistory: []};
       expect(() => validateMockProvider(provider))

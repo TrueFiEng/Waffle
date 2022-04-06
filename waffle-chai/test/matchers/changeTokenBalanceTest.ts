@@ -2,7 +2,7 @@ import {expect, AssertionError} from 'chai';
 import {Wallet, Contract, ContractFactory, BigNumber} from 'ethers';
 import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
 
-import { MockProvider } from '@ethereum-waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 
 export const changeTokenBalanceTest = (provider: MockProvider) => {
   let sender: Wallet;
@@ -83,4 +83,4 @@ export const changeTokenBalanceTest = (provider: MockProvider) => {
       ).to.changeTokenBalance(token, contract, 200);
     });
   });
-}
+};

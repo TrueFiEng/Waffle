@@ -1,21 +1,19 @@
 import {expect, AssertionError} from 'chai';
-import {Wallet, Contract, ContractFactory, BigNumber} from 'ethers';
+import {Wallet, Contract, ContractFactory} from 'ethers';
 import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
 
-import { MockProvider } from '@ethereum-waffle/provider';
+import {MockProvider} from '@ethereum-waffle/provider';
 
 export const changeTokenBalancesTest = (provider: MockProvider) => {
   let sender: Wallet;
   let receiver: Wallet;
   let token: Contract;
-  let contract: Contract;
   let factory: ContractFactory;
 
   before(async () => {
     const wallets = provider.getWallets();
     sender = wallets[0];
     receiver = wallets[1];
-    contract = new Contract(receiver.address, [], provider);
     factory = new ContractFactory(MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE, sender);
     token = await factory.deploy('MockToken', 'Mock', 18, 1000000000);
   });
@@ -70,4 +68,4 @@ export const changeTokenBalancesTest = (provider: MockProvider) => {
       );
     });
   });
-}
+};

@@ -1,23 +1,16 @@
 import {AssertionError, expect} from 'chai';
-import { MockProvider } from "@ethereum-waffle/provider";
-import { ContractFactory, Wallet } from "ethers";
+import {MockProvider} from '@ethereum-waffle/provider';
+import {ContractFactory, Wallet} from 'ethers';
 
 import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
 
 export const calledOnContractTest = (provider: MockProvider) => {
   const setup = async (provider: MockProvider) => {
     const [deployer] = provider.getWallets();
-  
+
     const factory = new ContractFactory(CALLS_ABI, CALLS_BYTECODE, deployer);
     return {contract: await factory.deploy()};
-  }
-
-  let deployer: Wallet;
-
-  before(async () => {
-    const wallets = provider.getWallets();
-    deployer = wallets[0];
-  });
+  };
 
   it('checks that contract function was called', async () => {
     const {contract} = await setup(provider);
@@ -60,4 +53,4 @@ export const calledOnContractTest = (provider: MockProvider) => {
       expect('callWithoutParameter').not.to.be.calledOnContract(secondDeployContract);
     }
   );
-}
+};
