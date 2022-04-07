@@ -78,11 +78,15 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 }
 
 const decodeHardhatError = (error: any) => {
-  const errorString = String(error);
-  const regexp = new RegExp('VM Exception while processing transaction: reverted with reason string \'(.*)\'');
-  const matches = regexp.exec(errorString);
-  if (!matches) {
-    return undefined;
+  const tryDecode = (error: any) => {
+    const errorString = String(error);
+    const regexp = new RegExp('VM Exception while processing transaction: reverted with reason string \'(.*)\'');
+    const matches = regexp.exec(errorString);
+    if (!matches) {
+      return undefined;
+    }
+    return matches[1];
   }
-  return matches[1];
+
+  return tryDecode(error) ?? tryDecode(error.error); // the error may be wrapped
 };

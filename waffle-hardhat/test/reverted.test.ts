@@ -1,7 +1,6 @@
 import {waffle} from 'hardhat';
 import {MockProvider} from 'ethereum-waffle';
 import {revertedTest, revertedWithTest} from '@ethereum-waffle/chai/test';
-import './hardhatPatches';
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const provider = waffle.provider as MockProvider;
