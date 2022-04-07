@@ -86,7 +86,7 @@ const decodeHardhatError = (error: any) => {
       return undefined;
     }
     return matches[1];
-  }
+  };
 
   return tryDecode(error) ?? tryDecode(error.error); // the error may be wrapped
 };
