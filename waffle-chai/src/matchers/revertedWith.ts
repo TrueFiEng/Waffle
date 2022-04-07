@@ -25,7 +25,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     };
 
     const onError = (error: any) => {
-      const revertString = error?.receipt?.revertString ?? decodeRevertString(error);
+      const revertString = error?.receipt?.revertString
+        ?? decodeHardhatError(error)
+        ?? decodeRevertString(error)
       if (revertString !== undefined) {
         const isReverted = revertReason instanceof RegExp
           ? revertReason.test(revertString)
@@ -74,3 +76,13 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     return this;
   });
 }
+
+const decodeHardhatError = (error: any) => {
+  const errorString = String(error);
+  const regexp = new RegExp("VM Exception while processing transaction: reverted with reason string '(.*)'");
+  const matches = regexp.exec(errorString);
+  if (!matches) {
+    return undefined;
+  }
+  return matches[1];
+};
