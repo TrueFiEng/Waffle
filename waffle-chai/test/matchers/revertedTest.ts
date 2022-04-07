@@ -58,7 +58,7 @@ export const revertedTest = (provider: MockProvider) => {
     await expect(
       expect(matchers.doThrow()).not.to.be.reverted
       // eslint-disable-next-line max-len
-    ).to.be.eventually.rejectedWith('Expected transaction NOT to be reverted, but it was reverted with "VM Exception while processing transaction: invalid opcode"');
+    ).to.be.eventually.rejectedWith(/Expected transaction NOT to be reverted, but it was reverted with/);
   });
 
   it('Revert: fail, random exception', async () => {
