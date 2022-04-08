@@ -17,7 +17,7 @@
     "test:others": "wsrun -e -s -x @ethereum-waffle/jest -c test",
     "test:jest": "wsrun -p @ethereum-waffle/jest -c test",
     "version": "pnpm changeset version && pnpm install",
-    "release": "yarn build && yarn changeset publish"
+    "release": "yarn build && pnpm publish -r && pnpm changeset tag"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
