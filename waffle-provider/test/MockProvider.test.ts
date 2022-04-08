@@ -5,7 +5,7 @@ import {deployToken} from './BasicToken';
 import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
-  it.only('returns wallets', async () => {
+  it('returns wallets', async () => {
     const wallets = provider.getWallets();
     expect(wallets.length).to.equal(10);
     for (const wallet of wallets) {
