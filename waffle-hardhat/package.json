@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/hardhat",
   "description": "A sweet set of chai matchers for your blockchain testing needs.",
-  "version": "4.0.0-alpha.10",
+  "version": "4.0.0-alpha.12",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": true,
