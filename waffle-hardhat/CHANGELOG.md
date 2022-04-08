@@ -1,6 +1,6 @@
 # @ethereum-waffle/hardhat
 
-## 4.0.0
+## 4.0.0-alpha.10
 
 ### Patch Changes
 
