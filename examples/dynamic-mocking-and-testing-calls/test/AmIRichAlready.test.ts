@@ -37,6 +37,6 @@ describe('Am I Rich Already', () => {
     await mockERC20.mock.balanceOf
       .withArgs(wallet.address)
       .returns(utils.parseEther('1000000'));
-    expect(await contract.check()).to.be.equal(false);
+    expect(await contract.check()).to.be.equal(true);
   });
 });
