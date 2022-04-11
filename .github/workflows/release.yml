@@ -33,16 +33,37 @@ jobs:
           git config user.name truefi-bot
           git config user.email truefi-bot@trusttoken.com
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
+      - name: Start SSH via ngrok
+        uses: P3TERX/ssh2actions@main
         with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm run release
-          version: pnpm run version
-          commit: "🎉 Release new version"
-          title: "🎉 Release new version"
-          setupGitUser: false
+          mode: ngrok
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # After sign up on the https://ngrok.com
+          # You can find this token here: https://dashboard.ngrok.com/auth/your-authtoken
+          NGROK_TOKEN: 26mWhh6GLy8MKLfzKimJtZQa9zH_BzqkD8GYcFu3CvFrTStK
+          
+          # ngrok server region [us, eu, au, ap, sa, jp, in] (optional, default: us)
+          # You can find this server region here: https://ngrok.com/docs#global-locations
+          NGROK_REGION: us
+
+          # This password you will use when authorizing via SSH
+          SSH_PASSWORD: foobar
+
+          # Send connection info to Telegram (optional)
+          # You can find related documents here: https://core.telegram.org/bots
+          # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+      # - name: Create Release Pull Request or Publish to npm
+      #   id: changesets
+      #   uses: changesets/action@v1
+      #   with:
+      #     # This expects you to have a script called release which does a build for your packages and calls changeset publish
+      #     publish: pnpm run release
+      #     version: pnpm run version
+      #     commit: "🎉 Release new version"
+      #     title: "🎉 Release new version"
+      #     setupGitUser: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
