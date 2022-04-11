@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dmaretskyi/debug-release
 
 jobs:
   release:
