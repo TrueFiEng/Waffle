@@ -9,4 +9,4 @@
 "@ethereum-waffle/provider": patch
 ---
 
-v4.0.0-alpha.16
+Corrected wrong imports.
