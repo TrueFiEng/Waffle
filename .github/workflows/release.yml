@@ -36,9 +36,9 @@ jobs:
 
       - name: Start SSH via ngrok
         uses: P3TERX/ssh2actions@main
-        with:
+        # with:
           # mode: ngrok
-        env:
+        # env:
           # After sign up on the https://ngrok.com
           # You can find this token here: https://dashboard.ngrok.com/auth/your-authtoken
           # NGROK_TOKEN: 26mWhh6GLy8MKLfzKimJtZQa9zH_BzqkD8GYcFu3CvFrTStK
