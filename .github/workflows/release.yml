@@ -37,18 +37,18 @@ jobs:
       - name: Start SSH via ngrok
         uses: P3TERX/ssh2actions@main
         with:
-          mode: ngrok
+          # mode: ngrok
         env:
           # After sign up on the https://ngrok.com
           # You can find this token here: https://dashboard.ngrok.com/auth/your-authtoken
-          NGROK_TOKEN: 26mWhh6GLy8MKLfzKimJtZQa9zH_BzqkD8GYcFu3CvFrTStK
+          # NGROK_TOKEN: 26mWhh6GLy8MKLfzKimJtZQa9zH_BzqkD8GYcFu3CvFrTStK
           
-          # ngrok server region [us, eu, au, ap, sa, jp, in] (optional, default: us)
-          # You can find this server region here: https://ngrok.com/docs#global-locations
-          NGROK_REGION: us
+          # # ngrok server region [us, eu, au, ap, sa, jp, in] (optional, default: us)
+          # # You can find this server region here: https://ngrok.com/docs#global-locations
+          # NGROK_REGION: us
 
-          # This password you will use when authorizing via SSH
-          SSH_PASSWORD: foobar
+          # # This password you will use when authorizing via SSH
+          # SSH_PASSWORD: foobar
 
           # Send connection info to Telegram (optional)
           # You can find related documents here: https://core.telegram.org/bots
