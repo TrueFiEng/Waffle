@@ -44,7 +44,8 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.promise = derivedPromise;
+    this.promises = ('promises' in this) ? [derivedPromise, ...this.promises] : [derivedPromise];
+    this.promise = Promise.all(this.promises);
     this.contract = contract;
     this.eventName = eventName;
     return this;

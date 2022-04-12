@@ -313,4 +313,53 @@ export const eventsTest = (provider: MockProvider) => {
     const tx = await events.emitOne();
     await expect(tx.hash).to.emit(events, 'One');
   });
+
+  describe('Chaining matchers', () => {
+    it('Both emitted and caught', async () => {
+      const tx = await events.emitBoth();
+      await expect(tx)
+        .to.emit(events, 'One').withArgs(
+          1,
+          "One",
+          "0x0000000000000000000000000000000000000000000000000000000000000001"
+        )
+        .to.emit(events, 'Two').withArgs(
+          2,
+          "Two"
+        );
+    });
+  
+    it('One emitted, expecting one then two - fail', async () => {
+      const tx = await events.emitOne();
+      await expect(
+        expect(tx)
+          .to.emit(events, 'One').withArgs(
+            1,
+            "One",
+            "0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123"
+          )
+          .to.emit(events, 'Two').withArgs(
+            2,
+            "Two"
+          )
+      ).to.be.eventually.rejected;
+    });
+
+    it('One emitted, expecting two then one - fail', async () => {
+      const tx = await events.emitOne();
+      await expect(
+        expect(tx)
+          .to.emit(events, 'Two').withArgs(
+            2,
+            "Two"
+          )
+          .and
+          .to.emit(events, 'One').withArgs(
+            1,
+            "One",
+            "0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123"
+          )
+      ).to.be.eventually.rejected;
+    });
+  });
 };
