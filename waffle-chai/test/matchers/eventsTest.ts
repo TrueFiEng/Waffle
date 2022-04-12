@@ -270,13 +270,6 @@ export const eventsTest = (provider: MockProvider) => {
     );
   });
 
-  it('Event emitted in one contract but not in the other', async () => {
-    const differentEvents = await factory.deploy();
-    await expect(events.emitOne())
-      .to.emit(events, 'One')
-      .and.not.to.emit(differentEvents, 'One');
-  });
-
   it('Emit event multiple times with different args', async () => {
     await expect(events.emitOneMultipleTimes())
       .to.emit(events, 'One')
@@ -393,7 +386,7 @@ export const eventsTest = (provider: MockProvider) => {
           .to.emit(events, 'One').withArgs(
             1,
             "One",
-            "0x0000000000000000000000000000000000000000000000000000000000000001"
+            "0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123"
           )
           .to.emit(events, 'Two').withArgs(
             2,
@@ -413,9 +406,16 @@ export const eventsTest = (provider: MockProvider) => {
           .to.emit(events, 'One').withArgs(
             1,
             "One",
-            "0x0000000000000000000000000000000000000000000000000000000000000001"
+            "0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123"
           )
       ).to.be.eventually.rejected;
+    });
+
+    it('Event emitted in one contract but not in the other', async () => {
+      const differentEvents = await factory.deploy();
+      await expect(events.emitOne())
+        .to.emit(events, 'One')
+        .and.not.to.emit(differentEvents, 'One');
     });
   });
 };

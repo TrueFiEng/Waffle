@@ -8,6 +8,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     const tx = this._obj;
+    const isNegated = this.__flags.negate === true;
     const derivedPromise = waitForPendingTransaction(tx, contract.provider)
       .then((receipt: providers.TransactionReceipt) => {
         let eventFragment: utils.EventFragment | undefined;
@@ -16,10 +17,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         } catch (e) {
         // ignore error
         }
-
         if (eventFragment === undefined) {
-          const isNegated = this.__flags.negate === true;
-
           this.assert(
             isNegated,
             `Expected event "${eventName}" to be emitted, but it doesn't` +
@@ -37,10 +35,13 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
 
         const topic = contract.interface.getEventTopic(eventFragment);
         this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
+        const isCurrentlyNegated = this.__flags.negate === true;
+        this.__flags.negate = isNegated;
         this.assert(this.logs.length > 0,
           `Expected event "${eventName}" to be emitted, but it wasn't`,
           `Expected event "${eventName}" NOT to be emitted, but it was`
         );
+        this.__flags.negate = isCurrentlyNegated;
       });
     this.promises = ('promises' in this) ? [derivedPromise, ...this.promises] : [derivedPromise];
     this.promise = Promise.all(this.promises);
@@ -98,8 +99,13 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     const derivedPromise = this.promise.then(() => {
       tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
     });
-    this.then = derivedPromise.then.bind(derivedPromise);
-    this.catch = derivedPromise.catch.bind(derivedPromise);
+    if (!('promises' in this)) {
+      throw new Error('withArgs() must be used after emit()');
+    }
+    this.promises = [derivedPromise, ...this.promises]
+    this.promise = Promise.all(this.promises);
+    this.then = this.promise.then.bind(this.promise);
+    this.catch = this.promise.catch.bind(this.promise);
     return this;
   });
 }
