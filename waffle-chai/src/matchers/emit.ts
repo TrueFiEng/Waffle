@@ -42,10 +42,10 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           `Expected event "${eventName}" NOT to be emitted, but it was`
         );
       });
-    this.then = derivedPromise.then.bind(derivedPromise);
-    this.catch = derivedPromise.catch.bind(derivedPromise);
     this.promises = ('promises' in this) ? [derivedPromise, ...this.promises] : [derivedPromise];
     this.promise = Promise.all(this.promises);
+    this.then = this.promise.then.bind(this.promise);
+    this.catch = this.promise.catch.bind(this.promise);
     this.contract = contract;
     this.eventName = eventName;
     return this;

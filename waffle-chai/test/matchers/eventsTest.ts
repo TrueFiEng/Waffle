@@ -318,6 +318,31 @@ export const eventsTest = (provider: MockProvider) => {
     it('Both emitted and caught', async () => {
       const tx = await events.emitBoth();
       await expect(tx)
+        .to.emit(events, 'One')
+        .to.emit(events, 'Two');
+    });
+  
+    it('One emitted, expecting one then two - fail', async () => {
+      const tx = await events.emitOne();
+      await expect(
+        expect(tx)
+          .to.emit(events, 'One')
+          .to.emit(events, 'Two')
+      ).to.be.eventually.rejected;
+    });
+
+    it('One emitted, expecting two then one - fail', async () => {
+      const tx = await events.emitOne();
+      await expect(
+        expect(tx)
+          .to.emit(events, 'Two')
+          .to.emit(events, 'One')
+      ).to.be.eventually.rejected;
+    });
+
+    it('Both emitted and caught with args', async () => {
+      const tx = await events.emitBoth();
+      await expect(tx)
         .to.emit(events, 'One').withArgs(
           1,
           "One",
@@ -329,7 +354,7 @@ export const eventsTest = (provider: MockProvider) => {
         );
     });
   
-    it('One emitted, expecting one then two - fail', async () => {
+    it('One emitted, expecting one then two with args - fail', async () => {
       const tx = await events.emitOne();
       await expect(
         expect(tx)
@@ -345,7 +370,7 @@ export const eventsTest = (provider: MockProvider) => {
       ).to.be.eventually.rejected;
     });
 
-    it('One emitted, expecting two then one - fail', async () => {
+    it('One emitted, expecting two then one with args - fail', async () => {
       const tx = await events.emitOne();
       await expect(
         expect(tx)
@@ -353,11 +378,42 @@ export const eventsTest = (provider: MockProvider) => {
             2,
             "Two"
           )
-          .and
           .to.emit(events, 'One').withArgs(
             1,
             "One",
             "0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123"
+          )
+      ).to.be.eventually.rejected;
+    });
+
+    it('Wrong args, expecting one then two - fail', async () => {
+      const tx = await events.emitBoth();
+      await expect(
+        expect(tx)
+          .to.emit(events, 'One').withArgs(
+            1,
+            "One",
+            "0x0000000000000000000000000000000000000000000000000000000000000001"
+          )
+          .to.emit(events, 'Two').withArgs(
+            2,
+            "Two"
+          )
+      ).to.be.eventually.rejected;
+    });
+
+    it('Wrong args, expecting two then one - fail', async () => {
+      const tx = await events.emitBoth();
+      await expect(
+        expect(tx)
+          .to.emit(events, 'Two').withArgs(
+            2,
+            "Two"
+          )
+          .to.emit(events, 'One').withArgs(
+            1,
+            "One",
+            "0x0000000000000000000000000000000000000000000000000000000000000001"
           )
       ).to.be.eventually.rejected;
     });
