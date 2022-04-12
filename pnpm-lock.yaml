@@ -513,7 +513,7 @@ packages:
       meow: 6.1.1
       outdent: 0.5.0
       p-limit: 2.3.0
-      preferred-pm: 3.0.2
+      preferred-pm: 3.0.3
       resolve-from: 5.0.0
       semver: 5.7.1
       spawndamnit: 2.0.0
@@ -5154,8 +5154,8 @@ packages:
       find-up: 4.1.0
     dev: false
 
-  /preferred-pm/3.0.2:
-    resolution: {integrity: sha512-yGIxyBkK/OWOppgCXfOeOXOeNrddyK1DzqS6XpOokRZb2ogXTpHRhKDTO7d0pjF/2p2sV9pEkKL4e0tNZI1y2A==}
+  /preferred-pm/3.0.3:
+    resolution: {integrity: sha512-+wZgbxNES/KlJs9q40F/1sfOd/j7f1O9JaHcW5Dsn3aUUOZg3L2bjpVUcKV2jvtElYfoTuQiNeMfQJ4kwUAhCQ==}
     engines: {node: '>=10'}
     dependencies:
       find-up: 5.0.0
