@@ -9,8 +9,13 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     const tx = this._obj;
     const isNegated = this.__flags.negate === true;
-    const derivedPromise = waitForPendingTransaction(tx, contract.provider)
-      .then((receipt: providers.TransactionReceipt) => {
+    if (!('promise' in this)) {
+      this.promise = waitForPendingTransaction(tx, contract.provider)
+        .then((receipt) => { this.receipt = receipt; });
+    }
+    this.promise = this.promise
+      .then(() => {
+        const receipt: providers.TransactionReceipt = this.receipt;
         let eventFragment: utils.EventFragment | undefined;
         try {
           eventFragment = contract.interface.getEvent(eventName);
@@ -47,8 +52,6 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         );
         this.__flags.negate = isCurrentlyNegated;
       });
-    this.promises = ('promises' in this) ? [derivedPromise, ...this.promises] : [derivedPromise];
-    this.promise = Promise.all(this.promises);
     this.then = this.promise.then.bind(this.promise);
     this.catch = this.promise.catch.bind(this.promise);
     this.contract = contract;
@@ -100,14 +103,12 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
-    const derivedPromise = this.promise.then(() => {
-      tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
-    });
-    if (!('promises' in this)) {
+    if (!('promise' in this)) {
       throw new Error('withArgs() must be used after emit()');
     }
-    this.promises = [derivedPromise, ...this.promises];
-    this.promise = Promise.all(this.promises);
+    this.promise = this.promise.then(() => {
+      tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
+    });
     this.then = this.promise.then.bind(this.promise);
     this.catch = this.promise.catch.bind(this.promise);
     return this;
