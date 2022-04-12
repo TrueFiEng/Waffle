@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-
 jobs:
   release:
     name: Release
@@ -33,16 +32,8 @@ jobs:
           git config user.name truefi-bot
           git config user.email truefi-bot@trusttoken.com
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm run release
-          version: pnpm run version
-          commit: "🎉 Release new version"
-          title: "🎉 Release new version"
-          setupGitUser: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: release
+        run: |
+          pnpm run release
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
