@@ -35,8 +35,8 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
 
         const topic = contract.interface.getEventTopic(eventFragment);
         this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
-        // As this callback will be resolved after the chain of matchers is finished, we need to 
-        // know if the matcher has been negated or not. To simulate chai behaviour, we keep track of whether 
+        // As this callback will be resolved after the chain of matchers is finished, we need to
+        // know if the matcher has been negated or not. To simulate chai behaviour, we keep track of whether
         // the matcher has been negated or not and set the internal chai flag __flags.negate to the same value.
         // After the assertion is finished, we set the flag back to original value to not affect other assertions.
         const isCurrentlyNegated = this.__flags.negate === true;
@@ -106,7 +106,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     if (!('promises' in this)) {
       throw new Error('withArgs() must be used after emit()');
     }
-    this.promises = [derivedPromise, ...this.promises]
+    this.promises = [derivedPromise, ...this.promises];
     this.promise = Promise.all(this.promises);
     this.then = this.promise.then.bind(this.promise);
     this.catch = this.promise.catch.bind(this.promise);
