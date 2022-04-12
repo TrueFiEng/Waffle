@@ -57,6 +57,16 @@ Testing with indexed bytes or string parameters. These two examples are equivale
     .to.emit(contract, 'AddAddress')
     .withArgs(hashedStreet, hashedCity);
 
+If you are using Waffle version :code:`3.4.4` or lower, you can't chain :code:`emit` matchers like in example below.
+
+.. code-block:: ts
+
+  await expect(tx)
+    .to.emit(contract, 'One')
+    .to.emit(contract, 'Two');
+
+This feature will be available in Waffle version 4.
+
 Called on contract
 ------------------
 

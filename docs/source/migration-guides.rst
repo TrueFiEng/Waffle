@@ -435,3 +435,22 @@ In the new Ganache, you should not override the wallet config, otherwise you mig
       }
     }
   })
+
+Chaining :code:`emit` matchers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now when testing events on a smart contract you can conveniently chain :code:`emit` matchers.
+
+.. code-block:: ts
+  
+  const tx = await contract.emitEventsOneAndTwo();
+  await expect(tx)
+        .to.emit(contract, 'One').withArgs(
+          1,
+          'One'
+        )
+        .to.emit(contract, 'Two').withArgs(
+          2,
+          'Two'
+        )
+        .to.not.emit(contract, 'Three');
