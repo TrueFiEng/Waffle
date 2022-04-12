@@ -321,7 +321,9 @@ export const eventsTest = (provider: MockProvider) => {
         expect(tx)
           .to.emit(events, 'One')
           .to.emit(events, 'Two')
-      ).to.be.eventually.rejected;
+      ).to.be.eventually.rejectedWith(
+        'Expected event "Two" to be emitted, but it wasn\'t'
+      );
     });
 
     it('One emitted, expecting two then one - fail', async () => {
@@ -330,7 +332,9 @@ export const eventsTest = (provider: MockProvider) => {
         expect(tx)
           .to.emit(events, 'Two')
           .to.emit(events, 'One')
-      ).to.be.eventually.rejected;
+      ).to.be.eventually.rejectedWith(
+        'Expected event "Two" to be emitted, but it wasn\'t'
+      );
     });
 
     it('Both emitted and caught with args', async () => {
@@ -360,7 +364,9 @@ export const eventsTest = (provider: MockProvider) => {
             2,
             'Two'
           )
-      ).to.be.eventually.rejected;
+      ).to.be.eventually.rejectedWith(
+        'Expected event "Two" to be emitted, but it wasn\'t'
+      );
     });
 
     it('One emitted, expecting two then one with args - fail', async () => {
@@ -376,7 +382,9 @@ export const eventsTest = (provider: MockProvider) => {
             'One',
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
           )
-      ).to.be.eventually.rejected;
+      ).to.be.eventually.rejectedWith(
+        'Expected event "Two" to be emitted, but it wasn\'t'
+      );
     });
 
     it('Wrong args, expecting one then two - fail', async () => {
@@ -392,7 +400,10 @@ export const eventsTest = (provider: MockProvider) => {
             2,
             'Two'
           )
-      ).to.be.eventually.rejected;
+      ).to.be.eventually.rejectedWith(
+        'expected \'0x0000000000000000000000000000000000000000000000000000000000000001\'' +
+        ' to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\''
+      );
     });
 
     it('Wrong args, expecting two then one - fail', async () => {
@@ -408,7 +419,10 @@ export const eventsTest = (provider: MockProvider) => {
             'One',
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
           )
-      ).to.be.eventually.rejected;
+      ).to.be.eventually.rejectedWith(
+        'expected \'0x0000000000000000000000000000000000000000000000000000000000000001\'' +
+        ' to equal \'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\''
+      );
     });
 
     it('Event emitted in one contract but not in the other', async () => {
