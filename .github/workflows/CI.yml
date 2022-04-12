@@ -28,12 +28,9 @@ jobs:
         run: sudo cp ./.github/workflows/solc /bin
       - run: pnpm run build
       - run: pnpm run test:others
-    env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   docs-and-linter:
     runs-on: ubuntu-latest
     env:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       working-directory: ./docs
     steps:
       - uses: actions/checkout@v2
