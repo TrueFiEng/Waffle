@@ -33,6 +33,7 @@ jobs:
   docs-and-linter:
     runs-on: ubuntu-latest
     env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       working-directory: ./docs
     steps:
       - uses: actions/checkout@v2
