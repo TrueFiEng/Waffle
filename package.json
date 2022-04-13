@@ -14,7 +14,7 @@
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
     "test": "wsrun -e -s -c test",
-    "release": "pnpm run build && pnpm publish -r"
+    "release": "pnpm run build && pnpm publish -r --no-git-checks"
   },
   "devDependencies": {
     "@types/chai": "^4.2.14",
