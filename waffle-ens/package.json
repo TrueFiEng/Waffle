@@ -41,9 +41,13 @@
   "dependencies": {
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4",
-    "ethers": "5.6.2"
+    "ethers": "5.6.3"
   },
   "devDependencies": {
-    "ganache": "^7.0.3"
+    "ganache": "^7.0.3",
+    "mocha": "^8.2.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.2",
+    "eslint": "^7.14.0"
   }
 }
