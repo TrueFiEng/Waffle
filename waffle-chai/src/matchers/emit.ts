@@ -8,18 +8,21 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     const tx = this._obj;
-    const derivedPromise = waitForPendingTransaction(tx, contract.provider)
-      .then((receipt: providers.TransactionReceipt) => {
+    const isNegated = this.__flags.negate === true;
+    if (!('promise' in this)) {
+      this.promise = waitForPendingTransaction(tx, contract.provider)
+        .then((receipt) => { this.receipt = receipt; });
+    }
+    this.promise = this.promise
+      .then(() => {
+        const receipt: providers.TransactionReceipt = this.receipt;
         let eventFragment: utils.EventFragment | undefined;
         try {
           eventFragment = contract.interface.getEvent(eventName);
         } catch (e) {
         // ignore error
         }
-
         if (eventFragment === undefined) {
-          const isNegated = this.__flags.negate === true;
-
           this.assert(
             isNegated,
             `Expected event "${eventName}" to be emitted, but it doesn't` +
@@ -37,14 +40,20 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
 
         const topic = contract.interface.getEventTopic(eventFragment);
         this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
+        // As this callback will be resolved after the chain of matchers is finished, we need to
+        // know if the matcher has been negated or not. To simulate chai behaviour, we keep track of whether
+        // the matcher has been negated or not and set the internal chai flag __flags.negate to the same value.
+        // After the assertion is finished, we set the flag back to original value to not affect other assertions.
+        const isCurrentlyNegated = this.__flags.negate === true;
+        this.__flags.negate = isNegated;
         this.assert(this.logs.length > 0,
           `Expected event "${eventName}" to be emitted, but it wasn't`,
           `Expected event "${eventName}" NOT to be emitted, but it was`
         );
+        this.__flags.negate = isCurrentlyNegated;
       });
-    this.then = derivedPromise.then.bind(derivedPromise);
-    this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.promise = derivedPromise;
+    this.then = this.promise.then.bind(this.promise);
+    this.catch = this.promise.catch.bind(this.promise);
     this.contract = contract;
     this.eventName = eventName;
     return this;
@@ -94,11 +103,14 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
-    const derivedPromise = this.promise.then(() => {
+    if (!('promise' in this)) {
+      throw new Error('withArgs() must be used after emit()');
+    }
+    this.promise = this.promise.then(() => {
       tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
     });
-    this.then = derivedPromise.then.bind(derivedPromise);
-    this.catch = derivedPromise.catch.bind(derivedPromise);
+    this.then = this.promise.then.bind(this.promise);
+    this.catch = this.promise.catch.bind(this.promise);
     return this;
   });
 }
