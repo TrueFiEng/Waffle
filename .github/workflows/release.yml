@@ -35,9 +35,7 @@ jobs:
 
       - name: release
         run: |
-          echo "registry=https://registry.npmjs.org/
-          always-auth=false
-          //registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           pnpm run release
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
