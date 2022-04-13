@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - yivlad/changeset-chores
 
 jobs:
   release:
