@@ -11,6 +11,10 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      - name: Set git user
+        run: |
+          git config user.name truefi-bot
+          git config user.email truefi-bot@trusttoken.com
       - uses: google-github-actions/release-please-action@v3
         with:
           release-type: node
