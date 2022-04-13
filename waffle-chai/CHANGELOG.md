@@ -1,5 +1,13 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.20
+
+### Patch Changes
+
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Updated dependencies [be6fd8e]
+  - @ethereum-waffle/provider@4.0.0-alpha.20
+
 ## 4.0.0
 
 ### Patch Changes

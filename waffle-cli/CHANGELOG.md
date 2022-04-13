@@ -1,5 +1,16 @@
 # ethereum-waffle
 
+## 4.0.0-alpha.20
+
+### Patch Changes
+
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Updated dependencies [be6fd8e]
+  - @ethereum-waffle/chai@4.0.0-alpha.20
+  - @ethereum-waffle/compiler@4.0.0-alpha.20
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.20
+  - @ethereum-waffle/provider@4.0.0-alpha.20
+
 ## 4.0.0
 
 ### Patch Changes
