@@ -9,7 +9,7 @@ importers:
 
   .:
     specifiers:
-      '@changesets/cli': ^2.22.0
+      '@changesets/cli': 2.21.1
       '@types/chai': ^4.2.14
       '@types/chai-as-promised': ^7.1.3
       '@types/chai-string': ^1.4.2
@@ -32,7 +32,7 @@ importers:
       typescript: ^4.6.2
       wsrun: ^5.2.0
     dependencies:
-      '@changesets/cli': 2.22.0
+      '@changesets/cli': 2.21.1
     devDependencies:
       '@types/chai': 4.2.14
       '@types/chai-as-promised': 7.1.3
@@ -448,14 +448,14 @@ packages:
       regenerator-runtime: 0.13.7
     dev: false
 
-  /@changesets/apply-release-plan/6.0.0:
-    resolution: {integrity: sha512-gp6nIdVdfYdwKww2+f8whckKmvfE4JEm4jJgBhTmooi0uzHWhnxvk6JIzQi89qEAMINN0SeVNnXiAtbFY0Mj3w==}
+  /@changesets/apply-release-plan/5.0.5:
+    resolution: {integrity: sha512-CxL9dkhzjHiVmXCyHgsLCQj7i/coFTMv/Yy0v6BC5cIWZkQml+lf7zvQqAcFXwY7b54HxRWZPku02XFB53Q0Uw==}
     dependencies:
       '@babel/runtime': 7.12.5
-      '@changesets/config': 2.0.0
+      '@changesets/config': 1.7.0
       '@changesets/get-version-range-type': 0.3.2
       '@changesets/git': 1.3.2
-      '@changesets/types': 5.0.0
+      '@changesets/types': 4.1.0
       '@manypkg/get-packages': 1.1.3
       detect-indent: 6.0.0
       fs-extra: 7.0.1
@@ -483,15 +483,15 @@ packages:
       '@changesets/types': 5.0.0
     dev: false
 
-  /@changesets/cli/2.22.0:
-    resolution: {integrity: sha512-4bA3YoBkd5cm5WUxmrR2N9WYE7EeQcM+R3bVYMUj2NvffkQVpU3ckAI+z8UICoojq+HRl2OEwtz+S5UBmYY4zw==}
+  /@changesets/cli/2.21.1:
+    resolution: {integrity: sha512-4AJKo/UW0P217m2VHjiuhZy+CstLw54eu9I1fsY7tst76GeEN7mX0mVrTNEisR6CvOH7wLav3ITqvDcKVPbKsw==}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.12.5
-      '@changesets/apply-release-plan': 6.0.0
+      '@changesets/apply-release-plan': 5.0.5
       '@changesets/assemble-release-plan': 5.1.2
       '@changesets/changelog-git': 0.1.11
-      '@changesets/config': 2.0.0
+      '@changesets/config': 1.7.0
       '@changesets/errors': 0.1.4
       '@changesets/get-dependents-graph': 1.3.2
       '@changesets/get-release-plan': 3.0.8
@@ -499,7 +499,7 @@ packages:
       '@changesets/logger': 0.0.5
       '@changesets/pre': 1.0.11
       '@changesets/read': 0.5.5
-      '@changesets/types': 5.0.0
+      '@changesets/types': 4.1.0
       '@changesets/write': 0.1.8
       '@manypkg/get-packages': 1.1.3
       '@types/is-ci': 3.0.0
@@ -514,11 +514,22 @@ packages:
       outdent: 0.5.0
       p-limit: 2.3.0
       preferred-pm: 3.0.3
-      resolve-from: 5.0.0
       semver: 5.7.1
       spawndamnit: 2.0.0
       term-size: 2.2.1
       tty-table: 2.8.13
+    dev: false
+
+  /@changesets/config/1.7.0:
+    resolution: {integrity: sha512-Ctk6ZO5Ay6oZ95bbKXyA2a1QG0jQUePaGCY6BKkZtUG4PgysesfmiQOPgOY5OsRMt8exJeo6l+DJ75YiKmh0rQ==}
+    dependencies:
+      '@changesets/errors': 0.1.4
+      '@changesets/get-dependents-graph': 1.3.2
+      '@changesets/logger': 0.0.5
+      '@changesets/types': 4.1.0
+      '@manypkg/get-packages': 1.1.3
+      fs-extra: 7.0.1
+      micromatch: 4.0.4
     dev: false
 
   /@changesets/config/2.0.0:
