@@ -11,20 +11,8 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3.0.0
-        with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
-          fetch-depth: 0
-          # This allows the changesets/action step to override the default actions user,
-          # and allow CI jobs on commits coming from that step.
-          # https://github.com/changesets/action/issues/70
-          persist-credentials: false
-      - name: Set git user
-        run: |
-          git config user.name truefi-bot
-          git config user.email truefi-bot@trusttoken.com
       - uses: google-github-actions/release-please-action@v3
         with:
+          token: ${{ secrets.GH_BOT_TOKEN }}
           release-type: node
           package-name: waffle-monorepo
