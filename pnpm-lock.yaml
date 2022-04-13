@@ -52,7 +52,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -63,7 +63,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -76,7 +76,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -87,7 +87,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -99,7 +99,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -109,7 +109,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -121,7 +121,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -131,7 +131,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -144,7 +144,7 @@ importers:
       chai: ^4.2.0
       chai-as-promised: ^7.1.1
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -155,7 +155,7 @@ importers:
       chai: 4.2.0
       chai-as-promised: 7.1.1_chai@4.2.0
       eslint: 7.18.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -167,7 +167,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -177,7 +177,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -190,7 +190,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^7.1.2
       solc: ^0.8.13
       ts-node: ^8.9.1
@@ -203,7 +203,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 7.2.0
       solc: 0.8.13
       ts-node: 8.10.2_typescript@4.6.2
@@ -216,14 +216,14 @@ importers:
       '@types/debug': ^4.1.7
       debug: ^4.3.4
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^8.2.1
       rimraf: ^3.0.2
       typescript: ^4.6.2
     dependencies:
       '@ethereum-waffle/provider': link:../waffle-provider
       debug: 4.3.4
-      ethers: 5.6.3
+      ethers: 5.6.2
     devDependencies:
       '@types/debug': 4.1.7
       eslint: 7.18.0
@@ -238,7 +238,7 @@ importers:
       '@ethereum-waffle/mock-contract': workspace:*
       '@ethereum-waffle/provider': workspace:*
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^8.2.1
       openzeppelin-solidity: 2.3.0
       rimraf: ^3.0.2
@@ -250,7 +250,7 @@ importers:
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/mock-contract': link:../waffle-mock-contract
       '@ethereum-waffle/provider': link:../waffle-provider
-      ethers: 5.6.3
+      ethers: 5.6.2
       solc: 0.6.12
       typechain: 8.0.0_typescript@4.6.2
     devDependencies:
@@ -275,7 +275,7 @@ importers:
       '@types/mkdirp': ^0.5.2
       '@types/node-fetch': ^2.6.1
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       fs-extra: ^9.0.1
       mkdirp: ^0.5.1
       mocha: ^8.2.1
@@ -291,7 +291,7 @@ importers:
       '@ethersproject/providers': 5.6.3
       '@resolver-engine/imports': 0.3.3
       '@resolver-engine/imports-fs': 0.3.3
-      '@typechain/ethers-v5': 10.0.0_4e0be363bff7b636090cdeec20124745
+      '@typechain/ethers-v5': 10.0.0_ae90965fb890af7864382c9a2f828b07
       '@types/mkdirp': 0.5.2
       '@types/node-fetch': 2.6.1
       mkdirp: 0.5.5
@@ -302,7 +302,7 @@ importers:
       '@openzeppelin/contracts': 3.0.1
       '@types/fs-extra': 9.0.11
       eslint: 7.18.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       fs-extra: 9.1.0
       mocha: 8.2.1
       openzeppelin-solidity: 2.3.0
@@ -317,7 +317,7 @@ importers:
       '@ethereum-waffle/compiler': workspace:*
       '@ethereum-waffle/provider': workspace:*
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^8.2.1
       solc: ^0.6.3
       ts-node: ^9.0.0
@@ -327,7 +327,7 @@ importers:
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       eslint: 7.18.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: 8.2.1
       solc: 0.6.12
       ts-node: 9.1.1
@@ -338,7 +338,7 @@ importers:
       '@ensdomains/ens': ^0.4.4
       '@ensdomains/resolver': ^0.2.4
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       ganache: ^7.0.3
       mocha: ^8.2.1
       rimraf: ^3.0.2
@@ -346,7 +346,7 @@ importers:
     dependencies:
       '@ensdomains/ens': 0.4.5
       '@ensdomains/resolver': 0.2.4
-      ethers: 5.6.3
+      ethers: 5.6.2
     devDependencies:
       eslint: 7.18.0
       ganache: 7.0.3
@@ -361,16 +361,16 @@ importers:
       '@nomiclabs/hardhat-waffle': ^2.0.3
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 5.6.3
+      ethers: 5.6.2
       hardhat: ^2.9.2
       mocha: ^8.2.1
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
-      '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.3+hardhat@2.9.3
-      '@nomiclabs/hardhat-waffle': 2.0.3_06852103ee9fe58b30095ce5e9fd0802
+      '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.2+hardhat@2.9.3
+      '@nomiclabs/hardhat-waffle': 2.0.3_d5b8f68bd9b45f451ef1ad3bbdda2a7e
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
-      ethers: 5.6.3
+      ethers: 5.6.2
       hardhat: 2.9.3
       mocha: 8.2.1
 
@@ -381,7 +381,7 @@ importers:
       '@ethereum-waffle/provider': workspace:*
       '@ethersproject/abi': ^5.6.1
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       mocha: ^8.2.1
       rimraf: ^3.0.2
       solc: ^0.6.3
@@ -390,7 +390,7 @@ importers:
       typescript: ^4.6.2
     dependencies:
       '@ethersproject/abi': 5.6.1
-      ethers: 5.6.3
+      ethers: 5.6.2
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/compiler': link:../waffle-compiler
@@ -410,7 +410,7 @@ importers:
       '@types/debug': ^4.1.7
       debug: ^4.3.4
       eslint: ^7.14.0
-      ethers: 5.6.3
+      ethers: 5.6.2
       ganache: 7.0.3
       mocha: ^8.2.1
       rimraf: ^3.0.2
@@ -419,7 +419,7 @@ importers:
       '@ethereum-waffle/ens': link:../waffle-ens
       '@ganache/ethereum-options': 0.1.4
       debug: 4.3.4
-      ethers: 5.6.3
+      ethers: 5.6.2
       ganache: 7.0.3
     devDependencies:
       '@types/debug': 4.1.7
@@ -757,7 +757,6 @@ packages:
       '@ethersproject/logger': 5.6.0
       '@ethersproject/properties': 5.6.0
       '@ethersproject/strings': 5.6.0
-    dev: true
 
   /@ethersproject/abi/5.6.1:
     resolution: {integrity: sha512-0cqssYh6FXjlwKWBmLm3+zH2BNARoS5u/hxbz+LpQmcDB3w0W553h2btWui1/uZp2GBM/SI3KniTuMcYyHpA5w==}
@@ -897,6 +896,11 @@ packages:
   /@ethersproject/logger/5.6.0:
     resolution: {integrity: sha512-BiBWllUROH9w+P21RzoxJKzqoqpkyM1pRnEKG69bulE9TSQD8SAIvTQqIMZmmCO8pUNkgLP1wndX1gKghSpBmg==}
 
+  /@ethersproject/networks/5.6.1:
+    resolution: {integrity: sha512-b2rrupf3kCTcc3jr9xOWBuHylSFtbpJf79Ga7QR98ienU2UqGimPGEsYMgbI29KHJfA5Us89XwGVmxrlxmSrMg==}
+    dependencies:
+      '@ethersproject/logger': 5.6.0
+
   /@ethersproject/networks/5.6.2:
     resolution: {integrity: sha512-9uEzaJY7j5wpYGTojGp8U89mSsgQLc40PCMJLMCnFXTs7nhBveZ0t7dbqWUNrepWTszDbFkYD6WlL8DKx5huHA==}
     dependencies:
@@ -912,6 +916,32 @@ packages:
     resolution: {integrity: sha512-szoOkHskajKePTJSZ46uHUWWkbv7TzP2ypdEK6jGMqJaEt2sb0jCgfBo0gH0m2HBpRixMuJ6TBRaQCF7a9DoCg==}
     dependencies:
       '@ethersproject/logger': 5.6.0
+
+  /@ethersproject/providers/5.6.2:
+    resolution: {integrity: sha512-6/EaFW/hNWz+224FXwl8+HdMRzVHt8DpPmu5MZaIQqx/K/ELnC9eY236SMV7mleCM3NnEArFwcAAxH5kUUgaRg==}
+    dependencies:
+      '@ethersproject/abstract-provider': 5.6.0
+      '@ethersproject/abstract-signer': 5.6.0
+      '@ethersproject/address': 5.6.0
+      '@ethersproject/basex': 5.6.0
+      '@ethersproject/bignumber': 5.6.0
+      '@ethersproject/bytes': 5.6.1
+      '@ethersproject/constants': 5.6.0
+      '@ethersproject/hash': 5.6.0
+      '@ethersproject/logger': 5.6.0
+      '@ethersproject/networks': 5.6.2
+      '@ethersproject/properties': 5.6.0
+      '@ethersproject/random': 5.6.0
+      '@ethersproject/rlp': 5.6.0
+      '@ethersproject/sha2': 5.6.0
+      '@ethersproject/strings': 5.6.0
+      '@ethersproject/transactions': 5.6.0
+      '@ethersproject/web': 5.6.0
+      bech32: 1.1.4
+      ws: 7.4.6
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
 
   /@ethersproject/providers/5.6.3:
     resolution: {integrity: sha512-PKTEZXjdAhGK/+hUwRLQqlGrwTRrK4D0FHEP2V9klUF8C6+AWfHkA3AoLI+a8oq5CUZoRAH0nMecYGkKxUjeSw==}
@@ -938,6 +968,7 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+    dev: false
 
   /@ethersproject/random/5.6.0:
     resolution: {integrity: sha512-si0PLcLjq+NG/XHSZz90asNf+YfKEqJGVdxoEkSukzbnBgC8rydbgbUgBbBGLeHN4kAJwUFEKsu3sCXT93YMsw==}
@@ -1151,17 +1182,17 @@ packages:
       '@nodelib/fs.scandir': 2.1.4
       fastq: 1.10.0
 
-  /@nomiclabs/hardhat-ethers/2.0.5_ethers@5.6.3+hardhat@2.9.3:
+  /@nomiclabs/hardhat-ethers/2.0.5_ethers@5.6.2+hardhat@2.9.3:
     resolution: {integrity: sha512-A2gZAGB6kUvLx+kzM92HKuUF33F1FSe90L0TmkXkT2Hh0OKRpvWZURUSU2nghD2yC4DzfEZ3DftfeHGvZ2JTUw==}
     peerDependencies:
       ethers: ^5.0.0
       hardhat: ^2.0.0
     dependencies:
-      ethers: 5.6.3
+      ethers: 5.6.2
       hardhat: 2.9.3
     dev: true
 
-  /@nomiclabs/hardhat-waffle/2.0.3_06852103ee9fe58b30095ce5e9fd0802:
+  /@nomiclabs/hardhat-waffle/2.0.3_d5b8f68bd9b45f451ef1ad3bbdda2a7e:
     resolution: {integrity: sha512-049PHSnI1CZq6+XTbrMbMv5NaL7cednTfPenx02k3cEh8wBMLa6ys++dBETJa6JjfwgA9nBhhHQ173LJv6k2Pg==}
     peerDependencies:
       '@nomiclabs/hardhat-ethers': ^2.0.0
@@ -1169,10 +1200,10 @@ packages:
       ethers: ^5.0.0
       hardhat: ^2.0.0
     dependencies:
-      '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.3+hardhat@2.9.3
+      '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.2+hardhat@2.9.3
       '@types/sinon-chai': 3.2.5
       '@types/web3': 1.0.19
-      ethers: 5.6.3
+      ethers: 5.6.2
       hardhat: 2.9.3
     dev: true
 
@@ -1324,7 +1355,7 @@ packages:
     dependencies:
       node-gyp-build: 4.3.0
 
-  /@typechain/ethers-v5/10.0.0_4e0be363bff7b636090cdeec20124745:
+  /@typechain/ethers-v5/10.0.0_ae90965fb890af7864382c9a2f828b07:
     resolution: {integrity: sha512-Kot7fwAqnH96ZbI8xrRgj5Kpv9yCEdjo7mxRqrH7bYpEgijT5MmuOo8IVsdhOu7Uog4ONg7k/d5UdbAtTKUgsA==}
     peerDependencies:
       '@ethersproject/abi': ^5.0.0
@@ -1337,7 +1368,7 @@ packages:
       '@ethersproject/abi': 5.6.1
       '@ethersproject/bytes': 5.6.1
       '@ethersproject/providers': 5.6.3
-      ethers: 5.6.3
+      ethers: 5.6.2
       lodash: 4.17.21
       ts-essentials: 7.0.3_typescript@4.6.2
       typechain: 8.0.0_typescript@4.6.2
@@ -2910,10 +2941,10 @@ packages:
       ethereum-cryptography: 0.1.3
       rlp: 2.2.7
 
-  /ethers/5.6.3:
-    resolution: {integrity: sha512-TkZAYGtbnzsGzEzqonLEMpOkmD5JIKCoWlAlj9ShAJlJszEkgKh3jVSeX1edLkYmqnpvJvGlBDK2y/HVe84LNg==}
+  /ethers/5.6.2:
+    resolution: {integrity: sha512-EzGCbns24/Yluu7+ToWnMca3SXJ1Jk1BvWB7CCmVNxyOeM4LLvw2OLuIHhlkhQk1dtOcj9UMsdkxUh8RiG1dxQ==}
     dependencies:
-      '@ethersproject/abi': 5.6.1
+      '@ethersproject/abi': 5.6.0
       '@ethersproject/abstract-provider': 5.6.0
       '@ethersproject/abstract-signer': 5.6.0
       '@ethersproject/address': 5.6.0
@@ -2928,10 +2959,10 @@ packages:
       '@ethersproject/json-wallets': 5.6.0
       '@ethersproject/keccak256': 5.6.0
       '@ethersproject/logger': 5.6.0
-      '@ethersproject/networks': 5.6.2
+      '@ethersproject/networks': 5.6.1
       '@ethersproject/pbkdf2': 5.6.0
       '@ethersproject/properties': 5.6.0
-      '@ethersproject/providers': 5.6.3
+      '@ethersproject/providers': 5.6.2
       '@ethersproject/random': 5.6.0
       '@ethersproject/rlp': 5.6.0
       '@ethersproject/sha2': 5.6.0

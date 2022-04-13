@@ -15,7 +15,7 @@ export const decodeRevertString = (callRevertError: any): string => {
    * Numeric.toHexString(Hash.sha3("Error(string)".getBytes())).substring(0, 10)
    */
   const errorMethodId = '0x08c379a0';
-  const errorString: string | undefined = callRevertError.error.data;
+  const errorString: string | undefined = callRevertError?.error?.data;
 
   if (!errorString?.startsWith(errorMethodId)) return '';
   return toUtf8String('0x' + errorString.substring(138))
