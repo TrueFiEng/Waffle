@@ -4,6 +4,15 @@
 
 ### Patch Changes
 
+- Updated dependencies [4ed0cc5]
+  - @ethereum-waffle/chai@4.0.0
+  - @ethereum-waffle/compiler@4.0.0-alpha.19
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.19
+
+## 4.0.0
+
+### Patch Changes
+
 - Updated dependencies [ede638e]
   - @ethereum-waffle/provider@4.0.0
   - @ethereum-waffle/chai@4.0.0

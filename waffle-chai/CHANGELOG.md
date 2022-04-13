@@ -4,6 +4,12 @@
 
 ### Patch Changes
 
+- 4ed0cc5: Allow to chain emit matchers
+
+## 4.0.0
+
+### Patch Changes
+
 - Updated dependencies [ede638e]
   - @ethereum-waffle/provider@4.0.0
 
