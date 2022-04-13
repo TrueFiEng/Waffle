@@ -13,6 +13,7 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v3
         with:
+          pre-release: alpha
           token: ${{ secrets.GH_BOT_TOKEN }}
           release-type: node
           package-name: waffle-monorepo
