@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-node@v3.0.0
         with:
           node-version: 16.x
-      - run: npm i -g pnpm@6.20.3
+      - run: npm i -g pnpm@6.32.6
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
 
@@ -35,7 +35,7 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1.2.2
+        uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
           publish: pnpm run release

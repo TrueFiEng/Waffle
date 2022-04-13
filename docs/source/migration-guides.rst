@@ -383,3 +383,74 @@ For example:
     await provider.send('evm_mine', [timestamp])
   }
 
+Tests relying on setting gasPrice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since `London hardfork <https://eips.ethereum.org/EIPS/eip-1559>`_, :code:`baseFeePerGas` is replacing :code:`gasPrice`.
+If your tests are relying on setting :code:`gasPrice` with :code:`changeBalance` matcher, you will have to update them.
+
+**Before**
+
+.. code-block:: javascript
+
+  await expect(() =>
+    sender.sendTransaction({
+      to: receiver.address,
+      gasPrice: 0,
+      value: 200
+    })
+  ).to.changeBalance(sender, -200);
+
+**After**
+
+.. code-block:: javascript
+
+  const TX_GAS = 21000;
+  const BASE_FEE_PER_GAS = 875000000
+  const gasFees = BASE_FEE_PER_GAS * TX_GAS;
+  await expect(() =>
+    sender.sendTransaction({
+      to: receiver.address,
+      gasPrice: BASE_FEE_PER_GAS,
+      value: 200
+    })
+  ).to.changeBalance(sender, -(gasFees + 200));
+
+Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache`.
+Instead of (deprecated) matcher :code:`changeBalance`, new matcher :code:`changeEtherBalance` can be used instead - which handles transaction fee calculation automatically.
+
+Custom wallet mnemonic
+~~~~~~~~~~~~~~~~~~~~~~
+
+Ganache has a build-in set of Wallets with positive Ether balance.
+In the new Ganache, you should not override the wallet config, otherwise you might end up with Wallets with no Ether balance.
+
+.. code-block:: javascript
+
+  const provider = new MockProvider({
+    ganacheOptions: {
+      // Remove this, if exists:
+      wallet: {
+        mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn'
+      }
+    }
+  })
+
+Chaining :code:`emit` matchers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now when testing events on a smart contract you can conveniently chain :code:`emit` matchers.
+
+.. code-block:: ts
+  
+  const tx = await contract.emitEventsOneAndTwo();
+  await expect(tx)
+        .to.emit(contract, 'One').withArgs(
+          1,
+          'One'
+        )
+        .to.emit(contract, 'Two').withArgs(
+          2,
+          'Two'
+        )
+        .to.not.emit(contract, 'Three');

@@ -1,0 +1,24 @@
+{
+  "mode": "pre",
+  "tag": "alpha",
+  "initialVersions": {
+    "example-basic": "1.0.0",
+    "example-called-on-contract": "1.0.0",
+    "example-change-balance": "1.0.0",
+    "example-dynamic-mocking-and-testing-calls": "1.0.0",
+    "example-ens": "1.0.0",
+    "example-mock-contract": "1.0.0",
+    "example-typechain": "1.0.0",
+    "@ethereum-waffle/chai": "4.0.0-alpha.19",
+    "ethereum-waffle": "4.0.0-alpha.19",
+    "@ethereum-waffle/compiler": "4.0.0-alpha.19",
+    "@ethereum-waffle/e2e": "4.0.0-alpha.19",
+    "@ethereum-waffle/ens": "4.0.0-alpha.19",
+    "@ethereum-waffle/hardhat": "4.0.0-alpha.19",
+    "@ethereum-waffle/mock-contract": "4.0.0-alpha.19",
+    "@ethereum-waffle/provider": "4.0.0-alpha.19"
+  },
+  "changesets": [
+    "tricky-spiders-invite"
+  ]
+}

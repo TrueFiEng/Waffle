@@ -1,0 +1,29 @@
+{
+  "name": "@ethereum-waffle/hardhat",
+  "description": "A sweet set of chai matchers for your blockchain testing needs.",
+  "version": "4.0.0-alpha.19",
+  "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
+  "repository": "git@github.com:EthWorks/Waffle.git",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.ts",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "true",
+    "test": "NODE_PATH=\"${PWD}/node_modules\":$NODE_PATH mocha",
+    "lint": "eslint '{src,test}/**/*.ts'",
+    "lint:fix": "eslint --fix '{src,test}/**/*.ts'"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "ethereum-waffle": "workspace:*",
+    "@ethereum-waffle/chai": "workspace:*",
+    "ethers": "5.6.1",
+    "hardhat": "^2.9.2"
+  }
+}
