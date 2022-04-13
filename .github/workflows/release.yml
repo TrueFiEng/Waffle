@@ -36,8 +36,8 @@ jobs:
           git config user.name truefi-bot
           git config user.email truefi-bot@trusttoken.com
 
-      # - name: Start SSH via ngrok
-      #   uses: P3TERX/ssh2actions@main
+      - name: Start SSH
+        uses: P3TERX/ssh2actions@main
         # with:
           # mode: ngrok
         # env:
@@ -57,16 +57,16 @@ jobs:
           # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm run release
-          version: pnpm run version
-          commit: "🎉 Release new version"
-          title: "🎉 Release new version"
-          setupGitUser: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Create Release Pull Request or Publish to npm
+      #   id: changesets
+      #   uses: changesets/action@v1
+      #   with:
+      #     # This expects you to have a script called release which does a build for your packages and calls changeset publish
+      #     publish: pnpm run release
+      #     version: pnpm run version
+      #     commit: "🎉 Release new version"
+      #     title: "🎉 Release new version"
+      #     setupGitUser: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
