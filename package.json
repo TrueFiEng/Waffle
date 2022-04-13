@@ -6,10 +6,6 @@
   "engines": {
     "node": ">=10.0"
   },
-  "workspaces": [
-    "waffle-*",
-    "examples/*"
-  ],
   "scripts": {
     "lint": "wsrun -c lint",
     "build": "wsrun -te -c build",
