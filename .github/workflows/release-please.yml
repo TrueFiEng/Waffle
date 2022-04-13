@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - yivlad/intorduce-release-please
 
 jobs:
   release-please:
