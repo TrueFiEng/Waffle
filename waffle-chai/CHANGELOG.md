@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.20
+
+### Patch Changes
+
+- 77eb503: Test changelog
+
 ## 4.0.0
 
 ### Patch Changes

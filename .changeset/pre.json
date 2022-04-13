@@ -19,6 +19,7 @@
     "@ethereum-waffle/provider": "4.0.0-alpha.19"
   },
   "changesets": [
+    "few-eagles-lie",
     "tricky-spiders-invite"
   ]
 }
