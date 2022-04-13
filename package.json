@@ -7,10 +7,10 @@
     "node": ">=10.0"
   },
   "scripts": {
-    "lint": "wsrun -c lint",
-    "build": "wsrun -te -c build",
-    "test": "wsrun -e -s -c test",
-    "version": "pnpm changeset version && pnpm install",
+    "lint": "pnpm run -r lint",
+    "build": "pnpm run -r build",
+    "test": "pnpm run -r test",
+    "version": "pnpm changeset version",
     "release": "pnpm run build && pnpm changeset publish"
   },
   "devDependencies": {
@@ -33,8 +33,7 @@
     "sinon": "^9.2.1",
     "sinon-chai": "^3.5.0",
     "ts-node": "^9.0.0",
-    "typescript": "^4.6.2",
-    "wsrun": "^5.2.0"
+    "typescript": "^4.6.2"
   },
   "dependencies": {
     "@changesets/cli": "^2.22.0"
