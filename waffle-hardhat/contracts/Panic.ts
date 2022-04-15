@@ -1,0 +1,18 @@
+export const PANIC_SOURCE = `
+  pragma solidity ^0.6.0;
+
+  contract Calls {
+    uint[] private arr;
+
+    function panic() public {
+        uint a = arr[0];
+    }
+  }
+`;
+
+export const PANIC_ABI = [
+  'function panic() public'
+];
+
+// eslint-disable-next-line max-len
+export const PANIC_BYTECODE = '6080604052348015600f57600080fd5b5060848061001e6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c80634700d30514602d575b600080fd5b60336035565b005b600060019050600080818381604657fe5b04905050505056fea264697066735822122060d3043b4b3c0a0175d2cbf67644be79e06086806185e8154083f984dcd6037364736f6c634300060c0033';
