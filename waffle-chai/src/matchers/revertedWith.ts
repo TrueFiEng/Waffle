@@ -80,26 +80,18 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 const decodeHardhatError = (error: any) => {
   const tryDecode = (error: any) => {
     const errorString = String(error);
-    console.log(errorString);
     {
       const regexp = new RegExp('VM Exception while processing transaction: reverted with reason string \'(.*)\'');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
-          return matches[1];
-      }
-    }
-    {
-      const regexp = new RegExp('VM Exception while processing transaction: reverted with panic code ([a-zA-Z0-9]*)');
-      const matches = regexp.exec(errorString);
-      if (matches && matches.length >= 1) {
-          return 'panic code ' + matches[1];
+        return matches[1];
       }
     }
     {
       const regexp = new RegExp('Error: Transaction reverted: (.*)');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
-          return matches[1];
+        return matches[1];
       }
     }
     return undefined;
