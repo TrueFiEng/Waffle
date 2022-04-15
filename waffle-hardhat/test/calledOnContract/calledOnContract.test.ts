@@ -1,13 +1,13 @@
-import {waffle} from 'hardhat';
 import {MockProvider} from 'ethereum-waffle';
-// import {calledOnContractTest} from '@ethereum-waffle/chai/test';
+import {calledOnContractTest} from '@ethereum-waffle/chai/test';
+import { proxyProvider } from '../hardhatPatches';
 
 describe('INTEGRATION: calledOnContract', () => {
-  const provider = waffle.provider as MockProvider;
+  const provider = proxyProvider as MockProvider;
 
   before(async () => {
     await provider.send('hardhat_reset', []);
   });
 
-  // calledOnContractTest(provider);
+  calledOnContractTest(provider);
 });

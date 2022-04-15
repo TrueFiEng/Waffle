@@ -1,13 +1,13 @@
-import {waffle} from 'hardhat';
 import {MockProvider} from 'ethereum-waffle';
-// import {calledOnContractValidatorsTest} from '@ethereum-waffle/chai/test';
+import {calledOnContractValidatorsTest} from '@ethereum-waffle/chai/test';
+import { proxyProvider } from '../hardhatPatches';
 
 describe('INTEGRATION: ethCalledValidators', () => {
-  const provider = waffle.provider as MockProvider;
+  const provider = proxyProvider as MockProvider;
 
   before(async () => {
     await provider.send('hardhat_reset', []);
   });
 
-  // calledOnContractValidatorsTest(provider);
+  calledOnContractValidatorsTest(provider);
 });
