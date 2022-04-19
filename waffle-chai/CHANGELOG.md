@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.21
+
+### Patch Changes
+
+- aa18bfa: Improve hardhat error catching
+
 ## 4.0.0-alpha.20
 
 ### Patch Changes
