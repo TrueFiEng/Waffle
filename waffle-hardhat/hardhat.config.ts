@@ -12,11 +12,6 @@ module.exports = {
     artifacts: './build',
     cache: './cache',
   },
-  abiExporter: {
-    path: './build',
-    flat: true,
-    spacing: 2,
-  },
   solidity: {
     compilers: [
       {
