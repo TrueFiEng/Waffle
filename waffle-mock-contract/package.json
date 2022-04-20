@@ -37,7 +37,8 @@
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
     "test:build": "ts-node ./test/helpers/buildTestContracts.ts",
-    "clean": "rimraf ./dist ./test/example/build"
+    "clean": "rimraf ./dist ./test/example/build",
+    "version:dev": "../scripts/dev-version.sh"
   },
   "engines": {
     "node": ">=10.0"
