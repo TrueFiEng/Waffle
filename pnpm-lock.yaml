@@ -23,6 +23,7 @@ importers:
       chai-as-promised: ^7.1.1
       chai-string: ^1.5.0
       eslint-plugin-import: ^2.22.1
+      eslint-plugin-no-only-tests: ^2.6.0
       sinon: ^9.2.1
       sinon-chai: ^3.5.0
     dependencies:
@@ -41,6 +42,7 @@ importers:
       chai-as-promised: 7.1.1_chai@4.2.0
       chai-string: 1.5.0_chai@4.2.0
       eslint-plugin-import: 2.22.1
+      eslint-plugin-no-only-tests: 2.6.0
       sinon: 9.2.4
       sinon-chai: 3.5.0_chai@4.2.0+sinon@9.2.4
 
@@ -2735,6 +2737,11 @@ packages:
       read-pkg-up: 2.0.0
       resolve: 1.20.0
       tsconfig-paths: 3.9.0
+    dev: true
+
+  /eslint-plugin-no-only-tests/2.6.0:
+    resolution: {integrity: sha512-T9SmE/g6UV1uZo1oHAqOvL86XWl7Pl2EpRpnLI8g/bkJu+h7XBCB+1LnubRZ2CUQXj805vh4/CYZdnqtVaEo2Q==}
+    engines: {node: '>=4.0.0'}
     dev: true
 
   /eslint-scope/5.1.1:

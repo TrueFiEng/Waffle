@@ -8,6 +8,9 @@
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
+  "plugins": [
+    "no-only-tests"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
@@ -308,6 +311,7 @@
     "no-obj-calls": "error",
     "no-octal": "error",
     "no-octal-escape": "error",
+    "no-only-tests/no-only-tests": "error",
     "no-path-concat": "error",
     "no-proto": "error",
     "no-prototype-builtins": "error",
