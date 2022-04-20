@@ -1,3 +1,17 @@
 {
-  "extends": "../tsconfig.json"
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "../waffle-chai"
+    },
+    {
+      "path": "../waffle-compiler"
+    },
+    {
+      "path": "../waffle-mock-contract"
+    },
+    {
+      "path": "../waffle-provider"
+    }
+  ]
 }
