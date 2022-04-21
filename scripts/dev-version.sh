@@ -1,4 +1,4 @@
-#/bin/sh
+#!/usr/bin/env bash
 
 set -e
 DEV=$(jq -r ".version" package.json | awk -F "-" '{print $1}')-dev.$(git rev-parse --short HEAD)
