@@ -10,6 +10,10 @@
     "access": "public",
     "tag": "alpha"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "keywords": [
     "ethereum",
     "smart-contracts",
