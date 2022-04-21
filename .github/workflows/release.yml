@@ -50,6 +50,7 @@ jobs:
 
       - name: Publish dev version to npm
         run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
           pnpm -r --filter "@ethereum-waffle/*" exec ${PWD}/scripts/dev-version.sh
           pnpm -r --filter "ethereum-waffle" exec ${PWD}/scripts/dev-version.sh
           pnpm run build
