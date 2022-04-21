@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - yivlad/dev-version-on-merge-to-matser
 
 jobs:
   release:
@@ -53,4 +54,4 @@ jobs:
           pnpm -r --filter "@ethereum-waffle/*" exec ${PWD}/scripts/dev-version.sh
           pnpm -r --filter "ethereum-waffle" exec ${PWD}/scripts/dev-version.sh
           pnpm run build
-          pnpm -r publish --tag dev --no-git-checks
+          pnpm -r publish --tag dev --no-git-checks --publish-branch yivlad/dev-version-on-merge-to-matser
