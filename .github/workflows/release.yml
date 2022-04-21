@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - yivlad/dev-version-on-merge-to-matser
 
 jobs:
   release:
@@ -33,16 +34,23 @@ jobs:
           git config user.name truefi-bot
           git config user.email truefi-bot@trusttoken.com
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm run release
-          version: pnpm run version
-          commit: "🎉 Release new version"
-          title: "🎉 Release new version"
-          setupGitUser: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Create Release Pull Request or Publish to npm
+      #   id: changesets
+      #   uses: changesets/action@v1
+      #   with:
+      #     # This expects you to have a script called release which does a build for your packages and calls changeset publish
+      #     publish: pnpm run release
+      #     version: pnpm run version
+      #     commit: "🎉 Release new version"
+      #     title: "🎉 Release new version"
+      #     setupGitUser: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish dev version to npm
+        run: |
+          pnpm -r --filter "@ethereum-waffle/*" exec ${PWD}/scripts/dev-version.sh
+          pnpm -r --filter "ethereum-waffle" exec ${PWD}/scripts/dev-version.sh
+          pnpm run build
+          pnpm -r publish --tag dev --no-git-checks --publish-branch yivlad/dev-version-on-merge-to-matser
