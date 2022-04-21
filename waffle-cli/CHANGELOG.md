@@ -1,5 +1,16 @@
 # ethereum-waffle
 
+## 4.0.0-alpha.22
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- Updated dependencies [e8adce7]
+  - @ethereum-waffle/chai@4.0.0-alpha.22
+  - @ethereum-waffle/compiler@4.0.0-alpha.21
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.21
+  - @ethereum-waffle/provider@4.0.0-alpha.21
+
 ## 4.0.0-alpha.21
 
 ### Patch Changes
