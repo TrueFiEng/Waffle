@@ -21,6 +21,7 @@
   "changesets": [
     "add-src-to-npm",
     "fluffy-queens-cross",
+    "tame-walls-speak",
     "tricky-spiders-invite",
     "update-ethers"
   ]
