@@ -1,5 +1,15 @@
 # ethereum-waffle
 
+## 4.0.0-alpha.23
+
+### Patch Changes
+
+- Updated dependencies [671f139]
+  - @ethereum-waffle/provider@4.0.0-alpha.22
+  - @ethereum-waffle/chai@4.0.0-alpha.23
+  - @ethereum-waffle/compiler@4.0.0-alpha.21
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.21
+
 ## 4.0.0-alpha.22
 
 ### Patch Changes

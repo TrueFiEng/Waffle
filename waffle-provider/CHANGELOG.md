@@ -1,5 +1,11 @@
 # @ethereum-waffle/provider
 
+## 4.0.0-alpha.22
+
+### Patch Changes
+
+- 671f139: Include eth_sendTransaction when recording call history
+
 ## 4.0.0-alpha.21
 
 ### Patch Changes
