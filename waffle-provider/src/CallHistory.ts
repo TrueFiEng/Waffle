@@ -81,7 +81,7 @@ export class CallHistory {
            * - `eth_sendTransaction` - a transaction,
            * - `eth_estimateGas` - gas estimation, typically precedes `eth_sendRawTransaction`.
            */
-          if (method === 'eth_call' || 'eth_sendTransaction') { // Record a query or a transaction.
+          if (method === 'eth_call' || method === 'eth_sendTransaction') { // Record a query or a transaction.
             callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
           } else if (method === 'eth_sendRawTransaction') { // Record a raw transaction.
             const parsedTx = parseTransaction(args[0]?.params?.[0]);
