@@ -89,13 +89,42 @@ export const chainingMatchersTest = (provider: MockProvider) => {
     );
   });
 
-  // it.only('Balances chaining different calls', async () => {
-  //   await token.approve(complex.address, 100);
-  //   const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
-  //   await expect(tx)
-  //     .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
-  //     .and.to.changeEtherBalances([receiver], [200])
-  //     .and.to.emit(complex, 'TransferredEther').withArgs(200)
-  //     .and.to.emit(complex, 'TransferredTokens').withArgs(100);
-  // });
+  it('Balances chaining one call', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    await expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+      .and.to.emit(complex, 'TransferredEther').withArgs(200)
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100);
+  });
+
+  it('Balances chaining one call first fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    await expect(expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 101])
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+      .and.to.emit(complex, 'TransferredEther').withArgs(200)
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      `Expected ${sender.address},${receiver.address} ` +
+        'to change balance by -100,101 wei, but it has changed by -100,100 wei'
+    );
+  });
+
+  it('Balances chaining one call third fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    await expect(expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+      .and.to.emit(complex, 'TransferredEther').withArgs(199)
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected "200" to be equal 199'
+    );
+  });
 };
