@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
 
@@ -40,7 +41,7 @@ function getAddresses(accounts: Account[]) {
 async function getBalances(token: Contract, accounts: Account[], blockNumber: number) {
   return Promise.all(
     accounts.map(async (account) => {
-      return token['balanceOf(address)'](getAddressOf(account), { blockTag: blockNumber });
+      return token['balanceOf(address)'](getAddressOf(account), {blockTag: blockNumber});
     })
   );
 }

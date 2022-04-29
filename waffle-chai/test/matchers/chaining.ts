@@ -25,7 +25,7 @@ export const chainingMatchersTest = (provider: MockProvider) => {
 
   it('Balances chaining different calls', async () => {
     await token.approve(complex.address, 100);
-    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
     await expect(tx).to.changeTokenBalances(token, [sender, receiver], [-100, 100]);
     await expect(tx).to.changeEtherBalances([receiver], [200]);
     await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
@@ -34,7 +34,7 @@ export const chainingMatchersTest = (provider: MockProvider) => {
 
   it('Balance chaining different calls', async () => {
     await token.approve(complex.address, 100);
-    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
     await expect(tx).to.changeTokenBalance(token, sender, -100);
     await expect(tx).to.changeTokenBalance(token, receiver, 100);
     await expect(tx).to.changeEtherBalance(sender, -200);
@@ -52,4 +52,4 @@ export const chainingMatchersTest = (provider: MockProvider) => {
   //     .and.to.emit(complex, 'TransferredEther').withArgs(200)
   //     .and.to.emit(complex, 'TransferredTokens').withArgs(100);
   // });
-}
+};
