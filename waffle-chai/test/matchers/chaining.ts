@@ -23,12 +23,33 @@ export const chainingMatchersTest = (provider: MockProvider) => {
     complex = await complexFactory.deploy(token.address);
   });
 
-  it.only('Matchers chaining', async () => {
-    await token.approve(complex.address, 200);
+  it('Balances chaining different calls', async () => {
+    await token.approve(complex.address, 100);
     const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
-    // await expect(tx).to.changeEtherBalances([receiver], [200]);
-    // await expect(tx).to.changeTokenBalances(token, [sender, receiver], [100, -100]);
-    // await expect(tx).to.emit(complex, 'TransferredEther').withArgs([100]);
-    // await expect(tx).to.emit(complex, 'TransferredTokens').withArgs([200]);
+    await expect(tx).to.changeTokenBalances(token, [sender, receiver], [-100, 100]);
+    await expect(tx).to.changeEtherBalances([receiver], [200]);
+    await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+    await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+  });
+
+  it('Balance chaining different calls', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    await expect(tx).to.changeTokenBalance(token, sender, -100);
+    await expect(tx).to.changeTokenBalance(token, receiver, 100);
+    await expect(tx).to.changeEtherBalance(sender, -200);
+    await expect(tx).to.changeEtherBalance(receiver, 200);
+    await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+    await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+  });
+
+  it.only('Balances chaining different calls', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    await expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.changeEtherBalances([receiver], [200])
+      .and.to.emit(complex, 'TransferredEther').withArgs(200)
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100);
   });
 }

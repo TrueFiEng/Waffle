@@ -1,4 +1,4 @@
-import {BigNumber, BigNumberish, Contract} from 'ethers';
+import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
 
 export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
@@ -32,13 +32,22 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChange(
-  transactionCall: (() => Promise<void> | void),
+  transaction: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse) | providers.TransactionResponse,
   token: Contract,
   account: Account
 ) {
-  const balanceBefore: BigNumber = await token['balanceOf(address)'](await getAddressOf(account));
-  await transactionCall();
-  const balanceAfter: BigNumber = await token['balanceOf(address)'](await getAddressOf(account));
+  let txResponse: providers.TransactionResponse;
+
+  if (typeof transaction === 'function') {
+    txResponse = await transaction();
+  } else {
+    txResponse = transaction;
+  }
+  const txReceipt = await txResponse.wait();
+  const txBlockNumber = txReceipt.blockNumber;
+
+  const balanceBefore: BigNumber = await token['balanceOf(address)'](await getAddressOf(account), { blockTag: txBlockNumber - 1 });
+  const balanceAfter: BigNumber = await token['balanceOf(address)'](await getAddressOf(account), { blockTag: txBlockNumber });
 
   return balanceAfter.sub(balanceBefore);
 }

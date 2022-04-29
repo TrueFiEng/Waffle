@@ -1,4 +1,4 @@
-import {BigNumber, BigNumberish, Contract} from 'ethers';
+import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
 
 export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
@@ -37,22 +37,31 @@ function getAddresses(accounts: Account[]) {
   return Promise.all(accounts.map((account) => getAddressOf(account)));
 }
 
-async function getBalances(token: Contract, accounts: Account[]) {
+async function getBalances(token: Contract, accounts: Account[], blockNumber: number) {
   return Promise.all(
     accounts.map(async (account) => {
-      return token['balanceOf(address)'](getAddressOf(account));
+      return token['balanceOf(address)'](getAddressOf(account), { blockTag: blockNumber });
     })
   );
 }
 
 async function getBalanceChanges(
-  transactionCall: (() => Promise<void> | void),
+  transaction: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse) | providers.TransactionResponse,
   token: Contract,
   accounts: Account[]
 ) {
-  const balancesBefore = await getBalances(token, accounts);
-  await transactionCall();
-  const balancesAfter = await getBalances(token, accounts);
+  let txResponse: providers.TransactionResponse;
+
+  if (typeof transaction === 'function') {
+    txResponse = await transaction();
+  } else {
+    txResponse = transaction;
+  }
+  const txReceipt = await txResponse.wait();
+  const txBlockNumber = txReceipt.blockNumber;
+
+  const balancesBefore = await getBalances(token, accounts, txBlockNumber - 1);
+  const balancesAfter = await getBalances(token, accounts, txBlockNumber);
 
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }
