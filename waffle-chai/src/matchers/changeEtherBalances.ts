@@ -1,4 +1,5 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
+import { transactionPromise } from '../transaction-promise';
 import {getAddressOf, Account} from './misc/account';
 import {BalanceChangeOptions, getAddresses, getBalances} from './misc/balance';
 
@@ -9,12 +10,19 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     balanceChanges: BigNumberish[],
     options: BalanceChangeOptions
   ) {
-    const subject = this._obj;
-
-    const derivedPromise = Promise.all([
-      getBalanceChanges(subject, accounts, options),
-      getAddresses(accounts)
-    ]).then(
+    transactionPromise(this);
+    const derivedPromise = new Promise<[BigNumber[], string[]]>((resolve, reject) => {
+      Promise.all([
+        this.promise.then(() => {
+          return this.response;
+        }),
+        getAddresses(accounts)
+      ]).then(([txResponse, addresses]) => {
+        getBalanceChanges(txResponse, accounts, options).then(actualChanges => {
+          resolve([actualChanges, addresses]);
+        }).catch(reject);
+      }).catch(reject);
+    }).then(
       ([actualChanges, accountAddresses]) => {
         this.assert(
           actualChanges.every((change, ind) =>
@@ -36,20 +44,10 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
 }
 
 export async function getBalanceChanges(
-  transaction:
-  | providers.TransactionResponse
-  | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  txResponse: providers.TransactionResponse,
   accounts: Account[],
   options: BalanceChangeOptions
 ) {
-  let txResponse: providers.TransactionResponse;
-
-  if (typeof transaction === 'function') {
-    txResponse = await transaction();
-  } else {
-    txResponse = transaction;
-  }
-
   const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
 

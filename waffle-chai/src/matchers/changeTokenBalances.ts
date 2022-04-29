@@ -1,4 +1,5 @@
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
+import { transactionPromise } from '../transaction-promise';
 import {Account, getAddressOf} from './misc/account';
 
 type TransactionResponse = providers.TransactionResponse;
@@ -10,11 +11,20 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
     accounts: Account[],
     balanceChanges: BigNumberish[]
   ) {
-    const subject = this._obj;
-    const derivedPromise = Promise.all([
-      getBalanceChanges(subject, token, accounts),
-      getAddresses(accounts)
-    ]).then(
+    transactionPromise(this);
+    const derivedPromise = new Promise<[BigNumber[], string[]]>((resolve, reject) => {
+      Promise.all([
+        this.promise.then(() => {
+          const txReceipt: providers.TransactionReceipt = this.receipt;
+          return txReceipt
+        }),
+        getAddresses(accounts)
+      ]).then(([txReceipt, addresses]) => {
+        getBalanceChanges(txReceipt, token, addresses).then(actualChanges => {
+          resolve([actualChanges, addresses]);
+        }).catch(reject);
+      }).catch(reject);
+    }).then(
       ([actualChanges, accountAddresses]) => {
         this.assert(
           actualChanges.every((change, ind) =>
@@ -39,31 +49,23 @@ function getAddresses(accounts: Account[]) {
   return Promise.all(accounts.map((account) => getAddressOf(account)));
 }
 
-async function getBalances(token: Contract, accounts: Account[], blockNumber: number) {
+async function getBalances(token: Contract, addresses: string[], blockNumber: number) {
   return Promise.all(
-    accounts.map(async (account) => {
-      return token['balanceOf(address)'](getAddressOf(account), {blockTag: blockNumber});
+    addresses.map((address) => {
+      return token['balanceOf(address)'](address, {blockTag: blockNumber});
     })
   );
 }
 
 async function getBalanceChanges(
-  transaction: (() => Promise<TransactionResponse> | TransactionResponse) | TransactionResponse,
+  txReceipt: providers.TransactionReceipt,
   token: Contract,
-  accounts: Account[]
+  addresses: string[]
 ) {
-  let txResponse: TransactionResponse;
-
-  if (typeof transaction === 'function') {
-    txResponse = await transaction();
-  } else {
-    txResponse = transaction;
-  }
-  const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
 
-  const balancesBefore = await getBalances(token, accounts, txBlockNumber - 1);
-  const balancesAfter = await getBalances(token, accounts, txBlockNumber);
+  const balancesBefore = await getBalances(token, addresses, txBlockNumber - 1);
+  const balancesAfter = await getBalances(token, addresses, txBlockNumber);
 
   return balancesAfter.map((balance, ind) => balance.sub(balancesBefore[ind]));
 }

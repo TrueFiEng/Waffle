@@ -1,7 +1,6 @@
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
+import { transactionPromise } from '../transaction-promise';
 import {Account, getAddressOf} from './misc/account';
-
-type TransactionResponse = providers.TransactionResponse;
 
 export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalance', function (
@@ -10,12 +9,20 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
     account: Account,
     balanceChange: BigNumberish
   ) {
-    const subject = this._obj;
-    const derivedPromise = Promise.all([
-      getBalanceChange(subject, token, account),
-      getAddressOf(account)
-    ]).then(
-      ([actualChange, address]) => {
+    transactionPromise(this);
+    const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
+      Promise.all([
+        this.promise.then(() => {
+          const txReceipt: providers.TransactionReceipt = this.receipt;
+          return txReceipt
+        }),
+        getAddressOf(account)
+      ]).then(([txReceipt, address]) => {
+        getBalanceChange(txReceipt, token, address).then(actualChange => {
+          resolve([actualChange, address]);
+        }).catch(reject);
+      }).catch(reject);
+    }).then(([actualChange, address]) => {
         this.assert(
           actualChange.eq(BigNumber.from(balanceChange)),
           `Expected "${address}" to change balance by ${balanceChange} wei, ` +
@@ -34,26 +41,18 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChange(
-  transaction: (() => Promise<TransactionResponse> | TransactionResponse) | TransactionResponse,
+  txReceipt: providers.TransactionReceipt,
   token: Contract,
-  account: Account
+  address: string
 ) {
-  let txResponse: TransactionResponse;
-
-  if (typeof transaction === 'function') {
-    txResponse = await transaction();
-  } else {
-    txResponse = transaction;
-  }
-  const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
 
   const balanceBefore: BigNumber = await token['balanceOf(address)'](
-    await getAddressOf(account),
+    address,
     {blockTag: txBlockNumber - 1}
   );
   const balanceAfter: BigNumber = await token['balanceOf(address)'](
-    await getAddressOf(account),
+    address,
     {blockTag: txBlockNumber}
   );
 

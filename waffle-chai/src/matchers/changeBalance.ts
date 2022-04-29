@@ -1,6 +1,7 @@
 import {BigNumber, BigNumberish} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
 import {getBalanceChange} from './changeEtherBalance';
+import { transactionPromise } from '../transaction-promise';
 
 export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalance', function (
@@ -8,11 +9,19 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
     account: Account,
     balanceChange: BigNumberish
   ) {
-    const subject = this._obj;
-    const derivedPromise = Promise.all([
-      getBalanceChange(subject, account, {includeFee: true}),
-      getAddressOf(account)
-    ]).then(
+    transactionPromise(this);
+    const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
+      Promise.all([
+        this.promise.then(() => {
+          return this.response;
+        }),
+        getAddressOf(account)
+      ]).then(([txResponse, address]) => {
+        getBalanceChange(txResponse, account, {includeFee: true}).then(actualChanges => {
+          resolve([actualChanges, address]);
+        }).catch(reject);
+      }).catch(reject);
+    }).then(
       ([actualChange, address]) => {
         this.assert(
           actualChange.eq(BigNumber.from(balanceChange)),

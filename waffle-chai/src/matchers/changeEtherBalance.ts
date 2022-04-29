@@ -1,4 +1,5 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
+import { transactionPromise } from '../transaction-promise';
 import {ensure} from './calledOnContract/utils';
 import {Account, getAddressOf} from './misc/account';
 import {BalanceChangeOptions} from './misc/balance';
@@ -10,12 +11,19 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
     balanceChange: BigNumberish,
     options: BalanceChangeOptions
   ) {
-    const subject = this._obj;
-    const derivedPromise = Promise.all([
-      getBalanceChange(subject, account, options),
-      getAddressOf(account)
-    ]).then(
-      ([actualChange, address]) => {
+    transactionPromise(this);
+    const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
+      Promise.all([
+        this.promise.then(() => {
+          return this.response;
+        }),
+        getAddressOf(account)
+      ]).then(([txResponse, address]) => {
+        getBalanceChange(txResponse, account, options).then(actualChanges => {
+          resolve([actualChanges, address]);
+        }).catch(reject);
+      }).catch(reject);
+    }).then(([actualChange, address]) => {
         this.assert(
           actualChange.eq(BigNumber.from(balanceChange)),
           `Expected "${address}" to change balance by ${balanceChange} wei, ` +
@@ -34,29 +42,19 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
 }
 
 export async function getBalanceChange(
-  transaction:
-  | providers.TransactionResponse
-  | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  txResponse: providers.TransactionResponse,
   account: Account,
   options?: BalanceChangeOptions
 ) {
   ensure(account.provider !== undefined, TypeError, 'Provider not found');
-
-  let txResponse: providers.TransactionResponse;
-
-  if (typeof transaction === 'function') {
-    txResponse = await transaction();
-  } else {
-    txResponse = transaction;
-  }
-
   const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
+  const address = await getAddressOf(account);
 
-  const balanceAfter = await account.provider.getBalance(getAddressOf(account), txBlockNumber);
-  const balanceBefore = await account.provider.getBalance(getAddressOf(account), txBlockNumber - 1);
+  const balanceAfter = await account.provider.getBalance(address, txBlockNumber);
+  const balanceBefore = await account.provider.getBalance(address, txBlockNumber - 1);
 
-  if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
+  if (options?.includeFee !== true && address === txReceipt.from) {
     const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
     const gasUsed = txReceipt.gasUsed;
     const txFee = gasPrice.mul(gasUsed);
