@@ -43,13 +43,13 @@ export const chainingMatchersTest = (provider: MockProvider) => {
     await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
   });
 
-  it.only('Balances chaining different calls', async () => {
-    await token.approve(complex.address, 100);
-    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
-    await expect(tx)
-      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
-      .and.to.changeEtherBalances([receiver], [200])
-      .and.to.emit(complex, 'TransferredEther').withArgs(200)
-      .and.to.emit(complex, 'TransferredTokens').withArgs(100);
-  });
+  // it.only('Balances chaining different calls', async () => {
+  //   await token.approve(complex.address, 100);
+  //   const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+  //   await expect(tx)
+  //     .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+  //     .and.to.changeEtherBalances([receiver], [200])
+  //     .and.to.emit(complex, 'TransferredEther').withArgs(200)
+  //     .and.to.emit(complex, 'TransferredTokens').withArgs(100);
+  // });
 }

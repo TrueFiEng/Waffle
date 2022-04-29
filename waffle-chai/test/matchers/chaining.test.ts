@@ -1,6 +1,6 @@
 import {chainingMatchersTest} from './chaining';
 import {describeMockProviderCases} from './MockProviderCases';
 
-describeMockProviderCases('INTEGRATION: changeEtherBalances matcher', (provider) => {
+describeMockProviderCases('INTEGRATION: chaining matchers', (provider) => {
   chainingMatchersTest(provider);
 });
