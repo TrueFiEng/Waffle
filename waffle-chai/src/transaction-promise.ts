@@ -1,4 +1,4 @@
-import { providers } from 'ethers';
+import {providers} from 'ethers';
 
 type TransactionResponse = providers.TransactionResponse;
 type MaybePromise<T> = T | Promise<T>;
@@ -30,7 +30,9 @@ export const transactionPromise = (chaiObj: any) => {
 
   if (!('then' in txResponse)) {
     chaiObj.response = txResponse;
-    chaiObj.promise = txResponse.wait().then(txRecipt => chaiObj.receipt = txRecipt);
+    chaiObj.promise = txResponse.wait().then(txRecipt => {
+      chaiObj.receipt = txRecipt;
+    });
   } else {
     chaiObj.promise = new Promise<void>((resolve, reject) => {
       if (!('then' in txResponse)) {
@@ -42,7 +44,7 @@ export const transactionPromise = (chaiObj: any) => {
         txResponse.wait().then(txReceipt => {
           chaiObj.receipt = txReceipt;
           resolve();
-        }).catch(reject)
+        }).catch(reject);
       }).catch(reject);
     });
   }
@@ -50,4 +52,4 @@ export const transactionPromise = (chaiObj: any) => {
   // Setting `then` and `catch` on the chai object to be compliant with the chai-aspromised library.
   chaiObj.then = chaiObj.promise.then.bind(chaiObj.promise);
   chaiObj.catch = chaiObj.promise.catch.bind(chaiObj.promise);
-}
+};

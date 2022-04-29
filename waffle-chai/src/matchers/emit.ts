@@ -1,6 +1,6 @@
 import {Contract, providers, utils} from 'ethers';
 import {transactionPromise} from '../transaction-promise';
-import { waitForPendingTransaction } from './misc/transaction';
+import {waitForPendingTransaction} from './misc/transaction';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
   const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
@@ -11,7 +11,9 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     if (typeof this._obj === 'string') {
       // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
       this.promise = waitForPendingTransaction(this._obj, contract.provider)
-        .then(txReceipt => this.receipt = txReceipt);
+        .then(txReceipt => {
+          this.receipt = txReceipt;
+        });
     } else {
       transactionPromise(this);
     }

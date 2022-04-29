@@ -1,7 +1,7 @@
 import {BigNumber, BigNumberish} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
 import {getBalanceChange} from './changeEtherBalance';
-import { transactionPromise } from '../transaction-promise';
+import {transactionPromise} from '../transaction-promise';
 
 export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeBalance', function (

@@ -1,5 +1,5 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
-import { transactionPromise } from '../transaction-promise';
+import {transactionPromise} from '../transaction-promise';
 import {getAddressOf, Account} from './misc/account';
 import {BalanceChangeOptions, getAddresses, getBalances} from './misc/balance';
 

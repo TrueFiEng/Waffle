@@ -91,7 +91,7 @@ export const chainingMatchersTest = (provider: MockProvider) => {
 
   it('Balances chaining one call', async () => {
     await token.approve(complex.address, 100);
-    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
     await expect(tx)
       .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
       .and.to.changeEtherBalances([sender, receiver], [-200, 200])
@@ -101,7 +101,7 @@ export const chainingMatchersTest = (provider: MockProvider) => {
 
   it('Balances chaining one call first fail', async () => {
     await token.approve(complex.address, 100);
-    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
     await expect(expect(tx)
       .to.changeTokenBalances(token, [sender, receiver], [-100, 101])
       .and.to.changeEtherBalances([sender, receiver], [-200, 200])
@@ -116,7 +116,7 @@ export const chainingMatchersTest = (provider: MockProvider) => {
 
   it('Balances chaining one call third fail', async () => {
     await token.approve(complex.address, 100);
-    const tx = await complex.doEverything(receiver.address, 100, { value: 200 });
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
     await expect(expect(tx)
       .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
       .and.to.changeEtherBalances([sender, receiver], [-200, 200])

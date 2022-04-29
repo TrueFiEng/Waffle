@@ -1,5 +1,5 @@
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
-import { transactionPromise } from '../transaction-promise';
+import {transactionPromise} from '../transaction-promise';
 import {Account, getAddressOf} from './misc/account';
 
 export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
@@ -14,7 +14,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
       Promise.all([
         this.promise.then(() => {
           const txReceipt: providers.TransactionReceipt = this.receipt;
-          return txReceipt
+          return txReceipt;
         }),
         getAddressOf(account)
       ]).then(([txReceipt, address]) => {
@@ -23,15 +23,15 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
         }).catch(reject);
       }).catch(reject);
     }).then(([actualChange, address]) => {
-        this.assert(
-          actualChange.eq(BigNumber.from(balanceChange)),
-          `Expected "${address}" to change balance by ${balanceChange} wei, ` +
+      this.assert(
+        actualChange.eq(BigNumber.from(balanceChange)),
+        `Expected "${address}" to change balance by ${balanceChange} wei, ` +
           `but it has changed by ${actualChange} wei`,
-          `Expected "${address}" to not change balance by ${balanceChange} wei,`,
-          balanceChange,
-          actualChange
-        );
-      }
+        `Expected "${address}" to not change balance by ${balanceChange} wei,`,
+        balanceChange,
+        actualChange
+      );
+    }
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);

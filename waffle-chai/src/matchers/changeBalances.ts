@@ -1,5 +1,5 @@
-import {BigNumber, BigNumberish, providers} from 'ethers';
-import { transactionPromise } from '../transaction-promise';
+import {BigNumber, BigNumberish} from 'ethers';
+import {transactionPromise} from '../transaction-promise';
 import {getBalanceChanges} from './changeEtherBalances';
 import {Account} from './misc/account';
 import {getAddresses} from './misc/balance';

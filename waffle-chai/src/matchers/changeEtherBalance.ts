@@ -1,5 +1,5 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
-import { transactionPromise } from '../transaction-promise';
+import {transactionPromise} from '../transaction-promise';
 import {ensure} from './calledOnContract/utils';
 import {Account, getAddressOf} from './misc/account';
 import {BalanceChangeOptions} from './misc/balance';
@@ -24,15 +24,15 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
         }).catch(reject);
       }).catch(reject);
     }).then(([actualChange, address]) => {
-        this.assert(
-          actualChange.eq(BigNumber.from(balanceChange)),
-          `Expected "${address}" to change balance by ${balanceChange} wei, ` +
+      this.assert(
+        actualChange.eq(BigNumber.from(balanceChange)),
+        `Expected "${address}" to change balance by ${balanceChange} wei, ` +
           `but it has changed by ${actualChange} wei`,
-          `Expected "${address}" to not change balance by ${balanceChange} wei,`,
-          balanceChange,
-          actualChange
-        );
-      }
+        `Expected "${address}" to not change balance by ${balanceChange} wei,`,
+        balanceChange,
+        actualChange
+      );
+    }
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);

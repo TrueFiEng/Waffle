@@ -1,8 +1,6 @@
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
-import { transactionPromise } from '../transaction-promise';
+import {transactionPromise} from '../transaction-promise';
 import {Account, getAddressOf} from './misc/account';
-
-type TransactionResponse = providers.TransactionResponse;
 
 export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalances', function (
@@ -16,7 +14,7 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
       Promise.all([
         this.promise.then(() => {
           const txReceipt: providers.TransactionReceipt = this.receipt;
-          return txReceipt
+          return txReceipt;
         }),
         getAddresses(accounts)
       ]).then(([txReceipt, addresses]) => {
