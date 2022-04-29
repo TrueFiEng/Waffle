@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import {AssertionError, expect} from 'chai';
 import {Wallet, Contract, ContractFactory} from 'ethers';
 import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
 import {COMPLEX_ABI, COMPLEX_BYTECODE} from '../contracts/Complex';
@@ -23,12 +23,32 @@ export const chainingMatchersTest = (provider: MockProvider) => {
     complex = await complexFactory.deploy(token.address);
   });
 
-  it('Balances chaining different calls', async () => {
+  it('Chaining balances different calls', async () => {
     await token.approve(complex.address, 100);
     const tx = await complex.doEverything(receiver.address, 100, {value: 200});
     await expect(tx).to.changeTokenBalances(token, [sender, receiver], [-100, 100]);
-    await expect(tx).to.changeEtherBalances([receiver], [200]);
+    await expect(tx).to.changeEtherBalances([sender, receiver], [-200, 200]);
     await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+    await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+  });
+
+  it('Chaining balances different calls some fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+    await expect(
+      expect(tx).to.changeTokenBalances(token, [sender, receiver], [-101, 101])
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      `Expected ${sender.address},${receiver.address} ` +
+          'to change balance by -101,101 wei, but it has changed by -100,100 wei'
+    );
+    await expect(tx).to.changeEtherBalances([sender, receiver], [-200, 200]);
+    await expect(
+      expect(tx).to.emit(complex, 'TransferredEther').withArgs(201)
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected "200" to be equal 201'
+    );
     await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
   });
 
@@ -41,6 +61,32 @@ export const chainingMatchersTest = (provider: MockProvider) => {
     await expect(tx).to.changeEtherBalance(receiver, 200);
     await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
     await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+  });
+
+  it('Balance chaining different calls some fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+    await expect(
+      expect(tx).to.changeTokenBalance(token, sender, -101)
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      `Expected "${sender.address}" to change balance by -101 wei, but it has changed by -100 wei`
+    );
+    await expect(tx).to.changeTokenBalance(token, receiver, 100);
+    await expect(tx).to.changeEtherBalance(sender, -200);
+    await expect(
+      expect(tx).to.changeEtherBalance(receiver, 201)
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      `Expected "${receiver.address}" to change balance by 201 wei, but it has changed by 200 wei`
+    );
+    await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+    await expect(
+      expect(tx).not.to.emit(complex, 'TransferredTokens')
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected event "TransferredTokens" NOT to be emitted, but it was'
+    );
   });
 
   // it.only('Balances chaining different calls', async () => {
