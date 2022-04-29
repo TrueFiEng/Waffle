@@ -1,6 +1,7 @@
-/* eslint-disable max-len */
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
+
+type TransactionResponse = providers.TransactionResponse;
 
 export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalance', function (
@@ -33,11 +34,11 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChange(
-  transaction: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse) | providers.TransactionResponse,
+  transaction: (() => Promise<TransactionResponse> | TransactionResponse) | TransactionResponse,
   token: Contract,
   account: Account
 ) {
-  let txResponse: providers.TransactionResponse;
+  let txResponse: TransactionResponse;
 
   if (typeof transaction === 'function') {
     txResponse = await transaction();
@@ -47,8 +48,14 @@ async function getBalanceChange(
   const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
 
-  const balanceBefore: BigNumber = await token['balanceOf(address)'](await getAddressOf(account), {blockTag: txBlockNumber - 1});
-  const balanceAfter: BigNumber = await token['balanceOf(address)'](await getAddressOf(account), {blockTag: txBlockNumber});
+  const balanceBefore: BigNumber = await token['balanceOf(address)'](
+    await getAddressOf(account),
+    {blockTag: txBlockNumber - 1}
+  );
+  const balanceAfter: BigNumber = await token['balanceOf(address)'](
+    await getAddressOf(account),
+    {blockTag: txBlockNumber}
+  );
 
   return balanceAfter.sub(balanceBefore);
 }

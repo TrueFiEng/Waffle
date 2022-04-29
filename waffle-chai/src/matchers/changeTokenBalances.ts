@@ -1,6 +1,7 @@
-/* eslint-disable max-len */
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
+
+type TransactionResponse = providers.TransactionResponse;
 
 export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalances', function (
@@ -47,11 +48,11 @@ async function getBalances(token: Contract, accounts: Account[], blockNumber: nu
 }
 
 async function getBalanceChanges(
-  transaction: (() => Promise<providers.TransactionResponse> | providers.TransactionResponse) | providers.TransactionResponse,
+  transaction: (() => Promise<TransactionResponse> | TransactionResponse) | TransactionResponse,
   token: Contract,
   accounts: Account[]
 ) {
-  let txResponse: providers.TransactionResponse;
+  let txResponse: TransactionResponse;
 
   if (typeof transaction === 'function') {
     txResponse = await transaction();
