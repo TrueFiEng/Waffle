@@ -436,10 +436,10 @@ In the new Ganache, you should not override the wallet config, otherwise you mig
     }
   })
 
-Chaining :code:`emit` matchers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Chaining matchers
+~~~~~~~~~~~~~~~~~
 
-Now when testing events on a smart contract you can conveniently chain :code:`emit` matchers.
+Now when testing events on a smart contract you can conveniently chain matchers. It can be especially useful when testing events.
 
 .. code-block:: ts
   
@@ -454,3 +454,39 @@ Now when testing events on a smart contract you can conveniently chain :code:`em
           'Two'
         )
         .to.not.emit(contract, 'Three');
+
+:code:`changeEtherBalance`, :code:`changeEtherBalances`, :code:`changeTokenbalance` and :code:`changeTokenBalances` matchers also support chaining:
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(tx)
+    .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+    .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+    .and.to.emit(complex, 'TransferredEther').withArgs(200)
+    .and.to.emit(complex, 'TransferredTokens').withArgs(100);
+
+Although you may find it more convenient to write multiple expects. The test below is equivalent to the one above: 
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(tx).to.changeTokenBalances(token, [sender, receiver], [-100, 100]);
+  await expect(tx).to.changeEtherBalances([sender, receiver], [-200, 200]);
+  await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+  await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+
+Note that in both cases you can use :code:`chai` negation :code:`not`. In a case of a single expect everything after :code:`not` is negated.
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(expect(tx)
+    .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+    .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+    .and.not
+    .to.emit(complex, 'UnusedEvent') // This is negated
+    .and.to.changeEtherBalances([sender, receiver], [-100, 100])  // This is negated as well
