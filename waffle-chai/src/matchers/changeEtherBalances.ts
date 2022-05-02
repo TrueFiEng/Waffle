@@ -13,8 +13,8 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     transactionPromise(this);
     const derivedPromise = new Promise<[BigNumber[], string[]]>((resolve, reject) => {
       Promise.all([
-        this.promise.then(() => {
-          return this.response;
+        this.txPromise.then(() => {
+          return this.txResponse;
         }),
         getAddresses(accounts)
       ]).then(([txResponse, addresses]) => {
@@ -38,7 +38,7 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.promise = derivedPromise;
+    this.txPromise = derivedPromise;
     return this;
   });
 }

@@ -15,7 +15,7 @@ type MaybePromise<T> = T | Promise<T>;
  * - a function that returns a promise which resolves to a transaction response
  */
 export const transactionPromise = (chaiObj: any) => {
-  if ('promise' in chaiObj) {
+  if ('txPromise' in chaiObj) {
     return;
   }
 
@@ -29,20 +29,20 @@ export const transactionPromise = (chaiObj: any) => {
   }
 
   if (!('then' in txResponse)) {
-    chaiObj.response = txResponse;
-    chaiObj.promise = txResponse.wait().then(txRecipt => {
-      chaiObj.receipt = txRecipt;
+    chaiObj.txResponse = txResponse;
+    chaiObj.txPromise = txResponse.wait().then(txReceipt => {
+      chaiObj.txReceipt = txReceipt;
     });
   } else {
-    chaiObj.promise = new Promise<void>((resolve, reject) => {
+    chaiObj.txPromise = new Promise<void>((resolve, reject) => {
       if (!('then' in txResponse)) {
         reject(new Error('txResponse is not a promise'));
         return;
       }
       txResponse.then(txResponse => {
-        chaiObj.response = txResponse;
+        chaiObj.txResponse = txResponse;
         txResponse.wait().then(txReceipt => {
-          chaiObj.receipt = txReceipt;
+          chaiObj.txReceipt = txReceipt;
           resolve();
         }).catch(reject);
       }).catch(reject);
@@ -50,6 +50,6 @@ export const transactionPromise = (chaiObj: any) => {
   }
 
   // Setting `then` and `catch` on the chai object to be compliant with the chai-aspromised library.
-  chaiObj.then = chaiObj.promise.then.bind(chaiObj.promise);
-  chaiObj.catch = chaiObj.promise.catch.bind(chaiObj.promise);
+  chaiObj.then = chaiObj.txPromise.then.bind(chaiObj.txPromise);
+  chaiObj.catch = chaiObj.txPromise.catch.bind(chaiObj.txPromise);
 };

@@ -10,17 +10,17 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     if (typeof this._obj === 'string') {
       // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
-      this.promise = waitForPendingTransaction(this._obj, contract.provider)
+      this.txPromise = waitForPendingTransaction(this._obj, contract.provider)
         .then(txReceipt => {
-          this.receipt = txReceipt;
+          this.txReceipt = txReceipt;
         });
     } else {
       transactionPromise(this);
     }
     const isNegated = this.__flags.negate === true;
-    this.promise = this.promise
+    this.txPromise = this.txPromise
       .then(() => {
-        const receipt: providers.TransactionReceipt = this.receipt;
+        const receipt: providers.TransactionReceipt = this.txReceipt;
         let eventFragment: utils.EventFragment | undefined;
         try {
           eventFragment = contract.interface.getEvent(eventName);
@@ -57,8 +57,8 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         );
         this.__flags.negate = isCurrentlyNegated;
       });
-    this.then = this.promise.then.bind(this.promise);
-    this.catch = this.promise.catch.bind(this.promise);
+    this.then = this.txPromise.then.bind(this.txPromise);
+    this.catch = this.txPromise.catch.bind(this.txPromise);
     this.contract = contract;
     this.eventName = eventName;
     return this;
@@ -108,14 +108,14 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
-    if (!('promise' in this)) {
+    if (!('txPromise' in this)) {
       throw new Error('withArgs() must be used after emit()');
     }
-    this.promise = this.promise.then(() => {
+    this.txPromise = this.txPromise.then(() => {
       tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
     });
-    this.then = this.promise.then.bind(this.promise);
-    this.catch = this.promise.catch.bind(this.promise);
+    this.then = this.txPromise.then.bind(this.txPromise);
+    this.catch = this.txPromise.catch.bind(this.txPromise);
     return this;
   });
 }

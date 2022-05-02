@@ -12,9 +12,8 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
     transactionPromise(this);
     const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
       Promise.all([
-        this.promise.then(() => {
-          const txReceipt: providers.TransactionReceipt = this.receipt;
-          return txReceipt;
+        this.txPromise.then(() => {
+          return this.txReceipt;
         }),
         getAddressOf(account)
       ]).then(([txReceipt, address]) => {
@@ -35,7 +34,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.promise = derivedPromise;
+    this.txPromise = derivedPromise;
     return this;
   });
 }
