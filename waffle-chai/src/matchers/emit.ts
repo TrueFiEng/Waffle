@@ -111,8 +111,12 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     if (!('txPromise' in this)) {
       throw new Error('withArgs() must be used after emit()');
     }
+    const isNegated = this.__flags.negate === true;
     this.txPromise = this.txPromise.then(() => {
+      const isCurrentlyNegated = this.__flags.negate === true;
+      this.__flags.negate = isNegated;
       tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
+      this.__flags.negate = isCurrentlyNegated;
     });
     this.then = this.txPromise.then.bind(this.txPromise);
     this.catch = this.txPromise.catch.bind(this.txPromise);

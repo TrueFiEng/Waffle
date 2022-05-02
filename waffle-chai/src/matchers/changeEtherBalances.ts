@@ -11,6 +11,7 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     options: BalanceChangeOptions
   ) {
     transactionPromise(this);
+    const isNegated = this.__flags.negate === true;
     const derivedPromise = new Promise<[BigNumber[], string[]]>((resolve, reject) => {
       Promise.all([
         this.txPromise.then(() => {
@@ -24,6 +25,8 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
       }).catch(reject);
     }).then(
       ([actualChanges, accountAddresses]) => {
+        const isCurrentlyNegated = this.__flags.negate === true;
+        this.__flags.negate = isNegated;
         this.assert(
           actualChanges.every((change, ind) =>
             change.eq(BigNumber.from(balanceChanges[ind]))
@@ -34,6 +37,7 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
           balanceChanges.map((balanceChange) => balanceChange.toString()),
           actualChanges.map((actualChange) => actualChange.toString())
         );
+        this.__flags.negate = isCurrentlyNegated;
       }
     );
     this.then = derivedPromise.then.bind(derivedPromise);

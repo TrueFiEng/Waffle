@@ -127,4 +127,55 @@ export const chainingMatchersTest = (provider: MockProvider) => {
       'Expected "200" to be equal 199'
     );
   });
+
+  it('Balances chaining one call third fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+    await expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+      .and.to.emit(complex, 'TransferredEther').withArgs(200)
+      .and.not.to.emit(complex, 'UnusedEvent');
+  });
+
+  it('Balances chaining one call third fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+    await expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+      .and.to.emit(complex, 'TransferredEther').withArgs(200);
+  });
+
+  it('Balances chaining one call third fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+    await expect(expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+      .and.not.to.emit(complex, 'TransferredEther')
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected event "TransferredEther" NOT to be emitted, but it was'
+    );
+  });
+
+  it('Balances chaining one call third fail', async () => {
+    await token.approve(complex.address, 100);
+    const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+    await expect(expect(tx)
+      .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+      .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+      .and.not
+      .to.emit(complex, 'UnusedEvent')
+      .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      `Expected ${sender.address},${receiver.address} ` +
+          'to not change balance by -200,200 wei'
+    );
+  });
 };

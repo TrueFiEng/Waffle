@@ -10,6 +10,7 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
     balanceChange: BigNumberish
   ) {
     transactionPromise(this);
+    const isNegated = this.__flags.negate === true;
     const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
       Promise.all([
         this.txPromise.then(() => {
@@ -23,6 +24,8 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
       }).catch(reject);
     }).then(
       ([actualChange, address]) => {
+        const isCurrentlyNegated = this.__flags.negate === true;
+        this.__flags.negate = isNegated;
         this.assert(
           actualChange.eq(BigNumber.from(balanceChange)),
           `Expected "${address}" to change balance by ${balanceChange} wei, ` +
@@ -31,6 +34,7 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
           balanceChange,
           actualChange
         );
+        this.__flags.negate = isCurrentlyNegated;
       }
     );
     this.then = derivedPromise.then.bind(derivedPromise);
