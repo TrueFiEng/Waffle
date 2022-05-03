@@ -11,18 +11,11 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
   ) {
     transactionPromise(this);
     const isNegated = this.__flags.negate === true;
-    const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
-      Promise.all([
-        this.txPromise.then(() => {
-          return this.txReceipt;
-        }),
-        getAddressOf(account)
-      ]).then(([txReceipt, address]) => {
-        getBalanceChange(txReceipt, token, address).then(actualChange => {
-          resolve([actualChange, address]);
-        }).catch(reject);
-      }).catch(reject);
-    }).then(([actualChange, address]) => {
+    const derivedPromise = this.txPromise.then(async () => {
+      const address = await getAddressOf(account);
+      const actualChanges = await getBalanceChange(this.txReceipt, token, address);
+      return [actualChanges, address];
+    }).then(([actualChange, address]: [BigNumber, string]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       this.assert(
@@ -34,8 +27,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
         actualChange
       );
       this.__flags.negate = isCurrentlyNegated;
-    }
-    );
+    });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
     this.txPromise = derivedPromise;

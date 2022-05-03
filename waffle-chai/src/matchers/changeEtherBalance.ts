@@ -13,18 +13,12 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
   ) {
     transactionPromise(this);
     const isNegated = this.__flags.negate === true;
-    const derivedPromise = new Promise<[BigNumber, string]>((resolve, reject) => {
-      Promise.all([
-        this.txPromise.then(() => {
-          return this.txResponse;
-        }),
+    const derivedPromise = this.txPromise.then(() => {
+      return Promise.all([
+        getBalanceChange(this.txResponse, account, options),
         getAddressOf(account)
-      ]).then(([txResponse, address]) => {
-        getBalanceChange(txResponse, account, options).then(actualChanges => {
-          resolve([actualChanges, address]);
-        }).catch(reject);
-      }).catch(reject);
-    }).then(([actualChange, address]) => {
+      ]);
+    }).then(([actualChange, address]: [BigNumber, string]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       this.assert(
