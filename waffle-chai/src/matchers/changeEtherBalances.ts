@@ -1,4 +1,5 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
+import {transactionPromise} from '../transaction-promise';
 import {getAddressOf, Account} from './misc/account';
 import {BalanceChangeOptions, getAddresses, getBalances} from './misc/balance';
 
@@ -9,47 +10,40 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     balanceChanges: BigNumberish[],
     options: BalanceChangeOptions
   ) {
-    const subject = this._obj;
-
-    const derivedPromise = Promise.all([
-      getBalanceChanges(subject, accounts, options),
-      getAddresses(accounts)
-    ]).then(
-      ([actualChanges, accountAddresses]) => {
-        this.assert(
-          actualChanges.every((change, ind) =>
-            change.eq(BigNumber.from(balanceChanges[ind]))
-          ),
-          `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
-            `but it has changed by ${actualChanges} wei`,
-          `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
-          balanceChanges.map((balanceChange) => balanceChange.toString()),
-          actualChanges.map((actualChange) => actualChange.toString())
-        );
-      }
-    );
+    transactionPromise(this);
+    const isNegated = this.__flags.negate === true;
+    const derivedPromise = this.txPromise.then(() => {
+      return Promise.all([
+        getBalanceChanges(this.txResponse, accounts, options),
+        getAddresses(accounts)
+      ]);
+    }).then(([actualChanges, accountAddresses]: [BigNumber[], string[]]) => {
+      const isCurrentlyNegated = this.__flags.negate === true;
+      this.__flags.negate = isNegated;
+      this.assert(
+        actualChanges.every((change, ind) =>
+          change.eq(BigNumber.from(balanceChanges[ind]))
+        ),
+        `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
+          `but it has changed by ${actualChanges} wei`,
+        `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
+        balanceChanges.map((balanceChange) => balanceChange.toString()),
+        actualChanges.map((actualChange) => actualChange.toString())
+      );
+      this.__flags.negate = isCurrentlyNegated;
+    });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.promise = derivedPromise;
+    this.txPromise = derivedPromise;
     return this;
   });
 }
 
 export async function getBalanceChanges(
-  transaction:
-  | providers.TransactionResponse
-  | (() => Promise<providers.TransactionResponse> | providers.TransactionResponse),
+  txResponse: providers.TransactionResponse,
   accounts: Account[],
   options: BalanceChangeOptions
 ) {
-  let txResponse: providers.TransactionResponse;
-
-  if (typeof transaction === 'function') {
-    txResponse = await transaction();
-  } else {
-    txResponse = transaction;
-  }
-
   const txReceipt = await txResponse.wait();
   const txBlockNumber = txReceipt.blockNumber;
 

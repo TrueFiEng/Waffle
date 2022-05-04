@@ -1,4 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
+import {transactionPromise} from '../transaction-promise';
 import {waitForPendingTransaction} from './misc/transaction';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
@@ -7,15 +8,19 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
 
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
-    const tx = this._obj;
-    const isNegated = this.__flags.negate === true;
-    if (!('promise' in this)) {
-      this.promise = waitForPendingTransaction(tx, contract.provider)
-        .then((receipt) => { this.receipt = receipt; });
+    if (typeof this._obj === 'string') {
+      // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
+      this.txPromise = waitForPendingTransaction(this._obj, contract.provider)
+        .then(txReceipt => {
+          this.txReceipt = txReceipt;
+        });
+    } else {
+      transactionPromise(this);
     }
-    this.promise = this.promise
+    const isNegated = this.__flags.negate === true;
+    this.txPromise = this.txPromise
       .then(() => {
-        const receipt: providers.TransactionReceipt = this.receipt;
+        const receipt: providers.TransactionReceipt = this.txReceipt;
         let eventFragment: utils.EventFragment | undefined;
         try {
           eventFragment = contract.interface.getEvent(eventName);
@@ -52,8 +57,8 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         );
         this.__flags.negate = isCurrentlyNegated;
       });
-    this.then = this.promise.then.bind(this.promise);
-    this.catch = this.promise.catch.bind(this.promise);
+    this.then = this.txPromise.then.bind(this.txPromise);
+    this.catch = this.txPromise.catch.bind(this.txPromise);
     this.contract = contract;
     this.eventName = eventName;
     return this;
@@ -103,14 +108,18 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
-    if (!('promise' in this)) {
+    if (!('txPromise' in this)) {
       throw new Error('withArgs() must be used after emit()');
     }
-    this.promise = this.promise.then(() => {
+    const isNegated = this.__flags.negate === true;
+    this.txPromise = this.txPromise.then(() => {
+      const isCurrentlyNegated = this.__flags.negate === true;
+      this.__flags.negate = isNegated;
       tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
+      this.__flags.negate = isCurrentlyNegated;
     });
-    this.then = this.promise.then.bind(this.promise);
-    this.catch = this.promise.catch.bind(this.promise);
+    this.then = this.txPromise.then.bind(this.txPromise);
+    this.catch = this.txPromise.catch.bind(this.txPromise);
     return this;
   });
 }
