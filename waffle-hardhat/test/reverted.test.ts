@@ -4,7 +4,7 @@ import {MockProvider} from 'ethereum-waffle';
 import {revertedTest, revertedWithTest} from '@ethereum-waffle/chai/test';
 import {ContractFactory} from 'ethers';
 import Panic from '../build/contracts/Panic.sol/Panic.json';
-import CustomError from '../build/contracts/CustomError.sol/Matchers.json'
+import CustomError from '../build/contracts/CustomError.sol/Matchers.json';
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const provider = waffle.provider as MockProvider;
