@@ -34,18 +34,10 @@ export const transactionPromise = (chaiObj: any) => {
       chaiObj.txReceipt = txReceipt;
     });
   } else {
-    chaiObj.txPromise = new Promise<void>((resolve, reject) => {
-      if (!('then' in txResponse)) {
-        reject(new Error('txResponse is not a promise'));
-        return;
-      }
-      txResponse.then(txResponse => {
-        chaiObj.txResponse = txResponse;
-        txResponse.wait().then(txReceipt => {
-          chaiObj.txReceipt = txReceipt;
-          resolve();
-        }).catch(reject);
-      }).catch(reject);
+    chaiObj.txPromise = txResponse.then(async txResponse => {
+      chaiObj.txResponse = txResponse;
+      const txReceipt = await txResponse.wait();
+      chaiObj.txReceipt = txReceipt;
     });
   }
 
