@@ -2,7 +2,7 @@ import {waffle} from 'hardhat';
 import {MockProvider} from 'ethereum-waffle';
 import {chainingMatchersTest} from '@ethereum-waffle/chai/test';
 
-describe('INTEGRATION: changeEtherBalance matcher', () => {
+describe('INTEGRATION: chaining', () => {
   const provider = waffle.provider as MockProvider;
 
   before(async () => {
