@@ -371,7 +371,7 @@ importers:
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
       '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.2+hardhat@2.9.3
-      '@nomiclabs/hardhat-waffle': 2.0.3_d5b8f68bd9b45f451ef1ad3bbdda2a7e
+      '@nomiclabs/hardhat-waffle': 2.0.3_dcef802d34946732f33d050426d13f57
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
       ethers: 5.6.2
@@ -1196,7 +1196,7 @@ packages:
       hardhat: 2.9.3
     dev: true
 
-  /@nomiclabs/hardhat-waffle/2.0.3_d5b8f68bd9b45f451ef1ad3bbdda2a7e:
+  /@nomiclabs/hardhat-waffle/2.0.3_dcef802d34946732f33d050426d13f57:
     resolution: {integrity: sha512-049PHSnI1CZq6+XTbrMbMv5NaL7cednTfPenx02k3cEh8wBMLa6ys++dBETJa6JjfwgA9nBhhHQ173LJv6k2Pg==}
     peerDependencies:
       '@nomiclabs/hardhat-ethers': ^2.0.0
@@ -1207,6 +1207,7 @@ packages:
       '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.2+hardhat@2.9.3
       '@types/sinon-chai': 3.2.5
       '@types/web3': 1.0.19
+      ethereum-waffle: link:waffle-cli
       ethers: 5.6.2
       hardhat: 2.9.3
     dev: true
