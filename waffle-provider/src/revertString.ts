@@ -3,6 +3,22 @@ import {toUtf8String} from 'ethers/lib/utils';
 import {Provider} from 'ganache';
 import {log} from './log';
 
+const getHardhatErrorString = (callRevertError: any) => {
+  const tryDecode = (error: any) => {
+    const stackTrace = error?.stackTrace;
+    const errorBuffer = stackTrace?.[stackTrace.length - 1].message?.value;
+    if (errorBuffer) {
+      return '0x' + errorBuffer.toString('hex');
+    }
+  }
+
+  return tryDecode(callRevertError) ?? tryDecode(callRevertError.error);
+};
+
+const getGanacheErrorString = (callRevertError: any) => {
+  return callRevertError?.error?.data
+};
+
 /* eslint-disable no-control-regex */
 
 /**
@@ -10,13 +26,9 @@ import {log} from './log';
  * @param callRevertError The error catched from performing a reverting call (query)
  */
 export const decodeRevertString = (callRevertError: any): string => {
-  // errorBuffer is returned by harhat
-  const errorBuffer = callRevertError?.error?.stackTrace?.[0].message?.value;
-  // callRevertError.error.data is returned by ganache
-  const errorString: string | undefined =
-    errorBuffer
-      ? '0x' + errorBuffer.toString('hex')
-      : callRevertError?.error?.data;
+  const errorString: string | undefined = 
+    getHardhatErrorString(callRevertError)
+    ?? getGanacheErrorString(callRevertError);
 
   if (errorString === undefined) {
     return '';
