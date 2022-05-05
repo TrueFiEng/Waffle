@@ -13,12 +13,10 @@ export const decodeRevertString = (callRevertError: any): string => {
   // errorBuffer is returned by harhat
   const errorBuffer = callRevertError?.error?.stackTrace?.[0].message?.value;
   // callRevertError.error.data is returned by ganache
-  const errorString: string | undefined = 
+  const errorString: string | undefined =
     errorBuffer
-    ?
-    '0x' + errorBuffer.toString('hex')
-    :
-    callRevertError?.error?.data;
+      ? '0x' + errorBuffer.toString('hex')
+      : callRevertError?.error?.data;
 
   if (errorString === undefined) {
     return '';
@@ -29,13 +27,13 @@ export const decodeRevertString = (callRevertError: any): string => {
    * Numeric.toHexString(Hash.sha3("Error(string)".getBytes())).substring(0, 10)
    */
   const errorMethodId = '0x08c379a0';
-  if (errorString.startsWith(errorMethodId)){
+  if (errorString.startsWith(errorMethodId)) {
     return toUtf8String('0x' + errorString.substring(138))
       .replace(/\x00/g, ''); // Trim null characters.
   }
 
-  const panicCodeId = "0x4e487b71";
-  if (errorString.startsWith(panicCodeId)){
+  const panicCodeId = '0x4e487b71';
+  if (errorString.startsWith(panicCodeId)) {
     let panicCode = parseInt(errorString.substring(panicCodeId.length), 16).toString(16);
     if (panicCode.length % 2 !== 0) {
       panicCode = '0' + panicCode;

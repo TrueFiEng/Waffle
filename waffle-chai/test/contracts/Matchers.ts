@@ -1,144 +1,137 @@
 export const MATCHERS_SOURCE = `
-	pragma solidity ^0.8.0;
+  pragma solidity ^0.8.0;
 
-	error CustomError(uint value);
+  contract Matchers {
+    uint counter;
 
-	contract Matchers {
-		uint counter;
+    function doNothing() public pure {
 
-		function doNothing() public pure {
+    }
 
-		}
+    function doModify() public {
+      counter += 1;
+    }
 
-		function doModify() public {
-			counter += 1;
-		}
+    function doThrow() public pure {
+      assert(false);
+    }
 
-		function doThrow() public pure {
-			assert(false);
-		}
+    function doRevert() public pure {
+      revert("Revert cause");
+    }
 
-		function doRevert() public pure {
-			revert("Revert cause");
-		}
+    function doPanic() public pure {
+      uint d = 0;
+      uint x = 1 / d;
+    }
 
-		function doPanic() public pure {
-			uint d = 0;
-			uint x = 1 / d;
-		}
+    function doRevertWithComplexReason() public pure {
+      revert("Revert cause (with complex reason)");
+    }
 
-		function doRevertWithComplexReason() public pure {
-			revert("Revert cause (with complex reason)");
-		}
+    function doRequireFail() public pure {
+      require(false, "Require cause");
+    }
 
-		function doRevertWithCustomError() public pure {
-			revert("CustomError(0)");
-			revert CustomError(0);
-		}
+    function doRequireSuccess() public pure {
+      require(true, "Never to be seen");
+    }
 
-		function doRequireFail() public pure {
-			require(false, "Require cause");
-		}
+    function doThrowAndModify() public {
+      counter += 1;
+      assert(false);
+    }
 
-		function doRequireSuccess() public pure {
-			require(true, "Never to be seen");
-		}
+    function doRevertAndModify() public {
+      counter += 1;
+      revert("Revert cause");
+    }
 
-		function doThrowAndModify() public {
-			counter += 1;
-			assert(false);
-		}
-
-		function doRevertAndModify() public {
-			counter += 1;
-			revert("Revert cause");
-		}
-
-		function doRequireFailAndModify() public {
-			counter += 1;
-			require(false, "Require cause");
-		}
-	}
+    function doRequireFailAndModify() public {
+      counter += 1;
+      require(false, "Require cause");
+    }
+  }
 `;
 
 export const MATCHERS_ABI = [
-	{
-		"inputs": [],
-		"name": "doModify",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doNothing",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doPanic",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doRequireFail",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doRequireFailAndModify",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doRequireSuccess",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doRevert",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doRevertAndModify",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doRevertWithComplexReason",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doThrow",
-		"outputs": [],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "doThrowAndModify",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	}
+  {
+    inputs: [],
+    name: 'doModify',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doNothing',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doPanic',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doRequireFail',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doRequireFailAndModify',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doRequireSuccess',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doRevert',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doRevertAndModify',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doRevertWithComplexReason',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doThrow',
+    outputs: [],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'doThrowAndModify',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
 ];
 
 // eslint-disable-next-line max-len
