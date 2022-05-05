@@ -88,6 +88,13 @@ const decodeHardhatError = (error: any) => {
       }
     }
     {
+      const regexp = new RegExp('VM Exception while processing transaction: reverted with custom error \'(.*)\'');
+      const matches = regexp.exec(errorString);
+      if (matches && matches.length >= 1) {
+        return matches[1];
+      }
+    }
+    {
       const regexp = new RegExp('VM Exception while processing transaction: reverted with panic code ([a-zA-Z0-9]*)');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
