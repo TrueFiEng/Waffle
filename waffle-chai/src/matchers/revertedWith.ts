@@ -26,7 +26,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 
     const onError = (error: any) => {
       const revertString = error?.receipt?.revertString ??
-        decodeCustomError(error) ??
+        decodeHardhatError(error) ??
         decodeRevertString(error);
       if (revertString !== undefined) {
         const isReverted = revertReason instanceof RegExp
@@ -80,11 +80,25 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 /**
  * Decodes a custom error introduced to Solidty 0.8.4. Works only with hardhat.
  */
-const decodeCustomError = (error: any) => {
+const decodeHardhatError = (error: any) => {
   const tryDecode = (error: any) => {
     const errorString = String(error);
     {
       const regexp = new RegExp('VM Exception while processing transaction: reverted with custom error \'(.*)\'');
+      const matches = regexp.exec(errorString);
+      if (matches && matches.length >= 1) {
+        return matches[1];
+      }
+    }
+    {
+      const regexp = new RegExp('VM Exception while processing transaction: reverted with panic code ([a-zA-Z0-9]*)');
+      const matches = regexp.exec(errorString);
+      if (matches && matches.length >= 1) {
+        return 'panic code ' + matches[1];
+      }
+    }
+    {
+      const regexp = new RegExp('Error: Transaction reverted: (.*)');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[1];

@@ -10,13 +10,13 @@ const getHardhatErrorString = (callRevertError: any) => {
     if (errorBuffer) {
       return '0x' + errorBuffer.toString('hex');
     }
-  }
+  };
 
   return tryDecode(callRevertError) ?? tryDecode(callRevertError.error);
 };
 
 const getGanacheErrorString = (callRevertError: any) => {
-  return callRevertError?.error?.data
+  return callRevertError?.error?.data;
 };
 
 /* eslint-disable no-control-regex */
@@ -26,9 +26,9 @@ const getGanacheErrorString = (callRevertError: any) => {
  * @param callRevertError The error catched from performing a reverting call (query)
  */
 export const decodeRevertString = (callRevertError: any): string => {
-  const errorString: string | undefined = 
-    getHardhatErrorString(callRevertError)
-    ?? getGanacheErrorString(callRevertError);
+  const errorString: string | undefined =
+    getHardhatErrorString(callRevertError) ??
+    getGanacheErrorString(callRevertError);
 
   if (errorString === undefined) {
     return '';
