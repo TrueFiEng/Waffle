@@ -42,7 +42,7 @@ export const decodeRevertString = (callRevertError: any): string => {
     if (['00', '01'].includes(panicCode)) {
       return ''; // For backwards compatibility;
     }
-    return 'panic code 0x' + parseInt(errorString.substring(panicCodeId.length), 16).toString(16);
+    return 'panic code 0x' + panicCode;
   }
 
   return '';
