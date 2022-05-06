@@ -77,9 +77,6 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   });
 }
 
-/**
- * Decodes a custom error introduced to Solidty 0.8.4. Works only with hardhat.
- */
 const decodeHardhatError = (error: any) => {
   const tryDecode = (error: any) => {
     const errorString = String(error);
