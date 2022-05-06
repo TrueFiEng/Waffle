@@ -81,13 +81,6 @@ const decodeHardhatError = (error: any) => {
   const tryDecode = (error: any) => {
     const errorString = String(error);
     {
-      const regexp = new RegExp('VM Exception while processing transaction: reverted with reason string \'(.*)\'');
-      const matches = regexp.exec(errorString);
-      if (matches && matches.length >= 1) {
-        return matches[1];
-      }
-    }
-    {
       const regexp = new RegExp('VM Exception while processing transaction: reverted with custom error \'(.*)\'');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {

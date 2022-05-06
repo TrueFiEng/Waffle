@@ -3,6 +3,22 @@ import {toUtf8String} from 'ethers/lib/utils';
 import {Provider} from 'ganache';
 import {log} from './log';
 
+const getHardhatErrorString = (callRevertError: any) => {
+  const tryDecode = (error: any) => {
+    const stackTrace = error?.stackTrace;
+    const errorBuffer = stackTrace?.[stackTrace.length - 1].message?.value;
+    if (errorBuffer) {
+      return '0x' + errorBuffer.toString('hex');
+    }
+  };
+
+  return tryDecode(callRevertError) ?? tryDecode(callRevertError.error);
+};
+
+const getGanacheErrorString = (callRevertError: any) => {
+  return callRevertError?.error?.data;
+};
+
 /* eslint-disable no-control-regex */
 
 /**
@@ -10,16 +26,38 @@ import {log} from './log';
  * @param callRevertError The error catched from performing a reverting call (query)
  */
 export const decodeRevertString = (callRevertError: any): string => {
+  const errorString: string | undefined =
+    getHardhatErrorString(callRevertError) ??
+    getGanacheErrorString(callRevertError);
+
+  if (errorString === undefined) {
+    return '';
+  }
+
   /**
    * https://ethereum.stackexchange.com/a/66173
    * Numeric.toHexString(Hash.sha3("Error(string)".getBytes())).substring(0, 10)
    */
   const errorMethodId = '0x08c379a0';
-  const errorString: string | undefined = callRevertError?.error?.data;
+  if (errorString.startsWith(errorMethodId)) {
+    return toUtf8String('0x' + errorString.substring(138))
+      .replace(/\x00/g, ''); // Trim null characters.
+  }
 
-  if (!errorString?.startsWith(errorMethodId)) return '';
-  return toUtf8String('0x' + errorString.substring(138))
-    .replace(/\x00/g, ''); // Trim null characters.
+  const panicCodeId = '0x4e487b71';
+  if (errorString.startsWith(panicCodeId)) {
+    let panicCode = parseInt(errorString.substring(panicCodeId.length), 16).toString(16);
+    if (panicCode.length % 2 !== 0) {
+      panicCode = '0' + panicCode;
+    }
+
+    if (['00', '01'].includes(panicCode)) {
+      return ''; // For backwards compatibility;
+    }
+    return 'panic code 0x' + panicCode;
+  }
+
+  return '';
 };
 
 export const appendRevertString = async (etherProvider: providers.Web3Provider, receipt: any) => {
