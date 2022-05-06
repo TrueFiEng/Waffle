@@ -1,5 +1,15 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.24
+
+### Patch Changes
+
+- ba71ce4: Add support for custom errors in hardhat
+- 587ff49: Allow chaining matchers
+- 4622881: Support panic codes in ganache
+- Updated dependencies [4622881]
+  - @ethereum-waffle/provider@4.0.0-alpha.23
+
 ## 4.0.0-alpha.23
 
 ### Patch Changes
