@@ -1,5 +1,11 @@
 # @ethereum-waffle/provider
 
+## 4.0.0-alpha.23
+
+### Patch Changes
+
+- 4622881: Support panic codes in ganache
+
 ## 4.0.0-alpha.22
 
 ### Patch Changes

@@ -20,6 +20,9 @@
   },
   "changesets": [
     "add-src-to-npm",
+    "big-goats-guess",
+    "big-shrimps-rule",
+    "dirty-badgers-sin",
     "fluffy-queens-cross",
     "tame-walls-speak",
     "tricky-spiders-invite",
