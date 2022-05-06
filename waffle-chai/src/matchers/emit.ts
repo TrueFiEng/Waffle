@@ -76,6 +76,12 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     );
     for (let index = 0; index < expectedArgs.length; index++) {
       if (expectedArgs[index]?.length !== undefined && typeof expectedArgs[index] !== 'string') {
+        context.assert(
+          actualArgs[index].length === expectedArgs[index].length,
+          `Expected ${actualArgs[index]} to equal ${expectedArgs[index]}, ` +
+          'but they have different lengths',
+          'Do not combine .not. with .withArgs()'
+        );
         for (let j = 0; j < expectedArgs[index].length; j++) {
           new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
         }
