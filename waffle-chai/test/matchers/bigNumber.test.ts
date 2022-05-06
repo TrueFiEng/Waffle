@@ -139,7 +139,7 @@ describe('UNIT: BigNumber matchers', () => {
     });
   });
 
-  describe.only('closeTo', () => {
+  describe('closeTo', () => {
     it('.to.be.closeTo', () => {
       checkAll(100, 101, (a, b) => expect(a).to.be.closeTo(b, 10));
       checkAll(100, 101, (a, b) => expect(a).to.be.closeTo(b, BigNumber.from(10)));
