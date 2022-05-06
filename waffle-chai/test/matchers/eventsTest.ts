@@ -235,7 +235,7 @@ export const eventsTest = (provider: MockProvider) => {
         )
     ).to.be.eventually.rejectedWith(
       AssertionError,
-      'Expected 1,2,3 to equal 1,2, but they have different lengths'
+      'Expected 1,2,3 to equal 1,2,3,4, but they have different lengths'
     );
   });
 
