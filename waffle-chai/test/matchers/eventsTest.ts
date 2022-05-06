@@ -233,13 +233,13 @@ export const eventsTest = (provider: MockProvider) => {
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
           ]
         )
-      ).to.be.eventually.rejectedWith(
-        AssertionError,
-        'Expected 1,2,3 to equal 1,2, but they have different lengths'
-      );
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected 1,2,3 to equal 1,2, but they have different lengths'
+    );
   });
 
-  it.only('Event with array of BigNumbers and bytes32 types not enough arguments', async () => {
+  it('Event with array of BigNumbers and bytes32 types not enough arguments', async () => {
     await expect(
       expect(events.emitArrays())
         .to.emit(events, 'Arrays')
@@ -249,13 +249,13 @@ export const eventsTest = (provider: MockProvider) => {
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
           ]
         )
-      ).to.be.eventually.rejectedWith(
-        AssertionError,
-        'Expected 0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123,' +
+    ).to.be.eventually.rejectedWith(
+      AssertionError,
+      'Expected 0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123,' +
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124' +
           ' to equal 0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123,' +
           ' but they have different lengths'
-      );
+    );
   });
 
   it('Event with array of BigNumbers providing bignumbers to the matcher', async () => {

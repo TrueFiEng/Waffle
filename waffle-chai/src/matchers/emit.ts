@@ -79,7 +79,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         context.assert(
           actualArgs[index].length === expectedArgs[index].length,
           `Expected ${actualArgs[index]} to equal ${expectedArgs[index]}, ` +
-          `but they have different lengths`,
+          'but they have different lengths',
           'Do not combine .not. with .withArgs()'
         );
         for (let j = 0; j < expectedArgs[index].length; j++) {
