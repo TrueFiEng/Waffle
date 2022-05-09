@@ -44,14 +44,14 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         }
 
         const topic = contract.interface.getEventTopic(eventFragment);
-        this.logs = filterLogsWithTopics(receipt.logs, topic, contract.address);
+        this.args = filterLogsWithTopics(receipt.logs, topic, contract.address);
         // As this callback will be resolved after the chain of matchers is finished, we need to
         // know if the matcher has been negated or not. To simulate chai behaviour, we keep track of whether
         // the matcher has been negated or not and set the internal chai flag __flags.negate to the same value.
         // After the assertion is finished, we set the flag back to original value to not affect other assertions.
         const isCurrentlyNegated = this.__flags.negate === true;
         this.__flags.negate = isNegated;
-        this.assert(this.logs.length > 0,
+        this.assert(this.args.length > 0,
           `Expected event "${eventName}" to be emitted, but it wasn't`,
           `Expected event "${eventName}" NOT to be emitted, but it was`
         );
@@ -61,6 +61,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     this.catch = this.txPromise.catch.bind(this.txPromise);
     this.contract = contract;
     this.eventName = eventName;
+    this.txMatcher = 'emit';
     return this;
   });
 
@@ -98,34 +99,4 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       }
     }
   };
-
-  const tryAssertArgsArraysEqual = (context: any, expectedArgs: any[], logs: any[]) => {
-    if (logs.length === 1) return assertArgsArraysEqual(context, expectedArgs, logs[0]);
-    for (const index in logs) {
-      try {
-        assertArgsArraysEqual(context, expectedArgs, logs[index]);
-        return;
-      } catch {}
-    }
-    context.assert(false,
-      `Specified args not emitted in any of ${context.logs.length} emitted "${context.eventName}" events`,
-      'Do not combine .not. with .withArgs()'
-    );
-  };
-
-  Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
-    if (!('txPromise' in this)) {
-      throw new Error('withArgs() must be used after emit()');
-    }
-    const isNegated = this.__flags.negate === true;
-    this.txPromise = this.txPromise.then(() => {
-      const isCurrentlyNegated = this.__flags.negate === true;
-      this.__flags.negate = isNegated;
-      tryAssertArgsArraysEqual(this, expectedArgs, this.logs);
-      this.__flags.negate = isCurrentlyNegated;
-    });
-    this.then = this.txPromise.then.bind(this.txPromise);
-    this.catch = this.txPromise.catch.bind(this.txPromise);
-    return this;
-  });
 }

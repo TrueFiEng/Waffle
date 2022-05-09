@@ -1,9 +1,10 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
+import { transactionPromise } from '../transaction-promise';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
-    const promise = this._obj;
-
+    transactionPromise(this);
+  
     const assertNotReverted = () => this.assert(
       false,
       'Expected transaction to be reverted',
@@ -26,8 +27,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 
     const onError = (error: any) => {
       const revertString = error?.receipt?.revertString ??
-        decodeHardhatError(error) ??
+        decodeHardhatError(error, this) ??
         decodeRevertString(error);
+
       if (revertString !== undefined) {
         const isReverted = revertReason instanceof RegExp
           ? revertReason.test(revertString)
@@ -70,21 +72,26 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
       return error;
     };
 
-    const derivedPromise = promise.then(onSuccess, onError);
-    this.then = derivedPromise.then.bind(derivedPromise);
-    this.catch = derivedPromise.catch.bind(derivedPromise);
+    this.txPromise = this.txPromise.then(onSuccess, onError);
+    this.then = this.txPromise.then.bind(this.txPromise);
+    this.catch = this.txPromise.catch.bind(this.txPromise);
+    this.txMatcher = 'revertedWith';
     return this;
   });
 }
 
-const decodeHardhatError = (error: any) => {
+const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
     const errorString = String(error);
     {
-      const regexp = new RegExp('VM Exception while processing transaction: reverted with custom error \'(.*)\'');
+      const regexp = /VM Exception while processing transaction: reverted with custom error \'([a-zA-Z0-9]+)\((.*)\)/g;
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
-        return matches[1];
+        // needs to be wrapped in list to be consistent with the emit matcher
+        context.args = [JSON.parse(`[${matches[2]}]`)];
+        const errorName = matches[1];
+        context.txErrorName = errorName;
+        return errorName;
       }
     }
     {
