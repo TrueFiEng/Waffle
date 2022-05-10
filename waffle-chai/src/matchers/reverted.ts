@@ -1,4 +1,4 @@
-import { callPromise } from "../call-promise";
+import {callPromise} from '../call-promise';
 
 export function supportReverted(Assertion: Chai.AssertionStatic) {
   Assertion.addProperty('reverted', function (this: any) {

@@ -5,7 +5,7 @@ type MaybePromise<T> = T | Promise<T>;
 
 const isTransactionResponse = (response: any): response is TransactionResponse => {
   return 'wait' in response;
-}
+};
 
 /**
  * Takes a chai object (usually a `this` object) and adds a `promise` property to it.
@@ -17,7 +17,8 @@ const isTransactionResponse = (response: any): response is TransactionResponse =
  * - a promise which resolves to a transaction response
  * - a function that returns a transaction response
  * - a function that returns a promise which resolves to a transaction response
- * - same combinations as above but query instead of transaction. Attention: some matchers require to be called on a transaction.
+ * - same combinations as above but query instead of transaction.
+ *  Attention: some matchers require to be called on a transaction.
  */
 export const callPromise = (chaiObj: any) => {
   if ('callPromise' in chaiObj) {
@@ -25,7 +26,7 @@ export const callPromise = (chaiObj: any) => {
   }
 
   const call = chaiObj._obj;
-  let response: MaybePromise<{}>;
+  let response: MaybePromise<any>;
 
   if (typeof call === 'function') {
     response = call();
@@ -44,7 +45,7 @@ export const callPromise = (chaiObj: any) => {
       chaiObj.callPromise = Promise.resolve();
     }
   } else {
-    chaiObj.callPromise = response.then(async response => {
+    chaiObj.callPromise = response.then(async (response: any) => {
       if (isTransactionResponse(response)) {
         chaiObj.txResponse = response;
         const txReceipt = await response.wait();
