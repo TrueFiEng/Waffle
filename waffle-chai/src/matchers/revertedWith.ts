@@ -29,15 +29,6 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
         error
       );
 
-      // See https://github.com/ethers-io/ethers.js/issues/829
-      const isEstimateGasError =
-        error instanceof Object &&
-        error.code === 'UNPREDICTABLE_GAS_LIMIT' &&
-        'error' in error;
-
-      if (isEstimateGasError) {
-        error = error.error;
-      }
       return error;
     };
 
