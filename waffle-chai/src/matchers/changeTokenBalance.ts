@@ -1,5 +1,5 @@
 import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
-import {transactionPromise} from '../transaction-promise';
+import {callPromise} from '../call-promise';
 import {Account, getAddressOf} from './misc/account';
 
 export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
@@ -9,9 +9,12 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
     account: Account,
     balanceChange: BigNumberish
   ) {
-    transactionPromise(this);
+    callPromise(this);
     const isNegated = this.__flags.negate === true;
-    const derivedPromise = this.txPromise.then(async () => {
+    const derivedPromise = this.callPromise.then(async () => {
+      if (!('txReceipt' in this)) {
+        throw new Error('The changeTokenBalance matcher must be called on transaction');
+      }
       const address = await getAddressOf(account);
       const actualChanges = await getBalanceChange(this.txReceipt, token, address);
       return [actualChanges, address];
@@ -30,7 +33,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
     });
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.txPromise = derivedPromise;
+    this.callPromise = derivedPromise;
     return this;
   });
 }

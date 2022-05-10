@@ -69,18 +69,18 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
   };
 
   Assertion.addMethod('withArgs', function (this: any, ...expectedArgs: any[]) {
-    if (!('txMatcher' in this) || !('txPromise' in this)) {
+    if (!('txMatcher' in this) || !('callPromise' in this)) {
       throw new Error('withArgs() must be used after emit() or revertedWith()');
     }
     const isNegated = this.__flags.negate === true;
-    this.txPromise = this.txPromise.then(() => {
+    this.callPromise = this.callPromise.then(() => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       tryAssertArgsArraysEqual(this, expectedArgs, this.args);
       this.__flags.negate = isCurrentlyNegated;
     });
-    this.then = this.txPromise.then.bind(this.txPromise);
-    this.catch = this.txPromise.catch.bind(this.txPromise);
+    this.then = this.callPromise.then.bind(this.callPromise);
+    this.catch = this.callPromise.catch.bind(this.callPromise);
     return this;
   });
 }

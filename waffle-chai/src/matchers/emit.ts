@@ -1,5 +1,5 @@
 import {Contract, providers, utils} from 'ethers';
-import {transactionPromise} from '../transaction-promise';
+import {callPromise} from '../call-promise';
 import {waitForPendingTransaction} from './misc/transaction';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
@@ -10,16 +10,19 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
     if (typeof this._obj === 'string') {
       // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
-      this.txPromise = waitForPendingTransaction(this._obj, contract.provider)
+      this.callPromise = waitForPendingTransaction(this._obj, contract.provider)
         .then(txReceipt => {
           this.txReceipt = txReceipt;
         });
     } else {
-      transactionPromise(this);
+      callPromise(this);
     }
     const isNegated = this.__flags.negate === true;
-    this.txPromise = this.txPromise
+    this.callPromise = this.callPromise
       .then(() => {
+        if (!('txReceipt' in this)) {
+          throw new Error('The emit matcher must be called on transaction');
+        }
         const receipt: providers.TransactionReceipt = this.txReceipt;
         let eventFragment: utils.EventFragment | undefined;
         try {
@@ -57,8 +60,8 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         );
         this.__flags.negate = isCurrentlyNegated;
       });
-    this.then = this.txPromise.then.bind(this.txPromise);
-    this.catch = this.txPromise.catch.bind(this.txPromise);
+    this.then = this.callPromise.then.bind(this.callPromise);
+    this.catch = this.callPromise.catch.bind(this.callPromise);
     this.contract = contract;
     this.eventName = eventName;
     this.txMatcher = 'emit';

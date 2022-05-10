@@ -1,5 +1,5 @@
 import {BigNumber, BigNumberish, providers} from 'ethers';
-import {transactionPromise} from '../transaction-promise';
+import {callPromise} from '../call-promise';
 import {ensure} from './calledOnContract/utils';
 import {Account, getAddressOf} from './misc/account';
 import {BalanceChangeOptions} from './misc/balance';
@@ -11,9 +11,12 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
     balanceChange: BigNumberish,
     options: BalanceChangeOptions
   ) {
-    transactionPromise(this);
+    callPromise(this);
     const isNegated = this.__flags.negate === true;
-    const derivedPromise = this.txPromise.then(() => {
+    const derivedPromise = this.callPromise.then(() => {
+      if (!('txResponse' in this)) {
+        throw new Error('The changeEtherBalance matcher must be called on transaction');
+      }
       return Promise.all([
         getBalanceChange(this.txResponse, account, options),
         getAddressOf(account)
@@ -34,7 +37,7 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
     );
     this.then = derivedPromise.then.bind(derivedPromise);
     this.catch = derivedPromise.catch.bind(derivedPromise);
-    this.txPromise = derivedPromise;
+    this.callPromise = derivedPromise;
     return this;
   });
 }
