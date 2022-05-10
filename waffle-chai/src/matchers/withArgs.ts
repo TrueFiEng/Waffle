@@ -6,11 +6,11 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
     let wrongNumberOfArgsMsg: string;
     if (context.txMatcher === 'emit') {
       actualArgs = (context.contract.interface as utils.Interface).parseLog(arg).args;
-      wrongNumberOfArgsMsg =  `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
+      wrongNumberOfArgsMsg = `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
         `but it has ${actualArgs.length}`;
     } else if (context.txMatcher === 'revertedWith') {
       actualArgs = arg;
-      wrongNumberOfArgsMsg =  `Expected "${context.txErrorName}" event to have ${expectedArgs.length} argument(s), ` +
+      wrongNumberOfArgsMsg = `Expected "${context.txErrorName}" event to have ${expectedArgs.length} argument(s), ` +
         `but it has ${actualArgs.length}`;
     } else {
       throw new Error('Unknown txMatcher');

@@ -64,39 +64,4 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     this.txMatcher = 'emit';
     return this;
   });
-
-  const assertArgsArraysEqual = (context: any, expectedArgs: any[], log: any) => {
-    const actualArgs = (context.contract.interface as utils.Interface).parseLog(log).args;
-    context.assert(
-      actualArgs.length === expectedArgs.length,
-      `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
-      `but it has ${actualArgs.length}`,
-      'Do not combine .not. with .withArgs()',
-      expectedArgs.length,
-      actualArgs.length
-    );
-    for (let index = 0; index < expectedArgs.length; index++) {
-      if (expectedArgs[index]?.length !== undefined && typeof expectedArgs[index] !== 'string') {
-        context.assert(
-          actualArgs[index].length === expectedArgs[index].length,
-          `Expected ${actualArgs[index]} to equal ${expectedArgs[index]}, ` +
-          'but they have different lengths',
-          'Do not combine .not. with .withArgs()'
-        );
-        for (let j = 0; j < expectedArgs[index].length; j++) {
-          new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
-        }
-      } else {
-        if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed === true) {
-          const expectedArgBytes = utils.isHexString(expectedArgs[index])
-            ? utils.arrayify(expectedArgs[index]) : utils.toUtf8Bytes(expectedArgs[index]);
-          new Assertion(actualArgs[index].hash).to.be.oneOf(
-            [expectedArgs[index], utils.keccak256(expectedArgBytes)]
-          );
-        } else {
-          new Assertion(actualArgs[index]).equal(expectedArgs[index]);
-        }
-      }
-    }
-  };
 }

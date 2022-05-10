@@ -1,10 +1,10 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
-import { transactionPromise } from '../transaction-promise';
+import {transactionPromise} from '../transaction-promise';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
     transactionPromise(this);
-  
+
     const assertNotReverted = () => this.assert(
       false,
       'Expected transaction to be reverted',
@@ -84,7 +84,7 @@ const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
     const errorString = String(error);
     {
-      const regexp = /VM Exception while processing transaction: reverted with custom error \'([a-zA-Z0-9]+)\((.*)\)/g;
+      const regexp = /VM Exception while processing transaction: reverted with custom error '([a-zA-Z0-9]+)\((.*)\)'/g;
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         // needs to be wrapped in list to be consistent with the emit matcher
