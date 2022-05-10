@@ -36,8 +36,10 @@ export const transactionPromise = (chaiObj: any) => {
   } else {
     chaiObj.txPromise = txResponse.then(async txResponse => {
       chaiObj.txResponse = txResponse;
-      const txReceipt = await txResponse.wait();
-      chaiObj.txReceipt = txReceipt;
+      if (typeof txResponse.wait === 'function') {
+        const txReceipt = await txResponse.wait();
+        chaiObj.txReceipt = txReceipt;
+      }
     });
   }
 

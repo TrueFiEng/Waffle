@@ -38,7 +38,7 @@ export const revertedWithTest = (provider: MockProvider) => {
     ).to.eventually.be.rejected;
   });
 
-  it.only('Not to revert: success', async () => {
+  it('Not to revert: success', async () => {
     await expect(matchers.doNothing()).not.to.be.revertedWith('');
   });
 
