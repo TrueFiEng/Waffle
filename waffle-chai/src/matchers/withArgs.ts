@@ -1,5 +1,9 @@
 import {utils} from 'ethers';
 
+/**
+ * Used for testing the arguments of events or custom errors.
+ * Should be used after .emit or .revertedWith matchers respectively.
+ */
 export function supportWithArgs(Assertion: Chai.AssertionStatic) {
   const assertArgsArraysEqual = (context: any, expectedArgs: any[], arg: any) => {
     let actualArgs: utils.Result;
