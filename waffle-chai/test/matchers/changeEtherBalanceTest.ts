@@ -2,20 +2,18 @@ import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {BigNumber, Contract, Wallet} from 'ethers';
 
-import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+import {BASE_FEE_PER_GAS} from './constants';
 
-export const changeEtherBalanceTest = (provider: MockProvider) => {
+export const changeEtherBalanceTest = (provider: MockProvider, { txGasFees, baseFeePerGas }: { txGasFees: number, baseFeePerGas: number }) => {
   let sender: Wallet;
   let receiver: Wallet;
   let contract: Contract;
-  let txGasFees: number;
 
   before(() => {
     const wallets = provider.getWallets();
     sender = wallets[0];
     receiver = wallets[1];
     contract = new Contract(receiver.address, [], provider);
-    txGasFees = BASE_FEE_PER_GAS * TX_GAS;
   });
 
   describe('Transaction Callback', () => {
@@ -42,7 +40,7 @@ export const changeEtherBalanceTest = (provider: MockProvider) => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
         ).to.changeEtherBalance(sender, -(txGasFees + 200), {includeFee: true});
@@ -52,7 +50,7 @@ export const changeEtherBalanceTest = (provider: MockProvider) => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
         ).to.changeEtherBalance(receiver, 200, {includeFee: true});
@@ -62,7 +60,7 @@ export const changeEtherBalanceTest = (provider: MockProvider) => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
         ).to.changeEtherBalance(sender, -200);
@@ -91,13 +89,13 @@ export const changeEtherBalanceTest = (provider: MockProvider) => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: BASE_FEE_PER_GAS,
+              gasPrice: baseFeePerGas,
               value: 200
             })
           ).to.changeEtherBalance(sender, -200, {includeFee: true})
         ).to.be.eventually.rejectedWith(
           AssertionError,
-          `Expected "${sender.address}" to change balance by -200 wei, but it has changed by -18375000000200 wei`
+          `Expected "${sender.address}" to change balance by -200 wei, but it has changed by -${txGasFees + 200} wei`
         );
       });
 

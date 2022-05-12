@@ -2,14 +2,13 @@ import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {Contract, Wallet} from 'ethers';
 
-import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+import {BASE_FEE_PER_GAS} from './constants';
 
-export const changeEtherBalancesTest = (provider: MockProvider) => {
+export const changeEtherBalancesTest = (provider: MockProvider, { txGasFees, baseFeePerGas }: { txGasFees: number, baseFeePerGas: number  }) => {
   let sender: Wallet;
   let receiver: Wallet;
   let contractWallet: Wallet;
   let contract: Contract;
-  let txGasFees: number;
 
   before(() => {
     const wallets = provider.getWallets();
@@ -17,7 +16,6 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
     receiver = wallets[1];
     contractWallet = wallets[2];
     contract = new Contract(contractWallet.address, [], provider);
-    txGasFees = BASE_FEE_PER_GAS * TX_GAS;
   });
 
   describe('Transaction Callback', () => {
@@ -37,7 +35,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
         ).to.changeEtherBalances([sender, receiver], ['-200', 200]);
@@ -47,7 +45,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
         ).to.changeEtherBalances([sender, receiver, contract], [-(txGasFees + 200), 200, 0], {includeFee: true});
@@ -57,7 +55,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
         ).to.not.changeEtherBalances([sender, receiver], [-(txGasFees + 201), 200]);
@@ -74,7 +72,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: BASE_FEE_PER_GAS,
+              gasPrice: baseFeePerGas,
               value: 200
             })
           ).to.changeEtherBalances([sender, receiver], [-200, 201])
@@ -87,7 +85,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: BASE_FEE_PER_GAS,
+              gasPrice: baseFeePerGas,
               value: 200
             })
           ).to.changeEtherBalances([sender, receiver], [-201, 200])
@@ -103,7 +101,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: BASE_FEE_PER_GAS,
+              gasPrice: baseFeePerGas,
               value: 200
             })
           ).to.not.changeEtherBalances([sender, receiver], [-200, 200])
@@ -131,7 +129,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
       it('Should pass when all expected balance changes are equal to actual values', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: BASE_FEE_PER_GAS,
+          gasPrice: baseFeePerGas,
           value: 200
         })
         ).to.changeEtherBalances([sender, receiver], [(-(txGasFees + 200)).toString(), 200], {includeFee: true});
@@ -140,7 +138,7 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
       it('Should take into account transaction fee', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: BASE_FEE_PER_GAS,
+          gasPrice: baseFeePerGas,
           value: 200
         })
         ).to.changeEtherBalances([sender, receiver, contract], [-(txGasFees + 200), 200, 0], {includeFee: true});
@@ -164,14 +162,14 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
         await expect(
           expect(await sender.sendTransaction({
             to: receiver.address,
-            gasPrice: BASE_FEE_PER_GAS,
+            gasPrice: baseFeePerGas,
             value: 200
           })
           ).to.changeEtherBalances([sender, receiver], [-200, 200], {includeFee: true})
         ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected ${sender.address},${receiver.address} to change balance ` +
-            'by -200,200 wei, but it has changed by -18375000000200,200 wei'
+            `by -200,200 wei, but it has changed by -${txGasFees + 200},200 wei`
         );
       });
 
