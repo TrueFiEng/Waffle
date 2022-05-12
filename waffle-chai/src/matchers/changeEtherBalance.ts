@@ -15,7 +15,7 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
     const isNegated = this.__flags.negate === true;
     const derivedPromise = this.callPromise.then(() => {
       if (!('txResponse' in this)) {
-        throw new Error('The changeEtherBalance matcher must be called on transaction');
+        throw new Error('The changeEtherBalance matcher must be called on a transaction');
       }
       return Promise.all([
         getBalanceChange(this.txResponse, account, options),

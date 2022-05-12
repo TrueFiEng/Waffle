@@ -13,7 +13,7 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
     const isNegated = this.__flags.negate === true;
     const derivedPromise = this.callPromise.then(async () => {
       if (!('txReceipt' in this)) {
-        throw new Error('The changeTokenBalances matcher must be called on transaction');
+        throw new Error('The changeTokenBalances matcher must be called on a transaction');
       }
       const addresses = await getAddresses(accounts);
       const actualChanges = await getBalanceChanges(this.txReceipt, token, addresses);

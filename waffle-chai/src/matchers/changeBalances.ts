@@ -14,7 +14,7 @@ export function supportChangeBalances(Assertion: Chai.AssertionStatic) {
     const isNegated = this.__flags.negate === true;
     const derivedPromise = this.callPromise.then(() => {
       if (!('txResponse' in this)) {
-        throw new Error('The changeBalances matcher must be called on transaction');
+        throw new Error('The changeBalances matcher must be called on a transaction');
       }
       return Promise.all([
         getBalanceChanges(this.txResponse, accounts, {includeFee: true}),
