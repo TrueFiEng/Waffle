@@ -1,4 +1,4 @@
-import {providers, Wallet} from 'ethers';
+import {BigNumber, providers, Transaction, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import type {Provider} from 'ganache';
@@ -82,5 +82,10 @@ export class MockProvider extends providers.Web3Provider {
     const ens = await deployENS(wallet);
     this.network.ensAddress = ens.ens.address;
     this._ens = ens;
+  }
+
+  async getTransactionFee(txHash: string): Promise<BigNumber> {
+    const receipt = await this.getTransactionReceipt(txHash);
+    return receipt.gasUsed.mul(receipt.effectiveGasPrice);
   }
 }
