@@ -1,5 +1,5 @@
 import {revertedTest, revertedWithTest} from '@ethereum-waffle/chai/test';
-import { getOptimismProvider } from '../src';
+import {getOptimismProvider} from './utils/provider';
 
 describe('INTEGRATION: Matchers: reverted', () => {
   const provider = getOptimismProvider();
@@ -10,5 +10,5 @@ describe('INTEGRATION: Matchers: reverted', () => {
 describe('INTEGRATION: Matchers: revertedWith', () => {
   const provider = getOptimismProvider();
 
-  revertedWithTest(provider, { includePanicCodes: false });
+  revertedWithTest(provider, {includePanicCodes: false});
 });

@@ -5,7 +5,7 @@ import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
 import {MockProvider} from '@ethereum-waffle/provider';
 
 interface RevertedWithTestingOptions {
-  includePanicCodes?: boolean
+  includePanicCodes?: boolean;
 }
 
 export const revertedWithTest = (provider: MockProvider, options: RevertedWithTestingOptions = {}) => {

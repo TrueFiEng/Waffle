@@ -1,6 +1,6 @@
-import { JsonRpcProvider } from '@ethersproject/providers'
-import { MockProvider } from 'ethereum-waffle';
-import { BigNumber, Wallet } from 'ethers';
+import {JsonRpcProvider} from '@ethersproject/providers';
+import {MockProvider} from 'ethereum-waffle';
+import {BigNumber, Wallet} from 'ethers';
 
 const privateKeys = [
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
@@ -8,20 +8,16 @@ const privateKeys = [
   '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a',
   '0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6',
   '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a'
-]
+];
 
 class OptimismProvider extends JsonRpcProvider {
-  constructor(url: string) {
-    super(url);
-  }
-
-  public getWallets(): Wallet[] {
+  getWallets(): Wallet[] {
     return privateKeys.map(key => new Wallet(key, this));
   }
 
   // only for L2s
-  public async getL1Fee(transactionHash: string): Promise<BigNumber> {
-    const fullReceipt = await this.perform("getTransactionReceipt", { transactionHash });
+  async getL1Fee(transactionHash: string): Promise<BigNumber> {
+    const fullReceipt = await this.perform('getTransactionReceipt', {transactionHash});
     return BigNumber.from(fullReceipt.l1Fee);
   }
 }

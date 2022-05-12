@@ -118,9 +118,9 @@ const decodeOptimismError = (error: any) => {
         return matches[1];
       }
     }
-  }
+  };
 
-  return tryDecode(error)
-    ?? tryDecode(error?.error)
-    ?? tryDecode(error?.error?.error);
-}
+  return tryDecode(error) ??
+    tryDecode(error?.error) ??
+    tryDecode(error?.error?.error);
+};

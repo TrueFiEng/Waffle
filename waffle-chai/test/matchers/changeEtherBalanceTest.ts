@@ -2,9 +2,15 @@ import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {BigNumber, Contract, Wallet} from 'ethers';
 
-import {BASE_FEE_PER_GAS} from './constants';
+interface ChangeEtherBalanceTestOptions {
+  txGasFees: number;
+  baseFeePerGas: number;
+}
 
-export const changeEtherBalanceTest = (provider: MockProvider, { txGasFees, baseFeePerGas }: { txGasFees: number, baseFeePerGas: number }) => {
+export const changeEtherBalanceTest = (
+  provider: MockProvider,
+  {txGasFees, baseFeePerGas}: ChangeEtherBalanceTestOptions
+) => {
   let sender: Wallet;
   let receiver: Wallet;
   let contract: Contract;
