@@ -25,11 +25,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     };
 
     const onError = (error: any) => {
-      // console.log({ error });
-      // console.log({ error2: error.error });
-      // console.log({ error3: error.error.error });
       const revertString = error?.receipt?.revertString ??
         decodeHardhatError(error) ??
+        decodeOptimismError(error) ??
         decodeRevertString(error);
       if (revertString !== undefined) {
         const isReverted = revertReason instanceof RegExp
@@ -109,3 +107,20 @@ const decodeHardhatError = (error: any) => {
 
   return tryDecode(error) ?? tryDecode(error.error); // the error may be wrapped
 };
+
+const decodeOptimismError = (error: any) => {
+  const tryDecode = (error: any) => {
+    const body = error?.body;
+    if (body) {
+      const regexp = /"execution reverted: (.*)"/g;
+      const matches = regexp.exec(body);
+      if (matches && matches.length >= 1) {
+        return matches[1];
+      }
+    }
+  }
+
+  return tryDecode(error)
+    ?? tryDecode(error?.error)
+    ?? tryDecode(error?.error?.error);
+}

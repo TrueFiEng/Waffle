@@ -10,5 +10,5 @@ describe('INTEGRATION: Matchers: reverted', () => {
 describe('INTEGRATION: Matchers: revertedWith', () => {
   const provider = getOptimismProvider();
 
-  revertedWithTest(provider);
+  revertedWithTest(provider, { includePanicCodes: false });
 });

@@ -41,7 +41,7 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
 
 export async function getBalanceChange(
   txResponse: providers.TransactionResponse,
-  provider: Provider &,
+  account: Account,
   options?: BalanceChangeOptions
 ) {
   ensure(account.provider !== undefined, TypeError, 'Provider not found');
