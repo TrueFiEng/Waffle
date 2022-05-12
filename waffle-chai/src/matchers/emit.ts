@@ -21,7 +21,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     this.callPromise = this.callPromise
       .then(() => {
         if (!('txReceipt' in this)) {
-          throw new Error('The emit matcher must be called on transaction');
+          throw new Error('The emit matcher must be called on a transaction');
         }
         const receipt: providers.TransactionReceipt = this.txReceipt;
         let eventFragment: utils.EventFragment | undefined;
