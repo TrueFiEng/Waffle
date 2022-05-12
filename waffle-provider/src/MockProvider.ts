@@ -1,4 +1,4 @@
-import {BigNumber, providers, Transaction, Wallet} from 'ethers';
+import {BigNumber, providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
 import type {Provider} from 'ganache';

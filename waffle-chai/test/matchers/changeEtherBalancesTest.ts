@@ -1,7 +1,6 @@
 import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {Contract, Wallet} from 'ethers';
-import { BASE_FEE_PER_GAS } from './constants';
 
 export const changeEtherBalancesTest = (provider: MockProvider) => {
   let sender: Wallet;
@@ -46,7 +45,8 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
         });
         const txReceipt = await tx.wait();
         const txGasFees = await provider.getTransactionFee(txReceipt.transactionHash);
-        await expect(tx). to.changeEtherBalances([sender, receiver, contract], [-(txGasFees.add(200)), 200, 0], {includeFee: true});
+        await expect(tx)
+          .to.changeEtherBalances([sender, receiver, contract], [-(txGasFees.add(200)), 200, 0], {includeFee: true});
       });
 
       it('Should pass when negated and numbers don\'t match', async () => {
@@ -128,7 +128,8 @@ export const changeEtherBalancesTest = (provider: MockProvider) => {
         });
         const txReceipt = await tx.wait();
         const txGasFees = await provider.getTransactionFee(txReceipt.transactionHash);
-        await expect(tx).to.changeEtherBalances([sender, receiver], [(-(txGasFees.add(200))).toString(), 200], {includeFee: true});
+        await expect(tx)
+          .to.changeEtherBalances([sender, receiver], [(-(txGasFees.add(200))).toString(), 200], {includeFee: true});
       });
 
       it('Should take into account transaction fee', async () => {
