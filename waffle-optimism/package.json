@@ -11,7 +11,8 @@
   "types": "dist/esm/index.d.ts",
   "scripts": {
     "build": "true",
-    "test": "mocha",
+    "test": "true",
+    "test:optimism": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'"
   },
