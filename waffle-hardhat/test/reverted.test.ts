@@ -32,7 +32,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
     return matchers;
   };
 
-  // Custom errors are supported by hardhat, but you need to compile smart contract using hardhat as well 
+  // Custom errors are supported by hardhat, but you need to compile smart contract using hardhat as well
   // in order for custom errors to work properly. So those tests are hardhat specific.
   describe('Custom errors', () => {
     it('Revert success', async () => {
