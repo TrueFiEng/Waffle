@@ -3,19 +3,23 @@ import {expect, AssertionError} from 'chai';
 import {BigNumber, Contract, Wallet} from 'ethers';
 
 interface ChangeEtherBalanceTestOptions {
-  txGasFees: number;
+  txGasFees: number | (() => number);
   baseFeePerGas: number;
 }
 
 export const changeEtherBalanceTest = (
   provider: MockProvider,
-  {txGasFees, baseFeePerGas}: ChangeEtherBalanceTestOptions
+  options: ChangeEtherBalanceTestOptions
 ) => {
+  let txGasFees: number;
+  let baseFeePerGas: number;
   let sender: Wallet;
   let receiver: Wallet;
   let contract: Contract;
 
   before(() => {
+    txGasFees = typeof options.txGasFees === 'function' ? options.txGasFees() : options.txGasFees;
+    baseFeePerGas = options.baseFeePerGas;
     const wallets = provider.getWallets();
     sender = wallets[0];
     receiver = wallets[1];

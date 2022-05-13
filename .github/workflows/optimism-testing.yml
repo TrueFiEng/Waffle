@@ -26,9 +26,6 @@ jobs:
           docker-compose pull
           docker-compose up &
           scripts/wait-for-sequencer.sh && echo "System is ready to accept transactions"
-      - name: Check gas price
-        run: | 
-          curl -X POST --data '{"jsonrpc":"2.0","method":"rollup_gasPrices","params":[],"id":1}' -H "Content-Type: application/json" http://localhost:8545/ 
       - name: Test optimism
         run: |
           cd waffle-optimism
