@@ -15,7 +15,6 @@ class OptimismProvider extends JsonRpcProvider {
     return privateKeys.map(key => new Wallet(key, this));
   }
 
-  // only for L2s
   async getL1Fee(transactionHash: string): Promise<BigNumber> {
     const fullReceipt = await this.perform('getTransactionReceipt', {transactionHash});
     return BigNumber.from(fullReceipt.l1Fee);

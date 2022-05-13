@@ -5,6 +5,7 @@ describe('Optimism: changeEtherBalances matcher', () => {
   const provider = getOptimismProvider();
   let txGasFees: number;
 
+  // needed to get fees for a single transaction on Optimism - it can be non constant
   before(async () => {
     const [sender, receiver] = provider.getWallets();
     const tx = await sender.sendTransaction({
@@ -16,7 +17,5 @@ describe('Optimism: changeEtherBalances matcher', () => {
     txGasFees = txReceipt.gasUsed.mul(tx.gasPrice ?? txReceipt.effectiveGasPrice).add(l1Fee).toNumber();
   });
 
-  describe('changeEtherBalances matcher', () => {
-    changeEtherBalancesTest(provider, {txGasFees: () => txGasFees, baseFeePerGas: 1});
-  });
+  changeEtherBalancesTest(provider, {txGasFees: () => txGasFees, baseFeePerGas: 1});
 });
