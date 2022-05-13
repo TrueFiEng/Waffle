@@ -1,0 +1,38 @@
+name: Optimism testing
+
+on:
+  push:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.32.4
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v3.0.0
+        with:
+          node-version: 16.x
+      - name: Build project
+        run: |
+          pnpm install
+          pnpm build
+      - name: Setup optimism node
+        run: |
+          cd ..
+          git clone https://github.com/ethereum-optimism/optimism.git
+          cd optimism/ops
+          docker-compose pull
+          docker-compose up &
+          scripts/wait-for-sequencer.sh && echo "System is ready to accept transactions"
+      - name: Test optimism
+        run: |
+          cd waffle-optimism
+          pnpm run test:optimism
+      - name: Cleanup
+        if: always()
+        run: |
+          cd ../optimism/ops
+          docker-compose down
+      
