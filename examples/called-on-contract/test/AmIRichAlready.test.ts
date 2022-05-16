@@ -19,7 +19,7 @@ describe('Am I Rich Already', () => {
     expect('balanceOf').to.be.calledOnContract(ERC20);
   });
 
-  it('returns true if the wallet has at least 1000000 coins', async () => {
+  it('returns true if the wallet has more than 1000000 coins', async () => {
     ERC20 = await deployContract(wallet, BasicToken, [utils.parseEther('1000001')]);
     contract = await deployContract(wallet, AmIRichAlready, [ERC20.address]);
     expect(await contract.check()).to.equal(true);
