@@ -410,6 +410,7 @@ importers:
   waffle-optimism:
     specifiers:
       '@ethereum-waffle/chai': workspace:*
+      '@ethersproject/abstract-provider': ^5.6.0
       '@ethersproject/providers': ^5.6.2
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
@@ -417,6 +418,7 @@ importers:
       mocha: ^8.2.1
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
+      '@ethersproject/abstract-provider': 5.6.0
       '@ethersproject/providers': 5.6.3
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli

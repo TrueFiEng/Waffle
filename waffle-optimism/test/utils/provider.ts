@@ -10,7 +10,7 @@ const privateKeys = [
   '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a'
 ];
 
-class OptimismProvider extends JsonRpcProvider {
+export class OptimismProvider extends JsonRpcProvider {
   getWallets(): Wallet[] {
     return privateKeys.map(key => new Wallet(key, this));
   }
@@ -21,7 +21,7 @@ class OptimismProvider extends JsonRpcProvider {
   }
 }
 
-export const getOptimismProvider = (): MockProvider => {
-  const provider = new OptimismProvider('http://localhost:8545');
+export const getOptimismProvider = (url = 'http://localhost:8545'): MockProvider => {
+  const provider = new OptimismProvider(url);
   return provider as unknown as MockProvider;
 };

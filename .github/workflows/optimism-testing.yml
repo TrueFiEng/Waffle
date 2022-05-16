@@ -7,6 +7,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # test against a known version and a current master
+        OPTIMISM_GIT_HEAD: ["b0a54509a6f99194221f5ade230ceae7892b3393", "master"]
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2
@@ -24,6 +28,7 @@ jobs:
         run: |
           cd ..
           git clone https://github.com/ethereum-optimism/optimism.git
+          git checkout {{ OPTIMISM_GIT_HEAD }}
           cd optimism/ops
           docker-compose pull
           docker-compose up &
@@ -32,8 +37,3 @@ jobs:
         run: |
           cd waffle-optimism
           pnpm run test:optimism
-      - name: Cleanup
-        if: always()
-        run: |
-          cd ../optimism/ops
-          docker-compose down
