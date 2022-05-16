@@ -29,7 +29,7 @@ jobs:
           cd ..
           git clone https://github.com/ethereum-optimism/optimism.git
           cd optimism/ops
-          git checkout {{ OPTIMISM_GIT_HEAD }}
+          git checkout ${{ matrix.OPTIMISM_GIT_HEAD }}
           docker-compose pull
           docker-compose up &
           scripts/wait-for-sequencer.sh && echo "System is ready to accept transactions"
