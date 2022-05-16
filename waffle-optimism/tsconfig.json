@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "references": [
+    {
+      "path": "../waffle-chai"
+    },
+    {
+      "path": "../waffle-cli"
+    }
+  ]
+}

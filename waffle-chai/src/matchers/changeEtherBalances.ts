@@ -70,6 +70,11 @@ async function getTxFees(
         const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
         const gasUsed = txReceipt.gasUsed;
         const txFee = gasPrice.mul(gasUsed);
+        const provider = account.provider as any;
+        if (typeof provider.getL1Fee === 'function') {
+          const l1Fee = await provider.getL1Fee(txReceipt.transactionHash);
+          return txFee.add(l1Fee);
+        }
 
         return txFee;
       }
