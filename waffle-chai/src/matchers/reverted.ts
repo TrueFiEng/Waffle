@@ -1,6 +1,8 @@
+import {callPromise} from '../call-promise';
+
 export function supportReverted(Assertion: Chai.AssertionStatic) {
   Assertion.addProperty('reverted', function (this: any) {
-    const promise = this._obj;
+    callPromise(this);
     const onError = (error: any) => {
       const message = (error instanceof Object && 'message' in error) ? error.message : JSON.stringify(error);
       const isReverted = message.search('revert') >= 0;
@@ -24,20 +26,9 @@ export function supportReverted(Assertion: Chai.AssertionStatic) {
       'Transaction NOT reverted.'
     );
 
-    const onSuccess = (value: any) => {
-      if ('wait' in value) {
-        // Sending the transaction succeeded, but we wait to see if it will revert on-chain.
-        return value.wait().then((newValue: any) => {
-          assertNotReverted();
-          return newValue;
-        }, onError);
-      }
-      assertNotReverted();
-      return value;
-    };
-    const derivedPromise = promise.then(onSuccess, onError);
-    this.then = derivedPromise.then.bind(derivedPromise);
-    this.catch = derivedPromise.catch.bind(derivedPromise);
+    this.callPromise = this.callPromise.then(assertNotReverted, onError);
+    this.then = this.callPromise.then.bind(this.callPromise);
+    this.catch = this.callPromise.catch.bind(this.callPromise);
     return this;
   });
 }

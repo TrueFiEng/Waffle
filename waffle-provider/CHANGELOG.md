@@ -1,5 +1,25 @@
 # @ethereum-waffle/provider
 
+## 4.0.0-alpha.23
+
+### Patch Changes
+
+- 4622881: Support panic codes in ganache
+
+## 4.0.0-alpha.22
+
+### Patch Changes
+
+- 671f139: Include eth_sendTransaction when recording call history
+
+## 4.0.0-alpha.21
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- Updated dependencies [e8adce7]
+  - @ethereum-waffle/ens@4.0.0-alpha.21
+
 ## 4.0.0-alpha.20
 
 ### Patch Changes

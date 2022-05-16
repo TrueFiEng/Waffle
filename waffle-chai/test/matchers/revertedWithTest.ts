@@ -181,4 +181,8 @@ export const revertedWithTest = (provider: MockProvider) => {
       expect(Promise.reject('Always reject')).to.be.revertedWith('Always reject')
     ).to.be.eventually.rejected;
   });
+
+  it('Handle panic error', async () => {
+    await expect(matchers.doPanic()).to.be.revertedWith('panic code 0x12');
+  });
 };

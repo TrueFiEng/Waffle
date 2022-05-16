@@ -1,5 +1,11 @@
 # @ethereum-waffle/ens
 
+## 4.0.0-alpha.21
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+
 ## 4.0.0-alpha.20
 
 ### Patch Changes

@@ -42,15 +42,15 @@ export async function saveOutput(
   filesystem.createDirectory(config.outputDirectory);
 
   if (['multiple', 'all'].includes(config.outputType)) {
-    saveOutputSingletons(output, config, filesystem);
+    await saveOutputSingletons(output, config, filesystem);
   }
 
   if (['combined', 'all'].includes(config.outputType)) {
-    saveOutputCombined(output, config, filesystem);
+    await saveOutputCombined(output, config, filesystem);
   }
 
   if (['minimal'].includes(config.outputType)) {
-    saveOutputMinimal(output, config, filesystem);
+    await saveOutputMinimal(output, config, filesystem);
   }
 }
 

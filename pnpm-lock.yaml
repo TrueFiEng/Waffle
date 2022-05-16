@@ -23,6 +23,7 @@ importers:
       chai-as-promised: ^7.1.1
       chai-string: ^1.5.0
       eslint-plugin-import: ^2.22.1
+      eslint-plugin-no-only-tests: ^2.6.0
       sinon: ^9.2.1
       sinon-chai: ^3.5.0
     dependencies:
@@ -41,6 +42,7 @@ importers:
       chai-as-promised: 7.1.1_chai@4.2.0
       chai-string: 1.5.0_chai@4.2.0
       eslint-plugin-import: 2.22.1
+      eslint-plugin-no-only-tests: 2.6.0
       sinon: 9.2.4
       sinon-chai: 3.5.0_chai@4.2.0+sinon@9.2.4
 
@@ -369,7 +371,7 @@ importers:
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
       '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.2+hardhat@2.9.3
-      '@nomiclabs/hardhat-waffle': 2.0.3_d5b8f68bd9b45f451ef1ad3bbdda2a7e
+      '@nomiclabs/hardhat-waffle': 2.0.3_dcef802d34946732f33d050426d13f57
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
       ethers: 5.6.2
@@ -1194,7 +1196,7 @@ packages:
       hardhat: 2.9.3
     dev: true
 
-  /@nomiclabs/hardhat-waffle/2.0.3_d5b8f68bd9b45f451ef1ad3bbdda2a7e:
+  /@nomiclabs/hardhat-waffle/2.0.3_dcef802d34946732f33d050426d13f57:
     resolution: {integrity: sha512-049PHSnI1CZq6+XTbrMbMv5NaL7cednTfPenx02k3cEh8wBMLa6ys++dBETJa6JjfwgA9nBhhHQ173LJv6k2Pg==}
     peerDependencies:
       '@nomiclabs/hardhat-ethers': ^2.0.0
@@ -1205,6 +1207,7 @@ packages:
       '@nomiclabs/hardhat-ethers': 2.0.5_ethers@5.6.2+hardhat@2.9.3
       '@types/sinon-chai': 3.2.5
       '@types/web3': 1.0.19
+      ethereum-waffle: link:waffle-cli
       ethers: 5.6.2
       hardhat: 2.9.3
     dev: true
@@ -2735,6 +2738,11 @@ packages:
       read-pkg-up: 2.0.0
       resolve: 1.20.0
       tsconfig-paths: 3.9.0
+    dev: true
+
+  /eslint-plugin-no-only-tests/2.6.0:
+    resolution: {integrity: sha512-T9SmE/g6UV1uZo1oHAqOvL86XWl7Pl2EpRpnLI8g/bkJu+h7XBCB+1LnubRZ2CUQXj805vh4/CYZdnqtVaEo2Q==}
+    engines: {node: '>=4.0.0'}
     dev: true
 
   /eslint-scope/5.1.1:

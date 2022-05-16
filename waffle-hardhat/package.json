@@ -10,7 +10,7 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "build": "true",
+    "build": "hardhat compile",
     "test": "NODE_PATH=\"${PWD}/node_modules\":$NODE_PATH mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'"

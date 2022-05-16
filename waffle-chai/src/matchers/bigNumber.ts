@@ -101,7 +101,7 @@ function overwriteBigNumberCloseTo(_super: (...args: any[]) => any, chaiUtils: C
         BigNumber.from(expected).sub(actual).abs().lte(delta),
         `Expected "${expected}" to be within ${delta} of ${actual}`,
         `Expected "${expected}" NOT to be within ${delta} of ${actual}`,
-        `A number between ${actual.sub(delta)} and ${actual.sub(delta)}`,
+        `A number between ${BigNumber.from(actual).sub(delta)} and ${BigNumber.from(actual).sub(delta)}`,
         expected
       );
     } else {

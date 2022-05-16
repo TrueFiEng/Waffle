@@ -77,12 +77,13 @@ export class CallHistory {
           /**
            * A method can be:
            * - `eth_call` - a query to the node,
-           * - `eth_sendRawTransaction` - a transaction,
+           * - `eth_sendRawTransaction` - a raw transaction,
+           * - `eth_sendTransaction` - a transaction,
            * - `eth_estimateGas` - gas estimation, typically precedes `eth_sendRawTransaction`.
            */
-          if (method === 'eth_call') { // Record a query.
+          if (method === 'eth_call' || method === 'eth_sendTransaction') { // Record a query or a transaction.
             callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
-          } else if (method === 'eth_sendRawTransaction') { // Record a transaction.
+          } else if (method === 'eth_sendRawTransaction') { // Record a raw transaction.
             const parsedTx = parseTransaction(args[0]?.params?.[0]);
             callHistory.recordedCalls.push(toRecordedCall(parsedTx));
           }

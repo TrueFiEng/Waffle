@@ -263,7 +263,7 @@ We updated the following dependencies:
 
 - :code:`typechain` - bumped version from ^2.0.0 to ^9.0.0. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install  :code:`typechain` manually when using Waffle.
 - :code:`ethers` - bumped version from to ^5.5.4. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install :code:`ethers` manually when using Waffle.
-- :code:`solc` - the package is used by :code:`waffle-compiler` package to provide the default option for compiling Soldity code. Was moved to the :code:`peerDependencies` section and has no version restrictions - you now have to install :code:`solc` manually when using Waffle.
+- :code:`solc` - the package is used by :code:`waffle-compiler` package to provide the default option for compiling Solidity code. Was moved to the :code:`peerDependencies` section and has no version restrictions - you now have to install :code:`solc` manually when using Waffle.
 - Deprecated :code:`ganache-core` package has been replaced with :code:`ganache` version ^7.0.3. It causes slight differences in the parameters of :code:`MockProvider` from :code:`@ethereum-waffle/provider`. Now the :code:`MockProvider` uses :code:`berlin` hardfork by default.
 
 Changes to :code:`MockProvider` parameters
@@ -436,10 +436,10 @@ In the new Ganache, you should not override the wallet config, otherwise you mig
     }
   })
 
-Chaining :code:`emit` matchers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Chaining matchers
+~~~~~~~~~~~~~~~~~
 
-Now when testing events on a smart contract you can conveniently chain :code:`emit` matchers.
+Now when testing events on a smart contract you can conveniently chain matchers. It can be especially useful when testing events.
 
 .. code-block:: ts
   
@@ -454,3 +454,82 @@ Now when testing events on a smart contract you can conveniently chain :code:`em
           'Two'
         )
         .to.not.emit(contract, 'Three');
+
+:code:`changeEtherBalance`, :code:`changeEtherBalances`, :code:`changeTokenbalance` and :code:`changeTokenBalances` matchers also support chaining:
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(tx)
+    .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+    .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+    .and.to.emit(complex, 'TransferredEther').withArgs(200)
+    .and.to.emit(complex, 'TransferredTokens').withArgs(100);
+
+Although you may find it more convenient to write multiple expects. The test below is equivalent to the one above: 
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(tx).to.changeTokenBalances(token, [sender, receiver], [-100, 100]);
+  await expect(tx).to.changeEtherBalances([sender, receiver], [-200, 200]);
+  await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+  await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+
+Note that in both cases you can use :code:`chai` negation :code:`not`. In a case of a single expect everything after :code:`not` is negated.
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(expect(tx)
+    .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+    .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+    .and.not
+    .to.emit(complex, 'UnusedEvent') // This is negated
+    .and.to.changeEtherBalances([sender, receiver], [-100, 100])  // This is negated as well
+
+
+Custom errors
+~~~~~~~~~~~~~
+
+Custom errors were introduced in Solidity v0.8.4. It is a convenient and gas-efficient way to explain to users why an operation failed. Custom errors are defined in a similar way as events:
+
+.. code-block:: solidity
+
+  // SPDX-License-Identifier: GPL-3.0
+  pragma solidity ^0.8.4;
+
+  /// Insufficient balance for transfer. Needed `required` but only
+  /// `available` available.
+  /// @param available balance available.
+  /// @param required requested amount to transfer.
+  error InsufficientBalance(uint256 available, uint256 required);
+
+  contract TestToken {
+      mapping(address => uint) balance;
+      function transfer(address to, uint256 amount) public {
+          if (amount > balance[msg.sender])
+              // Error call using named parameters. Equivalent to
+              // revert InsufficientBalance(balance[msg.sender], amount);
+              revert InsufficientBalance({
+                  available: balance[msg.sender],
+                  required: amount
+              });
+          balance[msg.sender] -= amount;
+          balance[to] += amount;
+      }
+      // ...
+  }
+
+
+When using Waffle v4.0.0-alpha.* with Hardhat, you can test transactions being reverted with custom errors as well. Using the :code:`.revertedWith` matcher you can capture the custom error's name (:code:`expect(tx).to.be.revertedWith('InsufficientBalance')`). If you want to access arguments of a custom error you should use :code:`.withArgs` matcher after the :code:`.revertedWith` matcher.
+
+.. code-block:: ts
+
+  await expect(token.transfer(receiver, 100))
+      .to.be.revertedWith('InsufficientBalance')
+      .withArgs(0, 100);
+
