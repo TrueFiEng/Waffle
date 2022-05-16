@@ -415,12 +415,13 @@ importers:
       ethereum-waffle: workspace:*
       ethers: 5.6.2
       mocha: ^8.2.1
+    dependencies:
+      '@ethersproject/providers': 5.6.3
+      ethers: 5.6.2
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
-      '@ethersproject/providers': 5.6.3
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
-      ethers: 5.6.2
       mocha: 8.2.1
 
   waffle-provider:
@@ -988,6 +989,7 @@ packages:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+    dev: false
 
   /@ethersproject/random/5.6.0:
     resolution: {integrity: sha512-si0PLcLjq+NG/XHSZz90asNf+YfKEqJGVdxoEkSukzbnBgC8rydbgbUgBbBGLeHN4kAJwUFEKsu3sCXT93YMsw==}
