@@ -1,5 +1,5 @@
 import {JsonRpcProvider} from '@ethersproject/providers';
-import {MockProvider} from 'ethereum-waffle';
+import type {MockProvider} from 'ethereum-waffle';
 import {BigNumber, Wallet} from 'ethers';
 
 const privateKeys = [
