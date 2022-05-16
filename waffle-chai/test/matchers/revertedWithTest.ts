@@ -4,7 +4,12 @@ import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
 
 import {MockProvider} from '@ethereum-waffle/provider';
 
-export const revertedWithTest = (provider: MockProvider) => {
+interface RevertedWithTestingOptions {
+  includePanicCodes?: boolean;
+}
+
+export const revertedWithTest = (provider: MockProvider, options: RevertedWithTestingOptions = {}) => {
+  const panicCodes = options.includePanicCodes ?? true;
   let wallet: Wallet;
   let matchers: Contract;
 
@@ -182,7 +187,9 @@ export const revertedWithTest = (provider: MockProvider) => {
     ).to.be.eventually.rejected;
   });
 
-  it('Handle panic error', async () => {
-    await expect(matchers.doPanic()).to.be.revertedWith('panic code 0x12');
-  });
+  if (panicCodes) {
+    it('Handle panic error', async () => {
+      await expect(matchers.doPanic()).to.be.revertedWith('panic code 0x12');
+    });
+  }
 };

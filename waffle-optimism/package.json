@@ -1,0 +1,32 @@
+{
+  "name": "@ethereum-waffle/optimism",
+  "description": "Testing waffle with optimism",
+  "version": "4.0.0-alpha.20",
+  "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
+  "repository": "git@github.com:EthWorks/Waffle.git",
+  "private": true,
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.ts",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "build": "true",
+    "test": "true",
+    "test:optimism": "mocha",
+    "lint": "eslint '{src,test}/**/*.ts'",
+    "lint:fix": "eslint --fix '{src,test}/**/*.ts'"
+  },
+  "engines": {
+    "node": ">=10.0"
+  },
+  "dependencies": {
+    "@ethersproject/providers": "^5.6.2",
+    "ethers": "5.6.2"
+  },
+  "devDependencies": {
+    "@ethereum-waffle/chai": "workspace:*",
+    "eslint": "^7.14.0",
+    "ethereum-waffle": "workspace:*",
+    "mocha": "^8.2.1"
+  }
+}
