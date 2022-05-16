@@ -92,7 +92,7 @@ Mock contract will be used to mock exactly this call with values that are releva
       expect(await contract.check()).to.be.equal(false);
     });
 
-    it('returns true if the wallet has at least 1000000 coins', async () => {
+    it('returns true if the wallet has more than 1000000 coins', async () => {
       const {contract, mockERC20} = await setup();
       await mockERC20.mock.balanceOf.returns(utils.parseEther('1000001'));
       expect(await contract.check()).to.equal(true);
