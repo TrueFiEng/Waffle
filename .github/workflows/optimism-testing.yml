@@ -3,7 +3,7 @@ name: Optimism testing
 on:
   push:
     branches:
-      - changeset-release/*
+      # - changeset-release/*
 jobs:
   test:
     runs-on: ubuntu-latest
