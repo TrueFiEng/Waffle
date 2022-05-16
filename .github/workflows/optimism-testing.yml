@@ -13,6 +13,8 @@ jobs:
         OPTIMISM_GIT_HEAD: ["b0a54509a6f99194221f5ade230ceae7892b3393", "master"]
     steps:
       - uses: actions/checkout@v2
+         with:
+           fetch-depth: 0
       - uses: pnpm/action-setup@v2
         with:
           version: 6.32.4
