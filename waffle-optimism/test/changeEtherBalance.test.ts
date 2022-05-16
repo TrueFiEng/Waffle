@@ -1,5 +1,6 @@
 import {changeEtherBalanceTest} from '@ethereum-waffle/chai/test';
-import {calculateL2TxGasFee, getOptimismProvider} from './utils';
+import { getOptimismProvider } from '../src';
+import {calculateL2TxGasFee} from './utils';
 
 describe('Optimism: changeEtherBalance matcher', () => {
   const provider = getOptimismProvider();

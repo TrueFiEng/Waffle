@@ -1,4 +1,4 @@
-import {OptimismProvider} from './provider';
+import {OptimismProvider} from '../../src/provider';
 
 /*  needed to get fees for a single transaction on Optimism - it can be non constant
  *
