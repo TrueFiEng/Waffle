@@ -31,13 +31,13 @@ Add an external library by installing it with yarn or npm:
 
     .. code-block:: text
 
-      yarn add @openzeppelin/contracts@3.4.2 -D
+      yarn add @openzeppelin/contracts@^4.6.0 -D
 
   .. group-tab:: NPM
 
     .. code-block:: text
 
-      npm install @openzeppelin/contracts -D
+      npm install @openzeppelin/contracts@^4.6.0 -D
 
 Writing a contract
 ------------------
@@ -46,13 +46,15 @@ Below is an example contract written in Solidity. Place it in :code:`src/BasicTo
 
 .. code-block:: solidity
 
-  pragma solidity ^0.6.0;
+  // SPDX-License-Identifier: MIT
+
+  pragma solidity ^0.8.0;
 
   import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
   // Example class - a mock class using delivering from ERC20
   contract BasicToken is ERC20 {
-    constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
+    constructor(uint256 initialBalance) ERC20("Basic", "BSC") {
         _mint(msg.sender, initialBalance);
     }
   }
@@ -96,7 +98,7 @@ In the :code:`waffle.json` file of your project add the following entry:
 
   {
     "compilerType": "solcjs",
-    "compilerVersion": "0.6.2",
+    "compilerVersion": "0.8.13",
     "sourceDirectory": "./src",
     "outputDirectory": "./build"
   }
