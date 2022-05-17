@@ -168,7 +168,7 @@ Run:
       npm install --save-dev mocha chai
 
 .. note::
-  If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`. Lastly, make sure to install mocha types: :code:`npm i -D @types/mocha`.
+  If you are using Typescript don't forget to add :code:`ts-node`, :code:`typescript` and :code:`@types/mocha` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`.
 
 Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
@@ -236,18 +236,30 @@ Update your :code:`package.json` file to include:
   {
     "scripts": {
       "build": "waffle",
-      "test": "export NODE_ENV=test && mocha",
+      "test": "NODE_ENV=test mocha",
     }
   }
 
-If you are using TypeScript add a :code:`.mocharc.json` file in your root directory:
+Next, add a :code:`.mocharc.json` file in your root directory:
 
-.. code-block:: json
+.. tabs::
 
-  {
-    "require": "ts-node/register/transpile-only",
-    "spec": "test/**/*.test.{js,ts}"
-  }
+  .. group-tab:: Javascript
+
+    .. code-block:: json
+
+      {
+        "spec": "test/**/*.test.{js,ts}"
+      }
+
+  .. group-tab:: Typescript
+
+    .. code-block:: json
+
+      {
+        "require": "ts-node/register/transpile-only",
+        "spec": "test/**/*.test.{js,ts}"
+      }
 
 And run:
 
