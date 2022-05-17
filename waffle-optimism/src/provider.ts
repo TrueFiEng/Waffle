@@ -1,5 +1,4 @@
 import {JsonRpcProvider} from '@ethersproject/providers';
-import type {MockProvider} from 'ethereum-waffle';
 import {BigNumber, Wallet} from 'ethers';
 
 const privateKeys = [
@@ -34,8 +33,3 @@ export class OptimismProvider extends JsonRpcProvider {
     return BigNumber.from(fullReceipt.l1Fee);
   }
 }
-
-export const getOptimismProvider = (url = 'http://localhost:8545'): MockProvider => {
-  const provider = new OptimismProvider(url);
-  return provider as unknown as MockProvider;
-};

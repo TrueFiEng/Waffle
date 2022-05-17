@@ -1,9 +1,9 @@
 import {changeEtherBalanceTest} from '@ethereum-waffle/chai/test';
-import {getOptimismProvider} from '../src';
+import {OptimismProvider} from '../src/provider';
 import {calculateL2TxGasFee} from './utils';
 
 describe('Optimism: changeEtherBalance matcher', () => {
-  const provider = getOptimismProvider();
+  const provider = new OptimismProvider();
   let txGasFees: number;
 
   // needed to get fees for a single transaction on Optimism - it can be non constant

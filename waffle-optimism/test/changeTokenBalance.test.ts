@@ -1,8 +1,8 @@
 import {changeTokenBalanceTest} from '@ethereum-waffle/chai/test';
-import {getOptimismProvider} from '../src/provider';
+import {OptimismProvider} from '../src/provider';
 
 describe('Optimism: changeTokenBalance matcher', () => {
-  const provider = getOptimismProvider();
+  const provider = new OptimismProvider();
 
   changeTokenBalanceTest(provider);
 });
