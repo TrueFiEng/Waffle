@@ -1,8 +1,8 @@
 import {chainingMatchersTest} from '@ethereum-waffle/chai/test';
-import {getOptimismProvider} from '../src/provider';
+import {OptimismProvider} from '../src/provider';
 
 describe('Optimism: chaining', () => {
-  const provider = getOptimismProvider();
+  const provider = new OptimismProvider();
 
   chainingMatchersTest(provider);
 });
