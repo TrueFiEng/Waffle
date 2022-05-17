@@ -1,5 +1,16 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.25
+
+### Patch Changes
+
+- e69f739: Support testing on optimism
+- 1e598c5: BN closeTo actual may be a js number
+- 2ccc395: Fix emit.withArgs not enough elements in list
+- 79a421f: Test args of custom errors with .withArgs matcher
+- Updated dependencies [1e479c3]
+  - @ethereum-waffle/provider@4.0.0-alpha.24
+
 ## 4.0.0-alpha.24
 
 ### Patch Changes

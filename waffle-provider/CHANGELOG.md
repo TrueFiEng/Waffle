@@ -1,5 +1,11 @@
 # @ethereum-waffle/provider
 
+## 4.0.0-alpha.24
+
+### Patch Changes
+
+- 1e479c3: Introduce TestProvider type
+
 ## 4.0.0-alpha.23
 
 ### Patch Changes
