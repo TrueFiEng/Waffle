@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "workspace:*",
+    "@ethereum-waffle/provider": "workspace:*",
     "eslint": "^7.14.0",
     "ethereum-waffle": "workspace:*",
     "mocha": "^8.2.1"

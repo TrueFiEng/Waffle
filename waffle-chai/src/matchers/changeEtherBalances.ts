@@ -1,3 +1,4 @@
+import type {TestProvider} from '@ethereum-waffle/provider';
 import {BigNumber, BigNumberish, providers} from 'ethers';
 import {callPromise} from '../call-promise';
 import {getAddressOf, Account} from './misc/account';
@@ -70,7 +71,7 @@ async function getTxFees(
         const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
         const gasUsed = txReceipt.gasUsed;
         const txFee = gasPrice.mul(gasUsed);
-        const provider = account.provider as any;
+        const provider = account.provider as TestProvider;
         if (typeof provider.getL1Fee === 'function') {
           const l1Fee = await provider.getL1Fee(txReceipt.transactionHash);
           return txFee.add(l1Fee);

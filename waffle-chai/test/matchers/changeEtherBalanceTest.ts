@@ -1,4 +1,4 @@
-import {MockProvider} from '@ethereum-waffle/provider';
+import type {TestProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {BigNumber, Contract, Wallet} from 'ethers';
 
@@ -8,7 +8,7 @@ interface ChangeEtherBalanceTestOptions {
 }
 
 export const changeEtherBalanceTest = (
-  provider: MockProvider,
+  provider: TestProvider,
   options: ChangeEtherBalanceTestOptions
 ) => {
   let txGasFees: number;

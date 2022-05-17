@@ -3,9 +3,9 @@ import {Wallet, Contract, ContractFactory} from 'ethers';
 import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
 import {COMPLEX_ABI, COMPLEX_BYTECODE} from '../contracts/Complex';
 
-import {MockProvider} from '@ethereum-waffle/provider';
+import type {TestProvider} from '@ethereum-waffle/provider';
 
-export const chainingMatchersTest = (provider: MockProvider) => {
+export const chainingMatchersTest = (provider: TestProvider) => {
   let sender: Wallet;
   let receiver: Wallet;
   let token: Contract;
