@@ -4,7 +4,7 @@
   "version": "4.0.0-alpha.20",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
-  "private": true,
+  "private": false,
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.ts",
