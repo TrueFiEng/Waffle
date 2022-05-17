@@ -32,6 +32,10 @@ Emitting events
 
 Testing what events were emitted with what arguments:
 
+.. note::
+
+  You must :code:`await` the :code:`expect` in order for the matcher to execute properly. Failing to :code:`await` will cause the assertion to pass whether or not the event is actually emitted! 
+
 .. code-block:: ts
 
   await expect(token.transfer(walletTo.address, 7))
@@ -56,6 +60,16 @@ Testing with indexed bytes or string parameters. These two examples are equivale
   await expect(contract.addAddress(street, city))
     .to.emit(contract, 'AddAddress')
     .withArgs(hashedStreet, hashedCity);
+
+If you are using Waffle version :code:`3.4.4` or lower, you can't chain :code:`emit` matchers like in example below.
+
+.. code-block:: ts
+
+  await expect(tx)
+    .to.emit(contract, 'One')
+    .to.emit(contract, 'Two');
+
+This feature will be available in Waffle version 4.
 
 Called on contract
 ------------------
@@ -97,6 +111,13 @@ Testing if transaction was reverted with certain message:
 
   await expect(token.transfer(walletTo.address, 1007))
     .to.be.revertedWith('Insufficient funds');
+
+You can also test if revert message matches to a regular expression:
+
+.. code-block:: ts
+
+  await expect(token.checkRole('ADMIN'))
+    .to.be.revertedWith(/AccessControl: account .* is missing role .*/);
 
 Change ether balance
 --------------------

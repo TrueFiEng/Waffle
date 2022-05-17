@@ -49,6 +49,7 @@ Afterwards update your :code:`package.json` build script:
       }
 
   .. group-tab:: Waffle 2.5.0
+
     .. code-block:: json
 
       {

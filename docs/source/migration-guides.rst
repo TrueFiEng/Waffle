@@ -253,7 +253,7 @@ so we decided not to use this field. Now we support just :code:`contract.abi`.
 
 
 Migration from Waffle 3.4.0 to Waffle 4.0.0-alpha
------------------------------------------------
+-------------------------------------------------
 
 Dependencies upgrades
 ~~~~~~~~~~~~~~~~~~~~~
@@ -263,7 +263,54 @@ We updated the following dependencies:
 
 - :code:`typechain` - bumped version from ^2.0.0 to ^9.0.0. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install  :code:`typechain` manually when using Waffle.
 - :code:`ethers` - bumped version from to ^5.5.4. Now every Waffle package uses the same version of the package. Also the package was moved to the :code:`peerDependencies` section - you now need to install :code:`ethers` manually when using Waffle.
-- :code:`solc` - the package is used by :code:`waffle-compiler` package to provide the default option for compiling Soldity code. Was moved to the :code:`peerDependencies` section and has no version restrictions - you now have to install :code:`solc` manually when using Waffle.
+- :code:`solc` - the package is used by :code:`waffle-compiler` package to provide the default option for compiling Solidity code. Was moved to the :code:`peerDependencies` section and has no version restrictions - you now have to install :code:`solc` manually when using Waffle.
+- Deprecated :code:`ganache-core` package has been replaced with :code:`ganache` version ^7.0.3. It causes slight differences in the parameters of :code:`MockProvider` from :code:`@ethereum-waffle/provider`. Now the :code:`MockProvider` uses :code:`berlin` hardfork by default.
+
+Changes to :code:`MockProvider` parameters
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Previous (optional) parameters of :code:`MockProvider` included override options for the Ganache provider:
+
+.. code-block:: ts
+
+  interface MockProviderOptions {
+    ganacheOptions: {
+      account_keys_path?: string;
+      accounts?: object[];
+      allowUnlimitedContractSize?: boolean;
+      blockTime?: number;
+      db_path?: string;
+      debug?: boolean;
+      default_balance_ether?: number;
+      fork?: string | object;
+      fork_block_number?: string | number;
+      forkCacheSize?: number;
+      gasLimit?: string | number;
+      gasPrice?: string;
+      hardfork?: "byzantium" | "constantinople" | "petersburg" | "istanbul" | "muirGlacier";
+      hd_path?: string;
+      locked?: boolean;
+      logger?: {
+        log(msg: string): void;
+      };
+      mnemonic?: string;
+      network_id?: number;
+      networkId?: number;
+      port?: number;
+      seed?: any;
+      time?: Date;
+      total_accounts?: number;
+      unlocked_accounts?: string[];
+      verbose?: boolean;
+      vmErrorsOnRPCResponse?: boolean;
+      ws?: boolean;
+    }
+  }
+
+Current :code:`ganacheOptions` parameter are documented `here <https://github.com/trufflesuite/ganache/blob/386771d84a9985f6d4b61b262f2be3cda896162e/src/chains/ethereum/options/src/index.ts#L22-L29>`_.
+
+Typechain changes
+~~~~~~~~~~~~~~~~~
 
 If you used type generation (:code:`typechainEnabled` option set to :code:`true` in :code:`waffle.json`), you need to update your code to conform to the new naming convention used by :code:`typechain`. Contract factories now have postfix :code:`__factory` instead of :code:`Factory`. For example, :code:`MyContractFactory` becomes :code:`MyContract__factory`. Example refactoring:
 
@@ -272,3 +319,217 @@ If you used type generation (:code:`typechainEnabled` option set to :code:`true`
   const contractConstructorArgs: [string, string] = [bob.address, charlie.address];
   -const contract = await deployContract(alice, MyContractFactory, contractConstructorArgs);
   +const contract = await deployContract(alice, MyContract__factory, contractConstructorArgs);
+
+:code:`@ethereum-waffle/jest` deprecated
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We stopped supporting :code:`@ethereum-waffle/jest`. From now on the package is deprecated and will be removed in the future. The suggested test framework to use with :code:`Waffle` is :code:`mocha` combined with :code:`chai` and :code:`@ethereum-waffle/chai` package. If you want to migrate from `jest` to `mocha` in your project, please follow the guide below.
+
+1. Setup :code:`mocha` - this may include the following steps:
+
+  - installing :code:`mocha` and :code:`chai` packages.
+  - if you are using :code:`typescript`, installing :code:`@types/mocha`, :code:`@types/chai` and :code:`ts-node` packages.
+  - updating your :code:`test` script (the common pattern for typescript is :code:`"test": "mocha -r ts-node/register/transpile-only 'test/**/*.test.ts'"`).
+  - updating your tests to use :code:`mocha` syntax.
+
+2.  Replace :code:`@ethereum-waffle/jest` with :code:`@ethereum-waffle/chai`. Below is little table that contains the list of all the matchers provided by :code:`@ethereum-waffle/jest` and their replacements in :code:`@ethereum-waffle/chai`.
+
+.. list-table:: Matchers replacements
+   :widths: 50 50
+   :header-rows: 1
+
+   * - @ethereum-waffle/jest
+     - @ethereum-waffle/chai
+   * - :code:`.toChangeBalance(wallet, balanceChange)`
+     - :code:`.to.changeEtherBalance(wallet, balanceChange)`
+   * - :code:`.toChangeBalances(wallets, balanceChanges)`
+     - :code:`.to.changeEtherBalances(wallets, balanceChanges)`
+   * - :code:`.toBeGtBN(value)`
+     - :code:`.to.be.gt(value)`
+   * - :code:`.toBeLtBN(value)`
+     - :code:`.to.be.lt(value)`
+   * - :code:`.toBeGteBN(value)`
+     - :code:`.to.be.gte(value)`
+   * - :code:`.toBeLteBN(value)`
+     - :code:`.to.be.lte(value)`
+   * - :code:`.toEqBN(value)`
+     - :code:`.to.equal(value)`
+   * - :code:`.toHaveEmitted(contract, eventName)`
+     - :code:`.to.emit(contract, eventName)`
+   * - :code:`.toHaveEmittedWith(contract, eventName, args)`
+     - :code:`.to.emit(contract, eventName).withArgs(...args)`
+   * - :code:`.toThrowErrorMatchingSnapshot()`
+     - :code:`.to.be.eventually.rejectedWith(expected, message)`
+   * - :code:`.toBeProperPrivateKey()`
+     - :code:`.to.be.properPrivateKey`
+   * - :code:`.toBeProperAddress()`
+     - :code:`.to.be.properAddress`
+   * - :code:`.toBeReverted()`
+     - :code:`.to.be.reverted`
+   * - :code:`.toBeRevertedWith(revertReason)`
+     - :code:`.to.be.revertedWith(reason)`
+
+Time-based tests
+~~~~~~~~~~~~~~~~
+
+If your tests rely on manually setting timestamp on the blockchain using `evm_mine`, you need to use `evm_setTime` alongside.
+
+For example:
+
+.. code-block:: diff
+
+  export async function mineBlock(provider: providers.Web3Provider, timestamp: number) {
+    +provider.send('evm_setTime', [timestamp * 1000])
+    await provider.send('evm_mine', [timestamp])
+  }
+
+Tests relying on setting gasPrice
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since `London hardfork <https://eips.ethereum.org/EIPS/eip-1559>`_, :code:`baseFeePerGas` is replacing :code:`gasPrice`.
+If your tests are relying on setting :code:`gasPrice` with :code:`changeBalance` matcher, you will have to update them.
+
+**Before**
+
+.. code-block:: javascript
+
+  await expect(() =>
+    sender.sendTransaction({
+      to: receiver.address,
+      gasPrice: 0,
+      value: 200
+    })
+  ).to.changeBalance(sender, -200);
+
+**After**
+
+.. code-block:: javascript
+
+  const TX_GAS = 21000;
+  const BASE_FEE_PER_GAS = 875000000
+  const gasFees = BASE_FEE_PER_GAS * TX_GAS;
+  await expect(() =>
+    sender.sendTransaction({
+      to: receiver.address,
+      gasPrice: BASE_FEE_PER_GAS,
+      value: 200
+    })
+  ).to.changeBalance(sender, -(gasFees + 200));
+
+Currently there is no way to set :code:`gasPrice` to :code:`0` in :code:`Ganache`.
+Instead of (deprecated) matcher :code:`changeBalance`, new matcher :code:`changeEtherBalance` can be used instead - which handles transaction fee calculation automatically.
+
+Custom wallet mnemonic
+~~~~~~~~~~~~~~~~~~~~~~
+
+Ganache has a build-in set of Wallets with positive Ether balance.
+In the new Ganache, you should not override the wallet config, otherwise you might end up with Wallets with no Ether balance.
+
+.. code-block:: javascript
+
+  const provider = new MockProvider({
+    ganacheOptions: {
+      // Remove this, if exists:
+      wallet: {
+        mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn'
+      }
+    }
+  })
+
+Chaining matchers
+~~~~~~~~~~~~~~~~~
+
+Now when testing events on a smart contract you can conveniently chain matchers. It can be especially useful when testing events.
+
+.. code-block:: ts
+  
+  const tx = await contract.emitEventsOneAndTwo();
+  await expect(tx)
+        .to.emit(contract, 'One').withArgs(
+          1,
+          'One'
+        )
+        .to.emit(contract, 'Two').withArgs(
+          2,
+          'Two'
+        )
+        .to.not.emit(contract, 'Three');
+
+:code:`changeEtherBalance`, :code:`changeEtherBalances`, :code:`changeTokenbalance` and :code:`changeTokenBalances` matchers also support chaining:
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(tx)
+    .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+    .and.to.changeEtherBalances([sender, receiver], [-200, 200])
+    .and.to.emit(complex, 'TransferredEther').withArgs(200)
+    .and.to.emit(complex, 'TransferredTokens').withArgs(100);
+
+Although you may find it more convenient to write multiple expects. The test below is equivalent to the one above: 
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(tx).to.changeTokenBalances(token, [sender, receiver], [-100, 100]);
+  await expect(tx).to.changeEtherBalances([sender, receiver], [-200, 200]);
+  await expect(tx).to.emit(complex, 'TransferredEther').withArgs(200);
+  await expect(tx).to.emit(complex, 'TransferredTokens').withArgs(100);
+
+Note that in both cases you can use :code:`chai` negation :code:`not`. In a case of a single expect everything after :code:`not` is negated.
+
+.. code-block:: ts
+
+  await token.approve(complex.address, 100);
+  const tx = await complex.doEverything(receiver.address, 100, {value: 200});
+  await expect(expect(tx)
+    .to.changeTokenBalances(token, [sender, receiver], [-100, 100])
+    .and.to.emit(complex, 'TransferredTokens').withArgs(100)
+    .and.not
+    .to.emit(complex, 'UnusedEvent') // This is negated
+    .and.to.changeEtherBalances([sender, receiver], [-100, 100])  // This is negated as well
+
+
+Custom errors
+~~~~~~~~~~~~~
+
+Custom errors were introduced in Solidity v0.8.4. It is a convenient and gas-efficient way to explain to users why an operation failed. Custom errors are defined in a similar way as events:
+
+.. code-block:: solidity
+
+  // SPDX-License-Identifier: GPL-3.0
+  pragma solidity ^0.8.4;
+
+  /// Insufficient balance for transfer. Needed `required` but only
+  /// `available` available.
+  /// @param available balance available.
+  /// @param required requested amount to transfer.
+  error InsufficientBalance(uint256 available, uint256 required);
+
+  contract TestToken {
+      mapping(address => uint) balance;
+      function transfer(address to, uint256 amount) public {
+          if (amount > balance[msg.sender])
+              // Error call using named parameters. Equivalent to
+              // revert InsufficientBalance(balance[msg.sender], amount);
+              revert InsufficientBalance({
+                  available: balance[msg.sender],
+                  required: amount
+              });
+          balance[msg.sender] -= amount;
+          balance[to] += amount;
+      }
+      // ...
+  }
+
+
+When using Waffle v4.0.0-alpha.* with Hardhat, you can test transactions being reverted with custom errors as well. Using the :code:`.revertedWith` matcher you can capture the custom error's name (:code:`expect(tx).to.be.revertedWith('InsufficientBalance')`). If you want to access arguments of a custom error you should use :code:`.withArgs` matcher after the :code:`.revertedWith` matcher.
+
+.. code-block:: ts
+
+  await expect(token.transfer(receiver, 100))
+      .to.be.revertedWith('InsufficientBalance')
+      .withArgs(0, 100);
+

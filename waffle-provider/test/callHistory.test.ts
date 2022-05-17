@@ -3,10 +3,10 @@ import {ContractFactory} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 import {deployToken} from './BasicToken';
 import {CALLER_ABI, CALLER_BYTECODE, CALLED_ABI, CALLED_BYTECODE} from './Caller';
+import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: MockProvider.callHistory', () => {
+describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) => {
   it('records blockchain calls', async () => {
-    const provider = new MockProvider();
     const [sender, recipient] = provider.getWallets();
 
     const contract = await deployToken(sender, 10_000);
@@ -80,7 +80,7 @@ describe('INTEGRATION: MockProvider.callHistory', () => {
     const token = await deployToken(wallet, 10);
 
     provider.clearCallHistory();
-    await expect(token.transfer(wallet.address, 20)).to.be.rejected;
+    await expect(token.transfer(wallet.address, 20)).to.be.eventually.rejected;
 
     expect(provider.callHistory).to.deep.include({
       address: token.address,

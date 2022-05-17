@@ -1,4 +1,4 @@
-import {MockProvider} from '../../../../waffle-provider/dist/esm';
+import {MockProvider} from '@ethereum-waffle/provider';
 import {validateContract, validateFnName, validateMockProvider} from './calledOnContractValidators';
 
 export function supportCalledOnContract(Assertion: Chai.AssertionStatic) {

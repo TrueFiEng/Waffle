@@ -14,13 +14,13 @@ const config = {
 };
 
 describe('UNIT: saveOutput', () => {
-  it('calls the required fs methods', () => {
+  it('calls the required fs methods', async () => {
     const fsOps = {
       writeFile: sinon.spy(),
       createDirectory: sinon.spy()
     };
     const output = JSON.parse(readFileContent('./test/compiler/wrappers/compilerOutput.json'));
-    saveOutput(output, config as Config, fsOps);
+    await saveOutput(output, config as Config, fsOps);
     const expectedContent = JSON.stringify(output.contracts['One.sol'].One, null, 2);
     expect(fsOps.createDirectory).to.be.calledWith('./buildtmp');
     expect(fsOps.writeFile).to.be.calledWith('buildtmp/One.json', expectedContent);

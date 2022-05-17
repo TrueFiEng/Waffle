@@ -1,9 +1,9 @@
 import {expect, AssertionError} from 'chai';
-import {MockProvider} from '@ethereum-waffle/provider';
 import {BigNumber, Contract} from 'ethers';
+import {BASE_FEE_PER_GAS, TX_GAS} from './constants';
+import {describeMockProviderCases} from './MockProviderCases';
 
-describe('INTEGRATION: changeBalance matcher', () => {
-  const provider = new MockProvider();
+describeMockProviderCases('INTEGRATION: changeBalance matcher', (provider) => {
   const [sender, receiver] = provider.getWallets();
   const contract = new Contract(receiver.address, [], provider);
 
@@ -13,10 +13,9 @@ describe('INTEGRATION: changeBalance matcher', () => {
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 0,
             value: 200
           })
-        ).to.changeBalance(sender, '-200');
+        ).to.changeBalance(receiver, '200');
       });
 
       it('Should pass when expected balance change is passed as int and is equal to an actual', async () => {
@@ -47,13 +46,14 @@ describe('INTEGRATION: changeBalance matcher', () => {
       });
 
       it('Should take into account transaction fee', async () => {
+        const gasFees = BASE_FEE_PER_GAS * TX_GAS;
         await expect(() =>
           sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 1,
+            gasPrice: BASE_FEE_PER_GAS,
             value: 200
           })
-        ).to.changeBalance(sender, -21200);
+        ).to.changeBalance(sender, -(gasFees + 200));
       });
 
       it('Should throw when expected balance change value was different from an actual', async () => {
@@ -61,13 +61,12 @@ describe('INTEGRATION: changeBalance matcher', () => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: 0,
               value: 200
             })
-          ).to.changeBalance(sender, '-500')
+          ).to.changeBalance(receiver, '500')
         ).to.be.eventually.rejectedWith(
           AssertionError,
-          `Expected "${sender.address}" to change balance by -500 wei, but it has changed by -200 wei`
+          `Expected "${receiver.address}" to change balance by 500 wei, but it has changed by 200 wei`
         );
       });
 
@@ -76,13 +75,12 @@ describe('INTEGRATION: changeBalance matcher', () => {
           expect(() =>
             sender.sendTransaction({
               to: receiver.address,
-              gasPrice: 0,
               value: 200
             })
-          ).to.not.changeBalance(sender, '-200')
+          ).to.not.changeBalance(receiver, '200')
         ).to.be.eventually.rejectedWith(
           AssertionError,
-          `Expected "${sender.address}" to not change balance by -200 wei`
+          `Expected "${receiver.address}" to not change balance by 200 wei`
         );
       });
     });
@@ -104,16 +102,14 @@ describe('INTEGRATION: changeBalance matcher', () => {
       it('Should pass when expected balance change is passed as string and is equal to an actual', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: 0,
           value: 200
         })
-        ).to.changeBalance(sender, '-200');
+        ).to.changeBalance(receiver, '200');
       });
 
       it('Should pass when expected balance change is passed as int and is equal to an actual', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: 0,
           value: 200
         })
         ).to.changeBalance(receiver, 200);
@@ -122,7 +118,6 @@ describe('INTEGRATION: changeBalance matcher', () => {
       it('Should pass when expected balance change is passed as BN and is equal to an actual', async () => {
         await expect(await sender.sendTransaction({
           to: receiver.address,
-          gasPrice: 0,
           value: 200
         })
         ).to.changeBalance(receiver, BigNumber.from(200));
@@ -140,13 +135,12 @@ describe('INTEGRATION: changeBalance matcher', () => {
         await expect(
           expect(await sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 0,
             value: 200
           })
-          ).to.changeBalance(sender, '-500')
+          ).to.changeBalance(receiver, '500')
         ).to.be.eventually.rejectedWith(
           AssertionError,
-          `Expected "${sender.address}" to change balance by -500 wei, but it has changed by -200 wei`
+          `Expected "${receiver.address}" to change balance by 500 wei, but it has changed by 200 wei`
         );
       });
 
@@ -154,13 +148,12 @@ describe('INTEGRATION: changeBalance matcher', () => {
         await expect(
           expect(await sender.sendTransaction({
             to: receiver.address,
-            gasPrice: 0,
             value: 200
           })
-          ).to.not.changeBalance(sender, '-200')
+          ).to.not.changeBalance(receiver, '200')
         ).to.be.eventually.rejectedWith(
           AssertionError,
-          `Expected "${sender.address}" to not change balance by -200 wei`
+          `Expected "${receiver.address}" to not change balance by 200 wei`
         );
       });
     });
@@ -169,7 +162,6 @@ describe('INTEGRATION: changeBalance matcher', () => {
       it('Should pass when expected balance change is passed as int and is equal to an actual', async () => {
         await expect(await sender.sendTransaction({
           to: contract.address,
-          gasPrice: 0,
           value: 200
         })
         ).to.changeBalance(contract, 200);

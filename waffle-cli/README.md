@@ -1,5 +1,6 @@
 ![CI](https://github.com/EthWorks/Waffle/workflows/CI/badge.svg)
 [![](https://img.shields.io/npm/v/ethereum-waffle.svg)](https://www.npmjs.com/package/ethereum-waffle)
+[![Discord](https://badgen.net/badge/icon/discord?icon=discord&label)](https://discord.gg/ppFxC3E44X)
 
 ![Ethereum Waffle](https://raw.githubusercontent.com/EthWorks/Waffle/master/docs/source/logo.png)
 

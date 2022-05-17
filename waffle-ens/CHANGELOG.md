@@ -1,5 +1,23 @@
 # @ethereum-waffle/ens
 
+## 4.0.0-alpha.21
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+
+## 4.0.0-alpha.20
+
+### Patch Changes
+
+- be6fd8e: 🔝 Update ethers to 5.6.2
+
+## 4.0.0-alpha.1
+
+### Patch Changes
+
+- 4c4b2d6: v4.0.0-alpha.1
+
 ## 4.0.0-alpha.0
 
 ### Major Changes

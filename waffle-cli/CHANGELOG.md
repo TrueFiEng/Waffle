@@ -1,5 +1,79 @@
 # ethereum-waffle
 
+## 4.0.0-alpha.24
+
+### Patch Changes
+
+- Updated dependencies [ba71ce4]
+- Updated dependencies [587ff49]
+- Updated dependencies [4622881]
+  - @ethereum-waffle/chai@4.0.0-alpha.24
+  - @ethereum-waffle/provider@4.0.0-alpha.23
+  - @ethereum-waffle/compiler@4.0.0-alpha.21
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.21
+
+## 4.0.0-alpha.23
+
+### Patch Changes
+
+- Updated dependencies [671f139]
+  - @ethereum-waffle/provider@4.0.0-alpha.22
+  - @ethereum-waffle/chai@4.0.0-alpha.23
+  - @ethereum-waffle/compiler@4.0.0-alpha.21
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.21
+
+## 4.0.0-alpha.22
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- Updated dependencies [e8adce7]
+  - @ethereum-waffle/chai@4.0.0-alpha.22
+  - @ethereum-waffle/compiler@4.0.0-alpha.21
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.21
+  - @ethereum-waffle/provider@4.0.0-alpha.21
+
+## 4.0.0-alpha.21
+
+### Patch Changes
+
+- Updated dependencies [aa18bfa]
+  - @ethereum-waffle/chai@4.0.0-alpha.21
+  - @ethereum-waffle/compiler@4.0.0-alpha.20
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.20
+
+## 4.0.0-alpha.20
+
+### Patch Changes
+
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Updated dependencies [be6fd8e]
+  - @ethereum-waffle/chai@4.0.0-alpha.20
+  - @ethereum-waffle/compiler@4.0.0-alpha.20
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.20
+  - @ethereum-waffle/provider@4.0.0-alpha.20
+
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [ede638e]
+  - @ethereum-waffle/provider@4.0.0
+  - @ethereum-waffle/chai@4.0.0
+  - @ethereum-waffle/compiler@4.0.0-alpha.1
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.1
+
+## 4.0.0-alpha.1
+
+### Patch Changes
+
+- 4c4b2d6: v4.0.0-alpha.1
+- Updated dependencies [4c4b2d6]
+  - @ethereum-waffle/chai@4.0.0-alpha.1
+  - @ethereum-waffle/compiler@4.0.0-alpha.1
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.1
+  - @ethereum-waffle/provider@4.0.0-alpha.1
+
 ## 4.0.0-alpha.0
 
 ### Major Changes

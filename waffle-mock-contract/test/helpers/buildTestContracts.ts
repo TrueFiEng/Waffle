@@ -9,4 +9,4 @@ const buildTestContracts = async () => {
   });
 };
 
-buildTestContracts();
+void buildTestContracts();

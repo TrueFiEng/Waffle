@@ -1,14 +1,19 @@
 {
   "name": "@ethereum-waffle/chai",
   "description": "A sweet set of chai matchers for your blockchain testing needs.",
-  "version": "4.0.0-alpha.0",
+  "version": "4.0.0-alpha.24",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "tag": "alpha"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "keywords": [
     "ethereum",
     "smart-contracts",
@@ -26,7 +31,6 @@
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
   "scripts": {
-    "prepublishOnly": "yarn build",
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
@@ -38,8 +42,15 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethereum-waffle/provider": "4.0.0-alpha.0",
-    "ethers": "^5.5.4"
+    "@ethereum-waffle/provider": "workspace:*",
+    "debug": "^4.3.4",
+    "ethers": "5.6.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "mocha": "^8.2.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.6.2",
+    "eslint": "^7.14.0"
+  }
 }

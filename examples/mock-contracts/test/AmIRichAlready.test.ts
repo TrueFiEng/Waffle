@@ -22,7 +22,7 @@ describe('Am I Rich Already', () => {
     expect(await contract.check()).to.be.equal(false);
   });
 
-  it('returns true if the wallet has at least 1000000 coins', async () => {
+  it('returns true if the wallet has more than 1000000 coins', async () => {
     await mockERC20.mock.balanceOf.returns(utils.parseEther('1000001'));
     expect(await contract.check()).to.equal(true);
   });
