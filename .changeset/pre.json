@@ -16,15 +16,22 @@
     "@ethereum-waffle/ens": "4.0.0-alpha.19",
     "@ethereum-waffle/hardhat": "4.0.0-alpha.19",
     "@ethereum-waffle/mock-contract": "4.0.0-alpha.19",
-    "@ethereum-waffle/provider": "4.0.0-alpha.19"
+    "@ethereum-waffle/provider": "4.0.0-alpha.19",
+    "@ethereum-waffle/optimism": "4.0.0-alpha.20"
   },
   "changesets": [
     "add-src-to-npm",
     "big-goats-guess",
     "big-shrimps-rule",
+    "blue-frogs-reply",
     "dirty-badgers-sin",
+    "dirty-walls-repeat",
+    "eighty-squids-knock",
     "fluffy-queens-cross",
+    "smooth-yaks-hammer",
+    "strange-hairs-boil",
     "tame-walls-speak",
+    "thin-items-hide",
     "tricky-spiders-invite",
     "update-ethers"
   ]
