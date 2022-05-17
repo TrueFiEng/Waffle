@@ -1,8 +1,9 @@
 import {MockProvider} from '../src';
+import {TestProvider} from '../src/test-provider';
 
 export const describeMockProviderCases = (
   title: string,
-  testCases: (provider: MockProvider) => void
+  testCases: (provider: TestProvider) => void
 ) => {
   describe(title, () => {
     describe('default options', () => {

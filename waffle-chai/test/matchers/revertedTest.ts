@@ -2,9 +2,9 @@ import {expect} from 'chai';
 import {Wallet, Contract, ContractFactory} from 'ethers';
 import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
 
-import {MockProvider} from '@ethereum-waffle/provider';
+import type {TestProvider} from '@ethereum-waffle/provider';
 
-export const revertedTest = (provider: MockProvider) => {
+export const revertedTest = (provider: TestProvider) => {
   let wallet: Wallet;
   let matchers: Contract;
 
