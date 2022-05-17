@@ -6,6 +6,10 @@
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "tag": "alpha"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.ts",
   "types": "dist/esm/index.d.ts",
