@@ -31,13 +31,13 @@ Add an external library by installing it with yarn or npm:
 
     .. code-block:: text
 
-      yarn add @openzeppelin/contracts -D
+      yarn add @openzeppelin/contracts@^4.6.0 -D
 
   .. group-tab:: NPM
 
     .. code-block:: text
 
-      npm install @openzeppelin/contracts -D
+      npm install @openzeppelin/contracts@^4.6.0 -D
 
 Writing a contract
 ------------------
@@ -46,13 +46,15 @@ Below is an example contract written in Solidity. Place it in :code:`src/BasicTo
 
 .. code-block:: solidity
 
-  pragma solidity ^0.6.0;
+  // SPDX-License-Identifier: MIT
+
+  pragma solidity ^0.8.0;
 
   import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
   // Example class - a mock class using delivering from ERC20
   contract BasicToken is ERC20 {
-    constructor(uint256 initialBalance) ERC20("Basic", "BSC") public {
+    constructor(uint256 initialBalance) ERC20("Basic", "BSC") {
         _mint(msg.sender, initialBalance);
     }
   }
@@ -96,7 +98,7 @@ In the :code:`waffle.json` file of your project add the following entry:
 
   {
     "compilerType": "solcjs",
-    "compilerVersion": "0.6.2",
+    "compilerVersion": "0.8.13",
     "sourceDirectory": "./src",
     "outputDirectory": "./build"
   }
@@ -166,7 +168,7 @@ Run:
       npm install --save-dev mocha chai
 
 .. note::
-  If you are using Typescript don't forget to add :code:`ts-node` and :code:`typescript` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`. Lastly, instead of using :code:`mocha` in your Node scripts within your :code:`package.json`, replace it with :code:`ts-node`.
+  If you are using Typescript don't forget to add :code:`ts-node`, :code:`typescript` and :code:`@types/mocha` to your :code:`devDependencies`. Also, make sure to add a :code:`tsconfig.json`, and within it, set :code:`"esModuleInterop"` and :code:`"resolveJsonModule"` to :code:`true`.
 
 Below is an example test file for the contract above written with Waffle. Place it under :code:`test/BasicToken.test.ts` file in your project directory:
 
@@ -234,18 +236,30 @@ Update your :code:`package.json` file to include:
   {
     "scripts": {
       "build": "waffle",
-      "test": "export NODE_ENV=test && mocha",
+      "test": "NODE_ENV=test mocha",
     }
   }
 
-If you are using TypeScript add :code:`mocha.opts` file in your test folder:
+Next, add a :code:`.mocharc.json` file in your root directory:
 
-.. code-block:: text
+.. tabs::
 
-  -r ts-node/register/transpile-only
-  --timeout 50000
-  --no-warnings
-  test/**/*.test.{js,ts}
+  .. group-tab:: Javascript
+
+    .. code-block:: json
+
+      {
+        "spec": "test/**/*.test.{js,ts}"
+      }
+
+  .. group-tab:: Typescript
+
+    .. code-block:: json
+
+      {
+        "require": "ts-node/register/transpile-only",
+        "spec": "test/**/*.test.{js,ts}"
+      }
 
 And run:
 
