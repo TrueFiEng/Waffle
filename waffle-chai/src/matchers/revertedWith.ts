@@ -79,8 +79,9 @@ const decodeOptimismError = (error: any) => {
   const tryDecode = (error: any) => {
     const body = error?.body;
     if (body) {
+      const errorString = JSON.parse(body)?.error?.message;
       const regexp = /"execution reverted: (.*)"/g;
-      const matches = regexp.exec(body);
+      const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[1];
       }
