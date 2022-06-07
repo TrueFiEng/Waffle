@@ -1,5 +1,12 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.26
+
+### Patch Changes
+
+- 9b0e87c: Optimism fix revertedWith matcher
+- e631daf: Fix Optimism revertedWith matcher 2
+
 ## 4.0.0-alpha.25
 
 ### Patch Changes

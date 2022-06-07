@@ -21,6 +21,7 @@
   },
   "changesets": [
     "add-src-to-npm",
+    "angry-lamps-crash",
     "big-goats-guess",
     "big-shrimps-rule",
     "blue-frogs-reply",
@@ -33,6 +34,7 @@
     "tame-walls-speak",
     "thin-items-hide",
     "tricky-spiders-invite",
-    "update-ethers"
+    "update-ethers",
+    "yellow-pugs-drive"
   ]
 }
