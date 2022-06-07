@@ -1,5 +1,15 @@
 # ethereum-waffle
 
+## 4.0.0-alpha.26
+
+### Patch Changes
+
+- Updated dependencies [9b0e87c]
+- Updated dependencies [e631daf]
+  - @ethereum-waffle/chai@4.0.0-alpha.26
+  - @ethereum-waffle/compiler@4.0.0-alpha.21
+  - @ethereum-waffle/mock-contract@4.0.0-alpha.21
+
 ## 4.0.0-alpha.25
 
 ### Patch Changes
