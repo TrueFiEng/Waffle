@@ -45,7 +45,7 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
             [expectedArgs[index], utils.keccak256(expectedArgBytes)]
           );
         } else {
-          if (isSruct(actualArgs[index])) {
+          if (isStruct(actualArgs[index])) {
             new Assertion(
               convertStructToPlainObject(actualArgs[index])
             ).to.deep.equal(expectedArgs[index]);
@@ -74,7 +74,7 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
     );
   };
 
-  const isSruct = (arr: any[]) => {
+  const isStruct = (arr: any[]) => {
     if (!Array.isArray(arr)) return false;
     const keys = Object.keys(arr);
     const hasNumericKeys = keys.some((key) => /^\d+$/.test(key));
@@ -87,7 +87,7 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
     return keys.reduce(
       (acc: any, key: any) => ({
         ...acc,
-        [key]: isSruct(struct[key])
+        [key]: isStruct(struct[key])
           ? convertStructToPlainObject(struct[key])
           : struct[key]
       }),
