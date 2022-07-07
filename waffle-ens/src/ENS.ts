@@ -1,8 +1,9 @@
-import {ENSRegistry, FIFSRegistrar, ReverseRegistrar} from '@ensdomains/ens';
-import {PublicResolver} from '@ensdomains/resolver';
+import * as contracts from './contracts.js';
 import {constants, Contract, Signer, utils} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
 import {ExpectedTopLevelDomain, MissingDomain} from './errors';
+
+const {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver} = contracts;
 
 const {namehash} = utils;
 const {HashZero} = constants;
