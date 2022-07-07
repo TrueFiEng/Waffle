@@ -77,9 +77,9 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
   const isStruct = (arr: any[]) => {
     if (!Array.isArray(arr)) return false;
     const keys = Object.keys(arr);
-    const hasNumericKeys = keys.some((key) => /^\d+$/.test(key));
-    const hasStringKeys = keys.some((key) => /^[a-zA-Z]+$/.test(key));
-    return hasNumericKeys && hasStringKeys;
+    const hasAlphaNumericKeys = keys.some((key) => key.match(/^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9]*$/));
+    const hasNumericKeys = keys.some((key) => key.match(/^\d+$/));
+    return hasAlphaNumericKeys && hasNumericKeys;
   };
 
   const convertStructToPlainObject = (struct: any[]): any => {
