@@ -469,7 +469,7 @@ export const eventsTest = (provider: TestProvider) => {
     });
 
     it('Emit struct: success', async () => {
-      const taskStruct = {
+      const struct = {
         hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
         value: BigNumber.from(1),
         encoded: [
@@ -479,7 +479,7 @@ export const eventsTest = (provider: TestProvider) => {
       };
       await expect(events.emitStruct())
         .to.emit(events, 'Struct')
-        .withArgs(taskStruct);
+        .withArgs(struct);
     });
 
     it('Emit struct: fail', async () => {
@@ -492,7 +492,7 @@ export const eventsTest = (provider: TestProvider) => {
     });
 
     it('Emit nested struct: success', async () => {
-      const taskStruct = {
+      const struct = {
         hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
         value: BigNumber.from(1),
         encoded: [
@@ -500,14 +500,14 @@ export const eventsTest = (provider: TestProvider) => {
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
         ]
       };
-      const nestedTaskStruct = {
+      const nestedStruct = {
         hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
         value: BigNumber.from(1),
-        task: taskStruct
+        task: struct
       };
       await expect(events.emitNestedStruct())
         .to.emit(events, 'NestedStruct')
-        .withArgs(nestedTaskStruct);
+        .withArgs(nestedStruct);
     });
 
     it('Emit struct: fail', async () => {
