@@ -45,6 +45,12 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
             [expectedArgs[index], utils.keccak256(expectedArgBytes)]
           );
         } else {
+          if (isSruct(actualArgs[index])) {
+            new Assertion(
+              convertStructToPlainObject(actualArgs[index])
+            ).to.deep.equal(expectedArgs[index]);
+            return;
+          }
           new Assertion(actualArgs[index]).equal(expectedArgs[index]);
         }
       }
@@ -65,6 +71,27 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
     context.assert(false,
       `Specified args not emitted in any of ${context.args.length} emitted "${context.eventName}" events`,
       'Do not combine .not. with .withArgs()'
+    );
+  };
+
+  const isSruct = (struct: any[]) => {
+    if (!Array.isArray(struct)) return false;
+    const keys = Object.keys(struct);
+    const hasNumericKeys = keys.some((key) => /^\d+$/.test(key));
+    const hasStringKeys = keys.some((key) => /^[a-zA-Z]+$/.test(key));
+    return hasNumericKeys && hasStringKeys;
+  };
+
+  const convertStructToPlainObject = (struct: any[]): any => {
+    const keys = Object.keys(struct).filter((key: any) => isNaN(key));
+    return keys.reduce(
+      (acc: any, key: any) => ({
+        ...acc,
+        [key]: isSruct(struct[key])
+          ? convertStructToPlainObject(struct[key])
+          : struct[key]
+      }),
+      {}
     );
   };
 
