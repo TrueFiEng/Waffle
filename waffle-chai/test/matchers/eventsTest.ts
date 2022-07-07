@@ -510,7 +510,7 @@ export const eventsTest = (provider: TestProvider) => {
         .withArgs(nestedStruct);
     });
 
-    it('Emit struct: fail', async () => {
+    it('Emit nested struct: fail', async () => {
       await expect(
         expect(events.emitNestedStruct()).to.emit(events, 'One')
       ).to.be.eventually.rejectedWith(
