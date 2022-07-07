@@ -1,5 +1,5 @@
 export const EVENTS_SOURCE = `
-pragma experimental ABIEncoderV2;
+pragma solidity ^0.8.0;
 
   contract Events {
       event One(uint value, string msg, bytes32 encoded);
