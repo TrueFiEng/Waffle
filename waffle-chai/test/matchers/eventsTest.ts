@@ -467,5 +467,56 @@ export const eventsTest = (provider: TestProvider) => {
         .to.emit(events, 'One')
         .and.not.to.emit(differentEvents, 'One');
     });
+
+    it('Emit struct: success', async () => {
+      const struct = {
+        hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+        value: BigNumber.from(1),
+        encoded: [
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
+        ]
+      };
+      await expect(events.emitStruct())
+        .to.emit(events, 'Struct')
+        .withArgs(struct);
+    });
+
+    it('Emit struct: fail', async () => {
+      await expect(
+        expect(events.emitStruct()).to.emit(events, 'One')
+      ).to.be.eventually.rejectedWith(
+        AssertionError,
+        'Expected event "One" to be emitted, but it wasn\'t'
+      );
+    });
+
+    it('Emit nested struct: success', async () => {
+      const struct = {
+        hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+        value: BigNumber.from(1),
+        encoded: [
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
+        ]
+      };
+      const nestedStruct = {
+        hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+        value: BigNumber.from(1),
+        task: struct
+      };
+      await expect(events.emitNestedStruct())
+        .to.emit(events, 'NestedStruct')
+        .withArgs(nestedStruct);
+    });
+
+    it('Emit nested struct: fail', async () => {
+      await expect(
+        expect(events.emitNestedStruct()).to.emit(events, 'One')
+      ).to.be.eventually.rejectedWith(
+        AssertionError,
+        'Expected event "One" to be emitted, but it wasn\'t'
+      );
+    });
   });
 };
