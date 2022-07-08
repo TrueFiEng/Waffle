@@ -1,2 +1,1 @@
-declare module '@ensdomains/ens'
-declare module '@ensdomains/resolver'
+declare module './contracts.js'
