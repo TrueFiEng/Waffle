@@ -1,23 +1,15 @@
-import {MockProvider} from '@ethereum-waffle/provider';
 import {validateContract, validateFnName, validateMockProvider} from './calledOnContractValidators';
+import {assertCalledWithParams} from './assertions';
 
 export function supportCalledOnContractWith(Assertion: Chai.AssertionStatic) {
-  Assertion.addMethod('calledOnContractWith', function (contract: any, parameters: any[]) {
+  Assertion.addMethod('calledOnContractWith', function (this: any, contract: any, parameters: any[]) {
     const fnName = this._obj;
+    const negated = this.__flags.negate;
 
     validateContract(contract);
     validateMockProvider(contract.provider);
     validateFnName(fnName, contract);
 
-    const funCallData = contract.interface.encodeFunctionData(fnName, parameters);
-
-    this.assert(
-      (contract.provider as unknown as MockProvider).callHistory.some(
-        call => call.address === contract.address && call.data === funCallData
-      ),
-      'Expected contract function with parameters to be called',
-      'Expected contract function with parameters NOT to be called',
-      undefined
-    );
+    assertCalledWithParams(this, contract, fnName, parameters, negated);
   });
 }

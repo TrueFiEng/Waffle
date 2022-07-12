@@ -1,5 +1,5 @@
-import {MockProvider} from '@ethereum-waffle/provider';
 import {validateContract, validateFnName, validateMockProvider} from './calledOnContractValidators';
+import {assertFunctionCalled} from './assertions';
 
 export function supportCalledOnContract(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('calledOnContract', function (contract: any) {
@@ -11,15 +11,6 @@ export function supportCalledOnContract(Assertion: Chai.AssertionStatic) {
       validateFnName(fnName, contract);
     }
 
-    const fnSighash = contract.interface.getSighash(fnName);
-
-    this.assert(
-      (contract.provider as unknown as MockProvider).callHistory.some(
-        call => call.address === contract.address && call.data.startsWith(fnSighash)
-      ),
-      'Expected contract function to be called',
-      'Expected contract function NOT to be called',
-      undefined
-    );
+    assertFunctionCalled(this, contract, fnName);
   });
 }
