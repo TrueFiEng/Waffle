@@ -54,7 +54,7 @@ function generateWrongParamsMessage(contract: Contract, fnName: string, paramete
   const paramsToDisplay = functionCalls.slice(0, 3);
   const leftParamsCount = functionCalls.length - paramsToDisplay.length;
 
-  return `Expected contract function ${fnName} to be called with parameters ${parameters}\
+  return `Expected contract function ${fnName} to be called with parameters ${parameters} \
 but it was called with parameters:
 ${paramsToDisplay.map(call => contract.interface.decodeFunctionData(fnName, call.data).toString()).join('\n')}` +
 (leftParamsCount > 0 ? `\n...and ${leftParamsCount} more.` : '');

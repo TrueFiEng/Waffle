@@ -58,7 +58,7 @@ export const calledOnContractWithTest = (provider: MockProvider) => {
 
     expect(
       () => expect('callWithParameter').not.to.be.calledOnContractWith(contract, [2])
-    ).to.throw(AssertionError, 'Expected contract function callWithParameter not to be called' +
+    ).to.throw(AssertionError, 'Expected contract function callWithParameter not to be called ' +
       'with parameters 2, but it was');
   });
 
