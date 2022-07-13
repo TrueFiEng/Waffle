@@ -370,7 +370,6 @@ importers:
       hardhat: ^2.9.2
       mocha: ^8.2.1
     dependencies:
-      ethereum-waffle: link:../waffle-cli
       ethers: 5.6.2
       hardhat: 2.9.3
     devDependencies:
@@ -379,6 +378,7 @@ importers:
       '@nomiclabs/hardhat-waffle': 2.0.3_3txyaljusrttf4z5auccnuj7k4
       '@types/node': 17.0.41
       eslint: 7.18.0
+      ethereum-waffle: link:../waffle-cli
       mocha: 8.2.1
 
   waffle-mock-contract:

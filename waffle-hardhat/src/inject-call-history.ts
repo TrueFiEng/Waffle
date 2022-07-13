@@ -1,5 +1,5 @@
 import {waffle} from 'hardhat';
-import {RecordedCall} from 'ethereum-waffle';
+import type {RecordedCall} from 'ethereum-waffle';
 import {utils} from 'ethers';
 
 class CallHistory {

@@ -3,5 +3,5 @@ module.exports = {
   require: 'ts-node/register/transpile-only',
   timeout: 50000,
   spec: 'test/**/*.test.{js,ts}',
-  file: 'src/inject-call-history.ts'
+  file: 'test/test-setup.ts'
 }
