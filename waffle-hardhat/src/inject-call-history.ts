@@ -11,7 +11,7 @@ class CallHistory {
     }
   }
 
-  clearAll () {
+  clearAll() {
     this.recordedCalls = [];
   }
 }
@@ -20,26 +20,42 @@ function toRecordedCall(message: any): RecordedCall {
   return {
     address: message.to?.buf ? utils.getAddress(utils.hexlify(message.to.buf)) : undefined,
     data: message.data ? utils.hexlify(message.data) : '0x'
-  }
+  };
 }
 
 const callHistory = new CallHistory();
 (waffle.provider as any).clearCallHistory = () => {
   callHistory.clearAll();
-}
+};
 
-let beforeMessageListener: (message: any) => void | undefined
+let beforeMessageListener: (message: any) => void | undefined;
 
 const init = (waffle.provider as any)._hardhatNetwork.provider._wrapped._wrapped._wrapped._init;
 (waffle.provider as any)._hardhatNetwork.provider._wrapped._wrapped._wrapped._init = async function () {
-  await init.apply(this)
+  await init.apply(this);
   if (typeof beforeMessageListener === 'function') {
-    (waffle.provider as any)._hardhatNetwork.provider._wrapped._wrapped._wrapped._node._vmTracer._vm.off("beforeMessage", beforeMessageListener);
+    (waffle.provider as any)
+      ._hardhatNetwork
+      .provider
+      ._wrapped
+      ._wrapped
+      ._wrapped
+      ._node
+      ._vmTracer
+      ._vm
+      .off('beforeMessage', beforeMessageListener);
   }
   beforeMessageListener = (message: any) => {
     callHistory.addUniqueCall(toRecordedCall(message));
-  }
-  const provider: any = waffle.provider
+  };
+  const provider: any = waffle.provider;
   provider.callHistory = callHistory.recordedCalls;
-  (waffle.provider as any)._hardhatNetwork.provider._wrapped._wrapped._wrapped._node._vmTracer._vm.on("beforeMessage", beforeMessageListener);
-}
+  (waffle.provider as any)
+    ._hardhatNetwork.provider
+    ._wrapped._wrapped
+    ._wrapped
+    ._node
+    ._vmTracer
+    ._vm
+    .on('beforeMessage', beforeMessageListener);
+};

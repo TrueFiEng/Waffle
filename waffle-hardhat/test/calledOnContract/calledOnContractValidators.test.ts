@@ -9,7 +9,7 @@ describe('INTEGRATION: ethCalledValidators', () => {
     await provider.send('hardhat_reset', []);
   });
 
-  beforeEach(() => provider.clearCallHistory())
+  beforeEach(() => provider.clearCallHistory());
 
   calledOnContractValidatorsTest(provider);
 });

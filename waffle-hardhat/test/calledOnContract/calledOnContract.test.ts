@@ -9,7 +9,7 @@ describe('INTEGRATION: calledOnContract', () => {
     await provider.send('hardhat_reset', []);
   });
 
-  beforeEach(() => provider.clearCallHistory())
+  beforeEach(() => provider.clearCallHistory());
 
   calledOnContractTest(provider);
 });
