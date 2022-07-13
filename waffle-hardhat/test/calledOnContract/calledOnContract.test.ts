@@ -1,6 +1,6 @@
 import {waffle} from 'hardhat';
 import {MockProvider} from 'ethereum-waffle';
-// import {calledOnContractTest} from '@ethereum-waffle/chai/test';
+import {calledOnContractTest} from '@ethereum-waffle/chai/test';
 
 describe('INTEGRATION: calledOnContract', () => {
   const provider = waffle.provider as MockProvider;
@@ -9,5 +9,7 @@ describe('INTEGRATION: calledOnContract', () => {
     await provider.send('hardhat_reset', []);
   });
 
-  // calledOnContractTest(provider);
+  beforeEach(() => provider.clearCallHistory());
+
+  calledOnContractTest(provider);
 });

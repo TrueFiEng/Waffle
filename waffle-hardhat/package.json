@@ -18,6 +18,10 @@
   "engines": {
     "node": ">=10.0"
   },
+  "dependencies": {
+    "ethers": "5.6.2",
+    "hardhat": "^2.9.2"
+  },
   "devDependencies": {
     "@ethereum-waffle/chai": "workspace:*",
     "@nomiclabs/hardhat-ethers": "^2.0.3",
@@ -25,8 +29,6 @@
     "@types/node": "^17.0.41",
     "eslint": "^7.14.0",
     "ethereum-waffle": "workspace:*",
-    "ethers": "5.6.2",
-    "hardhat": "^2.9.2",
     "mocha": "^8.2.1"
   }
 }
