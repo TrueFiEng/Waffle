@@ -34,6 +34,7 @@ const init = (waffle.provider as any)._hardhatNetwork.provider._wrapped._wrapped
 (waffle.provider as any)._hardhatNetwork.provider._wrapped._wrapped._wrapped._init = async function () {
   await init.apply(this);
   if (typeof beforeMessageListener === 'function') {
+    // hast to be here because of weird behaviour of init function
     (waffle.provider as any)
       ._hardhatNetwork
       .provider
