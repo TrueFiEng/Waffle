@@ -1,5 +1,11 @@
 # @ethereum-waffle/ens
 
+## 4.0.0-alpha.22
+
+### Patch Changes
+
+- 9d3a171: Move `@ensdomains/ens` and `@ensdomains/resolver` to `devDependencies`
+
 ## 4.0.0-alpha.21
 
 ### Patch Changes

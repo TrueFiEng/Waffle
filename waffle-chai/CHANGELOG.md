@@ -1,5 +1,14 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.27
+
+### Patch Changes
+
+- b9af4f0: Support structs in events for withArgs matcher
+- 09dccac: Improve called on contract matchers error messages
+- Updated dependencies [d0ce408]
+  - @ethereum-waffle/provider@4.0.0-alpha.25
+
 ## 4.0.0-alpha.26
 
 ### Patch Changes

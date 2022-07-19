@@ -1,5 +1,13 @@
 # @ethereum-waffle/provider
 
+## 4.0.0-alpha.25
+
+### Patch Changes
+
+- d0ce408: Append revert string check transaction receipt is not null
+- Updated dependencies [9d3a171]
+  - @ethereum-waffle/ens@4.0.0-alpha.22
+
 ## 4.0.0-alpha.24
 
 ### Patch Changes
