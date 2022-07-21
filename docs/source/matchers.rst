@@ -71,6 +71,31 @@ If you are using Waffle version :code:`3.4.4` or lower, you can't chain :code:`e
 
 This feature will be available in Waffle version 4.
 
+Testing the argument names in the event:
+
+.. code-block:: ts
+
+  await expect(token.transfer(walletTo.address, 7))
+    .to.emit(token, 'Transfer')
+    .withNamedArgs({
+      from: wallet.address,
+      to: walletTo.address,
+      amount: 7
+    });
+
+
+A subset of arguments in an event can be tested by only including the desired arguments:
+
+.. code-block:: ts
+
+  await expect(token.transfer(walletTo.address, "8000000000000000000"))
+    .to.emit(token, 'Transfer')
+    .withNamedArgs({
+      amount: "8000000000000000000"
+    });
+
+This feature will be available in Waffle version 4.
+
 Called on contract
 ------------------
 
