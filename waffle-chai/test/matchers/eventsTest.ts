@@ -498,7 +498,7 @@ export const eventsTest = (provider: TestProvider) => {
     it('Emit struct: fail', async () => {
       const struct = {
         ...emittedStruct,
-        value: BigNumber.from(2) // different
+        value: emittedStruct.value.add('1')
       };
       await expect(
         expect(events.emitStruct()).to.emit(events, 'Struct').withArgs(struct)
@@ -519,7 +519,7 @@ export const eventsTest = (provider: TestProvider) => {
         ...emittedNestedStruct,
         task: {
           ...emittedStruct,
-          value: BigNumber.from(2) // different
+          value: emittedStruct.value.add('1')
         }
       };
       await expect(
@@ -655,6 +655,47 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       ).to.be.eventually.rejectedWith(
         AssertionError,
         '"invalid" argument in the "Index" event not found: expected -1 to be at least 0'
+      );
+    });
+
+    it('Emit struct: success', async () => {
+      await expect(events.emitStruct())
+        .to.emit(events, 'Struct')
+        .withNamedArgs({task: emittedStruct});
+    });
+
+    it('Emit struct: fail', async () => {
+      const struct = {
+        ...emittedStruct,
+        value: emittedStruct.value.add('1')
+      };
+      await expect(
+        expect(events.emitStruct()).to.emit(events, 'Struct').withNamedArgs({task: struct})
+      ).to.be.eventually.rejectedWith(
+        AssertionError,
+        'expected { Object (hash, value, ...) } to deeply equal { Object (hash, value, ...) }'
+      );
+    });
+
+    it('Emit nested struct: success', async () => {
+      await expect(events.emitNestedStruct())
+        .to.emit(events, 'NestedStruct')
+        .withNamedArgs({nested: emittedNestedStruct});
+    });
+
+    it('Emit nested struct: fail', async () => {
+      const nestedStruct = {
+        ...emittedNestedStruct,
+        task: {
+          ...emittedStruct,
+          value: emittedStruct.value.add('1')
+        }
+      };
+      await expect(
+        expect(events.emitNestedStruct()).to.emit(events, 'NestedStruct').withNamedArgs({nested: nestedStruct})
+      ).to.be.eventually.rejectedWith(
+        AssertionError,
+        '{ Object (hash, value, ...) } to deeply equal { Object (hash, value, ...) }'
       );
     });
   });

@@ -1,5 +1,6 @@
 import {BytesLike, utils} from 'ethers';
 import {Hexable} from 'ethers/lib/utils';
+import {convertStructToPlainObject, isStruct} from './misc/struct';
 
 /**
  * Used for testing the arguments of events or custom errors, naming the arguments.
@@ -32,42 +33,18 @@ export function supportWithNamedArgs(Assertion: Chai.AssertionStatic) {
             `to be hash of or equal to "${expectedValue}"`
           ).to.be.oneOf([expectedValue, utils.keccak256(expectedArgBytes)]);
         } else {
+          if (isStruct(actualArgs[paramIndex])) {
+            new Assertion(
+              convertStructToPlainObject(actualArgs[paramIndex])
+            ).to.deep.equal(expectedValue);
+            return;
+          }
           new Assertion(actualArgs[paramIndex],
             `value of "${key}" argument in the "${context.eventName}" event`)
             .equal(expectedValue);
         }
       }
     }
-
-    // for (let index = 0; index < expectedArgs.length; index++) {
-    //   if (expectedArgs[index]?.length !== undefined && typeof expectedArgs[index] !== 'string') {
-    //     context.assert(
-    //       actualArgs[index].length === expectedArgs[index].length,
-    //       `Expected ${actualArgs[index]} to equal ${expectedArgs[index]}, ` +
-    //       'but they have different lengths',
-    //       'Do not combine .not. with .withArgs()'
-    //     );
-    //     for (let j = 0; j < expectedArgs[index].length; j++) {
-    //       new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
-    //     }
-    //   } else {
-    //     if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed === true) {
-    //       const expectedArgBytes = utils.isHexString(expectedArgs[index])
-    //         ? utils.arrayify(expectedArgs[index]) : utils.toUtf8Bytes(expectedArgs[index]);
-    //       new Assertion(actualArgs[index].hash).to.be.oneOf(
-    //         [expectedArgs[index], utils.keccak256(expectedArgBytes)]
-    //       );
-    //     } else {
-    //       if (isStruct(actualArgs[index])) {
-    //         new Assertion(
-    //           convertStructToPlainObject(actualArgs[index])
-    //         ).to.deep.equal(expectedArgs[index]);
-    //         return;
-    //       }
-    //       new Assertion(actualArgs[index]).equal(expectedArgs[index]);
-    //     }
-    //   }
-    // }
   };
 
   const tryAssertArgsObjectEqual = (context: any, expectedArgs: Record<string, unknown>, args: any[]) => {
@@ -84,27 +61,6 @@ export function supportWithNamedArgs(Assertion: Chai.AssertionStatic) {
     context.assert(false,
       `Specified args not emitted in any of ${context.args.length} emitted "${context.eventName}" events`,
       'Do not combine .not. with .withArgs()'
-    );
-  };
-
-  const isStruct = (arr: any[]) => {
-    if (!Array.isArray(arr)) return false;
-    const keys = Object.keys(arr);
-    const hasAlphaNumericKeys = keys.some((key) => key.match(/^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9]*$/));
-    const hasNumericKeys = keys.some((key) => key.match(/^\d+$/));
-    return hasAlphaNumericKeys && hasNumericKeys;
-  };
-
-  const convertStructToPlainObject = (struct: any[]): any => {
-    const keys = Object.keys(struct).filter((key: any) => isNaN(key));
-    return keys.reduce(
-      (acc: any, key: any) => ({
-        ...acc,
-        [key]: isStruct(struct[key])
-          ? convertStructToPlainObject(struct[key])
-          : struct[key]
-      }),
-      {}
     );
   };
 

@@ -1,4 +1,5 @@
 import {utils} from 'ethers';
+import {convertStructToPlainObject, isStruct} from './misc/struct';
 
 /**
  * Used for testing the arguments of events or custom errors.
@@ -71,27 +72,6 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
     context.assert(false,
       `Specified args not emitted in any of ${context.args.length} emitted "${context.eventName}" events`,
       'Do not combine .not. with .withArgs()'
-    );
-  };
-
-  const isStruct = (arr: any[]) => {
-    if (!Array.isArray(arr)) return false;
-    const keys = Object.keys(arr);
-    const hasAlphaNumericKeys = keys.some((key) => key.match(/^[a-zA-Z0-9]*[a-zA-Z]+[a-zA-Z0-9]*$/));
-    const hasNumericKeys = keys.some((key) => key.match(/^\d+$/));
-    return hasAlphaNumericKeys && hasNumericKeys;
-  };
-
-  const convertStructToPlainObject = (struct: any[]): any => {
-    const keys = Object.keys(struct).filter((key: any) => isNaN(key));
-    return keys.reduce(
-      (acc: any, key: any) => ({
-        ...acc,
-        [key]: isStruct(struct[key])
-          ? convertStructToPlainObject(struct[key])
-          : struct[key]
-      }),
-      {}
     );
   };
 
