@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.0-alpha.28
+
+### Patch Changes
+
+- 62dd2f9: Added withNamedArgs method to the Chai emit matcher
+
 ## 4.0.0-alpha.27
 
 ### Patch Changes
