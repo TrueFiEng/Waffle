@@ -41,6 +41,7 @@ declare namespace Chai {
 
   interface EmitAssertion extends AsyncAssertion {
     withArgs(...args: any[]): AsyncAssertion;
+    withNamedArgs(args: Record<string, unknown>): AsyncAssertion;
   }
 
   interface RevertedWithAssertion extends AsyncAssertion {

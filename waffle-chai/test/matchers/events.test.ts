@@ -1,6 +1,7 @@
 import {describeMockProviderCases} from './MockProviderCases';
-import {eventsTest} from './eventsTest';
+import {eventsTest, eventsWithNamedArgs} from './eventsTest';
 
 describeMockProviderCases('INTEGRATION: Events', (provider) => {
   eventsTest(provider);
+  eventsWithNamedArgs(provider);
 });
