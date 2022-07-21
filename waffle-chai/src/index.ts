@@ -16,6 +16,7 @@ import {supportChangeTokenBalances} from './matchers/changeTokenBalances';
 import {supportCalledOnContract} from './matchers/calledOnContract/calledOnContract';
 import {supportCalledOnContractWith} from './matchers/calledOnContract/calledOnContractWith';
 import {supportWithArgs} from './matchers/withArgs';
+import {supportWithNamedArgs} from './matchers/withNamedArgs';
 
 export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportBigNumber(chai.Assertion, utils);
@@ -35,4 +36,5 @@ export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportCalledOnContract(chai.Assertion);
   supportCalledOnContractWith(chai.Assertion);
   supportWithArgs(chai.Assertion);
+  supportWithNamedArgs(chai.Assertion);
 }
