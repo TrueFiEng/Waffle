@@ -4,6 +4,27 @@ import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
 
+/**
+ * Struct emitted in the Events contract, emitStruct method
+ */
+const emittedStruct = {
+  hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+  value: BigNumber.from(1),
+  encoded: [
+    '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+    '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
+  ]
+};
+
+/**
+ * Struct emitted in the Events contract, emitNestedStruct method
+ */
+const emittedNestedStruct = {
+  hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
+  value: BigNumber.from(1),
+  task: emittedStruct
+};
+
 export const eventsTest = (provider: TestProvider) => {
   let wallet: Wallet;
   let events: Contract;
@@ -469,53 +490,43 @@ export const eventsTest = (provider: TestProvider) => {
     });
 
     it('Emit struct: success', async () => {
-      const struct = {
-        hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-        value: BigNumber.from(1),
-        encoded: [
-          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
-        ]
-      };
       await expect(events.emitStruct())
         .to.emit(events, 'Struct')
-        .withArgs(struct);
+        .withArgs(emittedStruct);
     });
 
     it('Emit struct: fail', async () => {
+      const struct = {
+        ...emittedStruct,
+        value: BigNumber.from(2) // different
+      };
       await expect(
-        expect(events.emitStruct()).to.emit(events, 'One')
+        expect(events.emitStruct()).to.emit(events, 'Struct').withArgs(struct)
       ).to.be.eventually.rejectedWith(
         AssertionError,
-        'Expected event "One" to be emitted, but it wasn\'t'
+        'expected { Object (hash, value, ...) } to deeply equal { Object (hash, value, ...) }'
       );
     });
 
     it('Emit nested struct: success', async () => {
-      const struct = {
-        hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-        value: BigNumber.from(1),
-        encoded: [
-          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
-        ]
-      };
-      const nestedStruct = {
-        hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-        value: BigNumber.from(1),
-        task: struct
-      };
       await expect(events.emitNestedStruct())
         .to.emit(events, 'NestedStruct')
-        .withArgs(nestedStruct);
+        .withArgs(emittedNestedStruct);
     });
 
     it('Emit nested struct: fail', async () => {
+      const nestedStruct = {
+        ...emittedNestedStruct,
+        task: {
+          ...emittedStruct,
+          value: BigNumber.from(2) // different
+        }
+      };
       await expect(
-        expect(events.emitNestedStruct()).to.emit(events, 'One')
+        expect(events.emitNestedStruct()).to.emit(events, 'NestedStruct').withArgs(nestedStruct)
       ).to.be.eventually.rejectedWith(
         AssertionError,
-        'Expected event "One" to be emitted, but it wasn\'t'
+        'expected { Object (hash, value, ...) } to deeply equal { Object (hash, value, ...) }'
       );
     });
   });
