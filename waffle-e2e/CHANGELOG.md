@@ -1,5 +1,12 @@
 # @ethereum-waffle/e2e
 
+## 4.0.1
+
+### Patch Changes
+
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Exit prerelease
+
 ## 4.0.0-alpha.20
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @ethereum-waffle/ens
 
+## 4.0.1
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- 9d3a171: Move `@ensdomains/ens` and `@ensdomains/resolver` to `devDependencies`
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Exit prerelease
+
 ## 4.0.0-alpha.22
 
 ### Patch Changes

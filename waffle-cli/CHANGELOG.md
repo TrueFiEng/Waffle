@@ -1,5 +1,36 @@
 # ethereum-waffle
 
+## 4.0.1
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Updated dependencies [e8adce7]
+- Updated dependencies [9b0e87c]
+- Updated dependencies [ba71ce4]
+- Updated dependencies [587ff49]
+- Updated dependencies [62dd2f9]
+- Updated dependencies [4622881]
+- Updated dependencies [e69f739]
+- Updated dependencies [1e598c5]
+- Updated dependencies [aa18bfa]
+- Updated dependencies [d0ce408]
+- Updated dependencies [b9af4f0]
+- Updated dependencies [1e479c3]
+- Updated dependencies [2ccc395]
+- Updated dependencies [671f139]
+- Updated dependencies [79a421f]
+- Updated dependencies [4ed0cc5]
+- Updated dependencies [09dccac]
+- Updated dependencies [be6fd8e]
+- Exit prerelease
+- Updated dependencies
+  - @ethereum-waffle/chai@4.0.1
+  - @ethereum-waffle/compiler@4.0.1
+  - @ethereum-waffle/mock-contract@4.0.1
+  - @ethereum-waffle/provider@4.0.1
+
 ## 4.0.0-alpha.28
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @ethereum-waffle/provider
 
+## 4.0.1
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- 4622881: Support panic codes in ganache
+- d0ce408: Append revert string check transaction receipt is not null
+- 1e479c3: Introduce TestProvider type
+- 671f139: Include eth_sendTransaction when recording call history
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Updated dependencies [e8adce7]
+- Updated dependencies [9d3a171]
+- Exit prerelease
+- Updated dependencies
+  - @ethereum-waffle/ens@4.0.1
+
 ## 4.0.0-alpha.25
 
 ### Patch Changes

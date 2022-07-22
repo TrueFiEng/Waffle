@@ -1,5 +1,13 @@
 # @ethereum-waffle/mock-contract
 
+## 4.0.1
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- Exit prerelease
+
 ## 4.0.0-alpha.21
 
 ### Patch Changes
