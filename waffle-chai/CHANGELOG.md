@@ -1,5 +1,34 @@
 # @ethereum-waffle/chai
 
+## 4.0.1
+
+### Patch Changes
+
+- e8adce7: 🧼 Add src folders to npm
+- 9b0e87c: Optimism fix revertedWith matcher
+- ba71ce4: Add support for custom errors in hardhat
+- 587ff49: Allow chaining matchers
+- 62dd2f9: Added withNamedArgs method to the Chai emit matcher
+- 4622881: Support panic codes in ganache
+- e69f739: Support testing on optimism
+- 1e598c5: BN closeTo actual may be a js number
+- aa18bfa: Improve hardhat error catching
+- b9af4f0: Support structs in events for withArgs matcher
+- 2ccc395: Fix emit.withArgs not enough elements in list
+- 79a421f: Test args of custom errors with .withArgs matcher
+- 4ed0cc5: Allow to chain emit matchers
+- 09dccac: Improve called on contract matchers error messages
+- be6fd8e: 🔝 Update ethers to 5.6.2
+- e631daf: Fix Optimism revertedWith matcher 2
+- Updated dependencies [e8adce7]
+- Updated dependencies [4622881]
+- Updated dependencies [d0ce408]
+- Updated dependencies [1e479c3]
+- Updated dependencies [671f139]
+- Exit prerelease
+- Updated dependencies
+  - @ethereum-waffle/provider@4.0.1
+
 ## 4.0.0-alpha.28
 
 ### Patch Changes
