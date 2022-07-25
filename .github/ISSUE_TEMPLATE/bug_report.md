@@ -17,6 +17,7 @@ Snippets of code are welcome.
 **Software versions**
 - `ethereum-waffle` version
 - `@nomiclabs/hardhat-waffle` version, if using
+- `hardhat` version, if using
  - Package manager (yarn, npm, or pnpm?)
  - Node version (`node --version`)
 - Solidity version, if relevant
