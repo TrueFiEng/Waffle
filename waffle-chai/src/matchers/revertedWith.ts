@@ -43,7 +43,11 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 
 const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
-    if (error?.errorName) return error.errorName;
+    if (error?.errorName && error.errorArgs) {
+      context.args = [error.errorArgs];
+      context.txErrorName = error.errorName;
+      return error.errorName;
+    }
     const errorString = String(error);
     {
       const regexp = /VM Exception while processing transaction: reverted with custom error '([a-zA-Z0-9]+)\((.*)\)'/g;
