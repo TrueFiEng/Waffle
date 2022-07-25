@@ -69,7 +69,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
           'message',
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
         )
-      ).to.be.eventually.rejectedWith('expected 0 to equal 1');
+      ).to.be.eventually.rejectedWith('Expected "0" to be equal 1');
       await expect(expect(matchers.doRevertWithOne())
         .to.be.revertedWith('One')
         .withArgs(
@@ -116,7 +116,7 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
           ]
         )
-      ).to.be.eventually.rejectedWith('expected 3 to equal 4');
+      ).to.be.eventually.rejectedWith('Expected "3" to be equal 4');
       await expect(expect(matchers.doRevertWithTwo())
         .to.be.revertedWith('Two')
         .withArgs(
