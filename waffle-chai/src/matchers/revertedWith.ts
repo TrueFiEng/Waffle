@@ -14,7 +14,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     );
 
     const onError = (error: any) => {
-      const revertString = error?.receipt?.revertString ??
+      const revertString = error?.reason ?? error?.receipt?.revertString ??
         decodeHardhatError(error, this) ??
         decodeOptimismError(error) ??
         decodeRevertString(error);
