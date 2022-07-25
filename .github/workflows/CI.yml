@@ -45,7 +45,7 @@ jobs:
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
-      - run: pnpm run build --filter=@ethereum-waffle/hardhat
+      - run: pnpm --filter=@ethereum-waffle/hardhat run build
       - name: Install latest versions of hardhat packages
         run: |
           pnpm add hardhat@latest
