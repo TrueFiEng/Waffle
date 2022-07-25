@@ -14,7 +14,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
     );
 
     const onError = (error: any) => {
-      const revertString = error?.reason ?? error?.receipt?.revertString ??
+      const revertString = error?.receipt?.revertString ??
         decodeHardhatError(error, this) ??
         decodeOptimismError(error) ??
         decodeRevertString(error);
@@ -64,6 +64,14 @@ const decodeHardhatError = (error: any, context: any) => {
     }
     {
       const regexp = new RegExp('Error: Transaction reverted: (.*)');
+      const matches = regexp.exec(errorString);
+      if (matches && matches.length >= 1) {
+        return matches[1];
+      }
+    }
+    {
+      const regexp = new RegExp('reverted with reason string "(.*?)"');
+
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[1];
