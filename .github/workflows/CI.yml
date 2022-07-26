@@ -28,6 +28,27 @@ jobs:
         run: sudo cp ./.github/workflows/solc /bin
       - run: pnpm run build
       - run: pnpm run test
+  test-hardhat-pre-244:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: npm i -g pnpm@7.1.9
+      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+      - name: setup-solc
+        run: sudo cp ./.github/workflows/solc /bin
+      - run: pnpm run build
+      - name: Install versions of hardhat packages pre 2.4.4
+        run: |
+          pnpm add hardhat@2.9.2
+          pnpm add -D @nomiclabs/hardhat-waffle@2.0.3
+          pnpm add -D @nomiclabs/hardhat-ethers@2.0.3
+        working-directory: waffle-hardhat
+      - run: pnpm run test
+        working-directory: waffle-hardhat
   test-hardhat-latest:
     runs-on: ubuntu-latest
     steps:
@@ -37,11 +58,6 @@ jobs:
         with:
           node-version: 16.x
       - run: npm i -g pnpm@7.1.9
-      - name: Cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.pnpm-store
-          key: pnpm-packages-waffle-${{ matrix.node }}-{{ checksum "pnpm-lock.yaml" }}
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
