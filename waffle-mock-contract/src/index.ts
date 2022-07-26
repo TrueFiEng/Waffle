@@ -1,4 +1,4 @@
-import {Contract, ContractFactory, Signer, utils} from 'ethers';
+import {Contract, ContractFactory, Signer, utils, BaseContract} from 'ethers';
 import {Fragment, JsonFragment, FunctionFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
@@ -7,9 +7,9 @@ type ABI = string | Array<Fragment | JsonFragment | string>
 
 export type Stub = ReturnType<typeof stub>;
 
-export interface MockContract extends Contract {
+export interface MockContract<T extends BaseContract = BaseContract> extends Contract {
   mock: {
-    [key: string]: Stub;
+    [key in keyof T['functions']]: Stub;
   };
   call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
@@ -37,7 +37,7 @@ function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.Funct
   };
 }
 
-function createMock(abi: ABI, mockContractInstance: Contract) {
+function createMock<T extends BaseContract = BaseContract>(abi: ABI, mockContractInstance: Contract) {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
@@ -48,16 +48,16 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
       [func.name]: stubbed,
       [func.format()]: stubbed
     };
-  }, {} as MockContract['mock']);
+  }, {} as MockContract<T>['mock']);
 
   return mockedAbi;
 }
 
-export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
+export async function deployMockContract<T extends BaseContract = BaseContract>(signer: Signer, abi: ABI): Promise<MockContract<T>> {
   const mockContractInstance = await deploy(signer);
 
   const mock = createMock(abi, mockContractInstance);
-  const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;
+  const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract<T>;
   mockedContract.mock = mock;
 
   const encoder = new utils.AbiCoder();
