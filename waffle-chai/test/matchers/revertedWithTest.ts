@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {Wallet, Contract, ContractFactory} from 'ethers';
+import {Wallet, Contract, ContractFactory, BigNumber} from 'ethers';
 import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
