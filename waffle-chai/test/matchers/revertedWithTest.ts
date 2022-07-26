@@ -34,17 +34,17 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
   });
 
   it('Throw: success', async () => {
-    let oneOrTheOtherPassing = false
+    let oneOrTheOtherPassing = false;
     // Both are OK, exact output depends on installed version of Hardhat.
     try {
       await expect(matchers.doThrow()).to.be.revertedWith('');
-      oneOrTheOtherPassing = !oneOrTheOtherPassing
+      oneOrTheOtherPassing = !oneOrTheOtherPassing;
     } catch {}
     try {
       await expect(matchers.doThrow()).to.be.revertedWith('Panic');
-      oneOrTheOtherPassing = !oneOrTheOtherPassing
+      oneOrTheOtherPassing = !oneOrTheOtherPassing;
     } catch (e) {}
-    expect(oneOrTheOtherPassing).to.be.true
+    expect(oneOrTheOtherPassing).to.be.true;
   });
 
   it('Throw: fail when message is expected', async () => {
@@ -174,19 +174,19 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
   });
 
   it('Not to revert: fail', async () => {
-    let oneOrTheOtherRejected = false
+    let oneOrTheOtherRejected = false;
     // Both are OK, exact output depends on installed version of Hardhat.
     try {
-      await expect(matchers.doThrow()).not.to.be.revertedWith('')
+      await expect(matchers.doThrow()).not.to.be.revertedWith('');
     } catch {
-      oneOrTheOtherRejected = !oneOrTheOtherRejected
+      oneOrTheOtherRejected = !oneOrTheOtherRejected;
     }
     try {
-      await expect(matchers.doThrow()).not.to.be.revertedWith('Panic')
+      await expect(matchers.doThrow()).not.to.be.revertedWith('Panic');
     } catch {
-      oneOrTheOtherRejected = !oneOrTheOtherRejected
+      oneOrTheOtherRejected = !oneOrTheOtherRejected;
     }
-    expect(oneOrTheOtherRejected).to.be.true
+    expect(oneOrTheOtherRejected).to.be.true;
   });
 
   it('Revert: fail when same message was thrown', async () => {
@@ -209,17 +209,17 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
 
   if (panicCodes) {
     it('Handle panic error', async () => {
-      let oneOrTheOtherPassing = false
+      let oneOrTheOtherPassing = false;
       // Both are OK, exact output depends on installed version of Hardhat.
       try {
         await expect(matchers.doPanic()).to.be.revertedWith('panic code 0x12');
-        oneOrTheOtherPassing = !oneOrTheOtherPassing
+        oneOrTheOtherPassing = !oneOrTheOtherPassing;
       } catch {}
       try {
         await expect(matchers.doPanic()).to.be.revertedWith('Panic').withArgs(BigNumber.from('0x12'));
-        oneOrTheOtherPassing = !oneOrTheOtherPassing
+        oneOrTheOtherPassing = !oneOrTheOtherPassing;
       } catch (e) {}
-      expect(oneOrTheOtherPassing).to.be.true
+      expect(oneOrTheOtherPassing).to.be.true;
     });
   }
 };
