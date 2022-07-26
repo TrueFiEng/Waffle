@@ -1,5 +1,13 @@
 # @ethereum-waffle/chai
 
+## 4.0.2
+
+### Patch Changes
+
+- 41e809f: Decode revert string in hardhat 2.9.4+
+- Updated dependencies [41e809f]
+  - @ethereum-waffle/provider@4.0.2
+
 ## 4.0.1
 
 ### Patch Changes
