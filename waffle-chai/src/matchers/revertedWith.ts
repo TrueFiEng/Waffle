@@ -43,7 +43,17 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 
 const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
-    if (error?.errorName && error.errorArgs) {
+    if (
+      error?.errorName
+      /**
+       * Preserve old behaviour for non-custom errors,
+       * because if the case of regular errors, with revertedWith we match against the argument of error (single string),
+       * not against the error name like in the case of custom errors - because it is always just Error.
+       * We don't want to require the user to do `expect(tx).to.be.revertedWith('Error').withArgs('Require cause')`.
+       */
+      && error?.errorName !== 'Error'
+      && error.errorArgs
+    ) {
       context.args = [error.errorArgs];
       context.txErrorName = error.errorName;
       return error.errorName;
