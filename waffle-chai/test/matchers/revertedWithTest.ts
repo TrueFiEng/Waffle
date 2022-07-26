@@ -34,7 +34,17 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
   });
 
   it('Throw: success', async () => {
-    await expect(matchers.doThrow()).to.be.revertedWith('');
+    let oneOrTheOtherPassing = false
+    // Both are OK, exact output depends on installed version of Hardhat.
+    try {
+      await expect(matchers.doThrow()).to.be.revertedWith('');
+      oneOrTheOtherPassing = !oneOrTheOtherPassing
+    } catch {}
+    try {
+      await expect(matchers.doThrow()).to.be.revertedWith('Panic');
+      oneOrTheOtherPassing = !oneOrTheOtherPassing
+    } catch (e) {}
+    expect(oneOrTheOtherPassing).to.be.true
   });
 
   it('Throw: fail when message is expected', async () => {
@@ -164,9 +174,19 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
   });
 
   it('Not to revert: fail', async () => {
-    await expect(
-      expect(matchers.doThrow()).not.to.be.revertedWith('')
-    ).to.be.eventually.rejected;
+    let oneOrTheOtherRejected = false
+    // Both are OK, exact output depends on installed version of Hardhat.
+    try {
+      await expect(matchers.doThrow()).not.to.be.revertedWith('')
+    } catch {
+      oneOrTheOtherRejected = !oneOrTheOtherRejected
+    }
+    try {
+      await expect(matchers.doThrow()).not.to.be.revertedWith('Panic')
+    } catch {
+      oneOrTheOtherRejected = !oneOrTheOtherRejected
+    }
+    expect(oneOrTheOtherRejected).to.be.true
   });
 
   it('Revert: fail when same message was thrown', async () => {
@@ -189,7 +209,17 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
 
   if (panicCodes) {
     it('Handle panic error', async () => {
-      await expect(matchers.doPanic()).to.be.revertedWith('panic code 0x12');
+      let oneOrTheOtherPassing = false
+      // Both are OK, exact output depends on installed version of Hardhat.
+      try {
+        await expect(matchers.doPanic()).to.be.revertedWith('panic code 0x12');
+        oneOrTheOtherPassing = !oneOrTheOtherPassing
+      } catch {}
+      try {
+        await expect(matchers.doPanic()).to.be.revertedWith('Panic').withArgs(BigNumber.from('0x12'));
+        oneOrTheOtherPassing = !oneOrTheOtherPassing
+      } catch (e) {}
+      expect(oneOrTheOtherPassing).to.be.true
     });
   }
 };
