@@ -212,21 +212,6 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
       .to.be.revertedWith('asset doesn\'t have feed');
     await expect(matchers.requireFalseWithSingleQuote())
       .to.be.revertedWith('asset doesn\'t have feed');
-
-    await expect(
-      expect(matchers.requireFalseWithSingleQuote())
-        .to.be.revertedWith('blablabla\'t have feed')
-    ).to.be.eventually.rejected;
-
-    await expect(
-      expect(matchers.requireFalseWithSingleQuote())
-        .to.be.revertedWith('asset doesn\'blablabla')
-    ).to.be.eventually.rejected;
-
-    await expect(
-      expect(matchers.requireFalseWithSingleQuote())
-        .to.be.revertedWith('asset doesn\'blablabla')
-    ).to.be.eventually.rejected;
   });
 
   it('Catches wrong message with single quote in it', async () => {
