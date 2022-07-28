@@ -1,7 +1,22 @@
+import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
-import {ethers} from 'ethers';
+import {BigNumber, ContractFactory, ethers} from 'ethers';
+import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
 
 describe('UNIT: Miscellaneous', () => {
+  let provider: MockProvider;
+
+  before(async () => {
+    provider = new MockProvider();
+  });
+
+  const setup = async () => {
+    const [deployer] = provider.getWallets();
+
+    const factory = new ContractFactory(MATCHERS_ABI, MATCHERS_BYTECODE, deployer);
+    return {contract: await factory.deploy()};
+  };
+
   describe('Proper address', () => {
     it('Expect to be proper address', async () => {
       expect('0x28FAA621c3348823D6c6548981a19716bcDc740e').to.be.properAddress;
@@ -95,6 +110,12 @@ describe('UNIT: Miscellaneous', () => {
       expect(list).to.have.lengthOf.at.least(one);
       expect(list).to.have.lengthOf.at.most(one.mul(3));
       expect(() => expect(list).to.have.lengthOf.at.most(one)).to.throw;
+    });
+
+    it('deep.equal works', async () => {
+      const {contract} = await setup();
+      const tuple = await contract.getTuple();
+      expect(tuple).to.deep.equal(['0xb319771f2dB6113a745bCDEEa63ec939Bf726207', BigNumber.from(9771)]);
     });
   });
 });
