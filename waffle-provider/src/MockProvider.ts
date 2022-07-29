@@ -1,7 +1,7 @@
 import {providers, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import type {Provider} from 'ganache';
+import type {EthereumProvider, Provider} from 'ganache';
 import type {EthereumProviderOptions} from '@ganache/ethereum-options';
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
@@ -54,8 +54,8 @@ export class MockProvider extends providers.Web3Provider {
   }
 
   getWallets() {
-    const items = this.options?.ganacheOptions.wallet?.accounts ?? defaultAccounts;
-    return items.map((x: any) => new Wallet(x.secretKey, this));
+    const accounts = (this.provider as unknown as EthereumProvider).getInitialAccounts();
+    return Object.values(accounts).map((x: any) => new Wallet(x.secretKey, this));
   }
 
   createEmptyWallet() {
