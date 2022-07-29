@@ -37,6 +37,20 @@ export const changeEtherBalanceTest = (
         ).to.changeEtherBalance(sender, '-200');
       });
 
+      it('Breaks in a predictable way when addresses are passed as string', async () => {
+        await expect(
+          expect(() =>
+            sender.sendTransaction({
+              to: receiver.address,
+              value: 200
+            })
+          ).to.changeEtherBalance(sender.address, '-200')
+        ).to.eventually.be.rejectedWith(
+          'A string address cannot be used as an account in changeEtherBalance.' +
+          ' Expecting an instance of Ethers Account.'
+        );
+      });
+
       it('Should pass when expected balance change is passed as int and is equal to an actual', async () => {
         await expect(() =>
           sender.sendTransaction({

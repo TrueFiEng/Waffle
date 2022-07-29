@@ -6,7 +6,7 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalances', function (
     this: any,
     token: Contract,
-    accounts: Account[],
+    accounts: (Account | string)[],
     balanceChanges: BigNumberish[]
   ) {
     callPromise(this);
@@ -40,8 +40,10 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
   });
 }
 
-function getAddresses(accounts: Account[]) {
-  return Promise.all(accounts.map((account) => getAddressOf(account)));
+function getAddresses(accounts: (Account | string)[]) {
+  return Promise.all(accounts.map(
+    (account) => typeof account === 'string' ? account : getAddressOf(account)
+  ));
 }
 
 async function getBalances(token: Contract, addresses: string[], blockNumber: number) {

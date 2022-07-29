@@ -6,7 +6,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeTokenBalance', function (
     this: any,
     token: Contract,
-    account: Account,
+    account: Account | string,
     balanceChange: BigNumberish
   ) {
     callPromise(this);
@@ -15,7 +15,7 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
       if (!('txReceipt' in this)) {
         throw new Error('The changeTokenBalance matcher must be called on a transaction');
       }
-      const address = await getAddressOf(account);
+      const address = typeof account === 'string' ? account : await getAddressOf(account);
       const actualChanges = await getBalanceChange(this.txReceipt, token, address);
       return [actualChanges, address];
     }).then(([actualChange, address]: [BigNumber, string]) => {

@@ -29,6 +29,14 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
       ).to.changeTokenBalance(token, receiver, 200);
     });
 
+    it('Works with address passed as a string', async () => {
+      await token.approve(receiver.address, 200);
+      const connectedToken = token.connect(receiver);
+      await expect(() =>
+        connectedToken.transferFrom(sender.address, receiver.address, 200)
+      ).to.changeTokenBalance(token, receiver.address, 200);
+    });
+
     it('Should pass when expected balance change is passed as string and is equal to an actual', async () => {
       await expect(() =>
         token.transfer(receiver.address, 200)

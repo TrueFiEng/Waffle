@@ -25,6 +25,12 @@ export const changeTokenBalancesTest = (provider: TestProvider) => {
       ).to.changeTokenBalances(token, [sender, receiver], ['-200', 200]);
     });
 
+    it('Works with addresses passed as strings', async () => {
+      await expect(() =>
+        token.transfer(receiver.address, 200)
+      ).to.changeTokenBalances(token, [sender.address, receiver.address], ['-200', 200]);
+    });
+
     it('Should pass when negated and numbers don\'t match', async () => {
       await expect(() =>
         token.transfer(receiver.address, 200)
