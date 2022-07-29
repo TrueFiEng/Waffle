@@ -15,20 +15,6 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
     }
   });
 
-  it('accepts options', () => {
-    const original = Wallet.createRandom();
-    const provider = new MockProvider({
-      ganacheOptions: {
-        wallet: {
-          accounts: [{balance: '0x64', secretKey: original.privateKey}]
-        }
-      }
-    });
-    const wallets = provider.getWallets();
-    expect(wallets.length).to.equal(1);
-    expect(wallets[0].address).to.equal(original.address);
-  });
-
   it('can send simple transactions', async () => {
     const [sender] = provider.getWallets();
     const recipient = provider.createEmptyWallet();

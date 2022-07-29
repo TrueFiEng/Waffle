@@ -18,6 +18,20 @@ describe('MockProvider - Ganache Wallets', async () => {
     await assertWalletsWithBalances(provider, wallets);
   });
 
+  it('accepts override of accounts', () => {
+    const original = Wallet.createRandom();
+    const provider = new MockProvider({
+      ganacheOptions: {
+        wallet: {
+          accounts: [{balance: '0x64', secretKey: original.privateKey}]
+        }
+      }
+    });
+    const wallets = provider.getWallets();
+    expect(wallets.length).to.equal(1);
+    expect(wallets[0].address).to.equal(original.address);
+  });
+
   it('Can generate a different number of accounts', async () => {
     const provider = new MockProvider({
       ganacheOptions: {
