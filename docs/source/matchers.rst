@@ -69,7 +69,7 @@ If you are using Waffle version :code:`3.4.4` or lower, you can't chain :code:`e
     .to.emit(contract, 'One')
     .to.emit(contract, 'Two');
 
-This feature will be available in Waffle version 4.
+This feature is available in Waffle version 4.
 
 Testing the argument names in the event:
 
@@ -95,6 +95,17 @@ A subset of arguments in an event can be tested by only including the desired ar
     });
 
 This feature will be available in Waffle version 4.
+
+Events declared and emitted in a library:
+
+If your contract is using a Solidity :code:`Library` that declares and emits events and you want to test your contract for emitting those events, you'll have to specifically point to the library. You can use :code:`attach` method on the library object. An example snippet for this case:
+
+.. code-block:: ts
+
+  await expect(contract.function())
+    .to.emit(library.attach(contract.address), 'MyEvent');
+
+where :code:`library` is the ethers object of the Solidity Library in which :code:`MyEvent` is declared.
 
 Called on contract
 ------------------
