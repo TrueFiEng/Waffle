@@ -98,7 +98,7 @@ This feature will be available in Waffle version 4.
 
 Events declared and emitted in a library:
 
-If your contract is using a Solidity :code:`Library` that declares and emits events, Waffle will not be able to decode the events if library contract is not provided. An example snippet for this case:
+If your contract is using a Solidity :code:`Library` that declares and emits events and you want to test your contract for emitting those events, you'll have to specifically point to the library. You can use :code:`attach` method on the library object. An example snippet for this case:
 
 .. code-block:: ts
 
