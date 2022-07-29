@@ -194,7 +194,7 @@ importers:
       ethereum-waffle: workspace:*
       ethers: 5.6.2
       mocha: ^7.1.2
-      solc: ^0.8.13
+      solc: 0.8.15
       ts-node: ^8.9.1
       typechain: ^8.0.0
       typescript: ^4.6.2
@@ -207,7 +207,7 @@ importers:
       ethereum-waffle: link:../../waffle-cli
       ethers: 5.6.2
       mocha: 7.2.0
-      solc: 0.8.13
+      solc: 0.8.15
       ts-node: 8.10.2_typescript@4.6.2
       typechain: 8.0.0_typescript@4.6.2
       typescript: 4.6.2
@@ -244,7 +244,7 @@ importers:
       mocha: ^8.2.1
       openzeppelin-solidity: 2.3.0
       rimraf: ^3.0.2
-      solc: ^0.6.3
+      solc: 0.8.15
       ts-node: ^9.0.0
       typechain: ^8.0.0
       typescript: ^4.6.2
@@ -254,7 +254,7 @@ importers:
       '@ethereum-waffle/mock-contract': link:../waffle-mock-contract
       '@ethereum-waffle/provider': link:../waffle-provider
       ethers: 5.6.2
-      solc: 0.6.12
+      solc: 0.8.15
       typechain: 8.0.0_typescript@4.6.2
     devDependencies:
       eslint: 7.18.0
@@ -286,7 +286,7 @@ importers:
       node-fetch: ^2.6.7
       openzeppelin-solidity: 2.3.0
       rimraf: ^3.0.2
-      solc: ^0.6.3
+      solc: 0.8.15
       typechain: ^8.0.0
       typescript: ^4.6.2
     dependencies:
@@ -311,7 +311,7 @@ importers:
       mocha: 8.2.1
       openzeppelin-solidity: 2.3.0
       rimraf: 3.0.2
-      solc: 0.6.12
+      solc: 0.8.15
       typechain: 8.0.0_typescript@4.6.2
       typescript: 4.6.2
 
@@ -323,7 +323,7 @@ importers:
       eslint: ^7.14.0
       ethers: 5.6.2
       mocha: ^8.2.1
-      solc: ^0.6.3
+      solc: 0.8.15
       ts-node: ^9.0.0
       typechain: ^8.0.0
     devDependencies:
@@ -333,7 +333,7 @@ importers:
       eslint: 7.18.0
       ethers: 5.6.2
       mocha: 8.2.1
-      solc: 0.6.12
+      solc: 0.8.15
       ts-node: 9.1.1
       typechain: 8.0.0
 
@@ -391,7 +391,7 @@ importers:
       ethers: 5.6.2
       mocha: ^8.2.1
       rimraf: ^3.0.2
-      solc: ^0.6.3
+      solc: 0.8.15
       ts-node: ^9.0.0
       typechain: ^8.0.0
       typescript: ^4.6.2
@@ -405,7 +405,7 @@ importers:
       eslint: 7.18.0
       mocha: 8.2.1
       rimraf: 3.0.2
-      solc: 0.6.12
+      solc: 0.8.15
       ts-node: 9.1.1_typescript@4.6.2
       typechain: 8.0.0_typescript@4.6.2
       typescript: 4.6.2
@@ -2416,7 +2416,6 @@ packages:
   /commander/8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
-    dev: true
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
@@ -5488,20 +5487,6 @@ packages:
       yargs: 4.8.1
     dev: true
 
-  /solc/0.6.12:
-    resolution: {integrity: sha512-Lm0Ql2G9Qc7yPP2Ba+WNmzw2jwsrd3u4PobHYlSOxaut3TtUbj9+5ZrT6f4DUpNPEoBaFUOEg9Op9C0mk7ge9g==}
-    engines: {node: '>=8.0.0'}
-    hasBin: true
-    dependencies:
-      command-exists: 1.2.9
-      commander: 3.0.2
-      fs-extra: 0.30.0
-      js-sha3: 0.8.0
-      memorystream: 0.3.1
-      require-from-string: 2.0.2
-      semver: 5.7.1
-      tmp: 0.0.33
-
   /solc/0.7.3_debug@4.3.4:
     resolution: {integrity: sha512-GAsWNAjGzIDg7VxzP6mPjdurby3IkGCjQcM8GFYZT6RyaoUZKmMU6Y7YwG+tFGhv7dwZ8rmR4iwFDrrD99JwqA==}
     engines: {node: '>=8.0.0'}
@@ -5519,8 +5504,8 @@ packages:
     transitivePeerDependencies:
       - debug
 
-  /solc/0.8.13:
-    resolution: {integrity: sha512-C0yTN+rjEOGO6uVOXI8+EKa75SFMuZpQ2tryex4QxWIg0HRWZvCHKfVPuLZ5wx06Sb6GBp6uQA5yqQyXZnXOJw==}
+  /solc/0.8.15:
+    resolution: {integrity: sha512-Riv0GNHNk/SddN/JyEuFKwbcWcEeho15iyupTSHw5Np6WuXA5D8kEHbyzDHi6sqmvLzu2l+8b1YmL8Ytple+8w==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
@@ -5533,7 +5518,6 @@ packages:
       tmp: 0.0.33
     transitivePeerDependencies:
       - debug
-    dev: true
 
   /source-map-support/0.5.19:
     resolution: {integrity: sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==}
