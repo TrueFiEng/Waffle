@@ -1,6 +1,6 @@
-import { expect } from 'chai';
-import { utils, Wallet } from 'ethers';
-import { MockProvider } from '../src/MockProvider';
+import {expect} from 'chai';
+import {utils, Wallet} from 'ethers';
+import {MockProvider} from '../src/MockProvider';
 
 describe('MockProvider - Ganache Wallets', async () => {
   const assertWalletsWithBalances = async (provider: MockProvider, wallets: Wallet[]) => {
