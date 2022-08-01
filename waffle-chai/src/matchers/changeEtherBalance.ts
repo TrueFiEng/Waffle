@@ -18,6 +18,12 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
       if (!('txResponse' in this)) {
         throw new Error('The changeEtherBalance matcher must be called on a transaction');
       }
+      if (typeof account === 'string') {
+        throw new Error(
+          'A string address cannot be used as an account in changeEtherBalance.' +
+          ' Expecting an instance of Ethers Account.'
+        );
+      }
       return Promise.all([
         getBalanceChange(this.txResponse, account, options),
         getAddressOf(account)

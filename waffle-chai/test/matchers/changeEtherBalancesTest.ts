@@ -38,6 +38,20 @@ export const changeEtherBalancesTest = (
           })
         ).to.changeEtherBalances([sender, contract], [-200, 200]);
       });
+
+      it('Breaks in a predictable way when addresses are passed as string', async () => {
+        await expect(
+          expect(() =>
+            sender.sendTransaction({
+              to: contract.address,
+              value: 200
+            })
+          ).to.changeEtherBalances([sender.address, contract.address], [-200, 200])
+        ).to.eventually.be.rejectedWith(
+          'A string address cannot be used as an account in changeEtherBalances.' +
+          ' Expecting an instance of Ethers Account.'
+        );
+      });
     });
 
     describe('Change balance, multiple accounts', () => {
