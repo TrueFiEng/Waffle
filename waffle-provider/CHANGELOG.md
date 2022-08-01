@@ -1,5 +1,11 @@
 # @ethereum-waffle/provider
 
+## 4.0.3
+
+### Patch Changes
+
+- 1bc6cd0: 👩🏻‍🍳 MockProvider: Use actual wallets from ganache in `getWallets`
+
 ## 4.0.2
 
 ### Patch Changes

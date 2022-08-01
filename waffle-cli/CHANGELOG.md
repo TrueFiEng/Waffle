@@ -1,5 +1,18 @@
 # ethereum-waffle
 
+## 4.0.3
+
+### Patch Changes
+
+- 00e9f1b: 🪵 Upgrade solc
+- Updated dependencies [dca8950]
+- Updated dependencies [00e9f1b]
+- Updated dependencies [1bc6cd0]
+  - @ethereum-waffle/chai@4.0.3
+  - @ethereum-waffle/compiler@4.0.2
+  - @ethereum-waffle/mock-contract@4.0.2
+  - @ethereum-waffle/provider@4.0.3
+
 ## 4.0.2
 
 ### Patch Changes

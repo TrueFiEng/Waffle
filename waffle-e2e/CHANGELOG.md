@@ -1,5 +1,11 @@
 # @ethereum-waffle/e2e
 
+## 4.0.2
+
+### Patch Changes
+
+- 00e9f1b: 🪵 Upgrade solc
+
 ## 4.0.1
 
 ### Patch Changes

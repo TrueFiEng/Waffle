@@ -1,5 +1,13 @@
 # @ethereum-waffle/chai
 
+## 4.0.3
+
+### Patch Changes
+
+- dca8950: 🎩 Allow string addresses in `changeTokenBalance`
+- Updated dependencies [1bc6cd0]
+  - @ethereum-waffle/provider@4.0.3
+
 ## 4.0.2
 
 ### Patch Changes
