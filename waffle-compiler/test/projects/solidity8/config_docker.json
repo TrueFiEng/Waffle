@@ -1,0 +1,8 @@
+{
+  "name": "Solidity 8 - docker",
+  "sourceDirectory": "./custom_contracts",
+  "outputDirectory": "./custom_build",
+  "nodeModulesDirectory": "./custom_node_modules",
+  "compilerType": "dockerized-solc",
+  "compilerVersion": "0.8.15"
+}
