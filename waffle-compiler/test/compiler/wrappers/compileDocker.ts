@@ -23,7 +23,7 @@ describe('UNIT: DockerWrapper', () => {
       const command = createBuildCommand(config);
       expect(command).to.startWith('docker run -v ');
       expect(command).to.endWith(
-        ':/home/npm -i -a stdin -a stdout ethereum/solc:stable solc ' +
+        ':/home/npm -i -a stdin -a stdout ethereum/solc:stable ' +
         '--standard-json --allow-paths "/home/project,/home/npm"'
       );
     });
@@ -32,7 +32,7 @@ describe('UNIT: DockerWrapper', () => {
       const command = createBuildCommand({...config, compilerVersion: '0.4.24'});
       expect(command).to.startWith('docker run -v ');
       expect(command).to.endWith(
-        ':/home/npm -i -a stdin -a stdout ethereum/solc:0.4.24 solc ' +
+        ':/home/npm -i -a stdin -a stdout ethereum/solc:0.4.24 ' +
         '--standard-json --allow-paths "/home/project,/home/npm"'
       );
     });
