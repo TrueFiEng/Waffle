@@ -22,7 +22,13 @@ const configurations = [
   './test/projects/solidity5/config_solcjs_commit.json',
   './test/projects/solidity6/config_docker.json',
   './test/projects/solidity6/config_solcjs.json',
-  './test/projects/solidity6/config_solcjs_commit.json'
+  './test/projects/solidity6/config_solcjs_commit.json',
+  './test/projects/solidity7/config_docker.json',
+  './test/projects/solidity7/config_solcjs.json',
+  './test/projects/solidity7/config_solcjs_commit.json',
+  './test/projects/solidity8/config_docker.json',
+  './test/projects/solidity8/config_solcjs.json',
+  './test/projects/solidity8/config_solcjs_commit.json'
 ];
 
 const artifacts = [
@@ -88,7 +94,7 @@ describe('E2E: Compiler integration', async () => {
           const filePath = join(outputDirectory, artefact);
           const content = JSON.parse(readFileContent(filePath));
           expect(content.evm, `Compilation artefact "${filePath}" expected to contain evm section`).to.be.ok;
-          expect(content.evm.bytecode.object).to.startWith('60');
+          expect(content.evm.bytecode.object).to.startWith('6');
         }
       });
 

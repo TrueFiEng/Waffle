@@ -20,7 +20,7 @@ export function createBuildCommand(config: Config) {
   const tag = config.compilerVersion || 'stable';
   const allowedPaths = `"${CONTAINER_PATH},${NPM_PATH}"`;
   return `docker run ${getVolumes(config)} -i -a stdin -a stdout ` +
-    `ethereum/solc:${tag} solc --standard-json --allow-paths ${allowedPaths}`;
+    `ethereum/solc:${tag} --standard-json --allow-paths ${allowedPaths}`;
 }
 
 export function getVolumes(config: Config) {

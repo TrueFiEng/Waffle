@@ -1,0 +1,7 @@
+{
+  "name": "Solidity 8 - solcjs with commit version",
+  "sourceDirectory": "./custom_contracts",
+  "outputDirectory": "./custom_build",
+  "nodeModulesDirectory": "./custom_node_modules",
+  "compilerVersion": "v0.8.15+commit.e14f2714"
+}
