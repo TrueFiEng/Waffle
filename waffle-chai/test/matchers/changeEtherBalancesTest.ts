@@ -40,7 +40,7 @@ export const changeEtherBalancesTest = (
       });
 
       it('Breaks in a predictable way when addresses are passed as string', async () => {
-        await (
+        await expect(
           expect(() =>
             sender.sendTransaction({
               to: contract.address,
