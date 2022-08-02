@@ -17,6 +17,7 @@ import {supportCalledOnContract} from './matchers/calledOnContract/calledOnContr
 import {supportCalledOnContractWith} from './matchers/calledOnContract/calledOnContractWith';
 import {supportWithArgs} from './matchers/withArgs';
 import {supportWithNamedArgs} from './matchers/withNamedArgs';
+import './inject-call-history';
 
 export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportBigNumber(chai.Assertion, utils);

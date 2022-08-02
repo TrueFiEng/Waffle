@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import {solidity} from 'ethereum-waffle';
+import {waffleChai} from '../src';
 
 chai.use(chaiAsPromised);
-chai.use(solidity);
+chai.use(waffleChai);
