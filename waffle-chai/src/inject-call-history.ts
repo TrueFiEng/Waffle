@@ -28,7 +28,10 @@ function toRecordedCall(message: any): RecordedCall {
 }
 
 const inject = () => {
-  const waffle = require('hardhat')?.waffle
+  let waffle: any
+  try {
+    waffle = require('hardhat')?.waffle
+  } catch {return;}
   if (!waffle || !waffle.provider) return;
   const callHistory = new CallHistory();
   (waffle.provider as any).clearCallHistory = () => {
