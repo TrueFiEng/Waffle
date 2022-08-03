@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.4
+
+### Patch Changes
+
+- dd0c169: 🧒 Add withArgs and withNamedArgs alongside toEmit matcher
+
 ## 4.0.3
 
 ### Patch Changes

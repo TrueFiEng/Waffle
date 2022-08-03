@@ -1,5 +1,15 @@
 # ethereum-waffle
 
+## 4.0.4
+
+### Patch Changes
+
+- dd0c169: 🧒 Add withArgs and withNamedArgs alongside toEmit matcher
+- Updated dependencies [dd0c169]
+  - @ethereum-waffle/chai@4.0.4
+  - @ethereum-waffle/compiler@4.0.2
+  - @ethereum-waffle/mock-contract@4.0.2
+
 ## 4.0.3
 
 ### Patch Changes
