@@ -28,10 +28,10 @@ function toRecordedCall(message: any): RecordedCall {
 }
 
 const inject = () => {
-  let waffle: any
+  let waffle: any;
   try {
-    waffle = require('hardhat')?.waffle
-  } catch {return;}
+    waffle = require('hardhat')?.waffle;
+  } catch { return; }
   if (!waffle || !waffle.provider) return;
   const callHistory = new CallHistory();
   (waffle.provider as any).clearCallHistory = () => {
@@ -42,34 +42,34 @@ const inject = () => {
   const init = waffle.provider?._hardhatNetwork?.provider?._wrapped?._wrapped?._wrapped?._init;
   if (!init) return;
   waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._init = async function () {
-  await init.apply(this);
-  if (typeof beforeMessageListener === 'function') {
+    await init.apply(this);
+    if (typeof beforeMessageListener === 'function') {
     // has to be here because of weird behaviour of init function, which requires us to re-register the handler.
+      waffle.provider
+        ?._hardhatNetwork
+        ?.provider
+        ?._wrapped
+        ?._wrapped
+        ?._wrapped
+        ?._node
+        ?._vmTracer
+        ?._vm
+        ?.off?.('beforeMessage', beforeMessageListener);
+    }
+    beforeMessageListener = (message: any) => {
+      callHistory.addUniqueCall(toRecordedCall(message));
+    };
+    waffle.provider.callHistory = callHistory.recordedCalls;
     waffle.provider
-      ?._hardhatNetwork
-      ?.provider
-      ?._wrapped
-      ?._wrapped
+      ?._hardhatNetwork.provider
+      ?._wrapped._wrapped
       ?._wrapped
       ?._node
       ?._vmTracer
       ?._vm
-      ?.off?.('beforeMessage', beforeMessageListener);
-  }
-  beforeMessageListener = (message: any) => {
-    callHistory.addUniqueCall(toRecordedCall(message));
+      ?.on?.('beforeMessage', beforeMessageListener);
   };
-  waffle.provider.callHistory = callHistory.recordedCalls;
-  waffle.provider
-    ?._hardhatNetwork.provider
-    ?._wrapped._wrapped
-    ?._wrapped
-    ?._node
-    ?._vmTracer
-    ?._vm
-    ?.on?.('beforeMessage', beforeMessageListener);
-  };
-}
+};
 
 let injected = false;
 if (!injected) {
