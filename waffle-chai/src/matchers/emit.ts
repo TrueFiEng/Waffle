@@ -70,6 +70,6 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     return this;
   });
 
-  supportWithArgs(chai.Assertion);
-  supportWithNamedArgs(chai.Assertion);
+  supportWithArgs(Assertion);
+  supportWithNamedArgs(Assertion);
 }
