@@ -1,8 +1,8 @@
 import {Contract, providers, utils} from 'ethers';
 import {callPromise} from '../call-promise';
 import {waitForPendingTransaction} from './misc/transaction';
-import { supportWithArgs } from './withArgs';
-import { supportWithNamedArgs } from './withNamedArgs';
+import {supportWithArgs} from './withArgs';
+import {supportWithNamedArgs} from './withNamedArgs';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
   const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
