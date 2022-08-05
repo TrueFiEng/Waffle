@@ -343,7 +343,7 @@ importers:
       '@ensdomains/resolver': ^0.2.4
       eslint: ^7.14.0
       ethers: 5.6.2
-      ganache: ^7.0.3
+      ganache: 7.4.0
       mocha: ^8.2.1
       rimraf: ^3.0.2
       typescript: ^4.6.2
@@ -353,7 +353,7 @@ importers:
       '@ensdomains/ens': 0.4.5
       '@ensdomains/resolver': 0.2.4
       eslint: 7.18.0
-      ganache: 7.0.3
+      ganache: 7.4.0
       mocha: 8.2.1
       rimraf: 3.0.2
       typescript: 4.6.2
@@ -441,7 +441,7 @@ importers:
       debug: ^4.3.4
       eslint: ^7.14.0
       ethers: 5.6.2
-      ganache: 7.0.3
+      ganache: 7.4.0
       mocha: ^8.2.1
       rimraf: ^3.0.2
       typescript: ^4.6.2
@@ -450,7 +450,7 @@ importers:
       '@ganache/ethereum-options': 0.1.4
       debug: 4.3.4
       ethers: 5.6.2
-      ganache: 7.0.3
+      ganache: 7.4.0
     devDependencies:
       '@types/debug': 4.1.7
       eslint: 7.18.0
@@ -1463,6 +1463,8 @@ packages:
     requiresBuild: true
     dependencies:
       node-gyp-build: 4.3.0
+    dev: false
+    optional: true
 
   /@typechain/ethers-v5/10.0.0_v2ijmx5yscxxqzbyfsnc7aula4:
     resolution: {integrity: sha512-Kot7fwAqnH96ZbI8xrRgj5Kpv9yCEdjo7mxRqrH7bYpEgijT5MmuOo8IVsdhOu7Uog4ONg7k/d5UdbAtTKUgsA==}
@@ -1799,17 +1801,6 @@ packages:
       level-supports: 1.0.1
       xtend: 4.0.2
 
-  /abstract-leveldown/7.2.0:
-    resolution: {integrity: sha512-DnhQwcFEaYsvYDnACLZhMmCWd3rkOeEvglpa4q5i/5Jlm3UIsWaxVzuXvDLFCSCWRO3yy2/+V/G7FusFgejnfQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      buffer: 6.0.3
-      catering: 2.1.1
-      is-buffer: 2.0.5
-      level-concat-iterator: 3.1.0
-      level-supports: 2.1.0
-      queue-microtask: 1.2.3
-
   /acorn-jsx/5.3.1_acorn@7.4.1:
     resolution: {integrity: sha512-K0Ptm/47OKfQRpNQ2J/oIN/3QYiK6FwW+eJbILhsdxh2WTLdl+30o8aGdTbm5JbffpFFAg/g+zi1E+jvJha5ng==}
     peerDependencies:
@@ -2144,12 +2135,6 @@ packages:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  /buffer/6.0.3:
-    resolution: {integrity: sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==}
-    dependencies:
-      base64-js: 1.5.1
-      ieee754: 1.2.1
-
   /bufferutil/4.0.5:
     resolution: {integrity: sha512-HTm14iMQKK2FjFLRTM5lAVcyaUzOnqbPtesFIvREgXpJHdQm8bWS+GkQgIkfaBYRHuCnea7w8UVNfwiAQhlr9A==}
     engines: {node: '>=6.14.2'}
@@ -2198,10 +2183,6 @@ packages:
   /caseless/0.12.0:
     resolution: {integrity: sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==}
     dev: false
-
-  /catering/2.1.1:
-    resolution: {integrity: sha512-K7Qy8O9p76sL3/3m7/zLKbRkyOlSZAgzEaLhyj2mXS8PsCud2Eo4hAb8aLtZqHh0QGqLcb9dlJSu6lHRVENm1w==}
-    engines: {node: '>=6'}
 
   /chai-as-promised/7.1.1_chai@4.2.0:
     resolution: {integrity: sha512-azL6xMoi+uxu6z4rhWQ1jbdUhOMhis2PvscD/xjLqNMkv3BPPp2JyyuTHOrf9BOosGpNQ11v6BKv/g57RXbiaA==}
@@ -2731,6 +2712,7 @@ packages:
   /emittery/0.10.0:
     resolution: {integrity: sha512-AGvFfs+d0JKCJQ4o01ASQLGPmSCxgfU9RFXvzPvZdjKK8oscynksuJhWrSTSw7j7Ep/sZct5b5ZhYCi8S/t0HQ==}
     engines: {node: '>=12'}
+    dev: false
 
   /emoji-regex/7.0.3:
     resolution: {integrity: sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==}
@@ -3407,18 +3389,21 @@ packages:
   /functional-red-black-tree/1.0.1:
     resolution: {integrity: sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=}
 
-  /ganache/7.0.3:
-    resolution: {integrity: sha512-1O4V38YkAFd2B1YfBevauEepxEtoN0iTTK02SUJPUIcLOnxwrR49lSDq7liKpUWLkoZCOC2Bkrz/+XJAmEoNAQ==}
+  /ganache/7.4.0:
+    resolution: {integrity: sha512-e1x0ZJsJ5zUP+hWtpSNv+FaavRdcrQhQwe+QZ4kVon5mDm6RgFpe3PzNDJXg82AeqqslohJeK9UinZbZzjewjQ==}
     hasBin: true
-    dependencies:
-      '@trufflesuite/bigint-buffer': 1.1.9
-      emittery: 0.10.0
-      keccak: 3.0.1
-      leveldown: 6.1.0
-      secp256k1: 4.0.2
     optionalDependencies:
       bufferutil: 4.0.5
       utf-8-validate: 5.0.7
+    bundledDependencies:
+      - '@trufflesuite/bigint-buffer'
+      - emittery
+      - keccak
+      - leveldown
+      - secp256k1
+      - '@types/bn.js'
+      - '@types/lru-cache'
+      - '@types/seedrandom'
 
   /get-caller-file/1.0.3:
     resolution: {integrity: sha512-3t6rVToeoZfYSGd8YoLFR2DJkiQrIiUrGcjvFX2mDw3bn6k2OtwHN0TNCLbBO+w8qTvimhDkv+LSscbJY1vE6w==}
@@ -3810,6 +3795,7 @@ packages:
   /is-buffer/2.0.5:
     resolution: {integrity: sha512-i2R6zNFDwgEHJyQUtJEk0XFi1i0dPFn/oqjK3/vPCcDeJvW5NQ83V8QbicfF1SupOaB0h8ntgBC2YiE7dfyctQ==}
     engines: {node: '>=4'}
+    dev: true
 
   /is-callable/1.2.3:
     resolution: {integrity: sha512-J1DcMe8UYTBSrKezuIUTUwjXsho29693unXM2YhJUTR2txK/eG47bvNa/wipPFmZFgr/N6f1GA66dv0mEyTIyQ==}
@@ -4106,12 +4092,6 @@ packages:
     resolution: {integrity: sha512-OTKKOqeav2QWcERMJR7IS9CUo1sHnke2C0gkSmcR7QuEtFNLLzHQAvnMw8ykvEcv0Qtkg0p7FOwP1v9e5Smdcw==}
     engines: {node: '>=6'}
 
-  /level-concat-iterator/3.1.0:
-    resolution: {integrity: sha512-BWRCMHBxbIqPxJ8vHOvKUsaO0v1sLYZtjN3K2iZJsRBYtp+ONsY6Jfi6hy9K3+zolgQRryhIn2NRZjZnWJ9NmQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      catering: 2.1.1
-
   /level-errors/2.0.1:
     resolution: {integrity: sha512-UVprBJXite4gPS+3VznfgDSU8PTRuVX0NXwoWW50KLxd2yw4Y1t2JUR5In1itQnudZqRMT9DlAM3Q//9NCjCFw==}
     engines: {node: '>=6'}
@@ -4146,10 +4126,6 @@ packages:
     dependencies:
       xtend: 4.0.2
 
-  /level-supports/2.1.0:
-    resolution: {integrity: sha512-E486g1NCjW5cF78KGPrMDRBYzPuueMZ6VBXHT6gC7A8UYWGiM14fGgp+s/L1oFfDWSPV/+SFkYCmZ0SiESkRKA==}
-    engines: {node: '>=10'}
-
   /level-ws/2.0.0:
     resolution: {integrity: sha512-1iv7VXx0G9ec1isqQZ7y5LmoZo/ewAsyDHNA8EFDW5hqH2Kqovm33nSFkSdnLLAK+I5FlT+lo5Cw9itGe+CpQA==}
     engines: {node: '>=6'}
@@ -4157,15 +4133,6 @@ packages:
       inherits: 2.0.4
       readable-stream: 3.6.0
       xtend: 4.0.2
-
-  /leveldown/6.1.0:
-    resolution: {integrity: sha512-8C7oJDT44JXxh04aSSsfcMI8YiaGRhOFI9/pMEL7nWJLVsWajDPTRxsSHTM2WcTVY5nXM+SuRHzPPi0GbnDX+w==}
-    engines: {node: '>=10.12.0'}
-    requiresBuild: true
-    dependencies:
-      abstract-leveldown: 7.2.0
-      napi-macros: 2.0.0
-      node-gyp-build: 4.3.0
 
   /levelup/4.4.0:
     resolution: {integrity: sha512-94++VFO3qN95cM/d6eBXvd894oJE0w3cInq9USsyQzzoJxmiYzPAocNcuGCPGGjoXqDVJcr3C1jzt1TSjyaiLQ==}
@@ -4593,9 +4560,6 @@ packages:
     resolution: {integrity: sha512-p1sjXuopFs0xg+fPASzQ28agW1oHD7xDsd9Xkf3T15H3c/cifrFHVwrh74PdoklAPi+i7MdRsE47vm2r6JoB+w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
-
-  /napi-macros/2.0.0:
-    resolution: {integrity: sha512-A0xLykHtARfueITVDernsAWdtIMbOJgKgcluwENp3AlsKN/PloyO10HtmoqnFAQAcxPkgZN7wdfPfEd0zNGxbg==}
 
   /natural-compare/1.4.0:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
@@ -5060,9 +5024,6 @@ packages:
     engines: {node: '>=0.4.x'}
     deprecated: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
     dev: false
-
-  /queue-microtask/1.2.3:
-    resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
   /quick-lru/4.0.1:
     resolution: {integrity: sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==}
