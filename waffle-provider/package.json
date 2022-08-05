@@ -46,7 +46,7 @@
     "@ganache/ethereum-options": "0.1.4",
     "debug": "^4.3.4",
     "ethers": "5.6.2",
-    "ganache": "7.0.3"
+    "ganache": "7.4.0"
   },
   "resolutions": {
     "web3": "1.2.4"
