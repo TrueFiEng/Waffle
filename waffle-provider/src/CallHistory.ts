@@ -96,7 +96,7 @@ export class CallHistory {
 
 function toRecordedCall(message: any): RecordedCall {
   return {
-    address: message.to ? utils.getAddress(utils.hexlify(message.to)) : undefined,
+    address: message.to ? decodeAddress(message.to) : undefined,
     data: message.data ? utils.hexlify(message.data) : '0x'
   };
 }
@@ -131,4 +131,15 @@ function decodeCallData(callData: any) {
 function decodeNumber(data: Buffer): number {
   const newData = Buffer.concat([data, Buffer.alloc(32, 0)]);
   return newData.readUInt32LE();
+}
+
+/**
+ * Decodes a address taken from EVM execution step
+ * into a checksumAddress.
+ */
+function decodeAddress(data: Buffer): string {
+  if (data.length < 20) {
+    data = Buffer.concat([Buffer.alloc(20 - data.length, 0), data]);
+  }
+  return utils.getAddress(utils.hexlify(data));
 }
