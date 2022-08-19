@@ -4,4 +4,4 @@
 "@ethereum-waffle/optimism": patch
 ---
 
-🦷 Automatically inject call history into hardhat provider
+🦷 (Experimental) Automatically inject call history into hardhat provider
