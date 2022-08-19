@@ -1,5 +1,11 @@
 # @ethereum-waffle/ens
 
+## 4.0.2
+
+### Patch Changes
+
+- 2199c8d: 🦜 Bump ganache
+
 ## 4.0.1
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @ethereum-waffle/chai
 
+## 4.0.5
+
+### Patch Changes
+
+- 9940630: 🦷 (Experimental) Automatically inject call history into hardhat provider
+- Updated dependencies [2199c8d]
+- Updated dependencies [febefc1]
+  - @ethereum-waffle/provider@4.0.4
+
 ## 4.0.4
 
 ### Patch Changes
