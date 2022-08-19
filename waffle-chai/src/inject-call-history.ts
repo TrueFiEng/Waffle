@@ -72,7 +72,7 @@ const inject = () => {
 };
 
 let injected = false;
-if (!injected) {
+if (!injected && !!process.env.WAFFLE_EXPERIMENTAL_HARDHAT_CALL_HISTORY) {
   injected = true;
   inject();
 }
