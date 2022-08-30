@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.6
+
+### Patch Changes
+
+- 8e41d38: Don't rely on ethers for checking if object is an instance of Contract
+
 ## 4.0.5
 
 ### Patch Changes
