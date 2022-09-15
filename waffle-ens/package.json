@@ -43,10 +43,8 @@
   "engines": {
     "node": ">=10.0"
   },
-  "dependencies": {
-    "ethers": "5.6.2"
-  },
   "devDependencies": {
+    "ethers": "5.6.2",
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4",
     "ganache": "7.4.0",
@@ -54,5 +52,8 @@
     "rimraf": "^3.0.2",
     "typescript": "^4.6.2",
     "eslint": "^7.14.0"
+  },
+  "peerDependencies": {
+    "ethers": "*"
   }
 }

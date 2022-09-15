@@ -1,9 +1,9 @@
 import {Contract, ContractFactory, Signer, utils} from 'ethers';
-import {Fragment, JsonFragment, FunctionFragment} from '@ethersproject/abi';
+import type { JsonFragment } from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
 
-type ABI = string | Array<Fragment | JsonFragment | string>
+type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
 export type Stub = ReturnType<typeof stub>;
 
@@ -65,7 +65,7 @@ export async function deployMockContract(signer: Signer, abi: ABI): Promise<Mock
   mockedContract.staticcall = async (contract: Contract, functionName: string, ...params: any[]) => {
     let func: utils.FunctionFragment = contract.interface.functions[functionName];
     if (!func) {
-      func = Object.values(contract.interface.functions).find(f => f.name === functionName) as FunctionFragment;
+      func = Object.values(contract.interface.functions).find(f => f.name === functionName) as utils.FunctionFragment;
     }
     if (!func) {
       throw new Error(`Unknown function ${functionName}`);

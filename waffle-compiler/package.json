@@ -42,9 +42,6 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.6.1",
-    "@ethersproject/bytes": "^5.6.1",
-    "@ethersproject/providers": "^5.6.2",
     "@resolver-engine/imports": "^0.3.3",
     "@resolver-engine/imports-fs": "^0.3.3",
     "@typechain/ethers-v5": "^10.0.0",
@@ -69,7 +66,7 @@
     "eslint": "^7.14.0"
   },
   "peerDependencies": {
-    "ethers": "5.6.2",
+    "ethers": "*",
     "solc": "*",
     "typechain": "^8.0.0"
   }
