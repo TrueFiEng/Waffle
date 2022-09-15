@@ -1,5 +1,5 @@
 import {Contract, ContractFactory, Signer, utils} from 'ethers';
-import type { JsonFragment } from '@ethersproject/abi';
+import type {JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
 
