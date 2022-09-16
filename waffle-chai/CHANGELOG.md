@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.7
+
+### Patch Changes
+
+- 307f726: 🛶 Extend regexp for new format of hardhat errors
+
 ## 4.0.6
 
 ### Patch Changes
