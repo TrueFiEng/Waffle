@@ -29,9 +29,9 @@
   "bugs": {
     "url": "https://github.com/EthWorks/Waffle/issues"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "module": "dist/esm/src/index.ts",
+  "types": "dist/esm/src/index.d.ts",
   "scripts": {
     "test": "export NODE_ENV=test && yarn test:build && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
@@ -39,7 +39,7 @@
     "build": "rimraf ./dist && yarn build:sol && yarn build:esm && yarn build:cjs",
     "build:sol": "ts-node compile.ts",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
     "test:build": "ts-node ./test/helpers/buildTestContracts.ts",
     "clean": "rimraf ./dist ./test/example/build"
   },
