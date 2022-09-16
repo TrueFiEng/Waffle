@@ -115,12 +115,13 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
     try {
       await expect(
         expect(matchers.doThrowAndModify()).to.be.revertedWith('fa')
-      ).to.eventually.be.rejectedWith('Expected transaction to be reverted with "fa", but other reason was found: "panic code 0x1"');
+      ).to.eventually.be.rejectedWith(
+        'Expected transaction to be reverted with "fa", but other reason was found: "panic code 0x1"'
+      );
     } catch {
       oneOrTheOtherRejected = !oneOrTheOtherRejected;
     }
     expect(oneOrTheOtherRejected).to.be.true;
-    
   });
 
   it('Throw with modification: fail when message is expected', async () => {
