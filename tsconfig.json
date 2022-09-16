@@ -12,6 +12,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2018",
-    "composite": true
+    "composite": true,
+    "sourceMap": true,
+    "declarationMap": true,
   }
 }
