@@ -86,14 +86,41 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
   });
 
   it('Throw with modification: success', async () => {
-    await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
+    let oneOrTheOtherRejected = false;
+    // Both are OK, exact output depends on installed version of Hardhat.
+    try {
+      await expect(matchers.doThrowAndModify()).to.be.revertedWith('');
+    } catch {
+      oneOrTheOtherRejected = !oneOrTheOtherRejected;
+    }
+    try {
+      await expect(matchers.doThrowAndModify()).to.be.revertedWith('panic code 0x1');
+    } catch {
+      oneOrTheOtherRejected = !oneOrTheOtherRejected;
+    }
+    expect(oneOrTheOtherRejected).to.be.true;
   });
 
   it('Throw with modification: success, properly handle common substring', async () => {
     // https://github.com/NomicFoundation/hardhat/issues/2234#issuecomment-1045974424
-    await expect(
-      expect(matchers.doThrowAndModify()).to.be.revertedWith('fa')
-    ).to.eventually.be.rejectedWith('Expected transaction to be reverted with "fa", but other reason was found: ""');
+    let oneOrTheOtherRejected = false;
+    // Both are OK, exact output depends on installed version of Hardhat.
+    try {
+      await expect(
+        expect(matchers.doThrowAndModify()).to.be.revertedWith('fa')
+      ).to.eventually.be.rejectedWith('Expected transaction to be reverted with "fa", but other reason was found: ""');
+    } catch {
+      oneOrTheOtherRejected = !oneOrTheOtherRejected;
+    }
+    try {
+      await expect(
+        expect(matchers.doThrowAndModify()).to.be.revertedWith('fa')
+      ).to.eventually.be.rejectedWith('Expected transaction to be reverted with "fa", but other reason was found: "panic code 0x1"');
+    } catch {
+      oneOrTheOtherRejected = !oneOrTheOtherRejected;
+    }
+    expect(oneOrTheOtherRejected).to.be.true;
+    
   });
 
   it('Throw with modification: fail when message is expected', async () => {
