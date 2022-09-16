@@ -44,30 +44,14 @@ const inject = () => {
   waffle.provider._hardhatNetwork.provider._wrapped._wrapped._wrapped._init = async function () {
     await init.apply(this);
     if (typeof beforeMessageListener === 'function') {
-    // has to be here because of weird behaviour of init function, which requires us to re-register the handler.
-      waffle.provider
-        ?._hardhatNetwork
-        ?.provider
-        ?._wrapped
-        ?._wrapped
-        ?._wrapped
-        ?._node
-        ?._vmTracer
-        ?._vm
-        ?.off?.('beforeMessage', beforeMessageListener);
+      // has to be here because of weird behaviour of init function, which requires us to re-register the handler.
+      getHardhatVMEventEmitter(waffle)?.off?.('beforeMessage', beforeMessageListener);
     }
     beforeMessageListener = (message: any) => {
       callHistory.addUniqueCall(toRecordedCall(message));
     };
     waffle.provider.callHistory = callHistory.recordedCalls;
-    waffle.provider
-      ?._hardhatNetwork.provider
-      ?._wrapped._wrapped
-      ?._wrapped
-      ?._node
-      ?._vmTracer
-      ?._vm
-      ?.on?.('beforeMessage', beforeMessageListener);
+    getHardhatVMEventEmitter(waffle)?.on?.('beforeMessage', beforeMessageListener);
   };
 };
 
@@ -75,4 +59,20 @@ let injected = false;
 if (!injected && !!process.env.WAFFLE_EXPERIMENTAL_HARDHAT_CALL_HISTORY) {
   injected = true;
   inject();
+}
+
+function getHardhatVMEventEmitter(waffle: any) {
+  const vm = waffle.provider
+    ?._hardhatNetwork.provider
+    ?._wrapped._wrapped
+    ?._wrapped
+    ?._node
+    ?._vmTracer
+    ?._vm;
+
+  /**
+   * There were changes related to the location of event emitter introduced
+   * in Hardhat version 2.11.0.
+   */
+  return vm?.evm?.events ?? vm;
 }

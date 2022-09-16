@@ -6,9 +6,9 @@
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": true,
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "module": "dist/esm/src/index.ts",
+  "types": "dist/esm/src/index.d.ts",
   "scripts": {
     "build": "hardhat compile",
     "test": "NODE_PATH=\"${PWD}/node_modules\":$NODE_PATH mocha",

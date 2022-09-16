@@ -49,6 +49,27 @@ jobs:
         working-directory: waffle-hardhat
       - run: pnpm run test
         working-directory: waffle-hardhat
+  test-hardhat-2112:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: npm i -g pnpm@7.1.9
+      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+      - name: setup-solc
+        run: sudo cp ./.github/workflows/solc /bin
+      - run: pnpm run build
+      - name: Install latest versions of hardhat packages
+        run: |
+          pnpm add hardhat@2.11.2
+          pnpm add -D @nomiclabs/hardhat-waffle@2.0.3
+          pnpm add -D @nomiclabs/hardhat-ethers@2.1.1
+        working-directory: waffle-hardhat
+      - run: pnpm run test
+        working-directory: waffle-hardhat
   test-hardhat-latest:
     runs-on: ubuntu-latest
     steps:
