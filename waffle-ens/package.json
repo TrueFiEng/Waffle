@@ -36,8 +36,8 @@
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
     "build": "rimraf ./dist && pnpm build:artifacts && pnpm build:esm && pnpm build:cjs",
-    "build:esm": "tsc --outDir dist/esm --module ES6",
-    "build:cjs": "tsc --outDir dist/cjs",
+    "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
     "build:artifacts": "node build-artifacts.js"
   },
   "engines": {

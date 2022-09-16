@@ -3,10 +3,6 @@
   "compilerOptions": {
     "outDir": "dist"
   },
-  "include": [
-    "src",
-    "src/**/*.json"
-  ],
   "references": [
     {
       "path": "../waffle-chai"
