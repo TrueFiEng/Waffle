@@ -65,8 +65,8 @@ jobs:
       - name: Install latest versions of hardhat packages
         run: |
           pnpm add hardhat@2.11.2
-          pnpm add -D @nomiclabs/hardhat-waffle@2.1.1
-          pnpm add -D @nomiclabs/hardhat-ethers@2.0.3
+          pnpm add -D @nomiclabs/hardhat-waffle@2.0.3
+          pnpm add -D @nomiclabs/hardhat-ethers@2.1.1
         working-directory: waffle-hardhat
       - run: pnpm run test
         working-directory: waffle-hardhat
