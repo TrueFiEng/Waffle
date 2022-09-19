@@ -1,5 +1,11 @@
 # @ethereum-waffle/hardhat
 
+## 4.0.3
+
+### Patch Changes
+
+- 9940630: 🦷 (Experimental) Automatically inject call history into hardhat provider
+
 ## 4.0.2
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "name": "ethereum-waffle",
   "description": "Sweeter, faster and simpler than truffle.",
-  "version": "4.0.4",
+  "version": "4.0.7",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -28,9 +28,9 @@
   "bugs": {
     "url": "https://github.com/EthWorks/Waffle/issues"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "module": "dist/esm/src/index.ts",
+  "types": "dist/esm/src/index.d.ts",
   "bin": {
     "waffle": "./bin/waffle"
   },
@@ -42,7 +42,7 @@
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
     "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
     "clean": "rimraf ./dist ./test/example/build"
   },
   "engines": {
@@ -53,16 +53,19 @@
     "@ethereum-waffle/compiler": "workspace:*",
     "@ethereum-waffle/mock-contract": "workspace:*",
     "@ethereum-waffle/provider": "workspace:*",
-    "ethers": "5.6.2",
     "solc": "0.8.15",
     "typechain": "^8.0.0"
   },
   "devDependencies": {
+    "ethers": "5.6.2",
     "openzeppelin-solidity": "2.3.0",
     "mocha": "^8.2.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.6.2",
     "eslint": "^7.14.0",
     "ts-node": "^9.0.0"
+  },
+  "peerDependencies": {
+    "ethers": "*"
   }
 }

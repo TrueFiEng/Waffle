@@ -1,5 +1,26 @@
 # @ethereum-waffle/chai
 
+## 4.0.7
+
+### Patch Changes
+
+- 307f726: 🛶 Extend regexp for new format of hardhat errors
+
+## 4.0.6
+
+### Patch Changes
+
+- 8e41d38: Don't rely on ethers for checking if object is an instance of Contract
+
+## 4.0.5
+
+### Patch Changes
+
+- 9940630: 🦷 (Experimental) Automatically inject call history into hardhat provider
+- Updated dependencies [2199c8d]
+- Updated dependencies [febefc1]
+  - @ethereum-waffle/provider@4.0.4
+
 ## 4.0.4
 
 ### Patch Changes

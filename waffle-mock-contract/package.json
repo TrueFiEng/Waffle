@@ -29,9 +29,9 @@
   "bugs": {
     "url": "https://github.com/EthWorks/Waffle/issues"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "module": "dist/esm/src/index.ts",
+  "types": "dist/esm/src/index.d.ts",
   "scripts": {
     "test": "export NODE_ENV=test && yarn test:build && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
@@ -39,18 +39,16 @@
     "build": "rimraf ./dist && yarn build:sol && yarn build:esm && yarn build:cjs",
     "build:sol": "ts-node compile.ts",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
     "test:build": "ts-node ./test/helpers/buildTestContracts.ts",
     "clean": "rimraf ./dist ./test/example/build"
   },
   "engines": {
     "node": ">=10.0"
   },
-  "dependencies": {
-    "@ethersproject/abi": "^5.6.1",
-    "ethers": "5.6.2"
-  },
   "devDependencies": {
+    "ethers": "5.6.2",
+    "@ethersproject/abi": "^5.6.1",
     "@ethereum-waffle/chai": "workspace:*",
     "@ethereum-waffle/compiler": "workspace:*",
     "solc": "0.8.15",
@@ -61,5 +59,8 @@
     "typescript": "^4.6.2",
     "eslint": "^7.14.0",
     "ts-node": "^9.0.0"
+  },
+  "peerDependencies": {
+    "ethers": "*"
   }
 }

@@ -1,10 +1,3 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-import {waffleChai} from '../src';
-
-chai.use(chaiAsPromised);
-chai.use(waffleChai);
-
 export {calledOnContractTest} from './matchers/calledOnContract/calledOnContractTest';
 export {calledOnContractValidatorsTest} from './matchers/calledOnContract/calledOnContractValidatorsTest';
 export {calledOnContractWithTest} from './matchers/calledOnContract/calledOnContractWithTest';

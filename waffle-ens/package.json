@@ -1,6 +1,6 @@
 {
   "name": "@ethereum-waffle/ens",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A mock ens implementation for testing.",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
@@ -28,25 +28,23 @@
   "bugs": {
     "url": "https://github.com/EthWorks/Waffle/issues"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "module": "dist/esm/src/index.ts",
+  "types": "dist/esm/src/index.d.ts",
   "scripts": {
     "test": "mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
     "build": "rimraf ./dist && pnpm build:artifacts && pnpm build:esm && pnpm build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false",
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
     "build:artifacts": "node build-artifacts.js"
   },
   "engines": {
     "node": ">=10.0"
   },
-  "dependencies": {
-    "ethers": "5.6.2"
-  },
   "devDependencies": {
+    "ethers": "5.6.2",
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4",
     "ganache": "7.4.0",
@@ -54,5 +52,8 @@
     "rimraf": "^3.0.2",
     "typescript": "^4.6.2",
     "eslint": "^7.14.0"
+  },
+  "peerDependencies": {
+    "ethers": "*"
   }
 }

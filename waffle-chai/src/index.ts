@@ -15,6 +15,7 @@ import {supportChangeTokenBalance} from './matchers/changeTokenBalance';
 import {supportChangeTokenBalances} from './matchers/changeTokenBalances';
 import {supportCalledOnContract} from './matchers/calledOnContract/calledOnContract';
 import {supportCalledOnContractWith} from './matchers/calledOnContract/calledOnContractWith';
+import './inject-call-history';
 
 export function waffleChai(chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   supportBigNumber(chai.Assertion, utils);
