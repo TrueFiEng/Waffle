@@ -28,4 +28,4 @@ jobs:
           COMMIT_EMAIL: "ci@example.com"
           PR_BRANCH_NAME: "upgrade-ganache-${PR_ID}"
           PR_TITLE: "Upgrade ganache version"
-          GITHUB_TOKEN: ${{ secrets.CREATE_PR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets. GH_BOT_TOKEN }}
