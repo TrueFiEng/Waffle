@@ -44,14 +44,14 @@
     "node": ">=10.0"
   },
   "devDependencies": {
-    "ethers": "5.6.2",
     "@ensdomains/ens": "^0.4.4",
     "@ensdomains/resolver": "^0.2.4",
-    "ganache": "7.4.0",
+    "eslint": "^7.14.0",
+    "ethers": "5.6.2",
+    "ganache": "7.4.3",
     "mocha": "^8.2.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.6.2",
-    "eslint": "^7.14.0"
+    "typescript": "^4.6.2"
   },
   "peerDependencies": {
     "ethers": "*"
