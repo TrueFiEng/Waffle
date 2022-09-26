@@ -17,7 +17,7 @@ jobs:
         uses: technote-space/create-pr-action@v2
         with:
           EXECUTE_COMMANDS: |
-            npm install -g npm-check-updates
+            npm install -g npm-check-updates@^16.3.2
             cd packages/waffle-provider
             ncu ganache -u
             cd ..
