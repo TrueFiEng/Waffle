@@ -1,0 +1,31 @@
+name: Upgrade ganache version
+on:
+  workflow_dispatch:
+  schedule:
+    # every 1st and 16th of the month at 3am UTC
+    - cron: "0 3 1,16 * *"
+jobs:
+  upgrade:
+    name: Upgrade ganache version
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.1
+      - name: Upgrade ganache version
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            npm install -g npm-check-updates
+            cd packages/waffle-provider
+            ncu ganache -u
+            cd ..
+            cd waffle-ens/
+            ncu ganache -u
+          COMMIT_MESSAGE: "Upgrade ganache version"
+          COMMIT_NAME: "GitHub Actions"
+          COMMIT_EMAIL: "ci@example.com"
+          PR_BRANCH_NAME: "upgrade-ganache-${PR_ID}"
+          PR_TITLE: "Upgrade ganache version"
+          GITHUB_TOKEN: ${{ secrets.CREATE_PR_TOKEN }}
