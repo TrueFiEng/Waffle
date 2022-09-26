@@ -23,9 +23,9 @@ jobs:
             cd ..
             cd waffle-ens/
             ncu ganache -u
-          COMMIT_MESSAGE: "Upgrade ganache version"
+          COMMIT_MESSAGE: "chore: upgrade ganache version"
           COMMIT_NAME: "Upgrade ganache version"
           COMMIT_EMAIL: "truebot.github@trusttoken.com"
-          PR_BRANCH_NAME: "upgrade-ganache-${PR_ID}"
+          PR_BRANCH_NAME: "chore-upgrade-ganache-${PR_ID}"
           PR_TITLE: "🍩 Upgrade ganache version"
           GITHUB_TOKEN: ${{ secrets. GH_BOT_TOKEN }}
