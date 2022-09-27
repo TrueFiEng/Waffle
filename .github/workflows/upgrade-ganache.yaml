@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets. GH_BOT_TOKEN }}
           EXECUTE_COMMANDS: |
             npm install -g npm-check-updates@^16.3.2
-            cd packages/waffle-provider
+            cd waffle-provider
             ncu ganache -u
             cd ..
             cd waffle-ens/
