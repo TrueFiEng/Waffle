@@ -1,4 +1,4 @@
-name: Upgrade ganache version
+name: Upgrade dependencies
 on:
   workflow_dispatch:
   schedule:
@@ -6,26 +6,25 @@ on:
     - cron: "0 3 1,16 * *"
 jobs:
   upgrade:
-    name: Upgrade ganache version
+    name: Upgrade dependencies
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/setup-node@v1
         with:
           node-version: 16.1
-      - name: Upgrade ganache version
+      - run: npm install -g npm-check-updates@^16.3.2
+      - name: Upgrade dependencies
         uses: technote-space/create-pr-action@v2
         with:
           GITHUB_TOKEN: ${{ secrets. GH_BOT_TOKEN }}
           EXECUTE_COMMANDS: |
-            npm install -g npm-check-updates@^16.3.2
             cd waffle-provider
-            ncu ganache -u
-            cd ..
-            cd waffle-ens/
-            ncu ganache -u
-          COMMIT_MESSAGE: "🍩 Upgrade ganache version"
+            ncu ganache --deep -u
+            ncu solc --deep -u
+            pnpm install --strict-peer-dependencies=false
+          COMMIT_MESSAGE: "🤖 Upgrade dependencies"
           COMMIT_NAME: "truefibot"
           COMMIT_EMAIL: "truebot.github@trusttoken.com"
-          PR_BRANCH_NAME: "chore-upgrade-ganache-${PR_ID}"
-          PR_TITLE: "🍩 Upgrade ganache version"
+          PR_BRANCH_NAME: "chore-upgrade-dependencies-${PR_ID}"
+          PR_TITLE: "🤖 Upgrade dependencies"
