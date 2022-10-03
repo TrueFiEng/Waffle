@@ -54,6 +54,8 @@
     "typescript": "^4.6.2"
   },
   "peerDependencies": {
-    "ethers": "*"
+    "ethers": "*",
+    "@ensdomains/ens": "^0.4.4",
+    "@ensdomains/resolver": "^0.2.4"
   }
 }
