@@ -86,11 +86,17 @@ const decodeHardhatError = (error: any, context: any) => {
       }
     }
     {
-      const regexp = new RegExp('revert(ed)? with reason (string )?("|\')(.*?)("|\')');
-
+      const regexp = new RegExp('revert(ed)? with reason (string )?"(.*)"');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
-        return matches[matches.length - 2]; // Last group is the " or ' group.
+        return matches[matches.length - 1];
+      }
+    }
+    {
+      const regexp = new RegExp('revert(ed)? with reason (string )?\'(.*)\'');
+      const matches = regexp.exec(errorString);
+      if (matches && matches.length >= 1) {
+        return matches[matches.length - 1];
       }
     }
     return undefined;
