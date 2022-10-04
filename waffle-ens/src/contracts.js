@@ -28,8 +28,8 @@ try {
       ...require('@ensdomains/ens'),
       ...require('@ensdomains/resolver')
     };
-  } catch (ensRequireError) {
-    console.error('Failed to import ens dependencies. Have you installed peer dependencies "@ensdomains/ens" and "@ensdomains/resolver"?')
+  } catch {
+    // If the dependencies are missing, a descriptive error is thrown
+    // when trying to use one of the ENS functions.
   }
-  
 }

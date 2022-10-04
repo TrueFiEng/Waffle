@@ -3,7 +3,16 @@ import {constants, Contract, Signer, utils} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
 import {ExpectedTopLevelDomain, MissingDomain} from './errors';
 
-const {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver} = contracts;
+const getContracts = () => {
+  const {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver} = contracts;
+  const result = {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver}
+  for (const key of Object.keys(result)) {
+    if (!contracts[key]) {
+      throw new Error(`Contract ${key} is missing from ENS dependencies. Have you installed peer dependencies "@ensdomains/ens" and "@ensdomains/resolver"?`)
+    }
+  }
+  return result
+}
 
 const {namehash} = utils;
 const {HashZero} = constants;
@@ -13,7 +22,7 @@ interface DomainRegistrationOptions {
 }
 
 export async function createResolver(signer: Signer, ens: Contract) {
-  const resolver = await deployContract(signer, PublicResolver, [ens.address]);
+  const resolver = await deployContract(signer, getContracts().PublicResolver, [ens.address]);
   const resolverNode = namehash('resolver');
   const resolverLabel = utils.id('resolver');
   await ens.setSubnodeOwner(HashZero, resolverLabel, await signer.getAddress());
@@ -23,14 +32,14 @@ export async function createResolver(signer: Signer, ens: Contract) {
 }
 
 export async function createReverseRegistrar(signer: Signer, ens: Contract, resolver: Contract) {
-  const reverseRegistrar = await deployContract(signer, ReverseRegistrar, [ens.address, resolver.address]);
+  const reverseRegistrar = await deployContract(signer, getContracts().ReverseRegistrar, [ens.address, resolver.address]);
   await ens.setSubnodeOwner(HashZero, utils.id('reverse'), await signer.getAddress());
   await ens.setSubnodeOwner(namehash('reverse'), utils.id('addr'), reverseRegistrar.address);
   return reverseRegistrar;
 }
 
 export async function deployENS(signer: Signer) {
-  const ens = await deployContract(signer, ENSRegistry, []);
+  const ens = await deployContract(signer, getContracts().ENSRegistry, []);
   const resolver = await createResolver(signer, ens);
   const reverseRegistrar = await createReverseRegistrar(signer, ens, resolver);
   return new ENS(signer, ens, resolver, reverseRegistrar);
@@ -54,7 +63,7 @@ export class ENS {
     const node = namehash(domain);
     this.registrars = {
       ...this.registrars,
-      [domain]: await deployContract(this.signer, FIFSRegistrar, [this.ens.address, node])
+      [domain]: await deployContract(this.signer, getContracts().FIFSRegistrar, [this.ens.address, node])
     };
     await this.ens.setSubnodeOwner(HashZero, utils.id(domain), this.registrars[domain].address);
   }
@@ -63,7 +72,7 @@ export class ENS {
     const {label, node, decodedRootNode} = getDomainInfo(domain);
     await this.registrars[decodedRootNode].register(label, await this.signer.getAddress());
     await this.ens.setResolver(node, this.resolver.address);
-    const registrar: Contract = await deployContract(this.signer, FIFSRegistrar, [this.ens.address, node]);
+    const registrar: Contract = await deployContract(this.signer, getContracts().FIFSRegistrar, [this.ens.address, node]);
     await this.ens.setOwner(node, registrar.address);
     this.registrars = {
       ...this.registrars,
