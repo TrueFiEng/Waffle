@@ -1,5 +1,5 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
 import {callPromise} from '../call-promise';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
@@ -62,8 +62,8 @@ const decodeHardhatError = (error: any, context: any) => {
     }
     if (error?.code) {
       try {
-        const decodedReason = new ethers.utils.Interface(['function Error(string)']).decodeFunctionData('Error', error.code)
-        if (decodedReason[0]) return decodedReason[0]
+        const decodedReason = new ethers.utils.Interface(['function Error(string)']).decodeFunctionData('Error', error.code);
+        if (decodedReason[0]) return decodedReason[0];
       } catch {}
     }
 
