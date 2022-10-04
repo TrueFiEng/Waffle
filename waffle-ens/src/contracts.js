@@ -22,9 +22,14 @@ try {
   for (const contract of contracts) {
     exports[contract] = require(`../contracts/${contract}.json`);
   }
-} catch (error) {
-  module.exports = {
-    ...require('@ensdomains/ens'),
-    ...require('@ensdomains/resolver')
-  };
+} catch (contractsRequireError) {
+  try {
+    module.exports = {
+      ...require('@ensdomains/ens'),
+      ...require('@ensdomains/resolver')
+    };
+  } catch (ensRequireError) {
+    console.error('Failed to import ens dependencies. Have you installed peer dependencies "@ensdomains/ens" and "@ensdomains/resolver"?')
+  }
+  
 }
