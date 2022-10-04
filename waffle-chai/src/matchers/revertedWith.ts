@@ -1,4 +1,5 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
+import { ethers } from 'ethers';
 import {callPromise} from '../call-promise';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
@@ -59,6 +60,13 @@ const decodeHardhatError = (error: any, context: any) => {
       context.txErrorName = error.errorName;
       return error.errorName;
     }
+    if (error?.code) {
+      try {
+        const decodedReason = new ethers.utils.Interface(['function Error(string)']).decodeFunctionData('Error', error.code)
+        if (decodedReason[0]) return decodedReason[0]
+      } catch {}
+    }
+
     const errorString = String(error);
     {
       const regexp = /VM Exception while processing transaction: reverted with custom error '([a-zA-Z0-9]+)\((.*)\)'/g;
@@ -86,14 +94,14 @@ const decodeHardhatError = (error: any, context: any) => {
       }
     }
     {
-      const regexp = new RegExp('revert(ed)? with reason (string )?"(.*)"');
+      const regexp = new RegExp('revert(ed)? with reason (string )?"(.*?)"');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[matches.length - 1];
       }
     }
     {
-      const regexp = new RegExp('revert(ed)? with reason (string )?\'(.*)\'');
+      const regexp = new RegExp('revert(ed)? with reason (string )?\'(.*?)\'');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[matches.length - 1];
