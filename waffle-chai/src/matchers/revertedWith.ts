@@ -42,6 +42,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   });
 }
 
+const errorInterface = new ethers.utils.Interface(['function Error(string)']);
 const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
     if (
@@ -62,7 +63,7 @@ const decodeHardhatError = (error: any, context: any) => {
     }
     if (error?.code) {
       try {
-        const decodedReason = new ethers.utils.Interface(['function Error(string)']).decodeFunctionData('Error', error.code);
+        const decodedReason = errorInterface.decodeFunctionData('Error', error.code);
         if (decodedReason[0]) return decodedReason[0];
       } catch {}
     }
