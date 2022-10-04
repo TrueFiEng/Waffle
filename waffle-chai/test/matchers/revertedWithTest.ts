@@ -239,7 +239,7 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
     await expect(matchers.requireFalseWithSingleQuote())
       .to.be.revertedWith('asset doesn\'t have feed');
     await expect(matchers.requireFalseWithSingleQuote())
-      .to.be.revertedWith('asset doesn\'t have feed');
+      .to.be.revertedWith("asset doesn't have feed"); // eslint-disable-line quotes
   });
 
   it('Catches wrong message with single quote in it', async () => {

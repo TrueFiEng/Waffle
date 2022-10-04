@@ -102,7 +102,7 @@ const decodeHardhatError = (error: any, context: any) => {
       }
     }
     {
-      const regexp = new RegExp('revert(ed)? with reason (string )?\'(.*?)\'');
+      const regexp = new RegExp('revert(ed)? with reason (string )?\'(.*)\'');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[matches.length - 1];
