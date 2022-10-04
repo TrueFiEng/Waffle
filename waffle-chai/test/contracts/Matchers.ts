@@ -1,4 +1,4 @@
-// eslint-disable max-len no-useless-escape
+/* eslint-disable max-len no-useless-escape */
 
 export const MATCHERS_SOURCE = `
   pragma solidity ^0.8.0;
