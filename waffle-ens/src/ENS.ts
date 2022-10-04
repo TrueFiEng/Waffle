@@ -5,14 +5,17 @@ import {ExpectedTopLevelDomain, MissingDomain} from './errors';
 
 const getContracts = () => {
   const {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver} = contracts;
-  const result = {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver}
+  const result = {ENSRegistry, FIFSRegistrar, ReverseRegistrar, PublicResolver};
   for (const key of Object.keys(result)) {
     if (!contracts[key]) {
-      throw new Error(`Contract ${key} is missing from ENS dependencies. Have you installed peer dependencies "@ensdomains/ens" and "@ensdomains/resolver"?`)
+      throw new Error(
+        `Contract ${key} is missing from ENS dependencies.` +
+        'Have you installed peer dependencies "@ensdomains/ens" and "@ensdomains/resolver"?'
+      );
     }
   }
-  return result
-}
+  return result;
+};
 
 const {namehash} = utils;
 const {HashZero} = constants;
@@ -32,7 +35,11 @@ export async function createResolver(signer: Signer, ens: Contract) {
 }
 
 export async function createReverseRegistrar(signer: Signer, ens: Contract, resolver: Contract) {
-  const reverseRegistrar = await deployContract(signer, getContracts().ReverseRegistrar, [ens.address, resolver.address]);
+  const reverseRegistrar = await deployContract(
+    signer,
+    getContracts().ReverseRegistrar,
+    [ens.address, resolver.address]
+  );
   await ens.setSubnodeOwner(HashZero, utils.id('reverse'), await signer.getAddress());
   await ens.setSubnodeOwner(namehash('reverse'), utils.id('addr'), reverseRegistrar.address);
   return reverseRegistrar;
@@ -72,7 +79,11 @@ export class ENS {
     const {label, node, decodedRootNode} = getDomainInfo(domain);
     await this.registrars[decodedRootNode].register(label, await this.signer.getAddress());
     await this.ens.setResolver(node, this.resolver.address);
-    const registrar: Contract = await deployContract(this.signer, getContracts().FIFSRegistrar, [this.ens.address, node]);
+    const registrar: Contract = await deployContract(
+      this.signer,
+      getContracts().FIFSRegistrar,
+      [this.ens.address, node]
+    );
     await this.ens.setOwner(node, registrar.address);
     this.registrars = {
       ...this.registrars,
