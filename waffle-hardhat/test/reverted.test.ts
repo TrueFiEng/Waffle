@@ -133,4 +133,61 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
       );
     });
   });
+
+  it('Revert success (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(matchers.doRevertWithDecoratedCustomErrorName()).to.be.revertedWith('$__DecoratedCustomErrorName');
+  });
+
+  it('Revert fail (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('Two')
+    ).to.be.eventually.rejectedWith(
+      'Expected transaction to be reverted with "Two", but other reason was found: "$__DecoratedCustomErrorName"'
+    );
+  });
+
+  it('With args success (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        0,
+        'message',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      );
+  });
+
+  it('With args failure (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        1,
+        'message',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      )
+    ).to.be.eventually.rejectedWith(/Expected (")?0(")? to (be )?equal 1/i); // It may or may not have the quote marks
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        0,
+        'messagr',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      )
+    ).to.be.eventually.rejectedWith('expected \'message\' to equal \'messagr\'');
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        0,
+        'message',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
+      )
+    ).to.be.eventually.rejectedWith('expected ' +
+      '\'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\'' +
+      ' to equal ' +
+      '\'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124\''
+    );
+  });
 });
