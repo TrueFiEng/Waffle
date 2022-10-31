@@ -79,6 +79,18 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
         );
     });
 
+    it('With args and big number failure', async () => {
+      const matchers = await deploy();
+      await expect(expect(matchers.doRevertWithBigNumber())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('9007199254740991000001'), // different
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        )
+      ).to.be.eventually.rejectedWith('Expected "9007199254740991000000" to be equal 9007199254740991000001');
+    });
+
     it('With args failure', async () => {
       const matchers = await deploy();
       await expect(expect(matchers.doRevertWithOne())
