@@ -9,6 +9,10 @@ contract Matchers {
     revert One(0, 'message', 0x00cFBbaF7DDB3a1476767101c12a0162e241fbAD2a0162e2410cFBbaF7162123);
   }
 
+  function doRevertWithBigNumber() public pure {
+    revert One(9007199254740991000000, 'message', 0x00cFBbaF7DDB3a1476767101c12a0162e241fbAD2a0162e2410cFBbaF7162123);
+  }
+
   function doRevertWithTwo() public pure {
     revert Two(
       [

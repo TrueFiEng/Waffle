@@ -2,7 +2,7 @@ import {waffle} from 'hardhat';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
 import {revertedTest, revertedWithTest} from '@ethereum-waffle/chai/test';
-import {ContractFactory} from 'ethers';
+import {BigNumber, ContractFactory} from 'ethers';
 import CustomError from '../build/contracts/CustomError.sol/Matchers.json';
 
 describe('INTEGRATION: Matchers: reverted', () => {
@@ -58,6 +58,37 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
           'message',
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
         );
+
+      await expect(matchers.doRevertWithOne())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('0'), // Check BigNumber instance as well.
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        );
+    });
+
+    it('With args and big number success', async () => {
+      const matchers = await deploy();
+      await expect(matchers.doRevertWithBigNumber())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('9007199254740991000000'),
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        );
+    });
+
+    it('With args and big number failure', async () => {
+      const matchers = await deploy();
+      await expect(expect(matchers.doRevertWithBigNumber())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('9007199254740991000001'), // different
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        )
+      ).to.be.eventually.rejectedWith('Expected "9007199254740991000000" to be equal 9007199254740991000001');
     });
 
     it('With args failure', async () => {
