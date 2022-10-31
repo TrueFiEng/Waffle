@@ -1,0 +1,30 @@
+name: Upgrade dependencies
+on:
+  workflow_dispatch:
+  schedule:
+    # every 1st and 16th of the month at 3am UTC
+    - cron: "0 3 1,16 * *"
+jobs:
+  upgrade:
+    name: Upgrade dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.1
+      - run: npm install -g npm-check-updates@^16.3.2
+      - name: Upgrade dependencies
+        uses: technote-space/create-pr-action@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets. GH_BOT_TOKEN }}
+          EXECUTE_COMMANDS: |
+            cd waffle-provider
+            ncu ganache --deep -u
+            ncu solc --deep -u
+            pnpm install --strict-peer-dependencies=false
+          COMMIT_MESSAGE: "🤖 Upgrade dependencies"
+          COMMIT_NAME: "truefibot"
+          COMMIT_EMAIL: "truebot.github@trusttoken.com"
+          PR_BRANCH_NAME: "chore-upgrade-dependencies-${PR_ID}"
+          PR_TITLE: "🤖 Upgrade dependencies"

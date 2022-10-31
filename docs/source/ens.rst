@@ -3,6 +3,25 @@
 ENS
 ===
 
+Dependencies
+____________
+
+Make sure to install additional peer dependencies needed to use Waffle ENS tools.
+
+.. tabs::
+
+  .. group-tab:: Yarn
+
+    .. code-block:: text
+
+      yarn add --dev @ensdomains/ens@^0.4.4 @ensdomains/resolver@^0.2.4
+
+  .. group-tab:: NPM
+
+    .. code-block:: text
+
+      npm install --save-dev @ensdomains/ens@^0.4.4 @ensdomains/resolver@^0.2.4
+
 Creating a ENS
 --------------
 
