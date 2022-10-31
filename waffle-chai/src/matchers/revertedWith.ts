@@ -1,5 +1,6 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
 import {callPromise} from '../call-promise';
+import JSONbig from 'json-bigint';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
@@ -65,8 +66,15 @@ const decodeHardhatError = (error: any, context: any) => {
       const regexp = /VM Exception while processing transaction: reverted with custom error '([a-zA-Z0-9$_]+)\((.*)\)'/g;
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
-        // needs to be wrapped in list to be consistent with the emit matcher
-        context.args = [JSON.parse(`[${matches[2]}]`)];
+        // Matches is in a format of string: "arg1, arg2, arg3, ..."
+        // So it only makes sense in an array:
+        const matchesList = `[${matches[2]}]`;
+        // Next, it needs to be wrapped in a list to be consistent with the emit matcher:
+        context.args = [
+          // Additionally, we preserve numbers as strings,
+          // otherwise we face an overflow of bignumber.
+          JSONbig({storeAsString: true}).parse(matchesList)
+        ];
         const errorName = matches[1];
         context.txErrorName = errorName;
         return errorName;
