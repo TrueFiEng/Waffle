@@ -1,5 +1,14 @@
 # @ethereum-waffle/provider
 
+## 4.0.4
+
+### Patch Changes
+
+- 2199c8d: 🦜 Bump ganache
+- febefc1: 🧠 Fix error when address length less than 20
+- Updated dependencies [2199c8d]
+  - @ethereum-waffle/ens@4.0.2
+
 ## 4.0.3
 
 ### Patch Changes

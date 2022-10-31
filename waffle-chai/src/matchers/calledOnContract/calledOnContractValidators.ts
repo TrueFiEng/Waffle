@@ -4,8 +4,9 @@ import {ProviderWithHistoryExpected} from './error';
 import {ensure} from './utils';
 
 export function validateContract(contract: any): asserts contract is Contract {
+  const possiblyContract = contract as Contract;
   ensure(
-    contract instanceof Contract, TypeError,
+    !!possiblyContract.address && !!possiblyContract.functions && !!possiblyContract.interface, TypeError,
     'argument must be a contract'
   );
 }

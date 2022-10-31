@@ -3,4 +3,4 @@
 "@ethereum-waffle/provider": patch
 ---
 
-🦜 Bump ganache
+😷 Upgrade ganache version

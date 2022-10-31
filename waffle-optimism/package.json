@@ -1,7 +1,7 @@
 {
   "name": "@ethereum-waffle/optimism",
   "description": "Testing waffle with optimism",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "author": "Marek Kirejczyk <account@ethworks.io> (http://ethworks.io)",
   "repository": "git@github.com:EthWorks/Waffle.git",
   "private": false,
@@ -10,9 +10,9 @@
     "access": "public",
     "tag": "alpha"
   },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.ts",
-  "types": "dist/esm/index.d.ts",
+  "main": "dist/cjs/src/index.js",
+  "module": "dist/esm/src/index.ts",
+  "types": "dist/esm/src/index.d.ts",
   "scripts": {
     "test": "true",
     "test:optimism": "mocha",
@@ -20,16 +20,13 @@
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
     "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
-    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs --declaration false"
+    "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs"
   },
   "engines": {
     "node": ">=10.0"
   },
-  "dependencies": {
-    "@ethersproject/providers": "^5.6.2",
-    "ethers": "5.6.2"
-  },
   "devDependencies": {
+    "ethers": "5.6.2",
     "@ethereum-waffle/chai": "workspace:*",
     "@ethereum-waffle/provider": "workspace:*",
     "eslint": "^7.14.0",
@@ -37,5 +34,8 @@
     "mocha": "^8.2.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.6.2"
+  },
+  "peerDependencies": {
+    "ethers": "*"
   }
 }
