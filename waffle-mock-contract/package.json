@@ -7,8 +7,7 @@
   "private": false,
   "license": "MIT",
   "publishConfig": {
-    "access": "public",
-    "tag": "alpha"
+    "access": "public"
   },
   "files": [
     "dist",
