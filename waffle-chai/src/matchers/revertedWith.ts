@@ -61,7 +61,8 @@ const decodeHardhatError = (error: any, context: any) => {
     }
     const errorString = String(error);
     {
-      const regexp = /VM Exception while processing transaction: reverted with custom error '([a-zA-Z0-9\$_]+)\((.*)\)'/g;
+      // eslint-disable-next-line max-len
+      const regexp = /VM Exception while processing transaction: reverted with custom error '([a-zA-Z0-9$_]+)\((.*)\)'/g;
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         // needs to be wrapped in list to be consistent with the emit matcher
