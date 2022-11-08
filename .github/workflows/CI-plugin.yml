@@ -36,8 +36,8 @@ jobs:
       - name: Use the submodule in our tests
         if: ${{ matrix.hardhat-waffle == 'linked' }}
         run: |
-          cd waffle-hardhat
-          pnpm link ../hardhat-waffle-plugin
+          rm -rf waffle-hardhat/node_modules/@nomiclabs/hardhat-waffle/dist
+          cp -r hardhat-waffle-plugin/dist waffle-hardhat/node_modules/@nomiclabs/hardhat-waffle
       - run: pnpm run build
       - run: pnpm run test
         working-directory: waffle-hardhat
