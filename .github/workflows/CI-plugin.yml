@@ -18,8 +18,8 @@ jobs:
       - name: setup-solc
         run: sudo cp ./.github/workflows/solc /bin
       - run: pnpm run build
-      - run: Initialize plugin submodule
-      - run: |
+      - name: Initialize plugin submodule
+        run: |
           git submodule update --init
           cd hardhat-waffle-plugin
           yarn && yarn build
