@@ -11,7 +11,7 @@ jobs:
       matrix:        
         hardhat: ['2.9.2', '2.11.2', 'latest']
         hardhat-ethers: ['2.0.3', '2.1.1', 'latest']
-        hardhat-waffle: ['linked', 'dev', 'latest']
+        hardhat-waffle: ['linked', 'latest'] # TODO: add dev (remember it's a different package)
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -25,8 +25,8 @@ jobs:
       - run: pnpm add -D @nomiclabs/hardhat-ethers@${{ matrix.hardhat-ethers }}
         working-directory: waffle-hardhat
       - run: pnpm add -D @nomiclabs/hardhat-waffle@${{ matrix.hardhat-waffle }}
-        working-directory: waffle-hardhat
         if: ${{ matrix.hardhat-waffle != 'linked' }}
+        working-directory: waffle-hardhat
       - name: Initialize plugin submodule
         if: ${{ matrix.hardhat-waffle == 'linked' }}
         run: |
