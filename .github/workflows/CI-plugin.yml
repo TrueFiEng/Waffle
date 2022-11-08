@@ -1,0 +1,31 @@
+name: Plugin CI
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  test-waffle-hardhat-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: npm i -g pnpm@7.1.9 yarn@1.22.17
+      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+      - name: setup-solc
+        run: sudo cp ./.github/workflows/solc /bin
+      - run: pnpm run build
+      - run: Initialize plugin submodule
+      - run: |
+          git submodule update --init
+          cd hardhat-waffle-plugin
+          yarn && yarn build
+      - name: Use the submodule in our tests
+        run: |
+          cd waffle-hardhat
+          pnpm link ../hardhat-waffle-plugin
+      - run: pnpm run test
+        working-directory: waffle-hardhat
