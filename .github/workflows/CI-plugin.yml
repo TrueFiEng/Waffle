@@ -7,6 +7,11 @@ on:
 jobs:
   test-waffle-hardhat-plugin:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:        
+        hardhat: ['2.9.2', '2.11.2', 'latest']
+        hardhat-ethers: ['2.0.3', '2.1.1', 'latest']
+        hardhat-waffle: ['linked', 'dev', 'latest']
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -15,17 +20,24 @@ jobs:
           node-version: 16.x
       - run: npm i -g pnpm@7.1.9 yarn@1.22.17
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
-      - name: setup-solc
-        run: sudo cp ./.github/workflows/solc /bin
-      - run: pnpm run build
+      - run: pnpm add -D hardhat@${{ matrix.hardhat }}
+        working-directory: waffle-hardhat
+      - run: pnpm add -D @nomiclabs/hardhat-ethers@${{ matrix.hardhat-ethers }}
+        working-directory: waffle-hardhat
+      - run: pnpm add -D @nomiclabs/hardhat-waffle@${{ matrix.hardhat-waffle }}
+        working-directory: waffle-hardhat
+        if: ${{ matrix.hardhat-waffle != 'linked' }}
       - name: Initialize plugin submodule
+        if: ${{ matrix.hardhat-waffle == 'linked' }}
         run: |
           git submodule update --init
           cd hardhat-waffle-plugin
           yarn && yarn build
       - name: Use the submodule in our tests
+        if: ${{ matrix.hardhat-waffle == 'linked' }}
         run: |
           cd waffle-hardhat
           pnpm link ../hardhat-waffle-plugin
+      - run: pnpm run build
       - run: pnpm run test
         working-directory: waffle-hardhat
