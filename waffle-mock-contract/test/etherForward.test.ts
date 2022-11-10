@@ -14,34 +14,36 @@ describe('Ether Forwarded', () => {
   let sender: Wallet;
   let mockERC20: Contract;
   let contract: Contract;
+  let provider: MockProvider
 
   beforeEach(async () => {
-    [sender] = new MockProvider().getWallets();
+    provider = new MockProvider()
+    ;[sender] = provider.getWallets();
     mockERC20 = await deployMockContract(sender, IERC20.abi);
     contractFactory = new ContractFactory(EtherForward.abi, EtherForward.bytecode, sender);
     contract = await contractFactory.deploy(mockERC20.address);
   });
 
   it('Can forward ether through call', async () => {
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(0);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(0);
     await contract.forwardByCall({value: 7});
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(7);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(7);
   });
 
   it('Can forward ether through send', async () => {
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(0);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(0);
     await contract.forwardBySend({value: 7});
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(7);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(7);
   });
 
   it('Can forward ether through transfer', async () => {
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(0);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(0);
     await contract.forwardByTransfer({value: 7});
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(7);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(7);
   });
 
   it('Can mock a revert on a receive function', async () => {
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(0);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(0);
 
     await mockERC20.mock.receive.revertsWithReason('Receive function rejected ether.');
 
@@ -57,6 +59,6 @@ describe('Ether Forwarded', () => {
       contract.forwardByTransfer({value: 7})
     ).to.be.reverted;
 
-    expect(await mockERC20.provider.getBalance(mockERC20.address)).to.be.equal(0);
+    expect(await provider.getBalance(mockERC20.address)).to.be.equal(0);
   });
 });
