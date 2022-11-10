@@ -14,7 +14,7 @@ contract EtherForward {
     }
 
     function forwardByCall() public payable {
-        (bool sent, bytes memory data) = payable(tokenContract).call{gas: 10000, value: msg.value}("");
+        (bool sent, bytes memory data) = payable(tokenContract).call{value: msg.value}("");
         if (!sent) {
             // https://ethereum.stackexchange.com/a/114140/24330
             // Bubble up the revert from the call.
