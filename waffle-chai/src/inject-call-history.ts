@@ -29,10 +29,18 @@ function toRecordedCall(message: any): RecordedCall {
 
 const inject = () => {
   let waffle: any;
+  let config: any;
   try {
-    waffle = require('hardhat')?.waffle;
+    ({waffle, config} = require('hardhat'));
   } catch { return; }
   if (!waffle || !waffle.provider) return;
+  if (!config) {
+    console.warn('Missing hardhat config, skipping call history injection');
+    return;
+  }
+  if (config.waffle?.injectCallHistory !== true) {
+    return;
+  }
   const callHistory = new CallHistory();
   (waffle.provider as any).clearCallHistory = () => {
     callHistory.clearAll();
@@ -56,7 +64,7 @@ const inject = () => {
 };
 
 let injected = false;
-if (!injected && !!process.env.WAFFLE_EXPERIMENTAL_HARDHAT_CALL_HISTORY) {
+if (!injected) {
   injected = true;
   inject();
 }
