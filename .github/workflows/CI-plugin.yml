@@ -11,7 +11,7 @@ jobs:
       matrix:        
         hardhat: ['2.9.2', '2.11.2', 'latest']
         hardhat-ethers: ['2.0.3', '2.1.1', 'latest']
-        hardhat-waffle: ['linked', 'latest'] # TODO: add dev (remember it's a different package)
+        hardhat-waffle: ['linked', 'latest']
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
