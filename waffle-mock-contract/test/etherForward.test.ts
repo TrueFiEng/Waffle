@@ -14,7 +14,7 @@ describe('Ether Forwarded', () => {
   let sender: Wallet;
   let mockERC20: Contract;
   let contract: Contract;
-  let provider: MockProvider
+  let provider: MockProvider;
 
   beforeEach(async () => {
     provider = new MockProvider()
