@@ -142,7 +142,7 @@ describe('BasicToken', () => {
 });
 ```
 
-Note: You will also need to install following dependencies with to run the example above:
+Note: You will also need to install the following dependencies to run the example above:
 
 ```sh
 yarn add mocha -D
@@ -209,7 +209,7 @@ npx mocha
 ```
 
 ### Adding an npm script
-For convinience, you can add the following to your `package.json`:
+For convenience, you can add the following to your `package.json`:
 ```
 {
   ...,
