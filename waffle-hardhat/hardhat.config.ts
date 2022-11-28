@@ -1,4 +1,4 @@
-import '@nomiclabs/hardhat-waffle'
+import 'hardhat-waffle-dev'
 
 module.exports = {
   networks: {
