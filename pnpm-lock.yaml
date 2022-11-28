@@ -358,23 +358,25 @@ importers:
   waffle-hardhat:
     specifiers:
       '@ethereum-waffle/chai': workspace:*
+      '@ethereum-waffle/provider': workspace:*
       '@nomiclabs/hardhat-ethers': 2.1.0
-      '@nomiclabs/hardhat-waffle': 2.0.3
       '@types/node': ^17.0.41
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
       ethers: 5.6.2
       hardhat: 2.10.1
+      hardhat-waffle-dev: 2.0.3-dev.c5b5c29
       mocha: ^8.2.1
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
+      '@ethereum-waffle/provider': link:../waffle-provider
       '@nomiclabs/hardhat-ethers': 2.1.0_mdh44cjfarfq76b44mvd54x3wq
-      '@nomiclabs/hardhat-waffle': 2.0.3_vzwoki3ygnfacj5msaazjpoonu
       '@types/node': 17.0.41
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
       ethers: 5.6.2
       hardhat: 2.10.1
+      hardhat-waffle-dev: 2.0.3-dev.c5b5c29_vzwoki3ygnfacj5msaazjpoonu
       mocha: 8.2.1
 
   waffle-mock-contract:
@@ -1254,22 +1256,6 @@ packages:
       hardhat: 2.10.1
     dev: true
 
-  /@nomiclabs/hardhat-waffle/2.0.3_vzwoki3ygnfacj5msaazjpoonu:
-    resolution: {integrity: sha512-049PHSnI1CZq6+XTbrMbMv5NaL7cednTfPenx02k3cEh8wBMLa6ys++dBETJa6JjfwgA9nBhhHQ173LJv6k2Pg==}
-    peerDependencies:
-      '@nomiclabs/hardhat-ethers': ^2.0.0
-      ethereum-waffle: ^3.2.0
-      ethers: ^5.0.0
-      hardhat: ^2.0.0
-    dependencies:
-      '@nomiclabs/hardhat-ethers': 2.1.0_mdh44cjfarfq76b44mvd54x3wq
-      '@types/sinon-chai': 3.2.5
-      '@types/web3': 1.0.19
-      ethereum-waffle: link:waffle-cli
-      ethers: 5.6.2
-      hardhat: 2.10.1
-    dev: true
-
   /@openzeppelin/contracts/3.0.1:
     resolution: {integrity: sha512-uSrD7hZ0ViuHGqHZbeHawZBi/uy7aBiNramXAt2dFFuSuoU4u9insS3V3zdVfOnYSPreUo636xSOuQIFN4//HA==}
     dev: true
@@ -1643,17 +1629,6 @@ packages:
 
   /@types/sinonjs__fake-timers/6.0.2:
     resolution: {integrity: sha512-dIPoZ3g5gcx9zZEszaxLSVTvMReD3xxyyDnQUjA6IYDG9Ba2AV0otMPs+77sG9ojB4Qr2N2Vk5RnKeuA0X/0bg==}
-    dev: true
-
-  /@types/underscore/1.11.4:
-    resolution: {integrity: sha512-uO4CD2ELOjw8tasUrAhvnn2W4A0ZECOvMjCivJr4gA9pGgjv+qxKWY9GLTMVEK8ej85BxQOocUyE7hImmSQYcg==}
-    dev: true
-
-  /@types/web3/1.0.19:
-    resolution: {integrity: sha512-fhZ9DyvDYDwHZUp5/STa9XW2re0E8GxoioYJ4pEUZ13YHpApSagixj7IAdoYH5uAK+UalGq6Ml8LYzmgRA/q+A==}
-    dependencies:
-      '@types/bn.js': 5.1.0
-      '@types/underscore': 1.11.4
     dev: true
 
   /@typescript-eslint/eslint-plugin/5.15.0_3idpik77dtp2p37mwvxiru2mra:
@@ -3603,6 +3578,20 @@ packages:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==}
     engines: {node: '>=6'}
     dev: false
+
+  /hardhat-waffle-dev/2.0.3-dev.c5b5c29_vzwoki3ygnfacj5msaazjpoonu:
+    resolution: {integrity: sha512-VztHCbXYQFtwTG5HxymHO6fIWGokqtpM27yokCg2c0Z5HckKouVh0HvIFR2Ave46m6rR7N9zR9XUKrvGjDzQGQ==}
+    peerDependencies:
+      '@nomiclabs/hardhat-ethers': ^2.0.0
+      ethereum-waffle: '*'
+      ethers: ^5.0.0
+      hardhat: ^2.0.0
+    dependencies:
+      '@nomiclabs/hardhat-ethers': 2.1.0_mdh44cjfarfq76b44mvd54x3wq
+      ethereum-waffle: link:waffle-cli
+      ethers: 5.6.2
+      hardhat: 2.10.1
+    dev: true
 
   /hardhat/2.10.1:
     resolution: {integrity: sha512-0FN9TyCtn7Lt25SB2ei2G7nA2rZjP+RN6MvFOm+zYwherxLZNo6RbD8nDz88eCbhRapevmXqOiL2nM8INKsjmA==}
