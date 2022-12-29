@@ -31,11 +31,14 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
     }).then(([actualChange, address]: [BigNumber, string]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
+      const margin = options && options.errorMargin ? options.errorMargin : '0';
+      const marginMessage = BigNumber.from(margin).gt(0) ? ` ± ${margin}` : '';
       this.assert(
-        actualChange.eq(BigNumber.from(balanceChange)),
-        `Expected "${address}" to change balance by ${balanceChange} wei, ` +
+        actualChange.lte(BigNumber.from(balanceChange).add(margin)) &&
+        actualChange.gte(BigNumber.from(balanceChange).sub(margin)),
+        `Expected "${address}" to change balance by ${balanceChange}${marginMessage} wei, ` +
           `but it has changed by ${actualChange} wei`,
-        `Expected "${address}" to not change balance by ${balanceChange} wei,`,
+        `Expected "${address}" to not change balance by ${balanceChange}${marginMessage} wei,`,
         balanceChange,
         actualChange
       );

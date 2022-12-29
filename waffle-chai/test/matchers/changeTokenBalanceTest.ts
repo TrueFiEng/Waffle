@@ -91,4 +91,35 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
       ).to.changeTokenBalance(token, contract, 200);
     });
   });
+
+  describe('ChangeTokenBalance - error margin', () => {
+    it('positive', async () => {
+      await expect(token.transfer(receiver.address, 200))
+        .to.changeTokenBalance(token, receiver, 100, 100);
+
+      await expect(token.transfer(receiver.address, 200))
+        .to.changeTokenBalance(token, receiver, 300, 100);
+    });
+
+    it('negative', async () => {
+      await expect(token.transfer(receiver.address, 200))
+        .to.not.changeTokenBalance(token, receiver, 100, 99);
+
+      await expect(token.transfer(receiver.address, 200))
+        .to.not.changeTokenBalance(token, receiver, 300, 99);
+    });
+
+    it('Describes margin in the error message', async () => {
+      await expect(
+
+        expect(await token.transfer(receiver.address, 200))
+          .to.changeTokenBalance(token, receiver, 250, 40)
+
+      ).to.eventually.rejectedWith(
+        AssertionError,
+        `Expected "${receiver.address}" to change balance by 250 ± 40 wei, ` +
+        'but it has changed by 200 wei'
+      );
+    });
+  });
 };

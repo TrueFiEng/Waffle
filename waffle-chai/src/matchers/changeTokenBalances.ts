@@ -7,7 +7,8 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
     this: any,
     token: Contract,
     accounts: (Account | string)[],
-    balanceChanges: BigNumberish[]
+    balanceChanges: BigNumberish[],
+    errorMargin: BigNumberish
   ) {
     callPromise(this);
     const isNegated = this.__flags.negate === true;
@@ -21,13 +22,16 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
     }).then(([actualChanges, accountAddresses]: [BigNumber[], string[]]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
+      if (errorMargin === undefined) errorMargin = '0';
+      const marginMessage = BigNumber.from(errorMargin).gt(0) ? ` ± ${errorMargin}` : '';
       this.assert(
         actualChanges.every((change, ind) =>
-          change.eq(BigNumber.from(balanceChanges[ind]))
+          change.lte(BigNumber.from(balanceChanges[ind]).add(errorMargin)) &&
+          change.gte(BigNumber.from(balanceChanges[ind]).sub(errorMargin))
         ),
-        `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
+        `Expected ${accountAddresses} to change balance by ${balanceChanges}${marginMessage} wei, ` +
           `but it has changed by ${actualChanges} wei`,
-        `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
+        `Expected ${accountAddresses} to not change balance by ${balanceChanges}${marginMessage} wei,`,
         balanceChanges.map((balanceChange) => balanceChange.toString()),
         actualChanges.map((actualChange) => actualChange.toString())
       );

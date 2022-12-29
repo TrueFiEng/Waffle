@@ -74,4 +74,29 @@ export const changeTokenBalancesTest = (provider: TestProvider) => {
       );
     });
   });
+
+  describe('changeTokenBalances - error margin', () => {
+    it('positive', async () => {
+      await expect(token.transfer(receiver.address, 200))
+        .to.changeTokenBalances(token, [receiver, sender], [100, -100], 100);
+    });
+
+    it('negative', async () => {
+      await expect(token.transfer(receiver.address, 200))
+        .to.not.changeTokenBalances(token, [receiver, sender], [100, -100], 99);
+    });
+
+    it('Describes margin in the error message', async () => {
+      await expect(
+
+        expect(await token.transfer(receiver.address, 200))
+          .to.changeTokenBalances(token, [receiver, sender], [250, -250], 40)
+
+      ).to.eventually.rejectedWith(
+        AssertionError,
+        `Expected ${receiver.address},${sender.address} to change balance by 250,-250 ± 40 wei, ` +
+        'but it has changed by 200,-200 wei'
+      );
+    });
+  });
 };

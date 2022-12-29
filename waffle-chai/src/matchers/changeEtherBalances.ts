@@ -30,13 +30,16 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     }).then(([actualChanges, accountAddresses]: [BigNumber[], string[]]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
+      const margin = options && options.errorMargin ? options.errorMargin : '0';
+      const marginMessage = BigNumber.from(margin).gt(0) ? ` ± ${margin}` : '';
       this.assert(
         actualChanges.every((change, ind) =>
-          change.eq(BigNumber.from(balanceChanges[ind]))
+          change.lte(BigNumber.from(balanceChanges[ind]).add(margin)) &&
+          change.gte(BigNumber.from(balanceChanges[ind]).sub(margin))
         ),
-        `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
+        `Expected ${accountAddresses} to change balance by ${balanceChanges}${marginMessage} wei, ` +
           `but it has changed by ${actualChanges} wei`,
-        `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
+        `Expected ${accountAddresses} to not change balance by ${balanceChanges}${marginMessage} wei,`,
         balanceChanges.map((balanceChange) => balanceChange.toString()),
         actualChanges.map((actualChange) => actualChange.toString())
       );

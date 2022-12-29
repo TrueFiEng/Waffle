@@ -234,5 +234,44 @@ export const changeEtherBalanceTest = (
         ).to.changeEtherBalance(contract, 200);
       });
     });
+
+    describe('Change balance, error margin', () => {
+      it('positive', async () => {
+        await expect(sender.sendTransaction({
+          to: receiver.address,
+          value: 200
+        })).to.changeEtherBalance(receiver, 300, {errorMargin: 100});
+
+        await expect(sender.sendTransaction({
+          to: receiver.address,
+          value: 200
+        })).to.changeEtherBalance(receiver, 100, {errorMargin: 100});
+      });
+
+      it('negative', async () => {
+        await expect(sender.sendTransaction({
+          to: receiver.address,
+          value: 200
+        })).to.not.changeEtherBalance(receiver, 300, {errorMargin: 99});
+
+        await expect(sender.sendTransaction({
+          to: receiver.address,
+          value: 200
+        })).to.not.changeEtherBalance(receiver, 100, {errorMargin: 99});
+      });
+
+      it('Describes margin in the error message', async () => {
+        await expect(
+          expect(await sender.sendTransaction({
+            to: receiver.address,
+            value: 200
+          })).to.changeEtherBalance(receiver, 250, {errorMargin: 40})
+        ).to.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" to change balance by 250 ± 40 wei, ` +
+          'but it has changed by 200 wei'
+        );
+      });
+    });
   });
 };
