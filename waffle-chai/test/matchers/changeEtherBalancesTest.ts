@@ -261,7 +261,7 @@ export const changeEtherBalancesTest = (
             to: receiver.address,
             value: 300
           })).to.changeEtherBalances([receiver, sender], [250, -250], {errorMargin: 40})
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
           'but it has changed by 300 wei'
@@ -274,7 +274,7 @@ export const changeEtherBalancesTest = (
             to: receiver.address,
             value: 200
           })).to.changeEtherBalances([receiver, sender], [250, -250], {errorMargin: 40})
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
           'but it has changed by 200 wei'
@@ -287,7 +287,7 @@ export const changeEtherBalancesTest = (
             to: receiver.address,
             value: 300
           })).to.not.changeEtherBalances([receiver, sender], [290, -290], {errorMargin: 40})
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${receiver.address}" balance to not change within [250,330] wei`
         );
@@ -299,7 +299,7 @@ export const changeEtherBalancesTest = (
             to: receiver.address,
             value: 200
           })).to.changeEtherBalances([receiver, sender], [210, -250], {errorMargin: 40})
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${sender.address}" balance to change within [-290,-210] wei, ` +
           'but it has changed by -200 wei'

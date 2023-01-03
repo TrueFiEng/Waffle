@@ -116,7 +116,7 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
           expect(await token.transfer(receiver.address, 300))
             .to.changeTokenBalance(token, receiver, 250, 40)
 
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
           'but it has changed by 300 wei'
@@ -129,7 +129,7 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
           expect(await token.transfer(receiver.address, 200))
             .to.changeTokenBalance(token, receiver, 250, 40)
 
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
           'but it has changed by 200 wei'
@@ -142,7 +142,7 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
           expect(await token.transfer(receiver.address, 260))
             .to.not.changeTokenBalance(token, receiver, 250, 40)
 
-        ).to.eventually.rejectedWith(
+        ).to.be.eventually.rejectedWith(
           AssertionError,
           `Expected "${receiver.address}" balance to not change within [210,290] wei`
         );
