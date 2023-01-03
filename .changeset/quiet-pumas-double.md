@@ -2,4 +2,4 @@
 "@ethereum-waffle/chai": patch
 ---
 
-Add error to balance changing matchers
+Add delta to balance changing matchers

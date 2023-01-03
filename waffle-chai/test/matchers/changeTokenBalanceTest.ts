@@ -109,17 +109,44 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
         .to.not.changeTokenBalance(token, receiver, 300, 99);
     });
 
-    it('Describes margin in the error message', async () => {
-      await expect(
+    describe('Throws', () => {
+      it('too high', async () => {
+        await expect(
 
-        expect(await token.transfer(receiver.address, 200))
-          .to.changeTokenBalance(token, receiver, 250, 40)
+          expect(await token.transfer(receiver.address, 300))
+            .to.changeTokenBalance(token, receiver, 250, 40)
 
-      ).to.eventually.rejectedWith(
-        AssertionError,
-        `Expected "${receiver.address}" to change balance by 250 ± 40 wei, ` +
-        'but it has changed by 200 wei'
-      );
+        ).to.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
+          'but it has changed by 300 wei'
+        );
+      });
+
+      it('too low', async () => {
+        await expect(
+
+          expect(await token.transfer(receiver.address, 200))
+            .to.changeTokenBalance(token, receiver, 250, 40)
+
+        ).to.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
+          'but it has changed by 200 wei'
+        );
+      });
+
+      it('negated', async () => {
+        await expect(
+
+          expect(await token.transfer(receiver.address, 260))
+            .to.not.changeTokenBalance(token, receiver, 250, 40)
+
+        ).to.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" balance to not change within [210,290] wei`
+        );
+      });
     });
   });
 };

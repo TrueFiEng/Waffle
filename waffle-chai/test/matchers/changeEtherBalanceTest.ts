@@ -260,17 +260,44 @@ export const changeEtherBalanceTest = (
         })).to.not.changeEtherBalance(receiver, 100, {errorMargin: 99});
       });
 
-      it('Describes margin in the error message', async () => {
-        await expect(
-          expect(await sender.sendTransaction({
-            to: receiver.address,
-            value: 200
-          })).to.changeEtherBalance(receiver, 250, {errorMargin: 40})
-        ).to.eventually.rejectedWith(
-          AssertionError,
-          `Expected "${receiver.address}" to change balance by 250 ± 40 wei, ` +
-          'but it has changed by 200 wei'
-        );
+      describe('Throws', () => {
+        it('too low', async () => {
+          await expect(
+            expect(await sender.sendTransaction({
+              to: receiver.address,
+              value: 200
+            })).to.changeEtherBalance(receiver, 250, {errorMargin: 40})
+          ).to.eventually.rejectedWith(
+            AssertionError,
+            `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
+            'but it has changed by 200 wei'
+          );
+        });
+
+        it('too high', async () => {
+          await expect(
+            expect(await sender.sendTransaction({
+              to: receiver.address,
+              value: 300
+            })).to.changeEtherBalance(receiver, 250, {errorMargin: 40})
+          ).to.eventually.rejectedWith(
+            AssertionError,
+            `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
+            'but it has changed by 300 wei'
+          );
+        });
+
+        it('negated', async () => {
+          await expect(
+            expect(await sender.sendTransaction({
+              to: receiver.address,
+              value: 250
+            })).to.not.changeEtherBalance(receiver, 250, {errorMargin: 40})
+          ).to.eventually.rejectedWith(
+            AssertionError,
+            `Expected "${receiver.address}" balance to not change within [210,290] wei`
+          );
+        });
       });
     });
   });

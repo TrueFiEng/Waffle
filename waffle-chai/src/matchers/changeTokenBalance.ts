@@ -23,16 +23,29 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       if (errorMargin === undefined) errorMargin = '0';
-      const marginMessage = BigNumber.from(errorMargin).gt(0) ? ` ± ${errorMargin}` : '';
-      this.assert(
-        actualChange.lte(BigNumber.from(balanceChange).add(errorMargin)) &&
-        actualChange.gte(BigNumber.from(balanceChange).sub(errorMargin)),
-        `Expected "${address}" to change balance by ${balanceChange}${marginMessage} wei, ` +
-          `but it has changed by ${actualChange} wei`,
-        `Expected "${address}" to not change balance by ${balanceChange}${marginMessage} wei,`,
-        balanceChange,
-        actualChange
-      );
+      if (BigNumber.from(errorMargin).eq(0)) {
+        this.assert(
+          actualChange.lte(BigNumber.from(balanceChange).add(errorMargin)) &&
+          actualChange.gte(BigNumber.from(balanceChange).sub(errorMargin)),
+          `Expected "${address}" to change balance by ${balanceChange} wei, ` +
+            `but it has changed by ${actualChange} wei`,
+          `Expected "${address}" to not change balance by ${balanceChange} wei,`,
+          balanceChange,
+          actualChange
+        );
+      } else {
+        const low = BigNumber.from(balanceChange).sub(errorMargin);
+        const high = BigNumber.from(balanceChange).add(errorMargin);
+        this.assert(
+          actualChange.lte(high) &&
+          actualChange.gte(low),
+          `Expected "${address}" balance to change within [${[low, high]}] wei, ` +
+            `but it has changed by ${actualChange} wei`,
+          `Expected "${address}" balance to not change within [${[low, high]}] wei`,
+          balanceChange,
+          actualChange
+        );
+      }
       this.__flags.negate = isCurrentlyNegated;
     });
     this.then = derivedPromise.then.bind(derivedPromise);
