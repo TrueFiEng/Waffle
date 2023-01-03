@@ -30,16 +30,34 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
     }).then(([actualChanges, accountAddresses]: [BigNumber[], string[]]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
-      this.assert(
-        actualChanges.every((change, ind) =>
-          change.eq(BigNumber.from(balanceChanges[ind]))
-        ),
-        `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
-          `but it has changed by ${actualChanges} wei`,
-        `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
-        balanceChanges.map((balanceChange) => balanceChange.toString()),
-        actualChanges.map((actualChange) => actualChange.toString())
-      );
+      const margin = options?.errorMargin ? options.errorMargin : '0';
+      if (BigNumber.from(margin).eq(0)) {
+        this.assert(
+          actualChanges.every((change, ind) =>
+            change.lte(BigNumber.from(balanceChanges[ind]).add(margin)) &&
+            change.gte(BigNumber.from(balanceChanges[ind]).sub(margin))
+          ),
+          `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
+            `but it has changed by ${actualChanges} wei`,
+          `Expected ${accountAddresses} to not change balance by ${balanceChanges} wei,`,
+          balanceChanges.map((balanceChange) => balanceChange.toString()),
+          actualChanges.map((actualChange) => actualChange.toString())
+        );
+      } else {
+        actualChanges.forEach((change, ind) => {
+          const low = BigNumber.from(balanceChanges[ind]).sub(margin);
+          const high = BigNumber.from(balanceChanges[ind]).add(margin);
+          this.assert(
+            change.lte(high) &&
+            change.gte(low),
+            `Expected "${accountAddresses[ind]}" balance to change within [${[low, high]}] wei, ` +
+              `but it has changed by ${change} wei`,
+            `Expected "${accountAddresses[ind]}" balance to not change within [${[low, high]}] wei`,
+            balanceChanges[ind],
+            change
+          );
+        });
+      }
       this.__flags.negate = isCurrentlyNegated;
     });
     this.then = derivedPromise.then.bind(derivedPromise);
