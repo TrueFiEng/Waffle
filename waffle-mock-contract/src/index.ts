@@ -2,6 +2,7 @@ import {Contract, ContractFactory, Signer, utils} from 'ethers';
 import type {JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
+import { JsonRpcProvider } from '@ethersproject/providers';
 
 type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
@@ -15,7 +16,25 @@ export interface MockContract extends Contract {
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
-async function deploy(signer: Signer) {
+async function deploy(signer: Signer, address?: string) {
+  if(address) {
+    const provider = signer.provider as JsonRpcProvider;
+    if(await provider.getCode(address) !== '0x') {
+      throw new Error(`${address} already contains a contract`);
+    }
+    if((provider as any)._hardhatNetwork){
+      if(await provider.send('hardhat_setCode',[address,'0x'+DoppelgangerContract.evm.deployedBytecode.object])){
+        return new Contract(address, DoppelgangerContract.abi, signer); 
+      }
+      else throw new Error(`Couldn't deploy at ${address}`);
+    }
+    else{
+      if(await provider.send('evm_setAccountCode',[address,'0x'+DoppelgangerContract.evm.deployedBytecode.object])) {
+        return new Contract(address, DoppelgangerContract.abi, signer); 
+      }
+      else throw new Error(`Couldn't deploy at ${address}`); 
+    }
+  }
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, signer);
   return factory.deploy();
 }
@@ -53,8 +72,8 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   return mockedAbi;
 }
 
-export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
-  const mockContractInstance = await deploy(signer);
+export async function deployMockContract(signer: Signer, abi: ABI, address?: string): Promise<MockContract> {
+  const mockContractInstance = await deploy(signer, address);
 
   const mock = createMock(abi, mockContractInstance);
   const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;

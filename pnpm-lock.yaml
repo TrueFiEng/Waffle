@@ -357,7 +357,8 @@ importers:
 
   waffle-hardhat:
     specifiers:
-      '@ethereum-waffle/chai': workspace:*
+      '@ethereum-waffle/chai': workspace:4.0.7
+      '@ethereum-waffle/mock-contract': workspace:^4.0.2
       '@ethereum-waffle/provider': workspace:*
       '@nomiclabs/hardhat-ethers': 2.1.0
       '@types/node': ^17.0.41
@@ -369,6 +370,7 @@ importers:
       mocha: ^8.2.1
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
+      '@ethereum-waffle/mock-contract': link:../waffle-mock-contract
       '@ethereum-waffle/provider': link:../waffle-provider
       '@nomiclabs/hardhat-ethers': 2.1.0_mdh44cjfarfq76b44mvd54x3wq
       '@types/node': 17.0.41
