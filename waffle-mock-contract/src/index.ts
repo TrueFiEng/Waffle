@@ -2,7 +2,7 @@ import {Contract, ContractFactory, Signer, utils} from 'ethers';
 import type {JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
-import {JsonRpcProvider} from '@ethersproject/providers';
+import type {JsonRpcProvider} from '@ethersproject/providers';
 
 type ABI = string | Array<utils.Fragment | JsonFragment | string>
 

@@ -50,6 +50,7 @@
     "@ethereum-waffle/compiler": "workspace:*",
     "@ethereum-waffle/provider": "workspace:*",
     "@ethersproject/abi": "^5.6.1",
+    "@ethersproject/providers": "5.6.2",
     "eslint": "^7.14.0",
     "ethers": "5.6.2",
     "mocha": "^8.2.1",
@@ -61,8 +62,5 @@
   },
   "peerDependencies": {
     "ethers": "*"
-  },
-  "dependencies": {
-    "@ethersproject/providers": "^5.7.2"
   }
 }

@@ -20,7 +20,6 @@ jobs:
           node-version: 16.x
       - run: npm i -g pnpm@7.1.9 yarn@1.22.17
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
-      - run: pnpm run build
       - run: pnpm add -D hardhat@${{ matrix.hardhat }}
         working-directory: waffle-hardhat
       - run: pnpm add -D @nomiclabs/hardhat-ethers@${{ matrix.hardhat-ethers }}
