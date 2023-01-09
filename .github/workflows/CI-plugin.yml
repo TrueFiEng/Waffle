@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: 16.x
       - run: npm i -g pnpm@7.1.9 yarn@1.22.17
+      - run: git clean -fdx
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
       - run: pnpm add -D hardhat@${{ matrix.hardhat }}
         working-directory: waffle-hardhat
