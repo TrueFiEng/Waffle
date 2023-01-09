@@ -122,6 +122,7 @@ export function mockContractDirectTest(provider: MockProvider) {
 
     it('can\'t be deployed twice under the same address', async () => {
       const address = Wallet.createRandom().address;
+      await deployMockContract(wallet, Counter.abi, address);
       await expect(deployMockContract(wallet, Counter.abi, address)).to.be.eventually.rejectedWith(
         Error,
         `${address} already contains a contract`
