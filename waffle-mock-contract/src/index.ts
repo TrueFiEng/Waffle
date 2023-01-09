@@ -2,7 +2,7 @@ import {Contract, ContractFactory, Signer, utils} from 'ethers';
 import type {JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import {JsonRpcProvider} from '@ethersproject/providers';
 
 type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
@@ -17,22 +17,25 @@ export interface MockContract extends Contract {
 }
 
 async function deploy(signer: Signer, address?: string) {
-  if(address) {
+  if (address) {
     const provider = signer.provider as JsonRpcProvider;
-    if(await provider.getCode(address) !== '0x') {
+    if (await provider.getCode(address) !== '0x') {
       throw new Error(`${address} already contains a contract`);
     }
-    if((provider as any)._hardhatNetwork){
-      if(await provider.send('hardhat_setCode',[address,'0x'+DoppelgangerContract.evm.deployedBytecode.object])){
-        return new Contract(address, DoppelgangerContract.abi, signer); 
-      }
-      else throw new Error(`Couldn't deploy at ${address}`);
-    }
-    else{
-      if(await provider.send('evm_setAccountCode',[address,'0x'+DoppelgangerContract.evm.deployedBytecode.object])) {
-        return new Contract(address, DoppelgangerContract.abi, signer); 
-      }
-      else throw new Error(`Couldn't deploy at ${address}`); 
+    if ((provider as any)._hardhatNetwork) {
+      if (await provider.send('hardhat_setCode', [
+        address,
+        '0x' + DoppelgangerContract.evm.deployedBytecode.object
+      ])) {
+        return new Contract(address, DoppelgangerContract.abi, signer);
+      } else throw new Error(`Couldn't deploy at ${address}`);
+    } else {
+      if (await provider.send('evm_setAccountCode', [
+        address,
+        '0x' + DoppelgangerContract.evm.deployedBytecode.object
+      ])) {
+        return new Contract(address, DoppelgangerContract.abi, signer);
+      } else throw new Error(`Couldn't deploy at ${address}`);
     }
   }
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, signer);
