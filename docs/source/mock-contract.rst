@@ -16,10 +16,14 @@ Create an instance of a mock contract providing the :code:`ABI` of the smart con
 
   const mockContract = await deployMockContract(wallet, contractAbi);
 
-You can also choose the deployment address of the mock contract by providing it as an argument:
+You can also choose the deployment address of the mock contract with the options argument:
 
 .. code-block:: ts
-  const mockContract = await deployMockContract(wallet, contractAbi, deploymentAddress)
+
+  const mockContract = await deployMockContract(wallet, contractAbi, {
+    address: deploymentAddress, 
+    overrride: false // optional, specifies if the contract should be overwritten
+  })
 
 The mock contract can now be integrated into other contracts by using the :code:`address` attribute.
 Return values for mocked functions can be set using:

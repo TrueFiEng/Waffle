@@ -49,7 +49,7 @@ export function mockContractProxiedTest(provider: MockProvider) {
       expect(await capContract.addCapped(2)).to.equal(2);
     });
 
-    it('specified address intended usage', async () => {
+    it('Mocking a contract for an already initialized proxy', async () => {
       const address = Wallet.createRandom().address;
       const proxyFactory = new ContractFactory(Proxy.abi, Proxy.bytecode, wallet);
       const proxy = await proxyFactory.deploy(address);
