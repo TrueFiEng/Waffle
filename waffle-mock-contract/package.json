@@ -32,32 +32,32 @@
   "module": "dist/esm/src/index.ts",
   "types": "dist/esm/src/index.d.ts",
   "scripts": {
-    "test": "export NODE_ENV=test && yarn test:build && mocha",
+    "test": "export NODE_ENV=test && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
-    "build": "rimraf ./dist && yarn build:sol && yarn build:esm && yarn build:cjs",
+    "build": "rimraf ./dist && yarn build:sol && yarn build:esm && yarn build:cjs && ts-node ./test/helpers/buildTestContracts.ts",
     "build:sol": "ts-node compile.ts",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
-    "test:build": "ts-node ./test/helpers/buildTestContracts.ts",
     "clean": "rimraf ./dist ./test/example/build"
   },
   "engines": {
     "node": ">=10.0"
   },
   "devDependencies": {
-    "ethers": "5.6.2",
-    "@ethersproject/abi": "^5.6.1",
     "@ethereum-waffle/chai": "workspace:*",
     "@ethereum-waffle/compiler": "workspace:*",
-    "solc": "0.8.15",
     "@ethereum-waffle/provider": "workspace:*",
-    "typechain": "^8.0.0",
+    "@ethersproject/abi": "^5.6.1",
+    "@ethersproject/providers": "5.6.2",
+    "eslint": "^7.14.0",
+    "ethers": "5.6.2",
     "mocha": "^8.2.1",
     "rimraf": "^3.0.2",
-    "typescript": "^4.6.2",
-    "eslint": "^7.14.0",
-    "ts-node": "^9.0.0"
+    "solc": "0.8.15",
+    "ts-node": "^9.0.0",
+    "typechain": "^8.0.0",
+    "typescript": "^4.6.2"
   },
   "peerDependencies": {
     "ethers": "*"

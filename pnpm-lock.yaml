@@ -358,6 +358,7 @@ importers:
   waffle-hardhat:
     specifiers:
       '@ethereum-waffle/chai': workspace:*
+      '@ethereum-waffle/mock-contract': workspace:^*
       '@ethereum-waffle/provider': workspace:*
       '@nomiclabs/hardhat-ethers': 2.1.0
       '@types/node': ^17.0.41
@@ -369,6 +370,7 @@ importers:
       mocha: ^8.2.1
     devDependencies:
       '@ethereum-waffle/chai': link:../waffle-chai
+      '@ethereum-waffle/mock-contract': link:../waffle-mock-contract
       '@ethereum-waffle/provider': link:../waffle-provider
       '@nomiclabs/hardhat-ethers': 2.1.0_mdh44cjfarfq76b44mvd54x3wq
       '@types/node': 17.0.41
@@ -385,6 +387,7 @@ importers:
       '@ethereum-waffle/compiler': workspace:*
       '@ethereum-waffle/provider': workspace:*
       '@ethersproject/abi': ^5.6.1
+      '@ethersproject/providers': 5.6.2
       eslint: ^7.14.0
       ethers: 5.6.2
       mocha: ^8.2.1
@@ -398,6 +401,7 @@ importers:
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       '@ethersproject/abi': 5.6.1
+      '@ethersproject/providers': 5.6.2
       eslint: 7.18.0
       ethers: 5.6.2
       mocha: 8.2.1
