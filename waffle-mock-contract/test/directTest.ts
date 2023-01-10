@@ -122,9 +122,9 @@ export function mockContractDirectTest(provider: MockProvider) {
     it('can be overidden', async () => {
       const counterFactory = new ContractFactory(Counter.abi, Counter.bytecode, wallet);
       const counter = await counterFactory.deploy();
-      expect(await provider.getCode(counter.address)).to.eq('0x'+Counter.evm.deployedBytecode.object);
+      expect(await provider.getCode(counter.address)).to.eq('0x' + Counter.evm.deployedBytecode.object);
       await deployMockContract(wallet, Counter.abi, {address: counter.address, override: true});
-      expect(await provider.getCode(counter.address)).to.eq('0x'+DoppelGangerContract.evm.deployedBytecode.object);
-    })
+      expect(await provider.getCode(counter.address)).to.eq('0x' + DoppelGangerContract.evm.deployedBytecode.object);
+    });
   });
 }

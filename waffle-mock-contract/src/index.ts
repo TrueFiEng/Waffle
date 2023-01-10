@@ -9,8 +9,8 @@ type ABI = string | Array<utils.Fragment | JsonFragment | string>
 export type Stub = ReturnType<typeof stub>;
 
 type DeployOptions = {
-  address: string,
-  override?: Boolean
+  address: string;
+  override?: boolean;
 }
 
 export interface MockContract extends Contract {
@@ -28,7 +28,7 @@ async function deploy(signer: Signer, options?: DeployOptions) {
     if (!override && await provider.getCode(address) !== '0x') {
       throw new Error(
         `${address} already contains a contract. ` +
-        `If you want to override it, set the override parameter.`);
+        'If you want to override it, set the override parameter.');
     }
     if ((provider as any)._hardhatNetwork) {
       if (await provider.send('hardhat_setCode', [

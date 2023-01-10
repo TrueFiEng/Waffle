@@ -1,4 +1,4 @@
-import { mockContractProxiedTest } from "./proxiedTest";
-import { MockProvider } from "@ethereum-waffle/provider";
+import {mockContractProxiedTest} from './proxiedTest';
+import {MockProvider} from '@ethereum-waffle/provider';
 
 mockContractProxiedTest(new MockProvider());
