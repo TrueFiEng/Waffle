@@ -2,10 +2,16 @@ import {Contract, ContractFactory, Signer, utils} from 'ethers';
 import type {JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
+import type {JsonRpcProvider} from '@ethersproject/providers';
 
 type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
 export type Stub = ReturnType<typeof stub>;
+
+type DeployOptions = {
+  address: string;
+  override?: boolean;
+}
 
 export interface MockContract extends Contract {
   mock: {
@@ -15,7 +21,31 @@ export interface MockContract extends Contract {
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
-async function deploy(signer: Signer) {
+async function deploy(signer: Signer, options?: DeployOptions) {
+  if (options) {
+    const {address, override} = options;
+    const provider = signer.provider as JsonRpcProvider;
+    if (!override && await provider.getCode(address) !== '0x') {
+      throw new Error(
+        `${address} already contains a contract. ` +
+        'If you want to override it, set the override parameter.');
+    }
+    if ((provider as any)._hardhatNetwork) {
+      if (await provider.send('hardhat_setCode', [
+        address,
+        '0x' + DoppelgangerContract.evm.deployedBytecode.object
+      ])) {
+        return new Contract(address, DoppelgangerContract.abi, signer);
+      } else throw new Error(`Couldn't deploy at ${address}`);
+    } else {
+      if (await provider.send('evm_setAccountCode', [
+        address,
+        '0x' + DoppelgangerContract.evm.deployedBytecode.object
+      ])) {
+        return new Contract(address, DoppelgangerContract.abi, signer);
+      } else throw new Error(`Couldn't deploy at ${address}`);
+    }
+  }
   const factory = new ContractFactory(DoppelgangerContract.abi, DoppelgangerContract.bytecode, signer);
   return factory.deploy();
 }
@@ -60,8 +90,8 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   return mockedAbi;
 }
 
-export async function deployMockContract(signer: Signer, abi: ABI): Promise<MockContract> {
-  const mockContractInstance = await deploy(signer);
+export async function deployMockContract(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract> {
+  const mockContractInstance = await deploy(signer, options);
 
   const mock = createMock(abi, mockContractInstance);
   const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;

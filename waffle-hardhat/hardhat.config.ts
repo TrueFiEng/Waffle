@@ -1,4 +1,4 @@
-import '@nomiclabs/hardhat-waffle'
+import 'hardhat-waffle-dev'
 
 module.exports = {
   networks: {
@@ -18,5 +18,8 @@ module.exports = {
         version: "0.8.10"
       }
     ]
-  } 
+  },
+  waffle: {
+    injectCallHistory: true
+  }
 }

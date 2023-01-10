@@ -74,4 +74,69 @@ export const changeTokenBalancesTest = (provider: TestProvider) => {
       );
     });
   });
+
+  describe('changeTokenBalances - error margin', () => {
+    it('positive', async () => {
+      await expect(token.transfer(receiver.address, 200))
+        .to.changeTokenBalances(token, [receiver, sender], [100, -100], 100);
+    });
+
+    it('negative', async () => {
+      await expect(token.transfer(receiver.address, 200))
+        .to.not.changeTokenBalances(token, [receiver, sender], [100, -100], 99);
+    });
+
+    describe('Throws', () => {
+      it('too low', async () => {
+        await expect(
+
+          expect(await token.transfer(receiver.address, 200))
+            .to.changeTokenBalances(token, [receiver, sender], [250, -250], 40)
+
+        ).to.be.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
+          'but it has changed by 200 wei'
+        );
+      });
+
+      it('too high', async () => {
+        await expect(
+
+          expect(await token.transfer(receiver.address, 300))
+            .to.changeTokenBalances(token, [receiver, sender], [250, -250], 40)
+
+        ).to.be.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" balance to change within [210,290] wei, ` +
+          'but it has changed by 300 wei'
+        );
+      });
+
+      it('negated', async () => {
+        await expect(
+
+          expect(await token.transfer(receiver.address, 260))
+            .to.not.changeTokenBalances(token, [receiver, sender], [250, -250], 40)
+
+        ).to.be.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${receiver.address}" balance to not change within [210,290] wei`
+        );
+      });
+
+      it('second address', async () => {
+        await expect(
+
+          expect(await token.transfer(receiver.address, 200))
+            .to.changeTokenBalances(token, [receiver, sender], [210, -250], 40)
+
+        ).to.be.eventually.rejectedWith(
+          AssertionError,
+          `Expected "${sender.address}" balance to change within [-290,-210] wei, ` +
+          'but it has changed by -200 wei'
+        );
+      });
+    });
+  });
 };
