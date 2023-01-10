@@ -8,6 +8,11 @@ type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
 export type Stub = ReturnType<typeof stub>;
 
+type DeployOptions = {
+  address: string,
+  override?: Boolean
+}
+
 export interface MockContract extends Contract {
   mock: {
     [key: string]: Stub;
@@ -16,11 +21,14 @@ export interface MockContract extends Contract {
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
-async function deploy(signer: Signer, address?: string) {
-  if (address) {
+async function deploy(signer: Signer, options?: DeployOptions) {
+  if (options) {
+    const {address, override} = options;
     const provider = signer.provider as JsonRpcProvider;
-    if (await provider.getCode(address) !== '0x') {
-      throw new Error(`${address} already contains a contract`);
+    if (!override && await provider.getCode(address) !== '0x') {
+      throw new Error(
+        `${address} already contains a contract. ` +
+        `If you want to override it, set the override parameter.`);
     }
     if ((provider as any)._hardhatNetwork) {
       if (await provider.send('hardhat_setCode', [
@@ -75,8 +83,8 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   return mockedAbi;
 }
 
-export async function deployMockContract(signer: Signer, abi: ABI, address?: string): Promise<MockContract> {
-  const mockContractInstance = await deploy(signer, address);
+export async function deployMockContract(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract> {
+  const mockContractInstance = await deploy(signer, options);
 
   const mock = createMock(abi, mockContractInstance);
   const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;
