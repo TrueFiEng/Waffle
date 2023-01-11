@@ -10,6 +10,8 @@ contract Doppelganger {
     }
 
     mapping(bytes32 => MockCall) mockConfig;
+    bool receiveReverts;
+    string receiveRevertReason;
     mapping(bytes32 => bytes32) heads;
 
     fallback() external payable {
@@ -19,6 +21,10 @@ contract Doppelganger {
             return;
         }
         __internal__mockReturn(mockCall.returnValue);
+    }
+
+    receive() payable external {
+        require(receiveReverts == false, receiveRevertReason);
     }
 
     function __clearQueue(bytes32 at) private {
@@ -64,6 +70,16 @@ contract Doppelganger {
     function __waffle__mockReturns(bytes memory data, bytes memory value) public {
         __clearQueue(keccak256(data));
         __waffle__queueReturn(data, value);
+    }
+
+    function __waffle__receiveReverts(string memory reason) public {
+        receiveReverts = true;
+        receiveRevertReason = reason;
+    }
+
+    function __waffle__receiveReverts(string memory reason) public {
+        receiveReverts = true;
+        receiveRevertReason = reason;
     }
 
     function __waffle__call(address target, bytes calldata data) external returns (bytes memory) {
