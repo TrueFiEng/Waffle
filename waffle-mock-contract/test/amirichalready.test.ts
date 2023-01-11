@@ -2,7 +2,7 @@ import {use, expect} from 'chai';
 import {Contract, ContractFactory, utils, Wallet} from 'ethers';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {waffleChai} from '@ethereum-waffle/chai';
-import {deployMockContract} from '../src';
+import {deployMockContract, MockContract} from '../src';
 
 import IERC20 from './helpers/interfaces/IERC20.json';
 import AmIRichAlready from './helpers/interfaces/AmIRichAlready.json';
@@ -13,7 +13,7 @@ describe('Am I Rich Already', () => {
   let contractFactory: ContractFactory;
   let sender: Wallet;
   let receiver: Wallet;
-  let mockERC20: Contract;
+  let mockERC20: MockContract;
   let contract: Contract;
 
   beforeEach(async () => {

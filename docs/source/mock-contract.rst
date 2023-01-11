@@ -122,3 +122,67 @@ Mock contract will be used to mock exactly this call with values that are releva
       expect(await contract.connect(receiver.address).check()).to.equal(false);
     });
   });
+
+Mocking receive function
+------------------------
+
+The :code:`receive` function of the mocked Smart Contract can be mocked to revert. It cannot however be mocked to return a specified value, because of gas limitations when calling another contract using :code:`send` and :code:`transfer`.
+
+Receive mock example
+^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: solidity
+
+  pragma solidity ^0.6.0;
+
+  interface IERC20 {
+      function balanceOf(address account) external view returns (uint256);
+      fallback() external payable;
+      receive() external payable;
+  }
+
+  contract EtherForward {
+      IERC20 private tokenContract;
+
+      constructor (IERC20 _tokenContract) public {
+          tokenContract = _tokenContract;
+      }
+
+      function forward() public payable {
+          payable(tokenContract).transfer(msg.value);
+      }
+  }
+
+.. code-block:: ts
+
+  (...)
+
+  it('use the receive function normally', async () => {
+    const {contract, mockERC20} = await setup();
+
+    expect (
+      await mockERC20.provider.getBalance(mockERC20.address)
+    ).to.be.equal(0);
+
+    await contract.forward({value: 7})
+
+    expect (
+      await mockERC20.provider.getBalance(mockERC20.address)
+    ).to.be.equal(7);
+  });
+
+  it('can mock the receive function to revert', async () => {
+    const {contract, mockERC20} = await setup();
+
+    await mockERC20.mock.receive.revertsWithReason('Receive function rejected')
+
+    await expect(
+      contract.forward({value: 7})
+    ).to.be.revertedWith('Receive function rejected')
+
+    expect (
+      await mockERC20.provider.getBalance(mockERC20.address)
+    ).to.be.equal(0);
+  });
+
+  (...)

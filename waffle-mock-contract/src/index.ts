@@ -80,6 +80,13 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
     };
   }, {} as MockContract['mock']);
 
+  mockedAbi.receive = {
+    returns: async () => { throw new Error('Receive function return is not implemented.'); },
+    withArgs: () => { throw new Error('Receive function return is not implemented.'); },
+    reverts: async () => mockContractInstance.__waffle__receiveReverts('Mock Revert'),
+    revertsWithReason: async (reason: string) => mockContractInstance.__waffle__receiveReverts(reason)
+  };
+
   return mockedAbi;
 }
 
