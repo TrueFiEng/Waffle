@@ -25,7 +25,7 @@ contract Doppelganger {
     receive() payable external {
         require(receiveReverts == false, receiveRevertReason);
     }
-
+    
     function __clearQueue(bytes32 at) private {
         heads[at] = at;
         while(mockConfig[at].next != "") {
@@ -69,16 +69,6 @@ contract Doppelganger {
     function __waffle__mockReturns(bytes memory data, bytes memory value) public {
         __clearQueue(keccak256(data));
         __waffle__queueReturn(data, value);
-    }
-
-    function __waffle__receiveReverts(string memory reason) public {
-        receiveReverts = true;
-        receiveRevertReason = reason;
-    }
-
-    function __waffle__receiveReverts(string memory reason) public {
-        receiveReverts = true;
-        receiveRevertReason = reason;
     }
 
     function __waffle__receiveReverts(string memory reason) public {
