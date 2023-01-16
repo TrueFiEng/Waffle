@@ -13,7 +13,6 @@ contract Doppelganger {
     mapping(bytes32 => bytes32) heads;
     bool receiveReverts;
     string receiveRevertReason;
-    mapping(bytes32 => bytes32) heads;
 
     fallback() external payable {
         MockCall memory mockCall = __internal__getMockCall();
@@ -23,6 +22,7 @@ contract Doppelganger {
         }
         __internal__mockReturn(mockCall.returnValue);
     }
+    
     receive() payable external {
         require(receiveReverts == false, receiveRevertReason);
     }
