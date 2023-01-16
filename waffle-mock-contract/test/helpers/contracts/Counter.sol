@@ -3,14 +3,16 @@ pragma solidity ^0.6.3;
 contract Counter {
     uint private value;
 
-    function increment() public {
+    function increment() public returns (uint) {
         value += 1;
+        return value;
     }
 
-    function increaseBy(uint a) public {
+    function increaseBy(uint a) public returns (uint) {
         require(a > 0, "A must be greater than 0");
 
         value += a;
+        return value;
     }
 
     function increaseByThreeValues(uint a, uint b, uint c) public {

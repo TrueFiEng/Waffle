@@ -6,19 +6,119 @@ import type {JsonRpcProvider} from '@ethersproject/providers';
 
 type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
-export type Stub = ReturnType<typeof stub>;
-
-type DeployOptions = {
-  address: string;
-  override?: boolean;
+interface IStub {
+  returns(...args: any): IStub;
+  reverts(): IStub;
+  revertsWithReason(reason: string): IStub;
+  withArgs(...args: any): IStub;
+  then(resolve: () => void, reject: () => void): Promise<void>;
 }
 
 export interface MockContract extends Contract {
   mock: {
-    [key: string]: Stub;
+    [key: string]: IStub;
   };
   call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
+}
+
+class Stub implements IStub {
+  callData: string;
+  stubCalls: Array<() => Promise<any>> = [];
+  revertSet = false;
+  argsSet = false;
+
+  constructor(
+    private mockContract: MockContract,
+    private encoder: utils.AbiCoder,
+    private func: utils.FunctionFragment
+  ) {
+    this.callData = mockContract.interface.getSighash(func);
+  }
+
+  private err(reason: string) {
+    this.stubCalls = [];
+    this.revertSet = false;
+    this.argsSet = false;
+    throw new Error(reason);
+  }
+
+  returns(...args: any) {
+    if (this.revertSet) this.err('Revert must be the last call');
+    if (!this.func.outputs) return this; // Throw ?
+    const encoded = this.encoder.encode(this.func.outputs, args);
+    if (this.stubCalls.length === 0) {
+      this.stubCalls.push(async () => {
+        await this.mockContract.__waffle__mockReturns(this.callData, encoded);
+      });
+    } else {
+      this.stubCalls.push(async () => {
+        await this.mockContract.__waffle__queueReturn(this.callData, encoded);
+      });
+    }
+    return this;
+  }
+
+  reverts() {
+    if (this.revertSet) this.err('Revert must be the last call');
+    if (this.stubCalls.length === 0) {
+      this.stubCalls.push(async () => {
+        await this.mockContract.__waffle__mockReverts(this.callData, 'Mock revert');
+      });
+    } else {
+      this.stubCalls.push(async () => {
+        await this.mockContract.__waffle__queueRevert(this.callData, 'Mock revert');
+      });
+    }
+    this.revertSet = true;
+    return this;
+  }
+
+  revertsWithReason(reason: string) {
+    if (this.revertSet) this.err('Revert must be the last call');
+    if (this.stubCalls.length === 0) {
+      this.stubCalls.push(async () => {
+        await this.mockContract.__waffle__mockReverts(this.callData, reason);
+      });
+    } else {
+      this.stubCalls.push(async () => {
+        await this.mockContract.__waffle__queueRevert(this.callData, reason);
+      });
+    }
+    this.revertSet = true;
+    return this;
+  }
+
+  withArgs(...params: any[]) {
+    if (this.argsSet) this.err('withArgs can be called only once');
+    this.callData = this.mockContract.interface.encodeFunctionData(this.func, params);
+    this.argsSet = true;
+    return this;
+  }
+
+  async then(resolve: () => void, reject: () => void) {
+    let promise = Promise.resolve();
+
+    for (let i = 0; i < this.stubCalls.length; i++) {
+      promise = new Promise((res, rej) => {
+        promise.then(() => {
+          this.stubCalls[i]().then(res).catch(rej);
+        }).catch(rej);
+      });
+    }
+
+    promise.then(() => {
+      this.stubCalls = [];
+      this.revertSet = false;
+      this.argsSet = false;
+      resolve();
+    }).catch(reject);
+  } // ?????????????
+}
+
+type DeployOptions = {
+  address: string;
+  override?: boolean;
 }
 
 async function deploy(signer: Signer, options?: DeployOptions) {
@@ -50,29 +150,12 @@ async function deploy(signer: Signer, options?: DeployOptions) {
   return factory.deploy();
 }
 
-function stub(mockContract: Contract, encoder: utils.AbiCoder, func: utils.FunctionFragment, params?: any[]) {
-  const callData = params
-    ? mockContract.interface.encodeFunctionData(func, params)
-    : mockContract.interface.getSighash(func);
-
-  return {
-    returns: async (...args: any) => {
-      if (!func.outputs) return;
-      const encoded = encoder.encode(func.outputs, args);
-      await mockContract.__waffle__mockReturns(callData, encoded);
-    },
-    reverts: async () => mockContract.__waffle__mockReverts(callData, 'Mock revert'),
-    revertsWithReason: async (reason: string) => mockContract.__waffle__mockReverts(callData, reason),
-    withArgs: (...args: any[]) => stub(mockContract, encoder, func, args)
-  };
-}
-
 function createMock(abi: ABI, mockContractInstance: Contract) {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
   const mockedAbi = Object.values(functions).reduce((acc, func) => {
-    const stubbed = stub(mockContractInstance, encoder, func);
+    const stubbed = new Stub(mockContractInstance as MockContract, encoder, func);
     return {
       ...acc,
       [func.name]: stubbed,

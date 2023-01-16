@@ -3,16 +3,17 @@ pragma solidity ^0.6.3;
 
 contract Doppelganger {
     struct MockCall {
-        bool initialized;
+        bytes32 next;
         bool reverts;
         string revertReason;
         bytes returnValue;
     }
 
     mapping(bytes32 => MockCall) mockConfig;
+    mapping(bytes32 => bytes32) heads;
 
     fallback() external payable {
-        MockCall storage mockCall = __internal__getMockCall();
+        MockCall memory mockCall = __internal__getMockCall();
         if (mockCall.reverts == true) {
             __internal__mockRevert(mockCall.revertReason);
             return;
@@ -20,22 +21,49 @@ contract Doppelganger {
         __internal__mockReturn(mockCall.returnValue);
     }
 
-    function __waffle__mockReverts(bytes memory data, string memory reason) public {
-        mockConfig[keccak256(data)] = MockCall({
-            initialized: true,
+    function __clearQueue(bytes32 at) private {
+        heads[at] = at;
+        while(mockConfig[at].next != "") {
+            bytes32 next = mockConfig[at].next;
+            delete mockConfig[at];
+            at = next;
+        }
+    }
+
+    function __waffle__queueRevert(bytes memory data, string memory reason) public {
+        bytes32 head = heads[keccak256(data)];
+        if(head == "") head = keccak256(data);
+        bytes32 newHead = keccak256(abi.encodePacked(head));
+        mockConfig[head] = MockCall({
+            next: newHead,
             reverts: true,
             revertReason: reason,
             returnValue: ""
         });
+        heads[keccak256(data)] = newHead;
     }
 
-    function __waffle__mockReturns(bytes memory data, bytes memory value) public {
-        mockConfig[keccak256(data)] = MockCall({
-            initialized: true,
+    function __waffle__mockReverts(bytes memory data, string memory reason) public {
+        __clearQueue(keccak256(data));
+        __waffle__queueRevert(data, reason);
+    }
+
+    function __waffle__queueReturn(bytes memory data, bytes memory value) public {
+        bytes32 head = heads[keccak256(data)];
+        if(head == "") head = keccak256(data);
+        bytes32 newHead = keccak256(abi.encodePacked(head));
+        mockConfig[head] = MockCall({
+            next: newHead,
             reverts: false,
             revertReason: "",
             returnValue: value
         });
+        heads[keccak256(data)] = newHead;
+    }
+
+    function __waffle__mockReturns(bytes memory data, bytes memory value) public {
+        __clearQueue(keccak256(data));
+        __waffle__queueReturn(data, value);
     }
 
     function __waffle__call(address target, bytes calldata data) external returns (bytes memory) {
@@ -50,15 +78,25 @@ contract Doppelganger {
       return returnValue;
     }
 
-    function __internal__getMockCall() view private returns (MockCall storage mockCall) {
-        mockCall = mockConfig[keccak256(msg.data)];
-        if (mockCall.initialized == true) {
+    function __internal__getMockCall() private returns (MockCall memory mockCall) {
+        bytes32 root = keccak256(msg.data);
+        mockCall = mockConfig[root];
+        if (mockCall.next != "") {
             // Mock method with specified arguments
+            if(mockConfig[mockCall.next].next != ""){
+                mockConfig[root] = mockConfig[mockCall.next];
+                delete mockConfig[mockCall.next];
+            }
             return mockCall;
         }
-        mockCall = mockConfig[keccak256(abi.encodePacked(msg.sig))];
-        if (mockCall.initialized == true) {
+        root = keccak256(abi.encodePacked(msg.sig));
+        mockCall = mockConfig[root];
+        if (mockCall.next != "") {
             // Mock method with any arguments
+            if(mockConfig[mockCall.next].next != ""){
+                mockConfig[root] = mockConfig[mockCall.next];
+                delete mockConfig[mockCall.next];
+            }
             return mockCall;
         }
         revert("Mock on the method is not initialized");
