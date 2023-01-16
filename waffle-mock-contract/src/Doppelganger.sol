@@ -10,6 +10,7 @@ contract Doppelganger {
     }
 
     mapping(bytes32 => MockCall) mockConfig;
+    mapping(bytes32 => bytes32) heads;
     bool receiveReverts;
     string receiveRevertReason;
 
