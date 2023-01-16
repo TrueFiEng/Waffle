@@ -12,9 +12,6 @@ contract Doppelganger {
     mapping(bytes32 => MockCall) mockConfig;
     bool receiveReverts;
     string receiveRevertReason;
-    mapping(bytes32 => bytes32) heads;
-    bool receiveReverts;
-    string receiveRevertReason;
 
     fallback() external payable {
         MockCall memory mockCall = __internal__getMockCall();
