@@ -123,6 +123,55 @@ Mock contract will be used to mock exactly this call with values that are releva
     });
   });
 
+Mocking multiple calls
+----------------------
+
+Mock contract allows to queue multiple mock calls to the same function. This can only be done if the function is not pure or view. That's because the mock call queue is stored on the blockchain and we need to modify it.
+
+.. code-block:: ts
+
+  await mockContract.mock.<nameOfMethod>.returns(<value1>).returns(<value2>);
+
+  await mockContract.<nameOfMethod>() // returns <value1>
+  await mockContract.<nameOfMethod>() // returns <value2>
+
+Just like with regular mock calls, the queue can be set up to revert or return a specified value. It can also be set up to return different values for different arguments.
+
+.. code-block:: ts
+
+  await mockContract.mock.<nameOfMethod>.returns(<value1>).returns(<value2>);
+  await mockContract.mock.<nameOfMethod>.withArgs(<arguments1>).returns(<value3>);
+
+  await mockContract.<nameOfMethod>() // returns <value1>
+  await mockContract.<nameOfMethod>() // returns <value2>
+  await mockContract.<nameOfMethod>(<arguments1>) // returns <value3>
+
+Keep in mind that the mocked revert must be at the end of the queue, because it prevents the contract from updating the queue.
+
+.. code-block:: ts
+
+  await mockContract.mock.<nameOfMethod>.returns(<value1>).returns(<value2>).reverts();
+
+  await mockContract.<nameOfMethod>() // returns <value1>
+  await mockContract.<nameOfMethod>() // returns <value2>
+  await mockContract.<nameOfMethod>() // reverts
+
+When the queue is empty, the mock contract will return the last value from the queue and each time the you set up a new queue, the old one is overwritten.
+
+.. code-block:: ts
+
+  await mockContract.mock.<nameOfMethod>.returns(<value1>).returns(<value2>);
+
+  await mockContract.<nameOfMethod>() // returns <value1>
+  await mockContract.<nameOfMethod>() // returns <value2>
+  await mockContract.<nameOfMethod>() // returns <value2>
+
+  await mockContract.mock.<nameOfMethod>.returns(<value1>).returns(<value2>);
+  await mockContract.mock.<nameOfMethod>.returns(<value3>).returns(<value4>);
+
+  await mockContract.<nameOfMethod>() // returns <value3>
+  await mockContract.<nameOfMethod>() // returns <value4>
+
 Mocking receive function
 ------------------------
 

@@ -108,4 +108,17 @@ describe('Mock contract chaining behaviour', () => {
 
     expect(await proxy.callStatic.increaseByTwice(1)).to.eq(3 + 4);
   });
+
+  it('queue overwrite', async () => {
+    const mockCounter = await deployMockContract(wallet, counterContract.abi);
+
+    await mockCounter.mock.increment.returns(1).returns(2);
+    await mockCounter.mock.increment.returns(3).returns(4);
+
+    expect(await mockCounter.callStatic.increment()).to.eq(3);
+    await mockCounter.increment();
+    expect(await mockCounter.callStatic.increment()).to.eq(4);
+    await mockCounter.increment();
+    expect(await mockCounter.callStatic.increment()).to.eq(4);
+  });
 });
