@@ -103,10 +103,9 @@ class Stub implements StubInterface {
 
   async then(resolve: () => void, reject: (e: any) => void) {
     for (let i = 0; i < this.stubCalls.length; i++) {
-      try{
+      try {
         await this.stubCalls[i]();
-      }
-      catch (e) {
+      } catch (e) {
         this.stubCalls = [];
         this.argsSet = false;
         this.revertSet = false;
