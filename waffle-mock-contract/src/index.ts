@@ -6,36 +6,36 @@ import type {JsonRpcProvider} from '@ethersproject/providers';
 
 type ABI = string | Array<utils.Fragment | JsonFragment | string>
 
-interface IStub {
-  returns(...args: any): IStub;
-  reverts(): IStub;
-  revertsWithReason(reason: string): IStub;
-  withArgs(...args: any[]): IStub;
+interface StubInterface {
+  returns(...args: any): StubInterface;
+  reverts(): StubInterface;
+  revertsWithReason(reason: string): StubInterface;
+  withArgs(...args: any[]): StubInterface;
 }
 
 export interface MockContract extends Contract {
   mock: {
-    [key: string]: IStub;
+    [key: string]: StubInterface;
   };
   call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
 }
 
-class Stub implements IStub {
+class Stub implements StubInterface {
   callData: string;
   stubCalls: Array<() => Promise<any>> = [];
   revertSet = false;
   argsSet = false;
 
   constructor(
-    private mockContract: MockContract,
+    private mockContract: Contract,
     private encoder: utils.AbiCoder,
     private func: utils.FunctionFragment
   ) {
     this.callData = mockContract.interface.getSighash(func);
   }
 
-  private err(reason: string) {
+  private err(reason: string): never {
     this.stubCalls = [];
     this.revertSet = false;
     this.argsSet = false;
@@ -44,8 +44,10 @@ class Stub implements IStub {
 
   returns(...args: any) {
     if (this.revertSet) this.err('Revert must be the last call');
-    if (!this.func.outputs) return this; // Throw ?
+    if (!this.func.outputs) this.err('Cannot mock return values from a void function');
     const encoded = this.encoder.encode(this.func.outputs, args);
+
+    // if there no calls then this is the first call and we need to use mockReturns to override the queue
     if (this.stubCalls.length === 0) {
       this.stubCalls.push(async () => {
         await this.mockContract.__waffle__mockReturns(this.callData, encoded);
@@ -60,6 +62,8 @@ class Stub implements IStub {
 
   reverts() {
     if (this.revertSet) this.err('Revert must be the last call');
+
+    // if there no calls then this is the first call and we need to use mockReturns to override the queue
     if (this.stubCalls.length === 0) {
       this.stubCalls.push(async () => {
         await this.mockContract.__waffle__mockReverts(this.callData, 'Mock revert');
@@ -75,6 +79,8 @@ class Stub implements IStub {
 
   revertsWithReason(reason: string) {
     if (this.revertSet) this.err('Revert must be the last call');
+
+    // if there no calls then this is the first call and we need to use mockReturns to override the queue
     if (this.stubCalls.length === 0) {
       this.stubCalls.push(async () => {
         await this.mockContract.__waffle__mockReverts(this.callData, reason);
@@ -95,24 +101,25 @@ class Stub implements IStub {
     return this;
   }
 
-  async then(resolve: () => void, reject: () => void) {
-    let promise = Promise.resolve();
-
+  async then(resolve: () => void, reject: (e: any) => void) {
     for (let i = 0; i < this.stubCalls.length; i++) {
-      promise = new Promise((res, rej) => {
-        promise.then(() => {
-          this.stubCalls[i]().then(res).catch(rej);
-        }).catch(rej);
-      });
+      try{
+        await this.stubCalls[i]();
+      }
+      catch (e) {
+        this.stubCalls = [];
+        this.argsSet = false;
+        this.revertSet = false;
+        reject(e);
+        return;
+      }
     }
 
-    promise.then(() => {
-      this.stubCalls = [];
-      this.revertSet = false;
-      this.argsSet = false;
-      resolve();
-    }).catch(reject);
-  } // ?????????????
+    this.stubCalls = [];
+    this.argsSet = false;
+    this.revertSet = false;
+    resolve();
+  }
 }
 
 type DeployOptions = {

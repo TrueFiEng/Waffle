@@ -2,15 +2,24 @@
 pragma solidity ^0.6.3;
 
 contract Doppelganger {
+
+    // ============================== Linked list queues data structure explainer ==============================
+    // mockConfig contains multiple linked lists, one for each unique call
+    // mockConfig[<callData hash>] => root node of the linked list for this call
+    // mockConfig[<callData hash>].next => 'address' of the next node. It's always defined, even if it's the last node.
+    // When defining a new node .next is set to the hash of the 'address' of the last node
+    // mockConfig[mockConfig[<callData hash>].next] => next node (possibly undefined)
+    // tails[<callData hash>] => 'address' of the node 'one after' the last node (<last node>.next)
+    // in the linked list with root node at <callData hash>
+
     struct MockCall {
         bytes32 next;
         bool reverts;
         string revertReason;
         bytes returnValue;
     }
-
     mapping(bytes32 => MockCall) mockConfig;
-    mapping(bytes32 => bytes32) heads;
+    mapping(bytes32 => bytes32) tails;    
     bool receiveReverts;
     string receiveRevertReason;
 
@@ -28,7 +37,7 @@ contract Doppelganger {
     }
     
     function __clearQueue(bytes32 at) private {
-        heads[at] = at;
+        tails[at] = at;
         while(mockConfig[at].next != "") {
             bytes32 next = mockConfig[at].next;
             delete mockConfig[at];
@@ -37,16 +46,24 @@ contract Doppelganger {
     }
 
     function __waffle__queueRevert(bytes memory data, string memory reason) public {
-        bytes32 head = heads[keccak256(data)];
-        if(head == "") head = keccak256(data);
-        bytes32 newHead = keccak256(abi.encodePacked(head));
-        mockConfig[head] = MockCall({
-            next: newHead,
+        // get the root node of the linked list for this call
+        bytes32 root = keccak256(data);
+
+        // get the 'address' of the node 'one after' the last node
+        // this is where the new node will be inserted
+        bytes32 tail = tails[root];
+        if(tail == "") tail = keccak256(data);
+
+        // new tail is set to the hash of the current tail
+        tails[root] = keccak256(abi.encodePacked(tail));
+
+        // initialize the new node
+        mockConfig[tail] = MockCall({
+            next: tails[root], 
             reverts: true,
             revertReason: reason,
             returnValue: ""
         });
-        heads[keccak256(data)] = newHead;
     }
 
     function __waffle__mockReverts(bytes memory data, string memory reason) public {
@@ -55,16 +72,24 @@ contract Doppelganger {
     }
 
     function __waffle__queueReturn(bytes memory data, bytes memory value) public {
-        bytes32 head = heads[keccak256(data)];
-        if(head == "") head = keccak256(data);
-        bytes32 newHead = keccak256(abi.encodePacked(head));
-        mockConfig[head] = MockCall({
-            next: newHead,
+        // get the root node of the linked list for this call
+        bytes32 root = keccak256(data);
+
+        // get the 'address' of the node 'one after' the last node
+        // this is where the new node will be inserted
+        bytes32 tail = tails[root];
+        if(tail == "") tail = keccak256(data);
+
+        // new tail is set to the hash of the current tail
+        tails[root] = keccak256(abi.encodePacked(tail));
+        
+        // initialize the new node
+        mockConfig[tail] = MockCall({
+            next: tails[root], 
             reverts: false,
             revertReason: "",
             returnValue: value
         });
-        heads[keccak256(data)] = newHead;
     }
 
     function __waffle__mockReturns(bytes memory data, bytes memory value) public {
@@ -90,11 +115,16 @@ contract Doppelganger {
     }
 
     function __internal__getMockCall() private returns (MockCall memory mockCall) {
+        // get the root node of the queue for this call
         bytes32 root = keccak256(msg.data);
         mockCall = mockConfig[root];
         if (mockCall.next != "") {
             // Mock method with specified arguments
-            if(mockConfig[mockCall.next].next != ""){
+
+            // If there is a next mock call, set it as the current mock call
+            // We check if the next mock call is defined by checking if it has a 'next' variable defined
+            // (next value is always defined, even if it's the last mock call)
+            if(mockConfig[mockCall.next].next != ""){ // basically if it's not the last mock call
                 mockConfig[root] = mockConfig[mockCall.next];
                 delete mockConfig[mockCall.next];
             }
@@ -104,7 +134,7 @@ contract Doppelganger {
         mockCall = mockConfig[root];
         if (mockCall.next != "") {
             // Mock method with any arguments
-            if(mockConfig[mockCall.next].next != ""){
+            if(mockConfig[mockCall.next].next != ""){ // same as above
                 mockConfig[root] = mockConfig[mockCall.next];
                 delete mockConfig[mockCall.next];
             }
