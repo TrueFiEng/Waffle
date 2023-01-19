@@ -23,8 +23,8 @@ declare namespace Chai {
     changeBalances(accounts: any[], balances: any[]): AsyncAssertion;
     changeEtherBalance(account: any, balance: any, options?: any): AsyncAssertion;
     changeEtherBalances(accounts: any[], balances: any[], options?: any): AsyncAssertion;
-    changeTokenBalance(token: any, account: any, balance: any): AsyncAssertion;
-    changeTokenBalances(token: any, accounts: any[], balances: any[]): AsyncAssertion;
+    changeTokenBalance(token: any, account: any, balance: any, errorMargin?: any): AsyncAssertion;
+    changeTokenBalances(token: any, accounts: any[], balances: any[], errorMargin?: any): AsyncAssertion;
     calledOnContract(contract: any): void;
     calledOnContractWith(contract: any, parameters: any[]): void;
   }

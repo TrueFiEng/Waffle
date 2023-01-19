@@ -2,7 +2,7 @@ import {waffle} from 'hardhat';
 import {expect} from 'chai';
 import {MockProvider} from 'ethereum-waffle';
 import {revertedTest, revertedWithTest} from '@ethereum-waffle/chai/test';
-import {ContractFactory} from 'ethers';
+import {BigNumber, ContractFactory} from 'ethers';
 import CustomError from '../build/contracts/CustomError.sol/Matchers.json';
 
 describe('INTEGRATION: Matchers: reverted', () => {
@@ -58,6 +58,37 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
           'message',
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
         );
+
+      await expect(matchers.doRevertWithOne())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('0'), // Check BigNumber instance as well.
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        );
+    });
+
+    it('With args and big number success', async () => {
+      const matchers = await deploy();
+      await expect(matchers.doRevertWithBigNumber())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('9007199254740991000000'),
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        );
+    });
+
+    it('With args and big number failure', async () => {
+      const matchers = await deploy();
+      await expect(expect(matchers.doRevertWithBigNumber())
+        .to.be.revertedWith('One')
+        .withArgs(
+          BigNumber.from('9007199254740991000001'), // different
+          'message',
+          '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+        )
+      ).to.be.eventually.rejectedWith('Expected "9007199254740991000000" to be equal 9007199254740991000001');
     });
 
     it('With args failure', async () => {
@@ -132,5 +163,62 @@ describe('INTEGRATION: Matchers: revertedWith', () => {
         '\'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\''
       );
     });
+  });
+
+  it('Revert success (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(matchers.doRevertWithDecoratedCustomErrorName()).to.be.revertedWith('$__DecoratedCustomErrorName');
+  });
+
+  it('Revert fail (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('Two')
+    ).to.be.eventually.rejectedWith(
+      'Expected transaction to be reverted with "Two", but other reason was found: "$__DecoratedCustomErrorName"'
+    );
+  });
+
+  it('With args success (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        0,
+        'message',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      );
+  });
+
+  it('With args failure (decorated)', async () => {
+    const matchers = await deploy();
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        1,
+        'message',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      )
+    ).to.be.eventually.rejectedWith(/Expected (")?0(")? to (be )?equal 1/i); // It may or may not have the quote marks
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        0,
+        'messagr',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123'
+      )
+    ).to.be.eventually.rejectedWith('expected \'message\' to equal \'messagr\'');
+    await expect(expect(matchers.doRevertWithDecoratedCustomErrorName())
+      .to.be.revertedWith('$__DecoratedCustomErrorName')
+      .withArgs(
+        0,
+        'message',
+        '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
+      )
+    ).to.be.eventually.rejectedWith('expected ' +
+      '\'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123\'' +
+      ' to equal ' +
+      '\'0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124\''
+    );
   });
 });

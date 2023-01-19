@@ -1,8 +1,10 @@
+import {BigNumberish} from 'ethers';
 import {ensure} from '../calledOnContract/utils';
 import {Account, getAddressOf} from './account';
 
 export interface BalanceChangeOptions {
   includeFee?: boolean;
+  errorMargin?: BigNumberish;
 }
 
 export function getAddresses(accounts: Account[]) {

@@ -1,0 +1,43 @@
+name: Plugin CI
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+jobs:
+  test-waffle-hardhat-plugin:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:        
+        hardhat: ['2.9.2', '2.11.2', 'latest']
+        hardhat-ethers: ['2.0.3', '2.1.1', 'latest']
+        hardhat-waffle: ['linked', 'latest']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+      - run: npm i -g pnpm@7.1.9 yarn@1.22.17
+      - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+      - run: pnpm add -D hardhat@${{ matrix.hardhat }}
+        working-directory: waffle-hardhat
+      - run: pnpm add -D @nomiclabs/hardhat-ethers@${{ matrix.hardhat-ethers }}
+        working-directory: waffle-hardhat
+      - run: pnpm add -D @nomiclabs/hardhat-waffle@${{ matrix.hardhat-waffle }}
+        if: ${{ matrix.hardhat-waffle != 'linked' }}
+        working-directory: waffle-hardhat
+      - name: Initialize plugin submodule
+        if: ${{ matrix.hardhat-waffle == 'linked' }}
+        run: |
+          git submodule update --init
+          cd hardhat-waffle-plugin
+          yarn && yarn build
+      - name: Use the submodule in our tests
+        if: ${{ matrix.hardhat-waffle == 'linked' }}
+        run: |
+          rm -rf waffle-hardhat/node_modules/@nomiclabs/hardhat-waffle/dist
+          cp -r hardhat-waffle-plugin/dist waffle-hardhat/node_modules/@nomiclabs/hardhat-waffle
+      - run: pnpm run build
+      - run: pnpm run test
+        working-directory: waffle-hardhat
