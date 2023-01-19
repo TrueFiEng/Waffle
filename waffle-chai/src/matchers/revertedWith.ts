@@ -44,6 +44,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 
 const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
+    if (error === undefined) {
+      return undefined;
+    }
     if (
       error?.errorName &&
       /**
@@ -105,7 +108,10 @@ const decodeHardhatError = (error: any, context: any) => {
     return undefined;
   };
 
-  return tryDecode(error) ?? tryDecode(error.error); // the error may be wrapped
+  return tryDecode(error) ??
+    tryDecode(error.error) ??
+    tryDecode(error.reason) ??
+    tryDecode(error.error?.reason); // the error may be wrapped
 };
 
 const decodeOptimismError = (error: any) => {
