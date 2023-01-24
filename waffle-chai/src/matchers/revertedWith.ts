@@ -6,7 +6,6 @@ import JSONbig from 'json-bigint';
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
     callPromise(this);
-
     const assertNotReverted = () => this.assert(
       false,
       'Expected transaction to be reverted',
@@ -104,10 +103,10 @@ const decodeHardhatError = (error: any, context: any) => {
       }
     }
     {
-      const regexp = new RegExp('revert(ed)? with reason (string )?"(.*?)"');
+      const regexp = /revert(ed)? with reason (string )?("(?:[^\\"]|\\.)*")/;
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
-        return matches[matches.length - 1];
+        return JSON.parse(matches[matches.length - 1]); // parse escapes
       }
     }
     {
