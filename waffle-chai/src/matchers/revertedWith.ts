@@ -61,9 +61,9 @@ const decodeHardhatError = (error: any, context: any) => {
       context.txErrorName = error.errorName;
       return error.errorName;
     }
-    if (error?.code) {
+    if (error?.data) {
       try {
-        const decodedReason = errorInterface.decodeFunctionData('Error', error.code);
+        const decodedReason = errorInterface.decodeFunctionData('Error', error.data);
         if (decodedReason[0]) return decodedReason[0];
       } catch {}
     }
