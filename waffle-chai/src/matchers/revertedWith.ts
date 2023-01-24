@@ -1,11 +1,11 @@
 import {decodeRevertString} from '@ethereum-waffle/provider';
+import {ethers} from 'ethers';
 import {callPromise} from '../call-promise';
 import JSONbig from 'json-bigint';
 
 export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('revertedWith', function (this: any, revertReason: string | RegExp) {
     callPromise(this);
-
     const assertNotReverted = () => this.assert(
       false,
       'Expected transaction to be reverted',
@@ -42,6 +42,7 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
   });
 }
 
+const errorInterface = new ethers.utils.Interface(['function Error(string)']);
 const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
     if (
@@ -60,6 +61,13 @@ const decodeHardhatError = (error: any, context: any) => {
       context.txErrorName = error.errorName;
       return error.errorName;
     }
+    if (error?.data) {
+      try {
+        const decodedReason = errorInterface.decodeFunctionData('Error', error.data);
+        if (decodedReason[0]) return decodedReason[0];
+      } catch {}
+    }
+
     const errorString = String(error);
     {
       // eslint-disable-next-line max-len
@@ -95,8 +103,14 @@ const decodeHardhatError = (error: any, context: any) => {
       }
     }
     {
-      const regexp = new RegExp('revert(ed)? with reason (string )?"(.*?)"');
-
+      const regexp = /revert(ed)? with reason (string )?("(?:[^\\"]|\\.)*")/;
+      const matches = regexp.exec(errorString);
+      if (matches && matches.length >= 1) {
+        return JSON.parse(matches[matches.length - 1]); // parse escapes
+      }
+    }
+    {
+      const regexp = new RegExp('revert(ed)? with reason (string )?\'(.*)\'');
       const matches = regexp.exec(errorString);
       if (matches && matches.length >= 1) {
         return matches[matches.length - 1];
