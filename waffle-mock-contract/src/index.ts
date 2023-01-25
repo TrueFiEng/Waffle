@@ -1,4 +1,4 @@
-import {Contract, ContractFactory, Signer, utils} from 'ethers';
+import {BaseContract, Contract, ContractFactory, Signer, utils} from 'ethers';
 import type {JsonFragment} from '@ethersproject/abi';
 
 import DoppelgangerContract from './Doppelganger.json';
@@ -13,9 +13,9 @@ interface StubInterface {
   withArgs(...args: any[]): StubInterface;
 }
 
-export interface MockContract extends Contract {
+export interface MockContract<T extends BaseContract = BaseContract> extends Contract {
   mock: {
-    [key: string]: StubInterface;
+    [key in ((keyof T['functions'] | 'receive'))]: StubInterface;
   };
   call (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
   staticcall (contract: Contract, functionName: string, ...params: any[]): Promise<any>;
@@ -155,7 +155,7 @@ async function deploy(signer: Signer, options?: DeployOptions) {
   return factory.deploy();
 }
 
-function createMock(abi: ABI, mockContractInstance: Contract) {
+function createMock<T extends BaseContract>(abi: ABI, mockContractInstance: Contract): MockContract<T>['mock'] {
   const {functions} = new utils.Interface(abi);
   const encoder = new utils.AbiCoder();
 
@@ -166,9 +166,9 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
       [func.name]: stubbed,
       [func.format()]: stubbed
     };
-  }, {} as MockContract['mock']);
+  }, {} as MockContract<T>['mock']);
 
-  mockedAbi.receive = {
+  (mockedAbi as any).receive = {
     returns: () => { throw new Error('Receive function return is not implemented.'); },
     withArgs: () => { throw new Error('Receive function return is not implemented.'); },
     reverts: () => mockContractInstance.__waffle__receiveReverts('Mock Revert'),
@@ -178,11 +178,11 @@ function createMock(abi: ABI, mockContractInstance: Contract) {
   return mockedAbi;
 }
 
-export async function deployMockContract(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract> {
+export async function deployMockContract<T extends BaseContract = BaseContract>(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract<T>> {
   const mockContractInstance = await deploy(signer, options);
 
-  const mock = createMock(abi, mockContractInstance);
-  const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract;
+  const mock = createMock<T>(abi, mockContractInstance);
+  const mockedContract = new Contract(mockContractInstance.address, abi, signer) as MockContract<T>;
   mockedContract.mock = mock;
 
   const encoder = new utils.AbiCoder();
