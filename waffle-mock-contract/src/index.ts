@@ -178,7 +178,11 @@ function createMock<T extends BaseContract>(abi: ABI, mockContractInstance: Cont
   return mockedAbi;
 }
 
-export async function deployMockContract<T extends BaseContract = BaseContract>(signer: Signer, abi: ABI, options?: DeployOptions): Promise<MockContract<T>> {
+export async function deployMockContract<T extends BaseContract = BaseContract>(
+  signer: Signer,
+  abi: ABI,
+  options?: DeployOptions
+): Promise<MockContract<T>> {
   const mockContractInstance = await deploy(signer, options);
 
   const mock = createMock<T>(abi, mockContractInstance);
