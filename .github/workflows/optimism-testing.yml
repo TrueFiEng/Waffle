@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         # test against a known version and a current master
-        OPTIMISM_GIT_HEAD: ["b0a54509a6f99194221f5ade230ceae7892b3393", "master"]
+        OPTIMISM_GIT_HEAD: ["7abde925dccb57bac26661f22906686ff7e23ad0", "master"]
     steps:
       - uses: actions/checkout@v2
         with:
