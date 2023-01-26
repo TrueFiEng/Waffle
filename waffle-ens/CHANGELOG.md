@@ -1,5 +1,14 @@
 # @ethereum-waffle/ens
 
+## 4.0.3
+
+### Patch Changes
+
+- e1c352a: 🏄 Defer an error about missing ENS peer dependencies to execution
+- f0b525d: 🥄 Add ENS dependencies as peer dependencies
+- ee1d1b8: 😷 Upgrade ganache version
+- a0f721a: Move ethers to peer deps
+
 ## 4.0.2
 
 ### Patch Changes

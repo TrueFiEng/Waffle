@@ -1,5 +1,17 @@
 # @ethereum-waffle/provider
 
+## 4.0.5
+
+### Patch Changes
+
+- ee1d1b8: 😷 Upgrade ganache version
+- a0f721a: Move ethers to peer deps
+- Updated dependencies [e1c352a]
+- Updated dependencies [f0b525d]
+- Updated dependencies [ee1d1b8]
+- Updated dependencies [a0f721a]
+  - @ethereum-waffle/ens@4.0.3
+
 ## 4.0.4
 
 ### Patch Changes

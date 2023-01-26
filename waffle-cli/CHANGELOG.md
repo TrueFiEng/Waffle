@@ -1,5 +1,28 @@
 # ethereum-waffle
 
+## 4.0.8
+
+### Patch Changes
+
+- f93abe9: Move call history injection logic to hardhat plugin
+- a0f721a: Move ethers to peer deps
+- Updated dependencies [da92375]
+- Updated dependencies [f93abe9]
+- Updated dependencies [46b954e]
+- Updated dependencies [9602243]
+- Updated dependencies [fb6863d]
+- Updated dependencies [b54c6b9]
+- Updated dependencies [64707ae]
+- Updated dependencies [1fa1312]
+- Updated dependencies [ee1d1b8]
+- Updated dependencies [702c6ab]
+- Updated dependencies [a0f721a]
+- Updated dependencies [f6d240e]
+  - @ethereum-waffle/mock-contract@4.0.3
+  - @ethereum-waffle/chai@4.0.8
+  - @ethereum-waffle/provider@4.0.5
+  - @ethereum-waffle/compiler@4.0.3
+
 ## 4.0.7
 
 ### Patch Changes
