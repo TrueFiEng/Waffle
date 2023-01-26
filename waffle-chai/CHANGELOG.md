@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.9
+
+### Patch Changes
+
+- 216f1d8: Switch hardhat error priority
+
 ## 4.0.8
 
 ### Patch Changes
