@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - changeset-release/*
-      - yivlad/* # remove this line before merging
 jobs:
   test:
     runs-on: ubuntu-latest
