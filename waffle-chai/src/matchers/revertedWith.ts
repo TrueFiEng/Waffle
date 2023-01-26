@@ -45,6 +45,9 @@ export function supportRevertedWith(Assertion: Chai.AssertionStatic) {
 const errorInterface = new ethers.utils.Interface(['function Error(string)']);
 const decodeHardhatError = (error: any, context: any) => {
   const tryDecode = (error: any) => {
+    if (error === undefined) {
+      return undefined;
+    }
     if (
       error?.errorName &&
       /**
@@ -119,7 +122,9 @@ const decodeHardhatError = (error: any, context: any) => {
     return undefined;
   };
 
-  return tryDecode(error) ?? tryDecode(error.error); // the error may be wrapped
+  return tryDecode(error.error?.error) ??
+    tryDecode(error.error) ??
+    tryDecode(error); // the error may be wrapped
 };
 
 const decodeOptimismError = (error: any) => {
