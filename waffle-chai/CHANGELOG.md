@@ -1,5 +1,20 @@
 # @ethereum-waffle/chai
 
+## 4.0.8
+
+### Patch Changes
+
+- f93abe9: Move call history injection logic to hardhat plugin
+- 9602243: 👔 revertedWith().withArgs no longer fails for uint values exceeding JavaScript's max int limit
+- b54c6b9: Add delta to balance changing matchers
+- 64707ae: Allow special characters in revertedWith regex
+- 702c6ab: 🗾 Extend matching of Hardhat revert reasons
+- a0f721a: Move ethers to peer deps
+- f6d240e: 🛶 Updates for hardhat v2.11
+- Updated dependencies [ee1d1b8]
+- Updated dependencies [a0f721a]
+  - @ethereum-waffle/provider@4.0.5
+
 ## 4.0.7
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @ethereum-waffle/mock-contract
 
+## 4.0.3
+
+### Patch Changes
+
+- da92375: Add mock contract deployment at a specified address
+- 46b954e: Add mock contract chaining behaviour
+- fb6863d: 🍶 Implement mocking receive function to revert
+- 1fa1312: Mock contract typing
+- a0f721a: Move ethers to peer deps
+
 ## 4.0.2
 
 ### Patch Changes

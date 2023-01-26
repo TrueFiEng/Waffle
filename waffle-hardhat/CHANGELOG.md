@@ -1,5 +1,12 @@
 # @ethereum-waffle/hardhat
 
+## 4.0.4
+
+### Patch Changes
+
+- da92375: Add mock contract deployment at a specified address
+- 9602243: 👔 revertedWith().withArgs no longer fails for uint values exceeding JavaScript's max int limit
+
 ## 4.0.3
 
 ### Patch Changes

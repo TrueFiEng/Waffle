@@ -1,5 +1,11 @@
 # @ethereum-waffle/compiler
 
+## 4.0.3
+
+### Patch Changes
+
+- a0f721a: Move ethers to peer deps
+
 ## 4.0.2
 
 ### Patch Changes
