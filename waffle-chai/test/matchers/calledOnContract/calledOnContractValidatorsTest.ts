@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {constants, Contract, ContractFactory, getDefaultProvider} from 'ethers';
 
-import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
+import {abi as CALLS_ABI, bytecode as CALLS_BYTECODE} from '../../interfaces/Calls.json';
 import {validateMockProvider} from '../../../src/matchers/calledOnContract/calledOnContractValidators';
 
 export const calledOnContractValidatorsTest = (provider: MockProvider) => {

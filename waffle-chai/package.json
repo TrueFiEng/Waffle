@@ -30,10 +30,10 @@
   "module": "dist/esm/src/index.ts",
   "types": "dist/esm/src/index.d.ts",
   "scripts": {
-    "test": "mocha",
+    "test": "ts-node ./test/compileTestContracts.ts && mocha",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'",
-    "build": "rimraf ./dist && yarn build:esm && yarn build:cjs",
+    "build": "ts-node ./test/compileTestContracts.ts && rimraf ./dist && yarn build:esm && yarn build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs"
   },
@@ -43,9 +43,11 @@
   "dependencies": {
     "@ethereum-waffle/provider": "workspace:*",
     "debug": "^4.3.4",
-    "json-bigint": "^1.0.0"
+    "json-bigint": "^1.0.0",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
+    "@ethereum-waffle/compiler": "workspace:^4.0.3",
     "@types/debug": "^4.1.7",
     "@types/json-bigint": "^1.0.1",
     "eslint": "^7.14.0",

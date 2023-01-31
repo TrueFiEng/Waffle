@@ -1,7 +1,7 @@
 import {MockProvider} from '@ethereum-waffle/provider';
 import {expect, AssertionError} from 'chai';
 import {BigNumber, ContractFactory, ethers} from 'ethers';
-import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
+import {abi as MATCHERS_ABI, bytecode as MATCHERS_BYTECODE} from '../interfaces/Matchers.json';
 
 describe('UNIT: Miscellaneous', () => {
   let provider: MockProvider;

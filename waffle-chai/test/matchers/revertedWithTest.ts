@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 import {Wallet, Contract, ContractFactory, BigNumber} from 'ethers';
-import {MATCHERS_ABI, MATCHERS_BYTECODE} from '../contracts/Matchers';
+import {abi as MATCHERS_ABI, bytecode as MATCHERS_BYTECODE} from '../interfaces/Matchers.json';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
 

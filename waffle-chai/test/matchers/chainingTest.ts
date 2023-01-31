@@ -1,7 +1,7 @@
 import {AssertionError, expect} from 'chai';
 import {Wallet, Contract, ContractFactory} from 'ethers';
-import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
-import {COMPLEX_ABI, COMPLEX_BYTECODE} from '../contracts/Complex';
+import {abi as MOCK_TOKEN_ABI, bytecode as MOCK_TOKEN_BYTECODE} from '../interfaces/ERC20.json';
+import {abi as COMPLEX_ABI, bytecode as COMPLEX_BYTECODE} from '../interfaces/Complex.json';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
 

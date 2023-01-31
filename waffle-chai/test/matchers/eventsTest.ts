@@ -1,9 +1,11 @@
 import {expect, AssertionError} from 'chai';
 import {Wallet, Contract, ContractFactory, BigNumber, ethers} from 'ethers';
-import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
+import {abi as EVENTS_ABI, bytecode as EVENTS_BYTECODE} from '../interfaces/Events.json';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
 
+import EmitterABI from '../interfaces/Emitter.json';
+import DelegatedEmitterABI from '../interfaces/DelegatedEmitter.json';
 /**
  * Struct emitted in the Events contract, emitStruct method
  */
@@ -697,6 +699,14 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
         AssertionError,
         '{ Object (hash, value, ...) } to deeply equal { Object (hash, value, ...) }'
       );
+    });
+
+    it('Delegated event', async () => {
+      const emitterFactory = new ContractFactory(EmitterABI.abi, EmitterABI.bytecode, wallet);
+      const emitter = await emitterFactory.deploy();
+      const delegatedFactory = new ContractFactory(DelegatedEmitterABI.abi, DelegatedEmitterABI.bytecode, wallet);
+      const delegated = await delegatedFactory.deploy(emitter.address);
+      await expect(delegated.delegateEmit('test')).to.emit(delegated, 'TestEvent').withArgs('test');
     });
   });
 };
