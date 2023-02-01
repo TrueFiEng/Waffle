@@ -1,16 +1,30 @@
 import {Contract, providers, utils} from 'ethers';
+import {keccak256, toUtf8Bytes} from 'ethers/lib/utils';
 import {callPromise} from '../call-promise';
 import {waitForPendingTransaction} from './misc/transaction';
 import {supportWithArgs} from './withArgs';
 import {supportWithNamedArgs} from './withNamedArgs';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
-  const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress: string) =>
+  const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress?: string) =>
     logs.filter((log) => log.topics.includes(topic))
-      .filter((log) => log.address && log.address.toLowerCase() === contractAddress.toLowerCase());
+      .filter((log) =>
+        log.address &&
+        (contractAddress === undefined || log.address.toLowerCase() === contractAddress.toLowerCase()
+        ));
 
-  Assertion.addMethod('emit', function (this: any, contract: Contract, eventName: string) {
+  const getEventName = (eventSig: string) => {
+    const reg = /(\S+)\((\S*)\)/;
+    const matches = reg.exec(eventSig);
+    if (matches) return matches[1];
+    else throw new Error(`Invalid event signature "${eventSig}"`);
+  };
+
+  Assertion.addMethod('emit', function (this: any, contract: Contract|string, eventName?: string) {
     if (typeof this._obj === 'string') {
+      if (typeof contract === 'string') {
+        throw new Error('The emit by event signature matcher must be called on a transaction');
+      }
       // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
       this.callPromise = waitForPendingTransaction(this._obj, contract.provider)
         .then(txReceipt => {
@@ -26,30 +40,36 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           throw new Error('The emit matcher must be called on a transaction');
         }
         const receipt: providers.TransactionReceipt = this.txReceipt;
-        let eventFragment: utils.EventFragment | undefined;
-        try {
-          eventFragment = contract.interface.getEvent(eventName);
-        } catch (e) {
-        // ignore error
+        if (typeof contract === 'string') {
+          eventName = getEventName(contract);
+          const topic = keccak256(toUtf8Bytes(contract));
+          this.args = filterLogsWithTopics(receipt.logs, topic);
+        } else {
+          if (!eventName) throw new Error('The event name was not specified');
+          let eventFragment: utils.EventFragment | undefined;
+          try {
+            eventFragment = contract.interface.getEvent(eventName);
+          } catch (e) {
+          // ignore error
+          }
+          if (eventFragment === undefined) {
+            this.assert(
+              isNegated,
+              `Expected event "${eventName}" to be emitted, but it doesn't` +
+            ' exist in the contract. Please make sure you\'ve compiled' +
+            ' its latest version before running the test.',
+              `WARNING: Expected event "${eventName}" NOT to be emitted.` +
+            ' The event wasn\'t emitted because it doesn\'t' +
+            ' exist in the contract. Please make sure you\'ve compiled' +
+            ' its latest version before running the test.',
+              eventName,
+              ''
+            );
+            return;
+          }
+          const topic = contract.interface.getEventTopic(eventFragment);
+          this.args = filterLogsWithTopics(receipt.logs, topic, contract.address);
         }
-        if (eventFragment === undefined) {
-          this.assert(
-            isNegated,
-            `Expected event "${eventName}" to be emitted, but it doesn't` +
-          ' exist in the contract. Please make sure you\'ve compiled' +
-          ' its latest version before running the test.',
-            `WARNING: Expected event "${eventName}" NOT to be emitted.` +
-          ' The event wasn\'t emitted because it doesn\'t' +
-          ' exist in the contract. Please make sure you\'ve compiled' +
-          ' its latest version before running the test.',
-            eventName,
-            ''
-          );
-          return;
-        }
-
-        const topic = contract.interface.getEventTopic(eventFragment);
-        this.args = filterLogsWithTopics(receipt.logs, topic, contract.address);
         // As this callback will be resolved after the chain of matchers is finished, we need to
         // know if the matcher has been negated or not. To simulate chai behaviour, we keep track of whether
         // the matcher has been negated or not and set the internal chai flag __flags.negate to the same value.

@@ -9,4 +9,4 @@ const compile = async () => {
   });
 };
 
-compile();
+void compile();

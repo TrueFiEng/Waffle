@@ -98,3 +98,19 @@ contract Events {
     }
 
 }
+
+contract EventsProxy {
+    Events public events;
+
+    constructor(Events _events) {
+        events = _events;
+    }
+
+    function emitTwoDelegate() public {
+        // emit Two with a delegatecall to the events contract
+        (bool success, ) = address(events).delegatecall(
+            abi.encodeWithSignature("emitTwo()")
+        );
+        require(success, "delegatecall failed");
+    }
+}

@@ -4,8 +4,7 @@ import {abi as EVENTS_ABI, bytecode as EVENTS_BYTECODE} from '../interfaces/Even
 
 import type {TestProvider} from '@ethereum-waffle/provider';
 
-import EmitterABI from '../interfaces/Emitter.json';
-import DelegatedEmitterABI from '../interfaces/DelegatedEmitter.json';
+import EventsProxyABI from '../interfaces/EventsProxy.json';
 /**
  * Struct emitted in the Events contract, emitStruct method
  */
@@ -701,12 +700,42 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it('Delegated event', async () => {
-      const emitterFactory = new ContractFactory(EmitterABI.abi, EmitterABI.bytecode, wallet);
-      const emitter = await emitterFactory.deploy();
-      const delegatedFactory = new ContractFactory(DelegatedEmitterABI.abi, DelegatedEmitterABI.bytecode, wallet);
-      const delegated = await delegatedFactory.deploy(emitter.address);
-      await expect(delegated.delegateEmit('test')).to.emit(delegated, 'TestEvent').withArgs('test');
+    it('Signature only - delegatecall', async () => {
+      const proxyFactory = new ContractFactory(EventsProxyABI.abi, EventsProxyABI.bytecode, wallet);
+      const proxy = await proxyFactory.deploy(events.address);
+
+      await expect(proxy.emitTwoDelegate()).to.emit('Two(uint256,string)');
+    });
+
+    it('Signature only - regular event', async () => {
+      await expect(events.emitTwo()).to.emit('Two(uint256,string)');
+    });
+
+    it('Signature only - negative', async () => {
+      await expect(
+        expect(events.emitTwo()).to.emit('One(uint256,string,bytes32)')
+      ).to.be.eventually.rejectedWith(
+        AssertionError,
+        'Expected event "One" to be emitted, but it wasn\'t'
+      );
+    });
+
+    it('Signature only - invalid event signature', async () => {
+      await expect(
+        expect(events.emitTwo()).to.emit('One(uint256, string, bytes32)')
+      ).to.be.eventually.rejectedWith(
+        Error,
+        'Invalid event signature "One(uint256, string, bytes32)"'
+      );
+    });
+
+    it('Signature only - invalid args', async () => {
+      await expect(
+        expect(events.emitTwo()).to.emit(events)
+      ).to.be.eventually.rejectedWith(
+        Error,
+        'The event name was not specified'
+      );
     });
   });
 };
