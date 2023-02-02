@@ -106,8 +106,8 @@ export const eventsTest = (provider: TestProvider) => {
 
   it('Emit nonexistent event: fail', async () => {
     await expect(
-      expect(events.emitOne()).to.emit(events, 'Three')
-    ).to.be.eventually.rejectedWith(
+      () => expect(events.emitOne()).to.emit(events, 'Three')
+    ).to.throw(
       AssertionError,
       'Expected event "Three" to be emitted, but it doesn\'t exist in the contract. ' +
         'Please make sure you\'ve compiled its latest version before running the test.'
@@ -116,8 +116,8 @@ export const eventsTest = (provider: TestProvider) => {
 
   it('Negate emit nonexistent event: fail', async () => {
     await expect(
-      expect(events.emitOne()).not.to.emit(events, 'Three')
-    ).to.be.eventually.rejectedWith(
+      () => expect(events.emitOne()).not.to.emit(events, 'Three')
+    ).to.throw(
       AssertionError,
       'WARNING: Expected event "Three" NOT to be emitted. The event wasn\'t emitted because ' +
         'it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version ' +
