@@ -48,7 +48,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
 
     if (typeof contractOrEventSig === 'string') {
       let eventFragment: utils.EventFragment | undefined;
-      try{ 
+      try {
         eventFragment = utils.EventFragment.from(contractOrEventSig);
       } catch (e) {
         throw new Error(`Invalid event signature: "${contractOrEventSig}"`);
@@ -79,8 +79,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       assertEmit(this, eventFragment, contractOrEventSig.address);
 
       this.contract = contractOrEventSig;
-    }
-    else {
+    } else {
       throw new Error('The emit matcher must be called with a contract and an event name or an event signature');
     }
 

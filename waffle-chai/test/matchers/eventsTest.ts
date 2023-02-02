@@ -699,7 +699,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it.only('Signature only - delegatecall', async () => {
+    it('Signature only - delegatecall', async () => {
       const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
       const proxy = await proxyFactory.deploy(events.address);
 
@@ -710,7 +710,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       await expect(events.emitTwo()).to.emit('Two(uint256,string)');
     });
 
-    it.only('Signature only - negative', async () => {
+    it('Signature only - negative', async () => {
       await expect(
         expect(events.emitTwo()).to.emit('One(uint256,string,bytes32)')
       ).to.be.eventually.rejectedWith(
@@ -719,7 +719,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it.only('Signature only - invalid event signature', async () => {
+    it('Signature only - invalid event signature', async () => {
       await expect(
         () => expect(events.emitTwo()).to.emit('One')
       ).to.throw(
@@ -728,7 +728,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it.only('Signature only - invalid args', async () => {
+    it('Signature only - invalid args', async () => {
       await expect(
         () => expect(events.emitTwo()).to.emit(events)
       ).to.throw(
@@ -737,7 +737,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it.only('Signature only - Other contract event', async () => {
+    it('Signature only - Other contract event', async () => {
       const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
       const proxy = await proxyFactory.deploy(events.address);
 
