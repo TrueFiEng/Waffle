@@ -106,8 +106,8 @@ export const eventsTest = (provider: TestProvider) => {
 
   it('Emit nonexistent event: fail', async () => {
     await expect(
-      () => expect(events.emitOne()).to.emit(events, 'Three')
-    ).to.throw(
+      expect(events.emitOne()).to.emit(events, 'Three')
+    ).to.be.eventually.rejectedWith(
       AssertionError,
       'Expected event "Three" to be emitted, but it doesn\'t exist in the contract. ' +
         'Please make sure you\'ve compiled its latest version before running the test.'
@@ -116,8 +116,8 @@ export const eventsTest = (provider: TestProvider) => {
 
   it('Negate emit nonexistent event: fail', async () => {
     await expect(
-      () => expect(events.emitOne()).not.to.emit(events, 'Three')
-    ).to.throw(
+      expect(events.emitOne()).not.to.emit(events, 'Three')
+    ).to.be.eventually.rejectedWith(
       AssertionError,
       'WARNING: Expected event "Three" NOT to be emitted. The event wasn\'t emitted because ' +
         'it doesn\'t exist in the contract. Please make sure you\'ve compiled its latest version ' +
@@ -721,8 +721,8 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
 
     it('Signature only - invalid event signature', async () => {
       await expect(
-        () => expect(events.emitTwo()).to.emit('One')
-      ).to.throw(
+        expect(events.emitTwo()).to.emit('One')
+      ).to.be.eventually.rejectedWith(
         Error,
         'Invalid event signature: "One"'
       );
@@ -730,8 +730,8 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
 
     it('Signature only - invalid args', async () => {
       await expect(
-        () => expect(events.emitTwo()).to.emit(events)
-      ).to.throw(
+        expect(events.emitTwo()).to.emit(events)
+      ).to.be.eventually.rejectedWith(
         Error,
         'The emit matcher must be called with a contract and an event name or an event signature'
       );
