@@ -13,7 +13,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         (contractAddress === undefined || log.address.toLowerCase() === contractAddress.toLowerCase()
         ));
 
-  const assertEmit = (assertion: any, frag: utils.EventFragment, isNegated: Boolean, from?: string) => {
+  const assertEmit = (assertion: any, frag: utils.EventFragment, isNegated: boolean, from?: string) => {
     const topic = keccak256(toUtf8Bytes(frag.format()));
     const receipt: providers.TransactionReceipt = assertion.txReceipt;
     assertion.args = filterLogsWithTopics(receipt.logs, topic, from);
@@ -74,7 +74,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           return;
         }
         assertEmit(this, eventFragment, isNegated, contractOrEventSig.address);
-  
+
         this.contract = contractOrEventSig;
       } else {
         throw new Error('The emit matcher must be called with a contract and an event name or an event signature');
