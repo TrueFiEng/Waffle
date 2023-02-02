@@ -30,7 +30,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       );
       assertion.__flags.negate = isCurrentlyNegated;
     });
-  }
+  };
 
   Assertion.addMethod('emit', function (this: any, contractOrEventSig: Contract|string, eventName?: string) {
     if (typeof this._obj === 'string') {
@@ -45,16 +45,20 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
     } else {
       callPromise(this);
     }
-    
+
     if (typeof contractOrEventSig === 'string') {
-      const eventFragment = utils.EventFragment.from(contractOrEventSig);
+      let eventFragment: utils.EventFragment | undefined;
+      try{ 
+        eventFragment = utils.EventFragment.from(contractOrEventSig);
+      } catch (e) {
+        throw new Error(`Invalid event signature: "${contractOrEventSig}"`);
+      }
       assertEmit(this, eventFragment);
     } else if (typeof contractOrEventSig === 'object' && eventName) {
       let eventFragment: utils.EventFragment | undefined;
       try {
         eventFragment = contractOrEventSig.interface.getEvent(eventName);
-      }
-      catch (e) {
+      } catch (e) {
         // ignore error
       }
       if (eventFragment === undefined) {
@@ -75,6 +79,9 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       assertEmit(this, eventFragment, contractOrEventSig.address);
 
       this.contract = contractOrEventSig;
+    }
+    else {
+      throw new Error('The emit matcher must be called with a contract and an event name or an event signature');
     }
 
     this.then = this.callPromise.then.bind(this.callPromise);

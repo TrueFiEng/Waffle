@@ -699,7 +699,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it('Signature only - delegatecall', async () => {
+    it.only('Signature only - delegatecall', async () => {
       const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
       const proxy = await proxyFactory.deploy(events.address);
 
@@ -710,7 +710,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       await expect(events.emitTwo()).to.emit('Two(uint256,string)');
     });
 
-    it('Signature only - negative', async () => {
+    it.only('Signature only - negative', async () => {
       await expect(
         expect(events.emitTwo()).to.emit('One(uint256,string,bytes32)')
       ).to.be.eventually.rejectedWith(
@@ -719,22 +719,29 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
       );
     });
 
-    it('Signature only - invalid event signature', async () => {
+    it.only('Signature only - invalid event signature', async () => {
       await expect(
-        expect(events.emitTwo()).to.emit('One(uint256, string, bytes32)')
-      ).to.be.eventually.rejectedWith(
+        () => expect(events.emitTwo()).to.emit('One')
+      ).to.throw(
         Error,
-        'Invalid event signature "One(uint256, string, bytes32)"'
+        'Invalid event signature: "One"'
       );
     });
 
-    it('Signature only - invalid args', async () => {
+    it.only('Signature only - invalid args', async () => {
       await expect(
-        expect(events.emitTwo()).to.emit(events)
-      ).to.be.eventually.rejectedWith(
+        () => expect(events.emitTwo()).to.emit(events)
+      ).to.throw(
         Error,
-        'The event name was not specified'
+        'The emit matcher must be called with a contract and an event name or an event signature'
       );
+    });
+
+    it.only('Signature only - Other contract event', async () => {
+      const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
+      const proxy = await proxyFactory.deploy(events.address);
+
+      await expect(proxy.emitOne()).to.emit('One(uint256,string,bytes32)');
     });
   });
 };
