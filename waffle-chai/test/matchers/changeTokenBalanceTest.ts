@@ -1,6 +1,6 @@
 import {expect, AssertionError} from 'chai';
 import {Wallet, Contract, ContractFactory, BigNumber} from 'ethers';
-import {abi as MOCK_TOKEN_ABI, bytecode as MOCK_TOKEN_BYTECODE} from '../interfaces/ERC20.json';
+import {MOCK_TOKEN_ABI, MOCK_TOKEN_BYTECODE} from '../contracts/MockToken';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
 

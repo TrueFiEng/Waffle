@@ -1,10 +1,9 @@
 import {expect, AssertionError} from 'chai';
 import {Wallet, Contract, ContractFactory, BigNumber, ethers} from 'ethers';
-import {abi as EVENTS_ABI, bytecode as EVENTS_BYTECODE} from '../interfaces/Events.json';
+import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
+import {EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE} from '../contracts/EventsProxy';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
-
-import EventsProxyABI from '../interfaces/EventsProxy.json';
 /**
  * Struct emitted in the Events contract, emitStruct method
  */
@@ -701,7 +700,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
     });
 
     it('Signature only - delegatecall', async () => {
-      const proxyFactory = new ContractFactory(EventsProxyABI.abi, EventsProxyABI.bytecode, wallet);
+      const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
       const proxy = await proxyFactory.deploy(events.address);
 
       await expect(proxy.emitTwoDelegate()).to.emit('Two(uint256,string)');

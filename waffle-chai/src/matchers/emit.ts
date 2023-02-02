@@ -13,78 +13,72 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         (contractAddress === undefined || log.address.toLowerCase() === contractAddress.toLowerCase()
         ));
 
-  const getEventName = (eventSig: string) => {
-    const reg = /(\S+)\((\S*)\)/;
-    const matches = reg.exec(eventSig);
-    if (matches) return matches[1];
-    else throw new Error(`Invalid event signature "${eventSig}"`);
-  };
+  const assertEmit = (assertion: any, frag: utils.EventFragment, from?: string) => {
+    const topic = keccak256(toUtf8Bytes(frag.format()));
+    const isNegated = assertion.__flags.negate === true;
+    assertion.callPromise = assertion.callPromise.then(() => {
+      if (!('txReceipt' in assertion)) {
+        throw new Error('The emit matcher must be called on a transaction');
+      }
+      const receipt: providers.TransactionReceipt = assertion.txReceipt;
+      assertion.args = filterLogsWithTopics(receipt.logs, topic, from);
+      const isCurrentlyNegated = assertion.__flags.negate === true;
+      assertion.__flags.negate = isNegated;
+      assertion.assert(assertion.args.length > 0,
+        `Expected event "${frag.name}" to be emitted, but it wasn't`,
+        `Expected event "${frag.name}" NOT to be emitted, but it was`
+      );
+      assertion.__flags.negate = isCurrentlyNegated;
+    });
+  }
 
-  Assertion.addMethod('emit', function (this: any, contract: Contract|string, eventName?: string) {
+  Assertion.addMethod('emit', function (this: any, contractOrEventSig: Contract|string, eventName?: string) {
     if (typeof this._obj === 'string') {
-      if (typeof contract === 'string') {
+      if (typeof contractOrEventSig === 'string') {
         throw new Error('The emit by event signature matcher must be called on a transaction');
       }
       // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
-      this.callPromise = waitForPendingTransaction(this._obj, contract.provider)
+      this.callPromise = waitForPendingTransaction(this._obj, contractOrEventSig.provider)
         .then(txReceipt => {
           this.txReceipt = txReceipt;
         });
     } else {
       callPromise(this);
     }
-    const isNegated = this.__flags.negate === true;
-    this.callPromise = this.callPromise
-      .then(() => {
-        if (!('txReceipt' in this)) {
-          throw new Error('The emit matcher must be called on a transaction');
-        }
-        const receipt: providers.TransactionReceipt = this.txReceipt;
-        if (typeof contract === 'string') {
-          eventName = getEventName(contract);
-          const topic = keccak256(toUtf8Bytes(contract));
-          this.args = filterLogsWithTopics(receipt.logs, topic);
-        } else {
-          if (!eventName) throw new Error('The event name was not specified');
-          let eventFragment: utils.EventFragment | undefined;
-          try {
-            eventFragment = contract.interface.getEvent(eventName);
-          } catch (e) {
-          // ignore error
-          }
-          if (eventFragment === undefined) {
-            this.assert(
-              isNegated,
-              `Expected event "${eventName}" to be emitted, but it doesn't` +
-            ' exist in the contract. Please make sure you\'ve compiled' +
-            ' its latest version before running the test.',
-              `WARNING: Expected event "${eventName}" NOT to be emitted.` +
-            ' The event wasn\'t emitted because it doesn\'t' +
-            ' exist in the contract. Please make sure you\'ve compiled' +
-            ' its latest version before running the test.',
-              eventName,
-              ''
-            );
-            return;
-          }
-          const topic = contract.interface.getEventTopic(eventFragment);
-          this.args = filterLogsWithTopics(receipt.logs, topic, contract.address);
-        }
-        // As this callback will be resolved after the chain of matchers is finished, we need to
-        // know if the matcher has been negated or not. To simulate chai behaviour, we keep track of whether
-        // the matcher has been negated or not and set the internal chai flag __flags.negate to the same value.
-        // After the assertion is finished, we set the flag back to original value to not affect other assertions.
-        const isCurrentlyNegated = this.__flags.negate === true;
-        this.__flags.negate = isNegated;
-        this.assert(this.args.length > 0,
-          `Expected event "${eventName}" to be emitted, but it wasn't`,
-          `Expected event "${eventName}" NOT to be emitted, but it was`
+    
+    if (typeof contractOrEventSig === 'string') {
+      const eventFragment = utils.EventFragment.from(contractOrEventSig);
+      assertEmit(this, eventFragment);
+    } else if (typeof contractOrEventSig === 'object' && eventName) {
+      let eventFragment: utils.EventFragment | undefined;
+      try {
+        eventFragment = contractOrEventSig.interface.getEvent(eventName);
+      }
+      catch (e) {
+        // ignore error
+      }
+      if (eventFragment === undefined) {
+        this.assert(
+          this.__flags.negate,
+          `Expected event "${eventName}" to be emitted, but it doesn't` +
+          ' exist in the contract. Please make sure you\'ve compiled' +
+          ' its latest version before running the test.',
+          `WARNING: Expected event "${eventName}" NOT to be emitted.` +
+          ' The event wasn\'t emitted because it doesn\'t' +
+          ' exist in the contract. Please make sure you\'ve compiled' +
+          ' its latest version before running the test.',
+          eventName,
+          ''
         );
-        this.__flags.negate = isCurrentlyNegated;
-      });
+        return;
+      }
+      assertEmit(this, eventFragment, contractOrEventSig.address);
+
+      this.contract = contractOrEventSig;
+    }
+
     this.then = this.callPromise.then.bind(this.callPromise);
     this.catch = this.callPromise.catch.bind(this.callPromise);
-    this.contract = contract;
     this.eventName = eventName;
     this.txMatcher = 'emit';
     return this;

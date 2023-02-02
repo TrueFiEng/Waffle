@@ -2,7 +2,7 @@ import {AssertionError, expect} from 'chai';
 import {MockProvider} from '@ethereum-waffle/provider';
 import {ContractFactory} from 'ethers';
 
-import {abi as CALLS_ABI, bytecode as CALLS_BYTECODE} from '../../interfaces/Calls.json';
+import {CALLS_ABI, CALLS_BYTECODE} from '../../contracts/Calls';
 
 export const calledOnContractWithTest = (provider: MockProvider) => {
   const setup = async (provider: MockProvider) => {
