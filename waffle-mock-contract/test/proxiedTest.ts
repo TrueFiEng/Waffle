@@ -57,5 +57,21 @@ export function mockContractProxiedTest(provider: MockProvider) {
       await mockContract.mock.read.returns(1);
       expect(await proxy.readCapped()).to.eq(1);
     });
+
+    it('calledOnContract with mock contract', async () => {
+      const {capContract, mockCounter} = await deploy();
+
+      await mockCounter.mock.read.returns(1);
+      await capContract.readCapped();
+      expect('read').to.be.calledOnContract(mockCounter);
+    });
+
+    it('calledOnContractWith with mock contract', async () => {
+      const {capContract, mockCounter} = await deploy();
+
+      await mockCounter.mock.add.returns(1);
+      await capContract.addCapped(1);
+      expect('add').to.be.calledOnContractWith(mockCounter, [1]);
+    });
   });
 }

@@ -1,9 +1,9 @@
 import {expect, AssertionError} from 'chai';
 import {Wallet, Contract, ContractFactory, BigNumber, ethers} from 'ethers';
 import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
+import {EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE} from '../contracts/EventsProxy';
 
 import type {TestProvider} from '@ethereum-waffle/provider';
-
 /**
  * Struct emitted in the Events contract, emitStruct method
  */
@@ -697,6 +697,51 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
         AssertionError,
         '{ Object (hash, value, ...) } to deeply equal { Object (hash, value, ...) }'
       );
+    });
+
+    it('Signature only - delegatecall', async () => {
+      const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
+      const proxy = await proxyFactory.deploy(events.address);
+
+      await expect(proxy.emitTwoDelegate()).to.emit('Two(uint256,string)');
+    });
+
+    it('Signature only - regular event', async () => {
+      await expect(events.emitTwo()).to.emit('Two(uint256,string)');
+    });
+
+    it('Signature only - negative', async () => {
+      await expect(
+        expect(events.emitTwo()).to.emit('One(uint256,string,bytes32)')
+      ).to.be.eventually.rejectedWith(
+        AssertionError,
+        'Expected event "One" to be emitted, but it wasn\'t'
+      );
+    });
+
+    it('Signature only - invalid event signature', async () => {
+      await expect(
+        expect(events.emitTwo()).to.emit('One')
+      ).to.be.eventually.rejectedWith(
+        Error,
+        'Invalid event signature: "One"'
+      );
+    });
+
+    it('Signature only - invalid args', async () => {
+      await expect(
+        expect(events.emitTwo()).to.emit(events)
+      ).to.be.eventually.rejectedWith(
+        Error,
+        'The emit matcher must be called with a contract and an event name or an event signature'
+      );
+    });
+
+    it('Signature only - Other contract event', async () => {
+      const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
+      const proxy = await proxyFactory.deploy(events.address);
+
+      await expect(proxy.emitOne()).to.emit('One(uint256,string,bytes32)');
     });
   });
 };
