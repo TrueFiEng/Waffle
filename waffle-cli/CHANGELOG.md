@@ -1,5 +1,14 @@
 # ethereum-waffle
 
+## 4.0.10
+
+### Patch Changes
+
+- Updated dependencies [4d83cde]
+  - @ethereum-waffle/mock-contract@4.0.4
+  - @ethereum-waffle/chai@4.0.10
+  - @ethereum-waffle/compiler@4.0.3
+
 ## 4.0.9
 
 ### Patch Changes
