@@ -52,7 +52,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           throw new Error(`Invalid event signature: "${contractOrEventSig}"`);
         }
         assertEmit(this, eventFragment, isNegated);
-      } else if (typeof contractOrEventSig === 'object' && eventName) {
+      } else if (eventName) {
         try {
           eventFragment = contractOrEventSig.interface.getEvent(eventName);
         } catch (e) {

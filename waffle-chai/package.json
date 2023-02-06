@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@ethereum-waffle/provider": "workspace:*",
-    "chai": "4.2.0",
     "debug": "^4.3.4",
     "json-bigint": "^1.0.0"
   },
