@@ -1,5 +1,11 @@
 # @ethereum-waffle/chai
 
+## 4.0.10
+
+### Patch Changes
+
+- 4d83cde: Emit matcher improvement
+
 ## 4.0.9
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @ethereum-waffle/mock-contract
 
+## 4.0.4
+
+### Patch Changes
+
+- 4d83cde: Emit matcher improvement
+
 ## 4.0.3
 
 ### Patch Changes
