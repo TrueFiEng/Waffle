@@ -16,6 +16,7 @@ export interface MockProviderOptions {
 export class MockProvider extends BrowserProvider {
   private _callHistory: CallHistory
   private _ens?: ENS;
+  private _ganacheProvider: Provider;
 
   constructor(private options?: MockProviderOptions) {
     const mergedOptions: EthereumProviderOptions = {
@@ -29,11 +30,11 @@ export class MockProvider extends BrowserProvider {
       ...options?.ganacheOptions
     };
     const provider: Provider = require('ganache').provider(mergedOptions);
-    console.log(provider);
     const callHistory = new CallHistory();
     const patchedProvider = injectRevertString(callHistory.record(provider));
 
     super(patchedProvider as any);
+    this._ganacheProvider = patchedProvider;
     this._callHistory = callHistory;
 
     /**
@@ -55,7 +56,7 @@ export class MockProvider extends BrowserProvider {
   }
 
   getWallets() {
-    const accounts = (this.provider as unknown as EthereumProvider).getInitialAccounts();
+    const accounts = this._ganacheProvider.getInitialAccounts();
     return Object.values(accounts).map((x: any) => new Wallet(x.secretKey, this));
   }
 

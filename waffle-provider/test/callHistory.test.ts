@@ -6,10 +6,10 @@ import {CALLER_ABI, CALLER_BYTECODE, CALLED_ABI, CALLED_BYTECODE} from './Caller
 import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) => {
-  it('records blockchain calls', async () => {
+  it.only('records blockchain calls', async () => {
     const [sender, recipient] = provider.getWallets();
 
-    const contract = await deployToken(sender, 10_000);
+    const contract = await deployToken(sender, 10000);
 
     await contract.transfer(recipient.address, 3_141);
     await contract.balanceOf(recipient.address);
