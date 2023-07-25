@@ -24,7 +24,7 @@ export function supportWithNamedArgs(Assertion: Chai.AssertionStatic) {
       } else {
         if (actualArgs[paramIndex].hash !== undefined && actualArgs[paramIndex]._isIndexed) {
           const expectedArgBytes = isHexString(expectedValue)
-            ? getBytes(expectedValue as BytesLike | Hexable | number)
+            ? getBytes(expectedValue)
             : toUtf8Bytes(expectedValue as string);
           new Assertion(
             actualArgs[paramIndex].hash,
