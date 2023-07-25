@@ -1,4 +1,4 @@
-import {BigNumber, BigNumberish} from 'ethers';
+import {BigNumberish} from 'ethers';
 import {Account, getAddressOf} from './misc/account';
 import {getBalanceChange} from './changeEtherBalance';
 import {callPromise} from '../call-promise';
@@ -19,11 +19,11 @@ export function supportChangeBalance(Assertion: Chai.AssertionStatic) {
         getBalanceChange(this.txResponse, account, {includeFee: true}),
         getAddressOf(account)
       ]);
-    }).then(([actualChange, address]: [BigNumber, string]) => {
+    }).then(([actualChange, address]: [BigInt, string]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       this.assert(
-        actualChange.eq(BigNumber.from(balanceChange)),
+        actualChange === BigInt(balanceChange),
         `Expected "${address}" to change balance by ${balanceChange} wei, ` +
         `but it has changed by ${actualChange} wei`,
         `Expected "${address}" to not change balance by ${balanceChange} wei,`,

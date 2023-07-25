@@ -1,5 +1,5 @@
 import chai, {expect} from 'chai';
-import {constants, utils} from 'ethers';
+import {ZeroAddress, namehash} from 'ethers';
 import {getWallet} from './utils';
 import {deployENS, ENS} from '../src/index';
 
@@ -7,8 +7,6 @@ import chaiAsPromised from 'chai-as-promised';
 
 chai.use(chaiAsPromised);
 
-const {AddressZero} = constants;
-const {namehash} = utils;
 const nonExistingNode = '0x0000000000000000000000000000000000000000000000000000000000000001';
 
 describe('Deploy Ens', async () => {
@@ -21,7 +19,7 @@ describe('Deploy Ens', async () => {
   });
 
   it('ENS deployed', async () => {
-    expect(await ens.ens.owner(nonExistingNode)).to.equal(AddressZero);
+    expect(await ens.ens.owner(nonExistingNode)).to.equal(ZeroAddress);
   });
 
   it('PublicResolver deployed and setup', async () => {

@@ -1,4 +1,4 @@
-import {providers, Wallet} from 'ethers';
+import {BrowserProvider, Wallet} from 'ethers';
 import {MockProvider} from './MockProvider';
 
 export type Fixture<T> = (wallets: Wallet[], provider: MockProvider) => Promise<T>;
@@ -6,7 +6,7 @@ interface Snapshot<T> {
   fixture: Fixture<T>;
   data: T;
   id: string;
-  provider: providers.Web3Provider;
+  provider: BrowserProvider;
   wallets: Wallet[];
 }
 

@@ -1,4 +1,4 @@
-import {providers, ContractFactory, Signer, Wallet, Contract} from 'ethers';
+import {ContractFactory, Signer, Wallet, Contract, type TransactionRequest} from 'ethers';
 import {ContractJSON, isStandard, hasByteCode} from './ContractJSON';
 
 type Newable<T> = { new(...args: any): T };
@@ -19,7 +19,7 @@ export async function deployContract<T extends ContractFactoryOrJSON>(
   wallet: Wallet | Signer,
   factoryOrContractJson: T,
   args: DeployArgumentsOf<T> = [] as any,
-  overrideOptions: providers.TransactionRequest = {}
+  overrideOptions: TransactionRequest = {}
 ): Promise<ContractTypeOf<T>> {
   if (isFactory(factoryOrContractJson)) {
     const Factory = factoryOrContractJson;
@@ -37,7 +37,7 @@ async function deployFromJson(
   wallet: Signer,
   contractJson: ContractJSON,
   args: any[],
-  overrideOptions: providers.TransactionRequest) {
+  overrideOptions: TransactionRequest) {
   const bytecode = isStandard(contractJson) ? contractJson.evm.bytecode : contractJson.bytecode;
   if (!hasByteCode(bytecode)) {
     throw new Error('Cannot deploy contract with empty bytecode');

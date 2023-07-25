@@ -1,7 +1,7 @@
-import {providers, Wallet} from 'ethers';
+import {BrowserProvider, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import type {EthereumProvider, Provider} from 'ganache';
+import {EthereumProvider, Provider} from 'ganache';
 import type {EthereumProviderOptions} from '@ganache/ethereum-options';
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
@@ -13,7 +13,7 @@ export interface MockProviderOptions {
   ganacheOptions: EthereumProviderOptions;
 }
 
-export class MockProvider extends providers.Web3Provider {
+export class MockProvider extends BrowserProvider {
   private _callHistory: CallHistory
   private _ens?: ENS;
 
@@ -29,6 +29,7 @@ export class MockProvider extends providers.Web3Provider {
       ...options?.ganacheOptions
     };
     const provider: Provider = require('ganache').provider(mergedOptions);
+    console.log(provider);
     const callHistory = new CallHistory();
     const patchedProvider = injectRevertString(callHistory.record(provider));
 
@@ -44,13 +45,13 @@ export class MockProvider extends providers.Web3Provider {
      * In order to make the revert string accessible for matchers like `revertedWith`,
      * we need to simulate transactions as queries and add the revert string to the receipt.
      */
-    (this.formatter as any).formats = {
-      ...this.formatter.formats,
-      receipt: {
-        ...this.formatter.formats.receipt,
-        revertString: (val: any) => val
-      }
-    };
+    // (this.formatter as any).formats = {
+    //   ...this.formatter.formats,
+    //   receipt: {
+    //     ...this.formatter.formats.receipt,
+    //     revertString: (val: any) => val
+    //   }
+    // };
   }
 
   getWallets() {
@@ -80,7 +81,7 @@ export class MockProvider extends providers.Web3Provider {
       wallet = wallets[wallets.length - 1];
     }
     const ens = await deployENS(wallet);
-    this.network.ensAddress = ens.ens.address;
+    // this._network.ensAddress = ens.ens.address;
     this._ens = ens;
   }
 }

@@ -1,5 +1,5 @@
 import type {TestProvider} from '@ethereum-waffle/provider';
-import {BigNumber, BigNumberish, providers} from 'ethers';
+import {type BigNumberish, type TransactionResponse} from 'ethers';
 import {callPromise} from '../call-promise';
 import {getAddressOf, Account} from './misc/account';
 import {BalanceChangeOptions, getAddresses, getBalances} from './misc/balance';
@@ -27,15 +27,15 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
         getBalanceChanges(this.txResponse, accounts, options),
         getAddresses(accounts)
       ]);
-    }).then(([actualChanges, accountAddresses]: [BigNumber[], string[]]) => {
+    }).then(([actualChanges, accountAddresses]: [bigint[], string[]]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       const margin = options?.errorMargin ? options.errorMargin : '0';
-      if (BigNumber.from(margin).eq(0)) {
+      if (BigInt(margin) === BigInt(0)) {
         this.assert(
           actualChanges.every((change, ind) =>
-            change.lte(BigNumber.from(balanceChanges[ind]).add(margin)) &&
-            change.gte(BigNumber.from(balanceChanges[ind]).sub(margin))
+            change <= (BigInt(balanceChanges[ind]) + BigInt(margin)) &&
+            change >= (BigInt(balanceChanges[ind]) - BigInt(margin))
           ),
           `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
             `but it has changed by ${actualChanges} wei`,
@@ -45,11 +45,11 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
         );
       } else {
         actualChanges.forEach((change, ind) => {
-          const low = BigNumber.from(balanceChanges[ind]).sub(margin);
-          const high = BigNumber.from(balanceChanges[ind]).add(margin);
+          const low = BigInt(balanceChanges[ind]) - BigInt(margin);
+          const high = BigInt(balanceChanges[ind]) + BigInt(margin);
           this.assert(
-            change.lte(high) &&
-            change.gte(low),
+            change <= high &&
+            change >= low,
             `Expected "${accountAddresses[ind]}" balance to change within [${[low, high]}] wei, ` +
               `but it has changed by ${change} wei`,
             `Expected "${accountAddresses[ind]}" balance to not change within [${[low, high]}] wei`,
@@ -68,12 +68,12 @@ export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
 }
 
 export async function getBalanceChanges(
-  txResponse: providers.TransactionResponse,
+  txResponse: TransactionResponse,
   accounts: Account[],
   options: BalanceChangeOptions
 ) {
   const txReceipt = await txResponse.wait();
-  const txBlockNumber = txReceipt.blockNumber;
+  const txBlockNumber = txReceipt?.blockNumber;
 
   const balancesAfter = await getBalances(accounts, txBlockNumber);
   const balancesBefore = await getBalances(accounts, txBlockNumber - 1);
@@ -85,7 +85,7 @@ export async function getBalanceChanges(
 
 async function getTxFees(
   accounts: Account[],
-  txResponse: providers.TransactionResponse,
+  txResponse: TransactionResponse,
   options: BalanceChangeOptions
 ) {
   return Promise.all(
@@ -94,11 +94,11 @@ async function getTxFees(
         const txReceipt = await txResponse.wait();
         const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
         const gasUsed = txReceipt.gasUsed;
-        const txFee = gasPrice.mul(gasUsed);
+        const txFee = gasPrice * gasUsed;
         const provider = account.provider as TestProvider;
         if (typeof provider.getL1Fee === 'function') {
-          const l1Fee = await provider.getL1Fee(txReceipt.transactionHash);
-          return txFee.add(l1Fee);
+          const l1Fee = await provider.getL1Fee(txReceipt.transactionHash) ;
+          return txFee + l1Fee;
         }
 
         return txFee;

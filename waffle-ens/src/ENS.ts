@@ -1,5 +1,5 @@
 import * as contracts from './contracts.js';
-import {constants, Contract, Signer, utils} from 'ethers';
+import {Contract, Signer, ZeroHash, id, namehash} from 'ethers';
 import {COIN_TYPE_ETH, deployContract, getDomainInfo} from './utils';
 import {ExpectedTopLevelDomain, MissingDomain} from './errors';
 
@@ -17,9 +17,6 @@ const getContracts = () => {
   return result;
 };
 
-const {namehash} = utils;
-const {HashZero} = constants;
-
 interface DomainRegistrationOptions {
   recursive?: boolean;
 }
@@ -27,9 +24,9 @@ interface DomainRegistrationOptions {
 export async function createResolver(signer: Signer, ens: Contract) {
   const resolver = await deployContract(signer, getContracts().PublicResolver, [ens.address]);
   const resolverNode = namehash('resolver');
-  const resolverLabel = utils.id('resolver');
-  await ens.setSubnodeOwner(HashZero, resolverLabel, await signer.getAddress());
-  await ens.setResolver(resolverNode, resolver.address);
+  const resolverLabel = id('resolver');
+  await ens.setSubnodeOwner(ZeroHash, resolverLabel, await signer.getAddress());
+  await ens.setResolver(resolverNode, await resolver.getAddress());
   await resolver['setAddr(bytes32,uint256,bytes)'](resolverNode, COIN_TYPE_ETH, resolver.address);
   return resolver;
 }
@@ -40,8 +37,8 @@ export async function createReverseRegistrar(signer: Signer, ens: Contract, reso
     getContracts().ReverseRegistrar,
     [ens.address, resolver.address]
   );
-  await ens.setSubnodeOwner(HashZero, utils.id('reverse'), await signer.getAddress());
-  await ens.setSubnodeOwner(namehash('reverse'), utils.id('addr'), reverseRegistrar.address);
+  await ens.setSubnodeOwner(ZeroHash, id('reverse'), await signer.getAddress());
+  await ens.setSubnodeOwner(namehash('reverse'), id('addr'), reverseRegistrar.address);
   return reverseRegistrar;
 }
 
@@ -72,7 +69,7 @@ export class ENS {
       ...this.registrars,
       [domain]: await deployContract(this.signer, getContracts().FIFSRegistrar, [this.ens.address, node])
     };
-    await this.ens.setSubnodeOwner(HashZero, utils.id(domain), this.registrars[domain].address);
+    await this.ens.setSubnodeOwner(ZeroHash, id(domain), this.registrars[domain].address);
   }
 
   async createSubDomainNonRecursive(domain: string) {
@@ -137,6 +134,7 @@ export class ENS {
 
   async setAddressWithReverse(domain: string, signer: Signer, options?: DomainRegistrationOptions) {
     await this.setAddress(domain, await signer.getAddress(), options);
+    // @ts-ignore
     await this.reverseRegistrar.connect(signer).setName(domain);
   }
 }

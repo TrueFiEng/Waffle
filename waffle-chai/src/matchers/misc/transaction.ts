@@ -1,9 +1,9 @@
-import type {Transaction, providers} from 'ethers';
+import type {Transaction, Provider} from 'ethers';
 
 export type MaybePendingTransaction = Promise<Transaction> | Transaction | string;
 
-export async function waitForPendingTransaction(tx: MaybePendingTransaction, provider: providers.Provider) {
-  let hash: string | undefined;
+export async function waitForPendingTransaction(tx: MaybePendingTransaction, provider: Provider) {
+  let hash: string | null;
   if (tx instanceof Promise) {
     ({hash} = await tx);
   } else if (typeof tx === 'string') {

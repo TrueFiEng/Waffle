@@ -1,5 +1,4 @@
-import {utils} from 'ethers';
-import {parseTransaction} from 'ethers/lib/utils';
+import {Transaction, getAddress, toBeHex} from 'ethers';
 import type {Provider} from 'ganache';
 
 export interface RecordedCall {
@@ -84,7 +83,7 @@ export class CallHistory {
           if (method === 'eth_call' || method === 'eth_sendTransaction') { // Record a query or a transaction.
             callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
           } else if (method === 'eth_sendRawTransaction') { // Record a raw transaction.
-            const parsedTx = parseTransaction(args[0]?.params?.[0]);
+            const parsedTx = Transaction.from(args[0]?.params?.[0]);
             callHistory.recordedCalls.push(toRecordedCall(parsedTx));
           }
           return originalResult;
@@ -97,7 +96,7 @@ export class CallHistory {
 function toRecordedCall(message: any): RecordedCall {
   return {
     address: message.to ? decodeAddress(message.to) : undefined,
-    data: message.data ? utils.hexlify(message.data) : '0x'
+    data: message.data ? toBeHex(message.data) : '0x'
   };
 }
 
@@ -141,5 +140,5 @@ function decodeAddress(data: Buffer): string {
   if (data.length < 20) {
     data = Buffer.concat([Buffer.alloc(20 - data.length, 0), data]);
   }
-  return utils.getAddress(utils.hexlify(data));
+  return getAddress(toBeHex(data.toString()));
 }

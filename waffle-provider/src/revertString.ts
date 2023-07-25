@@ -1,5 +1,4 @@
-import {providers} from 'ethers';
-import {toUtf8String} from 'ethers/lib/utils';
+import {BrowserProvider, toUtf8String} from 'ethers';
 import {Provider} from 'ganache';
 import {log} from './log';
 
@@ -60,19 +59,19 @@ export const decodeRevertString = (callRevertError: any): string => {
   return '';
 };
 
-export const appendRevertString = async (etherProvider: providers.Web3Provider, receipt: any) => {
+export const appendRevertString = async (etherProvider: BrowserProvider, receipt: any) => {
   if (receipt && parseInt(receipt.status) === 0) {
     log('Got transaction receipt of a failed transaction. Attempting to replay to obtain revert string.');
     try {
       const tx = await etherProvider.getTransaction(receipt.transactionHash);
       log('Running transaction as a call:');
       log(tx);
-      if (tx.maxPriorityFeePerGas || tx.maxFeePerGas) {
-        log('London hardfork detected, stripping gasPrice');
-        delete tx['gasPrice'];
-      }
+      // if (tx?.maxPriorityFeePerGas || tx?.maxFeePerGas) {
+      //   log('London hardfork detected, stripping gasPrice');
+      //   delete tx['gasPrice'];
+      // }
       // Run the transaction as a query. It works differently in Ethers, a revert code is included.
-      await etherProvider.call(tx as any, tx.blockNumber);
+      await etherProvider.call(tx as any);
     } catch (error: any) {
       log('Caught error, attempting to extract revert string from:');
       log(error);
@@ -96,7 +95,7 @@ export const appendRevertString = async (etherProvider: providers.Web3Provider, 
  * read a revert string, so we patch it and include it using a query to the blockchain.
  */
 export const injectRevertString = (provider: Provider): Provider => {
-  const etherProvider = new providers.Web3Provider(provider as any);
+  const etherProvider = new BrowserProvider(provider as any);
   return new Proxy(provider, {
     get(target, prop, receiver) {
       const original = (target as any)[prop as any];
@@ -143,7 +142,7 @@ export const injectRevertString = (provider: Provider): Provider => {
             const transactionHash = await originalResult;
             const tx = await etherProvider.getTransaction(transactionHash);
             try {
-              await tx.wait(); // Will end in an exception if the transaction is failing.
+              await tx?.wait(); // Will end in an exception if the transaction is failing.
             } catch (e: any) {
               log('Transaction failed after sending and waiting.');
               await appendRevertString(etherProvider, e.receipt);
