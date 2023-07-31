@@ -15,7 +15,7 @@
     "@ethereum-waffle/chai": "workspace:*",
     "@ethereum-waffle/compiler": "workspace:*",
     "@ethereum-waffle/provider": "workspace:*",
-    "ethers": "6.6.5",
+    "ethers": "6.6.6",
     "solc": "0.8.15",
     "typechain": "^8.0.0",
     "mocha": "^8.2.1",

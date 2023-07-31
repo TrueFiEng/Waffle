@@ -54,7 +54,7 @@
     "@ethereum-waffle/provider": "workspace:*",
     "@openzeppelin/contracts": "3.0.1",
     "@types/fs-extra": "^9.0.4",
-    "ethers": "6.6.5",
+    "ethers": "6.6.6",
     "fs-extra": "^9.0.1",
     "openzeppelin-solidity": "2.3.0",
     "solc": "0.8.15",

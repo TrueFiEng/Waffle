@@ -54,7 +54,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -65,7 +65,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -78,7 +78,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -89,7 +89,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -101,7 +101,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -111,7 +111,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -123,7 +123,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -133,7 +133,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -146,7 +146,7 @@ importers:
       chai: ^4.2.0
       chai-as-promised: ^7.1.1
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -157,7 +157,7 @@ importers:
       chai: 4.2.0
       chai-as-promised: 7.1.1_chai@4.2.0
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -169,7 +169,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       ts-node: ^8.9.1
       typescript: ^4.6.2
@@ -179,7 +179,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       ts-node: 8.10.2_typescript@4.6.2
       typescript: 4.6.2
@@ -192,7 +192,7 @@ importers:
       chai: ^4.2.0
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^7.1.2
       solc: 0.8.15
       ts-node: ^8.9.1
@@ -205,7 +205,7 @@ importers:
       chai: 4.2.0
       eslint: 7.18.0
       ethereum-waffle: link:../../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 7.2.0
       solc: 0.8.15
       ts-node: 8.10.2_typescript@4.6.2
@@ -219,7 +219,7 @@ importers:
       '@types/json-bigint': ^1.0.1
       debug: ^4.3.4
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       json-bigint: ^1.0.0
       mocha: ^8.2.1
       rimraf: ^3.0.2
@@ -232,7 +232,7 @@ importers:
       '@types/debug': 4.1.7
       '@types/json-bigint': 1.0.1
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 8.2.1
       rimraf: 3.0.2
       typescript: 4.6.2
@@ -244,7 +244,7 @@ importers:
       '@ethereum-waffle/mock-contract': workspace:*
       '@ethereum-waffle/provider': workspace:*
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^8.2.1
       openzeppelin-solidity: 2.3.0
       rimraf: ^3.0.2
@@ -261,7 +261,7 @@ importers:
       typechain: 8.0.0_typescript@4.6.2
     devDependencies:
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 8.2.1
       openzeppelin-solidity: 2.3.0
       rimraf: 3.0.2
@@ -280,7 +280,7 @@ importers:
       '@types/mkdirp': ^0.5.2
       '@types/node-fetch': ^2.6.1
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       fs-extra: ^9.0.1
       mkdirp: ^0.5.1
       mocha: ^8.2.1
@@ -293,7 +293,7 @@ importers:
     dependencies:
       '@resolver-engine/imports': 0.3.3
       '@resolver-engine/imports-fs': 0.3.3
-      '@typechain/ethers-v5': 10.0.0_fmaf6xtp6gkh4vx3aoj4intkji
+      '@typechain/ethers-v5': 10.0.0_sl2zp7fr7jrkxmmfzqvlnc2ovi
       '@types/mkdirp': 0.5.2
       '@types/node-fetch': 2.6.1
       mkdirp: 0.5.5
@@ -304,7 +304,7 @@ importers:
       '@openzeppelin/contracts': 3.0.1
       '@types/fs-extra': 9.0.11
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       fs-extra: 9.1.0
       mocha: 8.2.1
       openzeppelin-solidity: 2.3.0
@@ -319,7 +319,7 @@ importers:
       '@ethereum-waffle/compiler': workspace:*
       '@ethereum-waffle/provider': workspace:*
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^8.2.1
       solc: 0.8.15
       ts-node: ^9.0.0
@@ -329,7 +329,7 @@ importers:
       '@ethereum-waffle/compiler': link:../waffle-compiler
       '@ethereum-waffle/provider': link:../waffle-provider
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 8.2.1
       solc: 0.8.15
       ts-node: 9.1.1
@@ -340,7 +340,7 @@ importers:
       '@ensdomains/ens': ^0.4.4
       '@ensdomains/resolver': ^0.2.4
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       ganache: 7.4.3
       mocha: ^8.2.1
       rimraf: ^3.0.2
@@ -349,7 +349,7 @@ importers:
       '@ensdomains/ens': 0.4.5
       '@ensdomains/resolver': 0.2.4
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       ganache: 7.4.3
       mocha: 8.2.1
       rimraf: 3.0.2
@@ -364,7 +364,7 @@ importers:
       '@types/node': ^17.0.41
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       hardhat: 2.10.1
       hardhat-waffle-dev: 2.0.3-dev.c5b5c29
       mocha: ^8.2.1
@@ -372,13 +372,13 @@ importers:
       '@ethereum-waffle/chai': link:../waffle-chai
       '@ethereum-waffle/mock-contract': link:../waffle-mock-contract
       '@ethereum-waffle/provider': link:../waffle-provider
-      '@nomiclabs/hardhat-ethers': 2.1.0_bkel4lybun46ynukr4sz4p54pq
+      '@nomiclabs/hardhat-ethers': 2.1.0_vuftx5mv5smzpsho54foboggky
       '@types/node': 17.0.41
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       hardhat: 2.10.1
-      hardhat-waffle-dev: 2.0.3-dev.c5b5c29_5zyj2arkks5ak5k2ljyl6c2pay
+      hardhat-waffle-dev: 2.0.3-dev.c5b5c29_spm4dan3bemytsk6ye4pwydl2u
       mocha: 8.2.1
 
   waffle-mock-contract:
@@ -389,7 +389,7 @@ importers:
       '@ethersproject/abi': ^5.6.1
       '@ethersproject/providers': 5.6.2
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^8.2.1
       rimraf: ^3.0.2
       solc: 0.8.15
@@ -403,7 +403,7 @@ importers:
       '@ethersproject/abi': 5.6.1
       '@ethersproject/providers': 5.6.2
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 8.2.1
       rimraf: 3.0.2
       solc: 0.8.15
@@ -417,7 +417,7 @@ importers:
       '@ethereum-waffle/provider': workspace:*
       eslint: ^7.14.0
       ethereum-waffle: workspace:*
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: ^8.2.1
       rimraf: ^3.0.2
       typescript: ^4.6.2
@@ -426,7 +426,7 @@ importers:
       '@ethereum-waffle/provider': link:../waffle-provider
       eslint: 7.18.0
       ethereum-waffle: link:../waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 8.2.1
       rimraf: 3.0.2
       typescript: 4.6.2
@@ -438,7 +438,7 @@ importers:
       '@types/debug': ^4.1.7
       debug: ^4.3.4
       eslint: ^7.14.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       ganache: 7.4.3
       mocha: ^8.2.1
       rimraf: ^3.0.2
@@ -451,7 +451,7 @@ importers:
     devDependencies:
       '@types/debug': 4.1.7
       eslint: 7.18.0
-      ethers: 6.6.5
+      ethers: 6.6.6
       mocha: 8.2.1
       rimraf: 3.0.2
       typescript: 4.6.2
@@ -1161,13 +1161,13 @@ packages:
       '@nodelib/fs.scandir': 2.1.4
       fastq: 1.10.0
 
-  /@nomiclabs/hardhat-ethers/2.1.0_bkel4lybun46ynukr4sz4p54pq:
+  /@nomiclabs/hardhat-ethers/2.1.0_vuftx5mv5smzpsho54foboggky:
     resolution: {integrity: sha512-vlW90etB3675QWG7tMrHaDoTa7ymMB7irM4DAQ98g8zJoe9YqEggeDnbO6v5b+BLth/ty4vN6Ko/kaqRN1krHw==}
     peerDependencies:
       ethers: ^5.0.0
       hardhat: ^2.0.0
     dependencies:
-      ethers: 6.6.5
+      ethers: 6.6.6
       hardhat: 2.10.1
     dev: true
 
@@ -1355,7 +1355,7 @@ packages:
     dev: false
     optional: true
 
-  /@typechain/ethers-v5/10.0.0_fmaf6xtp6gkh4vx3aoj4intkji:
+  /@typechain/ethers-v5/10.0.0_sl2zp7fr7jrkxmmfzqvlnc2ovi:
     resolution: {integrity: sha512-Kot7fwAqnH96ZbI8xrRgj5Kpv9yCEdjo7mxRqrH7bYpEgijT5MmuOo8IVsdhOu7Uog4ONg7k/d5UdbAtTKUgsA==}
     peerDependencies:
       '@ethersproject/abi': ^5.0.0
@@ -1365,7 +1365,7 @@ packages:
       typechain: ^8.0.0
       typescript: '>=4.3.0'
     dependencies:
-      ethers: 6.6.5
+      ethers: 6.6.6
       lodash: 4.17.21
       ts-essentials: 7.0.3_typescript@4.6.2
       typechain: 8.0.0_typescript@4.6.2
@@ -3036,8 +3036,8 @@ packages:
       ethereum-cryptography: 0.1.3
       rlp: 2.2.7
 
-  /ethers/6.6.5:
-    resolution: {integrity: sha512-Tc3HXzI0UJ9EhPp6E0fntkgMIA2//rhcB0UsmiRMCR+Bii5iu0RjtwJV55IhlLJ4K39pd0ku+eE4WRgqrLLW2Q==}
+  /ethers/6.6.6:
+    resolution: {integrity: sha512-u3WbQn9bzreuLRGHJx/ZlrRSLYiiIu5FLGcR9VChu5D4+udINfNJZl+Y1DVgKlU6o7i3y31ATxs5HYrKogyvlA==}
     engines: {node: '>=14.0.0'}
     dependencies:
       '@adraffy/ens-normalize': 1.9.2
@@ -3476,7 +3476,7 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /hardhat-waffle-dev/2.0.3-dev.c5b5c29_5zyj2arkks5ak5k2ljyl6c2pay:
+  /hardhat-waffle-dev/2.0.3-dev.c5b5c29_spm4dan3bemytsk6ye4pwydl2u:
     resolution: {integrity: sha512-VztHCbXYQFtwTG5HxymHO6fIWGokqtpM27yokCg2c0Z5HckKouVh0HvIFR2Ave46m6rR7N9zR9XUKrvGjDzQGQ==}
     peerDependencies:
       '@nomiclabs/hardhat-ethers': ^2.0.0
@@ -3484,9 +3484,9 @@ packages:
       ethers: ^5.0.0
       hardhat: ^2.0.0
     dependencies:
-      '@nomiclabs/hardhat-ethers': 2.1.0_bkel4lybun46ynukr4sz4p54pq
+      '@nomiclabs/hardhat-ethers': 2.1.0_vuftx5mv5smzpsho54foboggky
       ethereum-waffle: link:waffle-cli
-      ethers: 6.6.5
+      ethers: 6.6.6
       hardhat: 2.10.1
     dev: true
 

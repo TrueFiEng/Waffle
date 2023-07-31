@@ -25,7 +25,7 @@
     "node": ">=10.0"
   },
   "devDependencies": {
-    "ethers": "6.6.5",
+    "ethers": "6.6.6",
     "@ethereum-waffle/chai": "workspace:*",
     "@ethereum-waffle/provider": "workspace:*",
     "eslint": "^7.14.0",
