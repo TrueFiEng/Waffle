@@ -2,7 +2,9 @@ import {Contract, ContractFactory, Interface, Signer} from 'ethers';
 
 export async function deployToken(signer: Signer, totalSupply: number) {
   const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, signer);
-  return factory.deploy(totalSupply) as any as Contract;
+  const contract = await factory.deploy(totalSupply);
+  await (contract.deploymentTransaction())?.wait();
+  return contract as any as Contract;
 }
 
 export const TOKEN_SOURCE = `
