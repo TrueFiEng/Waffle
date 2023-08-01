@@ -1,12 +1,13 @@
 import {expect} from 'chai';
-import {utils, Wallet} from 'ethers';
+import {Wallet, parseEther} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 
 describe('MockProvider - Ganache Wallets', async () => {
   const assertWalletsWithBalances = async (provider: MockProvider, wallets: Wallet[]) => {
     for (const wallet of wallets) {
-      const balance = await wallet.getBalance();
-      expect(balance.gt(0)).to.equal(true);
+      const address = await wallet.getAddress();
+      const balance = await provider.getBalance(address);
+      expect(balance > BigInt(0)).to.equal(true);
       expect(wallet.provider).to.equal(provider);
     }
   };
@@ -51,7 +52,7 @@ describe('MockProvider - Ganache Wallets', async () => {
       ganacheOptions: {
         wallet: {
           totalAccounts: 25,
-          mnemonic: mnemonic.phrase
+          mnemonic: mnemonic?.phrase
         }
       }
     });
@@ -75,6 +76,8 @@ describe('MockProvider - Ganache Wallets', async () => {
     const wallets = provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
-    expect((await wallets[0].getBalance()).toString()).to.eq(utils.parseEther('101').toString());
+    const addr = await wallets[0].getAddress()
+    const balance = await provider.getBalance(addr)
+    expect(balance.toString()).to.eq(parseEther('101').toString());
   });
 });
