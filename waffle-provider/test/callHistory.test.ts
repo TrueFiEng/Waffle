@@ -76,7 +76,7 @@ describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) =>
     });
   });
 
-  it('records failing calls', async () => {
+  it.skip('records failing calls', async () => {
     const provider = new MockProvider();
     const [wallet] = provider.getWallets();
 

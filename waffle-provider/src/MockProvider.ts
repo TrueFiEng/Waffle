@@ -18,7 +18,7 @@ export class MockProvider extends BrowserProvider {
   private _ens?: ENS;
   private _ganacheProvider: Provider;
 
-  constructor(private options?: MockProviderOptions) {
+  constructor(options?: MockProviderOptions) {
     const mergedOptions: EthereumProviderOptions = {
       wallet: {
         accounts: defaultAccounts

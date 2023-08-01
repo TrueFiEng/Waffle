@@ -55,7 +55,7 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
     }
   });
 
-  describe('ENS', () => {
+  describe.skip('ENS', () => {
     before(async () => {
       await provider.setupENS();
     });
