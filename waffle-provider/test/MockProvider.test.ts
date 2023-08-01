@@ -24,7 +24,7 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
       value
     });
     await tx.wait();
-    const balance = await provider.getBalance(await recipient.getAddress());
+    const balance = await provider.getBalance(recipient.address);
     expect(balance === BigInt(value)).to.equal(true);
   });
 

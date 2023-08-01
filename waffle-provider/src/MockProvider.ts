@@ -34,6 +34,7 @@ export class MockProvider extends BrowserProvider {
     const patchedProvider = injectRevertString(callHistory.record(provider));
 
     super(patchedProvider as any);
+    this.pollingInterval = 2;
     this._ganacheProvider = patchedProvider;
     this._callHistory = callHistory;
 

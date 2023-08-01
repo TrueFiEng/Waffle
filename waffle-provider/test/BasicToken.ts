@@ -1,5 +1,14 @@
 import {Contract, ContractFactory, Signer} from 'ethers';
 
+let start: Date | undefined = undefined;
+const printDelta = () => {
+  const end = new Date();
+  if (start) {
+    console.log(`Time elapsed: ${end.getTime() - start.getTime()}ms`);
+  }
+  start = end;
+};
+
 export async function deployToken(signer: Signer, totalSupply: number) {
   const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, signer);
   const contract = await factory.deploy(totalSupply);
