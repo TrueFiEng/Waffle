@@ -1,4 +1,4 @@
-import {Transaction, getAddress, toBeHex} from 'ethers';
+import {Transaction, getAddress, hexlify} from 'ethers';
 import type {Provider} from 'ganache';
 
 export interface RecordedCall {
@@ -96,7 +96,7 @@ export class CallHistory {
 function toRecordedCall(message: any): RecordedCall {
   return {
     address: message.to ? decodeAddress(message.to) : undefined,
-    data: message.data ? toBeHex(message.data) : '0x'
+    data: message.data ? hexlify(message.data) : '0x'
   };
 }
 
@@ -136,9 +136,13 @@ function decodeNumber(data: Buffer): number {
  * Decodes a address taken from EVM execution step
  * into a checksumAddress.
  */
-function decodeAddress(data: Buffer): string {
+function decodeAddress(data: Buffer | string): string {
+  if (typeof data === 'string') {
+    return getAddress(data);
+  }
+
   if (data.length < 20) {
     data = Buffer.concat([Buffer.alloc(20 - data.length, 0), data]);
   }
-  return getAddress(toBeHex(data.toString()));
+  return getAddress(hexlify(data));
 }
