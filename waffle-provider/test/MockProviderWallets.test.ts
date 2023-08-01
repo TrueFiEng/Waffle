@@ -76,8 +76,8 @@ describe('MockProvider - Ganache Wallets', async () => {
     const wallets = provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
-    const addr = await wallets[0].getAddress()
-    const balance = await provider.getBalance(addr)
+    const addr = await wallets[0].getAddress();
+    const balance = await provider.getBalance(addr);
     expect(balance.toString()).to.eq(parseEther('101').toString());
   });
 });

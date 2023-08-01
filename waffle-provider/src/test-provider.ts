@@ -1,4 +1,4 @@
-import { MockProvider } from './MockProvider';
+import {MockProvider} from './MockProvider';
 
 export type TestProvider =
 MockProvider
