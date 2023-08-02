@@ -115,7 +115,7 @@ describe('UNIT: Miscellaneous', () => {
     it('deep.equal works', async () => {
       const {contract} = await setup();
       const tuple = await contract.getTuple();
-      expect(tuple).to.deep.equal(['0xb319771f2dB6113a745bCDEEa63ec939Bf726207', BigNumber.from(9771)]);
+      expect(tuple).to.deep.equal(['0xb319771f2dB6113a745bCDEEa63ec939Bf726207', BigInt(9771)]);
     });
   });
 });

@@ -1,5 +1,5 @@
 import {expect, AssertionError} from 'chai';
-import {Wallet, Contract, ContractFactory, BigNumber, ethers} from 'ethers';
+import {Wallet, Contract, ContractFactory, ethers} from 'ethers';
 import {EVENTS_ABI, EVENTS_BYTECODE} from '../contracts/Events';
 import {EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE} from '../contracts/EventsProxy';
 
@@ -9,7 +9,7 @@ import type {TestProvider} from '@ethereum-waffle/provider';
  */
 const emittedStruct = {
   hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-  value: BigNumber.from(1),
+  value: BigInt(1),
   encoded: [
     '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
     '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
@@ -21,7 +21,7 @@ const emittedStruct = {
  */
 const emittedNestedStruct = {
   hash: '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
-  value: BigNumber.from(1),
+  value: BigInt(1),
   task: emittedStruct
 };
 
@@ -37,7 +37,7 @@ export const eventsTest = (provider: TestProvider) => {
 
   beforeEach(async () => {
     factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
-    events = await factory.deploy();
+    events = await factory.deploy() as any as Contract;
   });
 
   it('Emit one: success', async () => {
@@ -69,8 +69,8 @@ export const eventsTest = (provider: TestProvider) => {
   });
 
   it('Emit index: success', async () => {
-    const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
-    const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('Three'));
+    const bytes = ethers.hexlify(ethers.toUtf8Bytes('Three'));
+    const hash = ethers.keccak256(ethers.toUtf8Bytes('Three'));
     await expect(events.emitIndex())
       .to.emit(events, 'Index')
       .withArgs(
@@ -283,7 +283,7 @@ export const eventsTest = (provider: TestProvider) => {
     await expect(events.emitArrays())
       .to.emit(events, 'Arrays')
       .withArgs(
-        [BigNumber.from(1), 2, BigNumber.from(3)],
+        [BigInt(1), 2, BigInt(3)],
         [
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162123',
           '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
@@ -296,7 +296,7 @@ export const eventsTest = (provider: TestProvider) => {
       expect(events.emitArrays())
         .to.emit(events, 'Arrays')
         .withArgs(
-          [BigNumber.from(1), 2, BigNumber.from(3)],
+          [BigInt(1), 2, BigInt(3)],
           [
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162121',
             '0x00cfbbaf7ddb3a1476767101c12a0162e241fbad2a0162e2410cfbbaf7162124'
@@ -498,7 +498,7 @@ export const eventsTest = (provider: TestProvider) => {
     it('Emit struct: fail', async () => {
       const struct = {
         ...emittedStruct,
-        value: emittedStruct.value.add('1')
+        value: emittedStruct.value + BigInt(1)
       };
       await expect(
         expect(events.emitStruct()).to.emit(events, 'Struct').withArgs(struct)
@@ -519,7 +519,7 @@ export const eventsTest = (provider: TestProvider) => {
         ...emittedNestedStruct,
         task: {
           ...emittedStruct,
-          value: emittedStruct.value.add('1')
+          value: emittedStruct.value + BigInt(1)
         }
       };
       await expect(
@@ -544,13 +544,13 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
 
   beforeEach(async () => {
     factory = new ContractFactory(EVENTS_ABI, EVENTS_BYTECODE, wallet);
-    events = await factory.deploy();
+    events = await factory.deploy() as any as Contract;
   });
 
   describe('events withNamedArgs', () => {
     it('all arguments', async () => {
-      const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
-      const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('Three'));
+      const bytes = ethers.hexlify(ethers.toUtf8Bytes('Three'));
+      const hash = ethers.keccak256(ethers.toUtf8Bytes('Three'));
       await expect(events.emitIndex())
         .to.emit(events, 'Index')
         .withNamedArgs({
@@ -572,8 +572,8 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
     });
 
     it('some arguments', async () => {
-      const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
-      const hash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('Three'));
+      const bytes = ethers.hexlify(ethers.toUtf8Bytes('Three'));
+      const hash = ethers.keccak256(ethers.toUtf8Bytes('Three'));
       await expect(events.emitIndex())
         .to.emit(events, 'Index')
         .withNamedArgs({
@@ -592,8 +592,8 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
     });
 
     it('invalid msgHashed hash argument', async () => {
-      const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
-      const invalidHash = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('Four'));
+      const bytes = ethers.hexlify(ethers.toUtf8Bytes('Three'));
+      const invalidHash = ethers.keccak256(ethers.toUtf8Bytes('Four'));
       await expect(
         expect(events.emitIndex())
           .to.emit(events, 'Index')
@@ -611,7 +611,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
     });
 
     it('invalid msgHashed unhashed argument', async () => {
-      const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
+      const bytes = ethers.hexlify(ethers.toUtf8Bytes('Three'));
       await expect(
         expect(events.emitIndex())
           .to.emit(events, 'Index')
@@ -629,7 +629,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
     });
 
     it('invalid msg argument', async () => {
-      const bytes = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Three'));
+      const bytes = ethers.hexlify(ethers.toUtf8Bytes('Three'));
       await expect(
         expect(events.emitIndex())
           .to.emit(events, 'Index')
@@ -667,7 +667,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
     it('Emit struct: fail', async () => {
       const struct = {
         ...emittedStruct,
-        value: emittedStruct.value.add('1')
+        value: emittedStruct.value + BigInt(1)
       };
       await expect(
         expect(events.emitStruct()).to.emit(events, 'Struct').withNamedArgs({task: struct})
@@ -688,7 +688,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
         ...emittedNestedStruct,
         task: {
           ...emittedStruct,
-          value: emittedStruct.value.add('1')
+          value: emittedStruct.value + BigInt(1)
         }
       };
       await expect(
@@ -701,7 +701,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
 
     it('Signature only - delegatecall', async () => {
       const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
-      const proxy = await proxyFactory.deploy(events.address);
+      const proxy = await proxyFactory.deploy(events.address) as any as Contract;
 
       await expect(proxy.emitTwoDelegate()).to.emit('Two(uint256,string)');
     });
@@ -739,7 +739,7 @@ export const eventsWithNamedArgs = (provider: TestProvider) => {
 
     it('Signature only - Other contract event', async () => {
       const proxyFactory = new ContractFactory(EVENTSPROXY_ABI, EVENTSPROXY_BYTECODE, wallet);
-      const proxy = await proxyFactory.deploy(events.address);
+      const proxy = await proxyFactory.deploy(events.address) as any as Contract;
 
       await expect(proxy.emitOne()).to.emit('One(uint256,string,bytes32)');
     });
