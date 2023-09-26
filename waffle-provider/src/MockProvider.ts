@@ -1,8 +1,8 @@
 import {BrowserProvider, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import {Provider} from 'ganache';
 import type {EthereumProviderOptions} from '@ganache/ethereum-options';
+import { GanacheProvider } from "@ethers-ext/provider-ganache";
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
 import {injectRevertString} from './revertString';
@@ -10,16 +10,15 @@ import {injectRevertString} from './revertString';
 export {RecordedCall};
 
 export interface MockProviderOptions {
-  ganacheOptions: EthereumProviderOptions;
+  ganacheOptions:  EthereumProviderOptions;
 }
 
 export class MockProvider extends BrowserProvider {
   private _callHistory: CallHistory
   private _ens?: ENS;
-  private _ganacheProvider: Provider;
 
-  constructor(options?: MockProviderOptions) {
-    const mergedOptions: EthereumProviderOptions = {
+  constructor(private options?: MockProviderOptions) {
+    const provider = new GanacheProvider({
       wallet: {
         accounts: defaultAccounts
       },
@@ -27,15 +26,13 @@ export class MockProvider extends BrowserProvider {
       chain: {
         hardfork: 'berlin'
       },
-      ...options?.ganacheOptions
-    };
-    const provider: Provider = require('ganache').provider(mergedOptions);
+      ...options?.ganacheOptions as any
+    })
     const callHistory = new CallHistory();
     const patchedProvider = injectRevertString(callHistory.record(provider));
 
-    super(patchedProvider as any);
+    super(patchedProvider);
     this.pollingInterval = 2;
-    this._ganacheProvider = patchedProvider;
     this._callHistory = callHistory;
 
     /**
@@ -56,9 +53,9 @@ export class MockProvider extends BrowserProvider {
     // };
   }
 
-  getWallets() {
-    const accounts = this._ganacheProvider.getInitialAccounts();
-    return Object.values(accounts).map((x: any) => new Wallet(x.secretKey, this));
+   async getWallets() {
+    const accounts = (this.options?.ganacheOptions?.wallet?.accounts ?? defaultAccounts).map((account) => account.secretKey).filter(isDefined);
+    return accounts.map((secretKey) => new Wallet(secretKey, this));
   }
 
   createEmptyWallet() {
@@ -79,11 +76,15 @@ export class MockProvider extends BrowserProvider {
 
   async setupENS(wallet?: Wallet) {
     if (!wallet) {
-      const wallets = this.getWallets();
+      const wallets = await this.getWallets();
       wallet = wallets[wallets.length - 1];
     }
     const ens = await deployENS(wallet);
     // this._network.ensAddress = ens.ens.address;
     this._ens = ens;
   }
+}
+
+function isDefined<T>(val: T | undefined | null): val is T {
+  return val !== undefined && val !== null;
 }

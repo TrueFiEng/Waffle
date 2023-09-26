@@ -14,12 +14,12 @@ describe('MockProvider - Ganache Wallets', async () => {
 
   it('returns default wallets', async () => {
     const provider = new MockProvider();
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(10);
     await assertWalletsWithBalances(provider, wallets);
   });
 
-  it('accepts override of accounts', () => {
+  it('accepts override of accounts', async () => {
     const original = Wallet.createRandom();
     const provider = new MockProvider({
       ganacheOptions: {
@@ -28,7 +28,7 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(1);
     expect(wallets[0].address).to.equal(original.address);
   });
@@ -41,7 +41,7 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
   });
@@ -56,12 +56,12 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
 
     const defaultProvider = new MockProvider();
-    expect(defaultProvider.getWallets()[0].address).to.not.be.eq(wallets[0].address);
+    expect((await defaultProvider.getWallets())[0].address).to.not.be.eq(wallets[0].address);
   });
 
   it('Can generate wallets with non-default balance', async () => {
@@ -73,7 +73,7 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
     const addr = await wallets[0].getAddress();

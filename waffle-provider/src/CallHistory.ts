@@ -1,5 +1,5 @@
+import {GanacheProvider} from '@ethers-ext/provider-ganache';
 import {Transaction, getAddress, hexlify} from 'ethers';
-import type {Provider} from 'ganache';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -22,7 +22,7 @@ export class CallHistory {
     return this.recordedCalls;
   }
 
-  record(provider: Provider): Provider {
+  record(provider: GanacheProvider): GanacheProvider {
     // Required for the Proxy object.
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const callHistory = this;
@@ -34,13 +34,13 @@ export class CallHistory {
      * Otherwise some internal object might not have been created yet,
      * and there is a silently ignored error deep in ganache / ethereum VM.
      */
-    (provider as any).on('connect', () => {
+    provider.on('connect', () => {
       /**
        * A single step over a single opcode inside the EVM.
        * We use it to intercept `CALL` and `STATICCALL` opcodes,
        * and track a history of internal calls between smart contracts.
        */
-      (provider as any).on('ganache:vm:tx:step', (args: any) => {
+      provider.on('ganache:vm:tx:step', (args: any) => {
         if (['CALL', 'STATICCALL'].includes(args.data.opcode.name)) {
           try {
             callHistory.recordedCalls.push(toRecordedCall(decodeCallData(args.data)));
@@ -69,8 +69,8 @@ export class CallHistory {
           // Get a function result from the original provider.
           const originalResult = original.apply(target, args);
 
-          // Every method other than `provider.request()` left intact.
-          if (prop !== 'request') return originalResult;
+          // Every method other than `provider.#request()` left intact.
+          if (prop !== '#request') return originalResult;
 
           const method = args[0]?.method;
           /**

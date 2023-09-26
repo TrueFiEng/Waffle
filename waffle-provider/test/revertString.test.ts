@@ -6,7 +6,7 @@ import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: MockProvider.callHistory', (provider) => {
   it('decodes revert strings from calls', async () => {
-    const [wallet] = provider.getWallets();
+    const [wallet] = await provider.getWallets();
 
     const token = await deployToken(wallet, 10);
 

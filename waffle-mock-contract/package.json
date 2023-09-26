@@ -51,7 +51,7 @@
     "@ethersproject/abi": "^5.6.1",
     "@ethersproject/providers": "5.6.2",
     "eslint": "^7.14.0",
-    "ethers": "6.6.6",
+    "ethers": "6.7.0",
     "mocha": "^8.2.1",
     "rimraf": "^3.0.2",
     "solc": "0.8.15",

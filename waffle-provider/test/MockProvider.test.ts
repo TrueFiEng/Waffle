@@ -5,7 +5,7 @@ import {describeMockProviderCases} from './MockProviderCases';
 
 describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   it('returns wallets', async () => {
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(10);
     for (const wallet of wallets) {
       const address = await wallet.getAddress();
@@ -16,7 +16,7 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   });
 
   it('can send simple transactions', async () => {
-    const [sender] = provider.getWallets();
+    const [sender] = await provider.getWallets();
     const recipient = provider.createEmptyWallet();
     const value = parseEther('3.1415');
     const tx = await sender.sendTransaction({
@@ -29,14 +29,14 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   });
 
   it('can query a contract', async () => {
-    const [wallet] = provider.getWallets();
+    const [wallet] = await provider.getWallets();
     const contract = await deployToken(wallet, 10_000);
     const totalSupply: bigint = await contract.totalSupply();
     expect(totalSupply === BigInt(10_000)).to.equal(true);
   });
 
   it('can send a contract transaction', async () => {
-    const [sender, recipient] = provider.getWallets();
+    const [sender, recipient] = await provider.getWallets();
     const contract = await deployToken(sender, 10_000);
     await (await contract.transfer(recipient.address, 3_141)).wait();
     const balance = await contract.balanceOf(recipient.address);
@@ -44,7 +44,7 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
   });
 
   it('breaks in a predictable way', async () => {
-    const [wallet] = provider.getWallets();
+    const [wallet] = await provider.getWallets();
 
     const token = await deployToken(wallet, 10);
 
@@ -61,20 +61,20 @@ describeMockProviderCases('INTEGRATION: MockProvider', (provider) => {
     });
 
     it('setups ENS', async () => {
-      const wallets = provider.getWallets();
+      const wallets = await provider.getWallets();
       const wallet = wallets[wallets.length - 1];
       expect(provider.network.ensAddress).to.eq(provider.ens.ens.address);
       expect(await provider.ens.signer.getAddress()).to.eq(wallet.address);
     });
 
     it('resolveName', async () => {
-      const [wallet] = provider.getWallets();
+      const [wallet] = await provider.getWallets();
       await provider.ens.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
       expect(await provider.resolveName('vlad.ethworks.test')).to.eq(wallet.address);
     });
 
     it('lookupAddress', async () => {
-      const [wallet] = provider.getWallets();
+      const [wallet] = await provider.getWallets();
       await provider.ens.setAddressWithReverse('vlad.ethworks.test', wallet, {recursive: true});
       expect(await provider.lookupAddress(wallet.address)).to.eq('vlad.ethworks.test');
     });
