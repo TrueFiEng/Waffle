@@ -1,21 +1,20 @@
-import {Contract, providers, utils} from 'ethers';
-import {keccak256, toUtf8Bytes} from 'ethers/lib/utils';
+import {Contract, type Log, EventFragment, keccak256, toUtf8Bytes, type TransactionReceipt} from 'ethers';
 import {callPromise} from '../call-promise';
 import {waitForPendingTransaction} from './misc/transaction';
 import {supportWithArgs} from './withArgs';
 import {supportWithNamedArgs} from './withNamedArgs';
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
-  const filterLogsWithTopics = (logs: providers.Log[], topic: any, contractAddress?: string) =>
+  const filterLogsWithTopics = (logs: Log[], topic: any, contractAddress?: string) =>
     logs.filter((log) => log.topics.includes(topic))
       .filter((log) =>
         log.address &&
         (contractAddress === undefined || log.address.toLowerCase() === contractAddress.toLowerCase()
         ));
 
-  const assertEmit = (assertion: any, frag: utils.EventFragment, isNegated: boolean, from?: string) => {
+  const assertEmit = (assertion: any, frag: EventFragment, isNegated: boolean, from?: string) => {
     const topic = keccak256(toUtf8Bytes(frag.format()));
-    const receipt: providers.TransactionReceipt = assertion.txReceipt;
+    const receipt: TransactionReceipt = assertion.txReceipt;
     assertion.args = filterLogsWithTopics(receipt.logs, topic, from);
     const isCurrentlyNegated = assertion.__flags.negate === true;
     assertion.__flags.negate = isNegated;
@@ -44,10 +43,10 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       if (!('txReceipt' in this)) {
         throw new Error('The emit matcher must be called on a transaction');
       }
-      let eventFragment: utils.EventFragment | undefined;
+      let eventFragment: EventFragment | undefined;
       if (typeof contractOrEventSig === 'string') {
         try {
-          eventFragment = utils.EventFragment.from(contractOrEventSig);
+          eventFragment = EventFragment.from(contractOrEventSig);
         } catch (e) {
           throw new Error(`Invalid event signature: "${contractOrEventSig}"`);
         }

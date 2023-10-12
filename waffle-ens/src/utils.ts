@@ -1,13 +1,11 @@
-import {ContractFactory, Signer, utils} from 'ethers';
+import {Contract, ContractFactory, Signer, id, namehash} from 'ethers';
 import {ExpectedTopLevelDomain, InvalidDomain} from './errors';
-
-const {namehash} = utils;
 
 export const COIN_TYPE_ETH = 60;
 
-export const deployContract = async (signer: Signer, contractJSON: any, args: Array<any>) => {
+export const deployContract = async (signer: Signer, contractJSON: any, args: Array<any>): Promise<Contract> => {
   const factory = new ContractFactory(contractJSON.abi, contractJSON.bytecode, signer);
-  return factory.deploy(...args);
+  return factory.deploy(...args) as unknown as Contract;
 };
 
 interface ENSDomainInfo {
@@ -40,7 +38,7 @@ export const getDomainInfo = (domain: string): ENSDomainInfo => {
     chunks,
     tld: chunks[chunks.length - 1],
     rawLabel: chunks[0],
-    label: utils.id(chunks[0]),
+    label: id(chunks[0]),
     node: namehash(domain),
     rootNode: namehash(domain.replace(chunks[0] + '.', '')),
     decodedRootNode: domain.replace(chunks[0] + '.', '')

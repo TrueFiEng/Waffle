@@ -1,4 +1,4 @@
-import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
+import {BigNumberish, Contract, TransactionReceipt} from 'ethers';
 import {callPromise} from '../call-promise';
 import {Account, getAddressOf} from './misc/account';
 
@@ -19,15 +19,15 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
       const addresses = await getAddresses(accounts);
       const actualChanges = await getBalanceChanges(this.txReceipt, token, addresses);
       return [actualChanges, addresses];
-    }).then(([actualChanges, accountAddresses]: [BigNumber[], string[]]) => {
+    }).then(([actualChanges, accountAddresses]: [bigint[], string[]]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       if (errorMargin === undefined) errorMargin = '0';
-      if (BigNumber.from(errorMargin).eq(0)) {
+      if (BigInt(errorMargin) === BigInt(0)) {
         this.assert(
           actualChanges.every((change, ind) =>
-            change.lte(BigNumber.from(balanceChanges[ind]).add(errorMargin)) &&
-            change.gte(BigNumber.from(balanceChanges[ind]).sub(errorMargin))
+            change <= (BigInt(balanceChanges[ind]) + BigInt(errorMargin)) &&
+            change >= (BigInt(balanceChanges[ind]) - BigInt(errorMargin))
           ),
           `Expected ${accountAddresses} to change balance by ${balanceChanges} wei, ` +
             `but it has changed by ${actualChanges} wei`,
@@ -37,11 +37,11 @@ export function supportChangeTokenBalances(Assertion: Chai.AssertionStatic) {
         );
       } else {
         actualChanges.forEach((change, ind) => {
-          const low = BigNumber.from(balanceChanges[ind]).sub(errorMargin);
-          const high = BigNumber.from(balanceChanges[ind]).add(errorMargin);
+          const low = BigInt(balanceChanges[ind]) - BigInt(errorMargin);
+          const high = BigInt(balanceChanges[ind]) + BigInt(errorMargin);
           this.assert(
-            change.lte(high) &&
-            change.gte(low),
+            change <= high &&
+            change >= low,
             `Expected "${accountAddresses[ind]}" balance to change within [${[low, high]}] wei, ` +
               `but it has changed by ${change} wei`,
             `Expected "${accountAddresses[ind]}" balance to not change within [${[low, high]}] wei`,
@@ -74,7 +74,7 @@ async function getBalances(token: Contract, addresses: string[], blockNumber: nu
 }
 
 async function getBalanceChanges(
-  txReceipt: providers.TransactionReceipt,
+  txReceipt: TransactionReceipt,
   token: Contract,
   addresses: string[]
 ) {

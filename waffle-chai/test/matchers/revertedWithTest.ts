@@ -280,7 +280,7 @@ export const revertedWithTest = (provider: TestProvider, options: RevertedWithTe
         oneOrTheOtherPassing = !oneOrTheOtherPassing;
       } catch {}
       try {
-        await expect(matchers.doPanic()).to.be.revertedWith('Panic').withArgs(BigNumber.from('0x12'));
+        await expect(matchers.doPanic()).to.be.revertedWith('Panic').withArgs(BigInt('0x12'));
         oneOrTheOtherPassing = !oneOrTheOtherPassing;
       } catch (e) {}
       expect(oneOrTheOtherPassing).to.be.true;

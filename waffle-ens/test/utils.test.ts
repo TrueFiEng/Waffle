@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import {utils} from 'ethers';
+import { id, namehash } from 'ethers';
 import {getDomainInfo} from '../src/utils';
 
 describe('UNIT: getDomainInfo', async () => {
@@ -9,9 +9,9 @@ describe('UNIT: getDomainInfo', async () => {
         chunks: ['vlad', 'ethworks', 'test'],
         tld: 'test',
         rawLabel: 'vlad',
-        label: utils.id('vlad'),
-        node: utils.namehash('vlad.ethworks.test'),
-        rootNode: utils.namehash('ethworks.test'),
+        label: id('vlad'),
+        node: namehash('vlad.ethworks.test'),
+        rootNode: namehash('ethworks.test'),
         decodedRootNode: 'ethworks.test'
       });
   });
@@ -22,9 +22,9 @@ describe('UNIT: getDomainInfo', async () => {
         chunks: ['ethworks', 'test'],
         tld: 'test',
         rawLabel: 'ethworks',
-        label: utils.id('ethworks'),
-        node: utils.namehash('ethworks.test'),
-        rootNode: utils.namehash('test'),
+        label: id('ethworks'),
+        node: namehash('ethworks.test'),
+        rootNode: namehash('test'),
         decodedRootNode: 'test'
       });
   });

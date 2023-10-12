@@ -1,4 +1,4 @@
-import {BigNumber, BigNumberish, Contract, providers} from 'ethers';
+import {BigNumberish, Contract, TransactionReceipt} from 'ethers';
 import {callPromise} from '../call-promise';
 import {Account, getAddressOf} from './misc/account';
 
@@ -19,14 +19,14 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
       const address = typeof account === 'string' ? account : await getAddressOf(account);
       const actualChanges = await getBalanceChange(this.txReceipt, token, address);
       return [actualChanges, address];
-    }).then(([actualChange, address]: [BigNumber, string]) => {
+    }).then(([actualChange, address]: [bigint, string]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       if (errorMargin === undefined) errorMargin = '0';
-      if (BigNumber.from(errorMargin).eq(0)) {
+      if (BigInt(errorMargin) === BigInt(0)) {
         this.assert(
-          actualChange.lte(BigNumber.from(balanceChange).add(errorMargin)) &&
-          actualChange.gte(BigNumber.from(balanceChange).sub(errorMargin)),
+          actualChange <= (BigInt(balanceChange) + BigInt(errorMargin)) &&
+          actualChange >= (BigInt(balanceChange) - BigInt(errorMargin)),
           `Expected "${address}" to change balance by ${balanceChange} wei, ` +
             `but it has changed by ${actualChange} wei`,
           `Expected "${address}" to not change balance by ${balanceChange} wei,`,
@@ -34,11 +34,11 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
           actualChange
         );
       } else {
-        const low = BigNumber.from(balanceChange).sub(errorMargin);
-        const high = BigNumber.from(balanceChange).add(errorMargin);
+        const low = BigInt(balanceChange) - BigInt(errorMargin);
+        const high = BigInt(balanceChange) + BigInt(errorMargin);
         this.assert(
-          actualChange.lte(high) &&
-          actualChange.gte(low),
+          actualChange <= high &&
+          actualChange >= low,
           `Expected "${address}" balance to change within [${[low, high]}] wei, ` +
             `but it has changed by ${actualChange} wei`,
           `Expected "${address}" balance to not change within [${[low, high]}] wei`,
@@ -56,20 +56,20 @@ export function supportChangeTokenBalance(Assertion: Chai.AssertionStatic) {
 }
 
 async function getBalanceChange(
-  txReceipt: providers.TransactionReceipt,
+  txReceipt: TransactionReceipt,
   token: Contract,
   address: string
 ) {
   const txBlockNumber = txReceipt.blockNumber;
 
-  const balanceBefore: BigNumber = await token['balanceOf(address)'](
+  const balanceBefore: bigint = await token['balanceOf(address)'](
     address,
     {blockTag: txBlockNumber - 1}
   );
-  const balanceAfter: BigNumber = await token['balanceOf(address)'](
+  const balanceAfter: bigint = await token['balanceOf(address)'](
     address,
     {blockTag: txBlockNumber}
   );
 
-  return balanceAfter.sub(balanceBefore);
+  return balanceAfter - balanceBefore;
 }

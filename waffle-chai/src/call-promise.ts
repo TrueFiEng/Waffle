@@ -1,6 +1,5 @@
-import {providers} from 'ethers';
+import type {TransactionResponse} from 'ethers';
 
-type TransactionResponse = providers.TransactionResponse;
 type MaybePromise<T> = T | Promise<T>;
 
 const isTransactionResponse = (response: any): response is TransactionResponse => {

@@ -1,4 +1,4 @@
-import {utils} from 'ethers';
+import {solidityPackedKeccak256} from 'ethers';
 
 export interface LinkableContract {
   evm: {
@@ -37,8 +37,7 @@ function linkSolidity5(
   libraryAddress: string
 ) {
   const address = libraryAddress.replace('0x', '');
-  const encodedLibraryName = utils
-    .solidityKeccak256(['string'], [libraryName])
+  const encodedLibraryName = solidityPackedKeccak256(['string'], [libraryName])
     .slice(2, 36);
   const pattern = new RegExp(`_+\\$${encodedLibraryName}\\$_+`, 'g');
   const bytecode = contract.evm.bytecode.object;

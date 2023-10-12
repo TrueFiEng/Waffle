@@ -52,13 +52,13 @@ export const changeTokenBalanceTest = (provider: TestProvider) => {
     it('Should pass when expected balance change is passed as BN and is equal to an actual', async () => {
       await expect(() =>
         token.transfer(receiver.address, 200)
-      ).to.changeTokenBalance(token, receiver, BigNumber.from(200));
+      ).to.changeTokenBalance(token, receiver, BigInt(200));
     });
 
     it('Should pass on negative case when expected balance change is not equal to an actual', async () => {
       await expect(() =>
         token.transfer(receiver.address, 200)
-      ).to.not.changeTokenBalance(token, receiver, BigNumber.from(300));
+      ).to.not.changeTokenBalance(token, receiver, BigInt(300));
     });
 
     it('Should throw when expected balance change value was different from an actual', async () => {

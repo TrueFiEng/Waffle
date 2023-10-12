@@ -1,5 +1,5 @@
 import type {TestProvider} from '@ethereum-waffle/provider';
-import {BigNumber, BigNumberish, providers} from 'ethers';
+import {BigNumberish, type TransactionResponse} from 'ethers';
 import {callPromise} from '../call-promise';
 import {ensure} from './calledOnContract/utils';
 import {Account, getAddressOf} from './misc/account';
@@ -28,13 +28,13 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
         getBalanceChange(this.txResponse, account, options),
         getAddressOf(account)
       ]);
-    }).then(([actualChange, address]: [BigNumber, string]) => {
+    }).then(([actualChange, address]: [bigint, string]) => {
       const isCurrentlyNegated = this.__flags.negate === true;
       this.__flags.negate = isNegated;
       const margin = options?.errorMargin ? options.errorMargin : '0';
-      if (BigNumber.from(margin).eq(0)) {
+      if (BigInt(margin) === BigInt(0)) {
         this.assert(
-          actualChange.eq(BigNumber.from(balanceChange)),
+          actualChange === BigInt(balanceChange),
           `Expected "${address}" to change balance by ${balanceChange} wei, ` +
             `but it has changed by ${actualChange} wei`,
           `Expected "${address}" to not change balance by ${balanceChange} wei,`,
@@ -42,11 +42,11 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
           actualChange
         );
       } else {
-        const low = BigNumber.from(balanceChange).sub(margin);
-        const high = BigNumber.from(balanceChange).add(margin);
+        const low = BigInt(balanceChange) - BigInt(margin);
+        const high = BigInt(balanceChange) + BigInt(margin);
         this.assert(
-          actualChange.lte(high) &&
-          actualChange.gte(low),
+          actualChange <= high &&
+          actualChange >= low,
           `Expected "${address}" balance to change within [${[low, high]}] wei, ` +
             `but it has changed by ${actualChange} wei`,
           `Expected "${address}" balance to not change within [${[low, high]}] wei`,
@@ -65,7 +65,7 @@ export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
 }
 
 export async function getBalanceChange(
-  txResponse: providers.TransactionResponse,
+  txResponse: TransactionResponse,
   account: Account,
   options?: BalanceChangeOptions
 ) {
@@ -80,7 +80,7 @@ export async function getBalanceChange(
   if (options?.includeFee !== true && address === txReceipt.from) {
     const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
     const gasUsed = txReceipt.gasUsed;
-    const txFee = gasPrice.mul(gasUsed);
+    const txFee = gasPrice * gasUsed;
     const provider = account.provider as TestProvider;
     if (typeof provider.getL1Fee === 'function') {
       const l1Fee = await provider.getL1Fee(txReceipt.transactionHash);

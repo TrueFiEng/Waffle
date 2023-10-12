@@ -1,4 +1,4 @@
-import {utils} from 'ethers';
+import {Result, Interface, getBytes, keccak256, isHexString, toUtf8Bytes} from 'ethers';
 import {convertStructToPlainObject, isStruct} from './misc/struct';
 
 /**
@@ -7,10 +7,10 @@ import {convertStructToPlainObject, isStruct} from './misc/struct';
  */
 export function supportWithArgs(Assertion: Chai.AssertionStatic) {
   const assertArgsArraysEqual = (context: any, expectedArgs: any[], arg: any) => {
-    let actualArgs: utils.Result;
+    let actualArgs: Result;
     let wrongNumberOfArgsMsg: string;
     if (context.txMatcher === 'emit') {
-      actualArgs = (context.contract.interface as utils.Interface).parseLog(arg).args;
+      actualArgs = (context.contract.interface as Interface).parseLog(arg).args;
       wrongNumberOfArgsMsg = `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
         `but it has ${actualArgs.length}`;
     } else if (context.txMatcher === 'revertedWith') {
@@ -40,10 +40,10 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
         }
       } else {
         if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed === true) {
-          const expectedArgBytes = utils.isHexString(expectedArgs[index])
-            ? utils.arrayify(expectedArgs[index]) : utils.toUtf8Bytes(expectedArgs[index]);
+          const expectedArgBytes = isHexString(expectedArgs[index])
+            ? getBytes(expectedArgs[index]) : toUtf8Bytes(expectedArgs[index]);
           new Assertion(actualArgs[index].hash).to.be.oneOf(
-            [expectedArgs[index], utils.keccak256(expectedArgBytes)]
+            [expectedArgs[index], keccak256(expectedArgBytes)]
           );
         } else {
           if (isStruct(actualArgs[index])) {

@@ -13,7 +13,7 @@ interface StubInterface {
   withArgs(...args: any[]): StubInterface;
 }
 
-export interface MockContract<T extends BaseContract = BaseContract> extends Contract {
+export interface MockContract<T extends Contract = Contract> extends Contract {
   mock: {
     [key in ((keyof T['functions'] | 'receive'))]: StubInterface;
   };
@@ -32,7 +32,11 @@ class Stub implements StubInterface {
     private encoder: utils.AbiCoder,
     private func: utils.FunctionFragment
   ) {
-    this.callData = mockContract.interface.getSighash(func);
+    const selector = mockContract.interface.getFunction(func)?.selector;
+    if (!selector) {
+      throw new Error(`Function ${func.name} not found`);
+    }
+    this.callData = selector;
   }
 
   private err(reason: string): never {

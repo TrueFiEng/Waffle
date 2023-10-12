@@ -1,24 +1,25 @@
 import {expect} from 'chai';
-import {utils, Wallet} from 'ethers';
+import {Wallet, parseEther} from 'ethers';
 import {MockProvider} from '../src/MockProvider';
 
 describe('MockProvider - Ganache Wallets', async () => {
   const assertWalletsWithBalances = async (provider: MockProvider, wallets: Wallet[]) => {
     for (const wallet of wallets) {
-      const balance = await wallet.getBalance();
-      expect(balance.gt(0)).to.equal(true);
+      const address = await wallet.getAddress();
+      const balance = await provider.getBalance(address);
+      expect(balance > BigInt(0)).to.equal(true);
       expect(wallet.provider).to.equal(provider);
     }
   };
 
   it('returns default wallets', async () => {
     const provider = new MockProvider();
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(10);
     await assertWalletsWithBalances(provider, wallets);
   });
 
-  it('accepts override of accounts', () => {
+  it('accepts override of accounts', async () => {
     const original = Wallet.createRandom();
     const provider = new MockProvider({
       ganacheOptions: {
@@ -27,7 +28,7 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(1);
     expect(wallets[0].address).to.equal(original.address);
   });
@@ -40,7 +41,7 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
   });
@@ -51,16 +52,16 @@ describe('MockProvider - Ganache Wallets', async () => {
       ganacheOptions: {
         wallet: {
           totalAccounts: 25,
-          mnemonic: mnemonic.phrase
+          mnemonic: mnemonic?.phrase
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
 
     const defaultProvider = new MockProvider();
-    expect(defaultProvider.getWallets()[0].address).to.not.be.eq(wallets[0].address);
+    expect((await defaultProvider.getWallets())[0].address).to.not.be.eq(wallets[0].address);
   });
 
   it('Can generate wallets with non-default balance', async () => {
@@ -72,9 +73,11 @@ describe('MockProvider - Ganache Wallets', async () => {
         }
       }
     });
-    const wallets = provider.getWallets();
+    const wallets = await provider.getWallets();
     expect(wallets.length).to.equal(25);
     await assertWalletsWithBalances(provider, wallets);
-    expect((await wallets[0].getBalance()).toString()).to.eq(utils.parseEther('101').toString());
+    const addr = await wallets[0].getAddress();
+    const balance = await provider.getBalance(addr);
+    expect(balance.toString()).to.eq(parseEther('101').toString());
   });
 });

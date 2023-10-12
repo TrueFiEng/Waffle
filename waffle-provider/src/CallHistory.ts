@@ -1,6 +1,5 @@
-import {utils} from 'ethers';
-import {parseTransaction} from 'ethers/lib/utils';
-import type {Provider} from 'ganache';
+import {GanacheProvider} from '@ethers-ext/provider-ganache';
+import {Transaction, getAddress, hexlify} from 'ethers';
 
 export interface RecordedCall {
   readonly address: string | undefined;
@@ -23,7 +22,7 @@ export class CallHistory {
     return this.recordedCalls;
   }
 
-  record(provider: Provider): Provider {
+  record(provider: GanacheProvider): GanacheProvider {
     // Required for the Proxy object.
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const callHistory = this;
@@ -35,13 +34,13 @@ export class CallHistory {
      * Otherwise some internal object might not have been created yet,
      * and there is a silently ignored error deep in ganache / ethereum VM.
      */
-    (provider as any).on('connect', () => {
+    provider.on('connect', () => {
       /**
        * A single step over a single opcode inside the EVM.
        * We use it to intercept `CALL` and `STATICCALL` opcodes,
        * and track a history of internal calls between smart contracts.
        */
-      (provider as any).on('ganache:vm:tx:step', (args: any) => {
+      provider.on('ganache:vm:tx:step', (args: any) => {
         if (['CALL', 'STATICCALL'].includes(args.data.opcode.name)) {
           try {
             callHistory.recordedCalls.push(toRecordedCall(decodeCallData(args.data)));
@@ -70,8 +69,8 @@ export class CallHistory {
           // Get a function result from the original provider.
           const originalResult = original.apply(target, args);
 
-          // Every method other than `provider.request()` left intact.
-          if (prop !== 'request') return originalResult;
+          // Every method other than `provider.#request()` left intact.
+          if (prop !== '#request') return originalResult;
 
           const method = args[0]?.method;
           /**
@@ -84,7 +83,7 @@ export class CallHistory {
           if (method === 'eth_call' || method === 'eth_sendTransaction') { // Record a query or a transaction.
             callHistory.recordedCalls.push(toRecordedCall(args[0]?.params?.[0]));
           } else if (method === 'eth_sendRawTransaction') { // Record a raw transaction.
-            const parsedTx = parseTransaction(args[0]?.params?.[0]);
+            const parsedTx = Transaction.from(args[0]?.params?.[0]);
             callHistory.recordedCalls.push(toRecordedCall(parsedTx));
           }
           return originalResult;
@@ -97,7 +96,7 @@ export class CallHistory {
 function toRecordedCall(message: any): RecordedCall {
   return {
     address: message.to ? decodeAddress(message.to) : undefined,
-    data: message.data ? utils.hexlify(message.data) : '0x'
+    data: message.data ? hexlify(message.data) : '0x'
   };
 }
 
@@ -137,9 +136,13 @@ function decodeNumber(data: Buffer): number {
  * Decodes a address taken from EVM execution step
  * into a checksumAddress.
  */
-function decodeAddress(data: Buffer): string {
+function decodeAddress(data: Buffer | string): string {
+  if (typeof data === 'string') {
+    return getAddress(data);
+  }
+
   if (data.length < 20) {
     data = Buffer.concat([Buffer.alloc(20 - data.length, 0), data]);
   }
-  return utils.getAddress(utils.hexlify(data));
+  return getAddress(hexlify(data));
 }

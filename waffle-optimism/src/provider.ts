@@ -1,4 +1,4 @@
-import {BigNumber, Wallet, providers} from 'ethers';
+import {JsonRpcProvider, Wallet} from 'ethers';
 import type {TestProvider} from '@ethereum-waffle/provider';
 
 const privateKeys = [
@@ -23,13 +23,13 @@ const privateKeys = [
   '0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e'
 ];
 
-export class OptimismProvider extends providers.JsonRpcProvider implements TestProvider {
+export class OptimismProvider extends JsonRpcProvider implements TestProvider {
   getWallets(): Wallet[] {
     return privateKeys.map(key => new Wallet(key, this));
   }
 
-  async getL1Fee(transactionHash: string): Promise<BigNumber> {
+  async getL1Fee(transactionHash: string): Promise<BigInt> {
     const fullReceipt = await this.perform('getTransactionReceipt', {transactionHash});
-    return BigNumber.from(fullReceipt.l1Fee);
+    return BigInt(fullReceipt.l1Fee);
   }
 }

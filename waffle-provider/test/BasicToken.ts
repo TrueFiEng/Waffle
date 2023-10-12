@@ -1,8 +1,19 @@
-import {ContractFactory, Signer} from 'ethers';
+import {Contract, ContractFactory, Signer} from 'ethers';
+
+let start: Date | undefined = undefined;
+const printDelta = () => {
+  const end = new Date();
+  if (start) {
+    console.log(`Time elapsed: ${end.getTime() - start.getTime()}ms`);
+  }
+  start = end;
+};
 
 export async function deployToken(signer: Signer, totalSupply: number) {
   const factory = new ContractFactory(TOKEN_ABI, TOKEN_BYTECODE, signer);
-  return factory.deploy(totalSupply);
+  const contract = await factory.deploy(totalSupply);
+  await (contract.deploymentTransaction())?.wait();
+  return contract as any as Contract;
 }
 
 export const TOKEN_SOURCE = `
@@ -47,7 +58,7 @@ export const TOKEN_SOURCE = `
 `;
 
 export const TOKEN_ABI = [
-  'constructor (uint256 supply) public',
+  'constructor(uint256 supply)',
   'function totalSupply() public view returns (uint256)',
   'function balanceOf(address who) public view returns (uint256)',
   'function transfer(address to, uint256 value) public returns (bool)',

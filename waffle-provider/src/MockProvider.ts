@@ -1,8 +1,8 @@
-import {providers, Wallet} from 'ethers';
+import {BrowserProvider, Wallet} from 'ethers';
 import {CallHistory, RecordedCall} from './CallHistory';
 import {defaultAccounts} from './defaultAccounts';
-import type {EthereumProvider, Provider} from 'ganache';
 import type {EthereumProviderOptions} from '@ganache/ethereum-options';
+import { GanacheProvider } from "@ethers-ext/provider-ganache";
 
 import {deployENS, ENS} from '@ethereum-waffle/ens';
 import {injectRevertString} from './revertString';
@@ -10,15 +10,15 @@ import {injectRevertString} from './revertString';
 export {RecordedCall};
 
 export interface MockProviderOptions {
-  ganacheOptions: EthereumProviderOptions;
+  ganacheOptions:  EthereumProviderOptions;
 }
 
-export class MockProvider extends providers.Web3Provider {
+export class MockProvider extends BrowserProvider {
   private _callHistory: CallHistory
   private _ens?: ENS;
 
   constructor(private options?: MockProviderOptions) {
-    const mergedOptions: EthereumProviderOptions = {
+    const provider = new GanacheProvider({
       wallet: {
         accounts: defaultAccounts
       },
@@ -26,13 +26,13 @@ export class MockProvider extends providers.Web3Provider {
       chain: {
         hardfork: 'berlin'
       },
-      ...options?.ganacheOptions
-    };
-    const provider: Provider = require('ganache').provider(mergedOptions);
+      ...options?.ganacheOptions as any
+    })
     const callHistory = new CallHistory();
     const patchedProvider = injectRevertString(callHistory.record(provider));
 
-    super(patchedProvider as any);
+    super(patchedProvider);
+    this.pollingInterval = 2;
     this._callHistory = callHistory;
 
     /**
@@ -44,18 +44,18 @@ export class MockProvider extends providers.Web3Provider {
      * In order to make the revert string accessible for matchers like `revertedWith`,
      * we need to simulate transactions as queries and add the revert string to the receipt.
      */
-    (this.formatter as any).formats = {
-      ...this.formatter.formats,
-      receipt: {
-        ...this.formatter.formats.receipt,
-        revertString: (val: any) => val
-      }
-    };
+    // (this.formatter as any).formats = {
+    //   ...this.formatter.formats,
+    //   receipt: {
+    //     ...this.formatter.formats.receipt,
+    //     revertString: (val: any) => val
+    //   }
+    // };
   }
 
-  getWallets() {
-    const accounts = (this.provider as unknown as EthereumProvider).getInitialAccounts();
-    return Object.values(accounts).map((x: any) => new Wallet(x.secretKey, this));
+   async getWallets() {
+    const accounts = (this.options?.ganacheOptions?.wallet?.accounts ?? defaultAccounts).map((account) => account.secretKey).filter(isDefined);
+    return accounts.map((secretKey) => new Wallet(secretKey, this));
   }
 
   createEmptyWallet() {
@@ -76,11 +76,15 @@ export class MockProvider extends providers.Web3Provider {
 
   async setupENS(wallet?: Wallet) {
     if (!wallet) {
-      const wallets = this.getWallets();
+      const wallets = await this.getWallets();
       wallet = wallets[wallets.length - 1];
     }
     const ens = await deployENS(wallet);
-    this.network.ensAddress = ens.ens.address;
+    // this._network.ensAddress = ens.ens.address;
     this._ens = ens;
   }
+}
+
+function isDefined<T>(val: T | undefined | null): val is T {
+  return val !== undefined && val !== null;
 }

@@ -1,8 +1,7 @@
-import type {BigNumber, providers, Wallet} from 'ethers';
+import {MockProvider} from './MockProvider';
 
 export type TestProvider =
-providers.BaseProvider
+MockProvider
 & {
-  getWallets(): Wallet[];
-  getL1Fee?(txHash: string): Promise<BigNumber>;
+  getL1Fee?(txHash: string): Promise<bigint>;
 };

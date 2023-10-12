@@ -1,5 +1,4 @@
-import {BytesLike, utils} from 'ethers';
-import {Hexable} from 'ethers/lib/utils';
+import {BytesLike, Interface, getBytes, isHexString, keccak256, toUtf8Bytes} from 'ethers';
 import {convertStructToPlainObject, isStruct} from './misc/struct';
 
 /**
@@ -9,8 +8,8 @@ import {convertStructToPlainObject, isStruct} from './misc/struct';
  */
 export function supportWithNamedArgs(Assertion: Chai.AssertionStatic) {
   const assertArgsObjectEqual = (context: any, expectedArgs: Record<string, unknown>, arg: any) => {
-    const logDescription = (context.contract.interface as utils.Interface).parseLog(arg);
-    const actualArgs = logDescription.args;
+    const logDescription = (context.contract.interface as Interface).parseLog(arg);
+    const actualArgs = logDescription?.args;
 
     for (const [key, expectedValue] of Object.entries(expectedArgs)) {
       const paramIndex = logDescription.eventFragment.inputs.findIndex(input => input.name === key);
@@ -24,14 +23,14 @@ export function supportWithNamedArgs(Assertion: Chai.AssertionStatic) {
         }
       } else {
         if (actualArgs[paramIndex].hash !== undefined && actualArgs[paramIndex]._isIndexed) {
-          const expectedArgBytes = utils.isHexString(expectedValue)
-            ? utils.arrayify(expectedValue as BytesLike | Hexable | number)
-            : utils.toUtf8Bytes(expectedValue as string);
+          const expectedArgBytes = isHexString(expectedValue)
+            ? getBytes(expectedValue)
+            : toUtf8Bytes(expectedValue as string);
           new Assertion(
             actualArgs[paramIndex].hash,
             `value of indexed "${key}" argument in the "${context.eventName}" event ` +
             `to be hash of or equal to "${expectedValue}"`
-          ).to.be.oneOf([expectedValue, utils.keccak256(expectedArgBytes)]);
+          ).to.be.oneOf([expectedValue, keccak256(expectedArgBytes)]);
         } else {
           if (isStruct(actualArgs[paramIndex])) {
             new Assertion(

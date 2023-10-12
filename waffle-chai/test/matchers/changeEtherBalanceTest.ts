@@ -96,7 +96,7 @@ export const changeEtherBalanceTest = (
             to: receiver.address,
             value: 200
           })
-        ).to.changeEtherBalance(receiver, BigNumber.from(200));
+        ).to.changeEtherBalance(receiver, BigInt(200));
       });
 
       it('Should pass on negative case when expected balance change is not equal to an actual', async () => {
@@ -105,7 +105,7 @@ export const changeEtherBalanceTest = (
             to: receiver.address,
             value: 200
           })
-        ).to.not.changeEtherBalance(receiver, BigNumber.from(300));
+        ).to.not.changeEtherBalance(receiver, BigInt(300));
       });
 
       it('Should throw when fee was not calculated correctly', async () => {
@@ -187,7 +187,7 @@ export const changeEtherBalanceTest = (
           to: receiver.address,
           value: 200
         })
-        ).to.changeEtherBalance(sender, BigNumber.from(-200));
+        ).to.changeEtherBalance(sender, BigInt(-200));
       });
 
       it('Should pass on negative case when expected balance change is not equal to an actual', async () => {
@@ -195,7 +195,7 @@ export const changeEtherBalanceTest = (
           to: receiver.address,
           value: 200
         })
-        ).to.not.changeEtherBalance(receiver, BigNumber.from(300));
+        ).to.not.changeEtherBalance(receiver, BigInt(300));
       });
 
       it('Should throw when expected balance change value was different from an actual', async () => {

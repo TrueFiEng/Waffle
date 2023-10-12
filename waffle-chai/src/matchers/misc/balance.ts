@@ -16,9 +16,9 @@ export async function getBalances(accounts: Account[], blockNumber?: number) {
     accounts.map((account) => {
       ensure(account.provider !== undefined, TypeError, 'Provider not found');
       if (blockNumber !== undefined) {
-        return account.provider.getBalance(getAddressOf(account), blockNumber);
+        return account.provider?.getBalance(getAddressOf(account), blockNumber);
       } else {
-        return account.provider.getBalance(getAddressOf(account));
+        return account.provider?.getBalance(getAddressOf(account));
       }
     })
   );

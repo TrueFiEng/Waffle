@@ -33,7 +33,7 @@ describeMockProviderCases('INTEGRATION: changeBalance matcher', (provider) => {
             to: receiver.address,
             value: 200
           })
-        ).to.changeBalance(receiver, BigNumber.from(200));
+        ).to.changeBalance(receiver, BigInt(200));
       });
 
       it('Should pass on negative case when expected balance change is not equal to an actual', async () => {
@@ -42,7 +42,7 @@ describeMockProviderCases('INTEGRATION: changeBalance matcher', (provider) => {
             to: receiver.address,
             value: 200
           })
-        ).to.not.changeBalance(receiver, BigNumber.from(300));
+        ).to.not.changeBalance(receiver, BigInt(300));
       });
 
       it('Should take into account transaction fee', async () => {
@@ -120,7 +120,7 @@ describeMockProviderCases('INTEGRATION: changeBalance matcher', (provider) => {
           to: receiver.address,
           value: 200
         })
-        ).to.changeBalance(receiver, BigNumber.from(200));
+        ).to.changeBalance(receiver, BigInt(200));
       });
 
       it('Should pass on negative case when expected balance change is not equal to an actual', async () => {
@@ -128,7 +128,7 @@ describeMockProviderCases('INTEGRATION: changeBalance matcher', (provider) => {
           to: receiver.address,
           value: 200
         })
-        ).to.not.changeBalance(receiver, BigNumber.from(300));
+        ).to.not.changeBalance(receiver, BigInt(300));
       });
 
       it('Should throw when expected balance change value was different from an actual', async () => {
