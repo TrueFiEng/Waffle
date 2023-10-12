@@ -37,7 +37,7 @@
     "build": "rimraf ./dist && pnpm build:artifacts && pnpm build:esm && pnpm build:cjs",
     "build:esm": "tsc -p tsconfig.build.json --outDir dist/esm --module ES6",
     "build:cjs": "tsc -p tsconfig.build.json --outDir dist/cjs",
-    "build:artifacts": "node build-artifacts.js"
+    "build:artifacts": "node build-artifacts.mjs"
   },
   "engines": {
     "node": ">=10.0"
