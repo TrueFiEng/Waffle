@@ -24,8 +24,6 @@ jobs:
           path: ~/.pnpm-store
           key: pnpm-packages-waffle-${{ matrix.node }}-{{ checksum "pnpm-lock.yaml" }}
       - run: pnpm install --frozen-lockfile --strict-peer-dependencies
-      - name: setup-solc
-        run: sudo cp ./.github/workflows/solc /bin
       - run: pnpm run build
       - run: pnpm run test
   docs-and-linter:
