@@ -7,7 +7,7 @@
   "scripts": {
     "build": "ts-node buildTestContracts",
     "test:nobuild": "mocha",
-    "test": "yarn build && yarn test:nobuild",
+    "test": "pnpm build && pnpm test:nobuild",
     "lint": "eslint '{src,test}/**/*.ts'",
     "lint:fix": "eslint --fix '{src,test}/**/*.ts'"
   },
@@ -20,6 +20,6 @@
     "typechain": "^8.0.0",
     "mocha": "^8.2.1",
     "eslint": "^7.14.0",
-    "ts-node": "^9.0.0"
+    "ts-node": "^10.0.0"
   }
 }
