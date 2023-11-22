@@ -23,7 +23,7 @@ export function createFixtureLoader(overrideWallets?: Wallet[], overrideProvider
       return snapshot.data;
     } else {
       const provider = overrideProvider ?? new MockProvider();
-      const wallets = overrideWallets ?? provider.getWallets();
+      const wallets = overrideWallets ?? await provider.getWallets();
 
       const data = await fixture(wallets, provider);
       const id = await provider.send('evm_snapshot', []);

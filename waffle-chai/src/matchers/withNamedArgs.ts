@@ -1,5 +1,6 @@
-import {BytesLike, Interface, getBytes, isHexString, keccak256, toUtf8Bytes} from 'ethers';
+import {Interface, getBytes, isHexString, keccak256, toUtf8Bytes} from 'ethers';
 import {convertStructToPlainObject, isStruct} from './misc/struct';
+import {ensure} from "./calledOnContract/utils";
 
 /**
  * Used for testing the arguments of events or custom errors, naming the arguments.
@@ -9,10 +10,11 @@ import {convertStructToPlainObject, isStruct} from './misc/struct';
 export function supportWithNamedArgs(Assertion: Chai.AssertionStatic) {
   const assertArgsObjectEqual = (context: any, expectedArgs: Record<string, unknown>, arg: any) => {
     const logDescription = (context.contract.interface as Interface).parseLog(arg);
+    ensure(logDescription !== null, Error,'Could not parse log')
     const actualArgs = logDescription?.args;
 
     for (const [key, expectedValue] of Object.entries(expectedArgs)) {
-      const paramIndex = logDescription.eventFragment.inputs.findIndex(input => input.name === key);
+      const paramIndex = logDescription.fragment.inputs.findIndex(input => input.name === key);
       new Assertion(paramIndex, `"${key}" argument in the "${context.eventName}" event not found`).gte(0);
       if (Array.isArray(expectedValue)) {
         for (let j = 0; j < expectedValue.length; j++) {

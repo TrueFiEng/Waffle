@@ -2,12 +2,19 @@ import type {MockProvider} from '@ethereum-waffle/provider';
 import {Contract} from 'ethers';
 import {EncodingError} from './error';
 
+function getSighash(contract: Contract, fnName: string) {
+  const fnSighash = contract.interface.getFunction(fnName)?.selector;
+  if (!fnSighash) {
+    throw new Error(`Function ${fnName} not found`);
+  }
+  return fnSighash;
+}
 export function assertFunctionCalled(chai: Chai.AssertionStatic, contract: Contract, fnName: string) {
-  const fnSighash = contract.interface.getSighash(fnName);
+  const fnSighash = getSighash(contract, fnName);
 
   chai.assert(
     (contract.provider as unknown as MockProvider).callHistory.some(
-      call => call.address === contract.address && call.data.startsWith(fnSighash)
+      call => call.address === contract.target && call.data.startsWith(fnSighash)
     ),
     `Expected contract function ${fnName} to be called`,
     `Expected contract function ${fnName} NOT to be called`,
@@ -37,7 +44,7 @@ export function assertCalledWithParams(
 
   chai.assert(
     (contract.provider as unknown as MockProvider).callHistory.some(
-      call => call.address === contract.address && call.data === funCallData
+      call => call.address === contract.target && call.data === funCallData
     ),
     generateWrongParamsMessage(contract, fnName, parameters),
     `Expected contract function ${fnName} not to be called with parameters ${parameters}, but it was`,
@@ -46,10 +53,10 @@ export function assertCalledWithParams(
 }
 
 function generateWrongParamsMessage(contract: Contract, fnName: string, parameters: any[]) {
-  const fnSighash = contract.interface.getSighash(fnName);
+  const fnSighash = getSighash(contract, fnName);
   const functionCalls = (contract.provider as unknown as MockProvider)
     .callHistory.filter(
-      call => call.address === contract.address && call.data.startsWith(fnSighash)
+      call => call.address === contract.target && call.data.startsWith(fnSighash)
     );
   const paramsToDisplay = functionCalls.slice(0, 3);
   const leftParamsCount = functionCalls.length - paramsToDisplay.length;

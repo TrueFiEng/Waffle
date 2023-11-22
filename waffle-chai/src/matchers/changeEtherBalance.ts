@@ -2,7 +2,7 @@ import type {TestProvider} from '@ethereum-waffle/provider';
 import {BigNumberish, type TransactionResponse} from 'ethers';
 import {callPromise} from '../call-promise';
 import {ensure} from './calledOnContract/utils';
-import {Account, getAddressOf} from './misc/account';
+import {Account, getAddressOf, getProvider} from './misc/account';
 import {BalanceChangeOptions} from './misc/balance';
 
 export function supportChangeEtherBalance(Assertion: Chai.AssertionStatic) {
@@ -69,26 +69,28 @@ export async function getBalanceChange(
   account: Account,
   options?: BalanceChangeOptions
 ) {
-  ensure(account.provider !== undefined, TypeError, 'Provider not found');
+  const provider = getProvider(account);
+  ensure(provider !== undefined && provider !== null, TypeError, 'Provider not found');
   const txReceipt = await txResponse.wait();
+  ensure(txReceipt !== null, Error, 'Transaction receipt not found')
   const txBlockNumber = txReceipt.blockNumber;
   const address = await getAddressOf(account);
 
-  const balanceAfter = await account.provider.getBalance(address, txBlockNumber);
-  const balanceBefore = await account.provider.getBalance(address, txBlockNumber - 1);
+  const balanceAfter = await provider.getBalance(address, txBlockNumber);
+  const balanceBefore = await provider.getBalance(address, txBlockNumber - 1);
 
   if (options?.includeFee !== true && address === txReceipt.from) {
-    const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
+    const gasPrice = txResponse.gasPrice ?? txReceipt.cumulativeGasUsed;
     const gasUsed = txReceipt.gasUsed;
     const txFee = gasPrice * gasUsed;
     const provider = account.provider as TestProvider;
     if (typeof provider.getL1Fee === 'function') {
-      const l1Fee = await provider.getL1Fee(txReceipt.transactionHash);
-      return balanceAfter.add(txFee).add(l1Fee).sub(balanceBefore);
+      const l1Fee = await provider.getL1Fee(txReceipt.hash);
+      return balanceAfter + txFee + l1Fee - balanceBefore;
     }
 
-    return balanceAfter.add(txFee).sub(balanceBefore);
+    return balanceAfter + txFee - balanceBefore;
   } else {
-    return balanceAfter.sub(balanceBefore);
+    return balanceAfter - balanceBefore;
   }
 }

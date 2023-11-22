@@ -1,6 +1,6 @@
 import {BigNumberish} from 'ethers';
 import {ensure} from '../calledOnContract/utils';
-import {Account, getAddressOf} from './account';
+import {Account, getAddressOf, getProvider} from './account';
 
 export interface BalanceChangeOptions {
   includeFee?: boolean;
@@ -14,11 +14,12 @@ export function getAddresses(accounts: Account[]) {
 export async function getBalances(accounts: Account[], blockNumber?: number) {
   return Promise.all(
     accounts.map((account) => {
-      ensure(account.provider !== undefined, TypeError, 'Provider not found');
+      const provider = getProvider(account);
+      ensure(provider !== undefined && provider !== null, TypeError, 'Provider not found');
       if (blockNumber !== undefined) {
-        return account.provider?.getBalance(getAddressOf(account), blockNumber);
+        return provider.getBalance(getAddressOf(account), blockNumber);
       } else {
-        return account.provider?.getBalance(getAddressOf(account));
+        return provider.getBalance(getAddressOf(account));
       }
     })
   );

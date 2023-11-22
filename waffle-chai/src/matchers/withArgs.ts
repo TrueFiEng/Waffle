@@ -1,5 +1,6 @@
 import {Result, Interface, getBytes, keccak256, isHexString, toUtf8Bytes} from 'ethers';
 import {convertStructToPlainObject, isStruct} from './misc/struct';
+import {ensure} from "./calledOnContract/utils";
 
 /**
  * Used for testing the arguments of events or custom errors.
@@ -10,7 +11,9 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
     let actualArgs: Result;
     let wrongNumberOfArgsMsg: string;
     if (context.txMatcher === 'emit') {
-      actualArgs = (context.contract.interface as Interface).parseLog(arg).args;
+      const log = (context.contract.interface as Interface).parseLog(arg)
+      ensure(log !== null, Error,'Could not parse log');
+      actualArgs = log.args;
       wrongNumberOfArgsMsg = `Expected "${context.eventName}" event to have ${expectedArgs.length} argument(s), ` +
         `but it has ${actualArgs.length}`;
     } else if (context.txMatcher === 'revertedWith') {
@@ -39,7 +42,7 @@ export function supportWithArgs(Assertion: Chai.AssertionStatic) {
           new Assertion(actualArgs[index][j]).equal(expectedArgs[index][j]);
         }
       } else {
-        if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed === true) {
+        if (actualArgs[index].hash !== undefined && actualArgs[index]._isIndexed) {
           const expectedArgBytes = isHexString(expectedArgs[index])
             ? getBytes(expectedArgs[index]) : toUtf8Bytes(expectedArgs[index]);
           new Assertion(actualArgs[index].hash).to.be.oneOf(

@@ -3,6 +3,7 @@ import {type BigNumberish, type TransactionResponse} from 'ethers';
 import {callPromise} from '../call-promise';
 import {getAddressOf, Account} from './misc/account';
 import {BalanceChangeOptions, getAddresses, getBalances} from './misc/balance';
+import {ensure} from "./calledOnContract/utils";
 
 export function supportChangeEtherBalances(Assertion: Chai.AssertionStatic) {
   Assertion.addMethod('changeEtherBalances', function (
@@ -73,14 +74,15 @@ export async function getBalanceChanges(
   options: BalanceChangeOptions
 ) {
   const txReceipt = await txResponse.wait();
-  const txBlockNumber = txReceipt?.blockNumber;
+  ensure(txReceipt !== null, Error, 'Transaction receipt not found')
+  const txBlockNumber = txReceipt.blockNumber;
 
   const balancesAfter = await getBalances(accounts, txBlockNumber);
   const balancesBefore = await getBalances(accounts, txBlockNumber - 1);
 
   const txFees = await getTxFees(accounts, txResponse, options);
 
-  return balancesAfter.map((balance, ind) => balance.add(txFees[ind]).sub(balancesBefore[ind]));
+  return balancesAfter.map((balance, ind) => balance + txFees[ind] - balancesBefore[ind]);
 }
 
 async function getTxFees(
@@ -92,19 +94,20 @@ async function getTxFees(
     accounts.map(async (account) => {
       if (options?.includeFee !== true && await getAddressOf(account) === txResponse.from) {
         const txReceipt = await txResponse.wait();
-        const gasPrice = txResponse.gasPrice ?? txReceipt.effectiveGasPrice;
+        ensure(txReceipt !== null, Error, 'Transaction receipt not found')
+        const gasPrice = txResponse.gasPrice ?? txReceipt.cumulativeGasUsed;
         const gasUsed = txReceipt.gasUsed;
         const txFee = gasPrice * gasUsed;
         const provider = account.provider as TestProvider;
         if (typeof provider.getL1Fee === 'function') {
-          const l1Fee = await provider.getL1Fee(txReceipt.transactionHash) ;
+          const l1Fee = await provider.getL1Fee(txReceipt.hash) ;
           return txFee + l1Fee;
         }
 
         return txFee;
       }
 
-      return 0;
+      return BigInt(0);
     })
   );
 }

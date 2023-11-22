@@ -3,9 +3,10 @@ import {callPromise} from '../call-promise';
 import {waitForPendingTransaction} from './misc/transaction';
 import {supportWithArgs} from './withArgs';
 import {supportWithNamedArgs} from './withNamedArgs';
+import {getProvider} from "./misc/account";
 
 export function supportEmit(Assertion: Chai.AssertionStatic) {
-  const filterLogsWithTopics = (logs: Log[], topic: any, contractAddress?: string) =>
+  const filterLogsWithTopics = (logs: readonly Log[], topic: any, contractAddress?: string) =>
     logs.filter((log) => log.topics.includes(topic))
       .filter((log) =>
         log.address &&
@@ -31,7 +32,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
         throw new Error('The emit by event signature matcher must be called on a transaction');
       }
       // Handle specific case of using transaction hash to specify transaction. Done for backwards compatibility.
-      this.callPromise = waitForPendingTransaction(this._obj, contractOrEventSig.provider)
+      this.callPromise = waitForPendingTransaction(this._obj, getProvider(contractOrEventSig)!)
         .then(txReceipt => {
           this.txReceipt = txReceipt;
         });
@@ -43,7 +44,7 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       if (!('txReceipt' in this)) {
         throw new Error('The emit matcher must be called on a transaction');
       }
-      let eventFragment: EventFragment | undefined;
+      let eventFragment: EventFragment | null = null;
       if (typeof contractOrEventSig === 'string') {
         try {
           eventFragment = EventFragment.from(contractOrEventSig);
@@ -54,10 +55,10 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
       } else if (eventName) {
         try {
           eventFragment = contractOrEventSig.interface.getEvent(eventName);
-        } catch (e) {
+        } catch {
           // ignore error
         }
-        if (eventFragment === undefined) {
+        if (eventFragment === null) {
           this.assert(
             this.__flags.negate,
             `Expected event "${eventName}" to be emitted, but it doesn't` +
@@ -72,7 +73,9 @@ export function supportEmit(Assertion: Chai.AssertionStatic) {
           );
           return;
         }
-        assertEmit(this, eventFragment, isNegated, contractOrEventSig.address);
+        contractOrEventSig.getAddress().then((address: string) => {
+          assertEmit(this, eventFragment!, isNegated, address);
+        })
 
         this.contract = contractOrEventSig;
       } else {
