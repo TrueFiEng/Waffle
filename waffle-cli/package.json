@@ -52,7 +52,7 @@
     "@ethereum-waffle/compiler": "workspace:*",
     "@ethereum-waffle/mock-contract": "workspace:*",
     "@ethereum-waffle/provider": "workspace:*",
-    "solc": "0.8.15",
+    "solc": "0.8.26",
     "typechain": "^8.0.0"
   },
   "devDependencies": {

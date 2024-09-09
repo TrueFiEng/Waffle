@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@ethereum-waffle/ens": "workspace:*",
-    "@ganache/ethereum-options": "0.1.4",
+    "@ganache/ethereum-options": "0.8.0",
     "debug": "^4.3.4",
     "ganache": "7.4.3"
   },
