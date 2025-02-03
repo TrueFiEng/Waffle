@@ -215,7 +215,7 @@
 
 ### Patch Changes
 
-- 5407af7: changeEtherBalances/changeEtherBalance compatablity with london hardfork
+- 5407af7: changeEtherBalances/changeEtherBalance compatibility with london hardfork
 
 ## 3.4.0
 
