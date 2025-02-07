@@ -45,9 +45,9 @@
     "@resolver-engine/imports-fs": "^0.3.3",
     "@typechain/ethers-v5": "^10.0.0",
     "@types/mkdirp": "^0.5.2",
-    "@types/node-fetch": "^2.6.1",
+    "@types/node-fetch": "^2.6.12",
     "mkdirp": "^0.5.1",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@ethereum-waffle/chai": "workspace:*",
