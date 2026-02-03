@@ -22,7 +22,7 @@ You can also choose the deployment address of the mock contract with the options
 
   const mockContract = await deployMockContract(wallet, contractAbi, {
     address: deploymentAddress, 
-    overrride: false // optional, specifies if the contract should be overwritten
+    override: false // optional, specifies if the contract should be overwritten
   })
 
 The mock contract can now be integrated into other contracts by using the :code:`address` attribute.
