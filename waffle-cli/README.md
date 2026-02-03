@@ -186,7 +186,7 @@ To enable generation of [typechain](https://github.com/ethereum-ts/TypeChain) ar
 ```
 
 ### Flattener
-To flat your smart contracts run:
+To flatten your smart contracts run:
 
 ```sh
 npx waffle flatten

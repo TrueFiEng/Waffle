@@ -127,7 +127,7 @@ If you want to know more about how to configure Waffle, see :ref:`configuration`
 Flattener
 ---------
 
-To flat your smart contracts run:
+To flatten your smart contracts run:
 ::
 
   npx waffle flatten
