@@ -17,7 +17,7 @@ describe('Am I Rich Already', () => {
     contract = await deployContract(wallet, AmIRichAlready, [mockERC20.address]);
   });
 
-  it('returns false if the wallet has less then 1000000 coins', async () => {
+  it('returns false if the wallet has less than 1000000 coins', async () => {
     await mockERC20.mock.balanceOf.returns(utils.parseEther('999999'));
     expect(await contract.check()).to.be.equal(false);
   });

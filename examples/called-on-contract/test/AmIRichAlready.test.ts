@@ -12,7 +12,7 @@ describe('Am I Rich Already', () => {
   let contract: Contract;
   const [wallet] = new MockProvider().getWallets();
 
-  it('returns false if the wallet has less then 1000000 coins', async () => {
+  it('returns false if the wallet has less than 1000000 coins', async () => {
     ERC20 = await deployContract(wallet, BasicToken, [utils.parseEther('999999')]);
     contract = await deployContract(wallet, AmIRichAlready, [ERC20.address]);
     expect(await contract.check()).to.be.equal(false);
