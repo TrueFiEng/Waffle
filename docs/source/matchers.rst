@@ -45,7 +45,7 @@ Testing what events were emitted with what arguments:
 .. note::
 
   The matcher will match :code:`indexed` event parameters of type :code:`string` or :code:`bytes`
-  even if the expected argument is not hashed using :code:`keccack256` first.
+  even if the expected argument is not hashed using :code:`keccak256` first.
 
 Testing with indexed bytes or string parameters. These two examples are equivalent
 
