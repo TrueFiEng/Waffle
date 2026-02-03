@@ -7,12 +7,12 @@ import SafeMath from './example/build/SafeMath.json';
 describe('deployContract', () => {
   const [wallet] = new MockProvider().getWallets();
 
-  it('cannot deploys contract without bytecode', async () => {
+  it('cannot deploy contract without bytecode', async () => {
     const contractJson = {abi: '0x', evm: {bytecode: {object: ''}}};
     await expect(deployContract(wallet, contractJson)).to.be.rejectedWith('Cannot deploy contract with empty bytecode');
   });
 
-  it('cannot deploys contract without bytecode - simplified json', async () => {
+  it('cannot deploy contract without bytecode - simplified json', async () => {
     const contractJson = {abi: ['0x'], bytecode: ''};
     await expect(deployContract(wallet, contractJson)).to.be.rejectedWith('Cannot deploy contract with empty bytecode');
   });
