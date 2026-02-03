@@ -7,7 +7,7 @@ Configuration file
 ------------------
 
 While Waffle works well enough without any configurations, advanced users might
-want to excert more control over what happens when they use Waffle in their
+want to exert more control over what happens when they use Waffle in their
 projects.
 
 This is why we made it very easy to configure Waffle to meet your needs. All
@@ -344,7 +344,7 @@ The configuration can even be a promise
   })
 
 .. hint::
-  This is a powerful feature if you want to asynchronously load different compliation configurations
+  This is a powerful feature if you want to asynchronously load different compilation configurations
   in different environments.
   For example, you can use native solc in CI for faster compilation, while deciding the exact
   solc-js version locally based on the contract versions being used. Since many of those operations
